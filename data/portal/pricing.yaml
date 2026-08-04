@@ -1,0 +1,219 @@
+# ============================================================
+# 订阅方案 — 与 pigsty.cc/price · pigsty.io/price 对齐（2026-08）
+# 门户只做摘要卡，明细与购买跳转两个 price 页
+# ============================================================
+tiers:
+  - key: oss
+    name: OSS
+    tier: Open Source
+    tierZh: 开源版
+    tagline: Self-sufficient OSS guru
+    taglineZh: 自给自足的开源老司机
+    price: Free
+    priceZh: 免费
+    period: forever
+    periodZh: 永久
+    features:
+      - Apache-2.0 license
+      - Unlimited nodes, full features
+      - Community forum support
+    featuresZh:
+      - Apache-2.0 开源许可证
+      - 不限节点数量，完整功能
+      - 社区论坛支持
+    cta: Download
+    ctaZh: 立即下载
+    url: https://pigsty.io/docs/setup/install
+    urlZh: https://pigsty.cc/docs/setup/install
+
+  - key: standard
+    name: Standard
+    tier: Standard
+    tierZh: 标准版
+    tagline: SMBs, startups, freelancers
+    taglineZh: 中小企业的理想之选
+    price: $8K
+    priceZh: ¥5 万
+    period: /year
+    periodZh: /年
+    features:
+      - Commercial license, ≤5 nodes
+      - PostgreSQL 16–18
+      - Weekday email support
+      - Annual health check report
+    featuresZh:
+      - 商业授权许可，≤5 节点
+      - PostgreSQL 16–18
+      - 工作日邮件支持
+      - 年度健康检查报告
+    cta: Contact
+    ctaZh: 联系咨询
+    url: "mailto:rh@vonng.com?subject=Pigsty Standard"
+    urlZh: "mailto:rh@vonng.com?subject=Pigsty Standard"
+
+  - key: pro
+    name: Professional
+    tier: Professional
+    tierZh: 专业版
+    featured: true
+    tagline: Suitable for most users
+    taglineZh: 专业团队的最佳伙伴
+    price: $24K
+    priceZh: ¥15 万
+    period: /year
+    periodZh: /年
+    features:
+      - Commercial license, ≤15 nodes
+      - PostgreSQL 14–18 · offline packages
+      - 5 DBA hours / month
+      - Response within 4 hours
+      - Quarterly health check report
+    featuresZh:
+      - 商业授权许可，≤15 节点
+      - PostgreSQL 14–18 · 离线软件包
+      - 每月 5 个 DBA 专家工时
+      - 4 小时内响应
+      - 季度健康检查报告
+    cta: Subscribe
+    ctaZh: 立即订阅
+    url: "mailto:rh@vonng.com?subject=Pigsty Professional"
+    urlZh: "mailto:rh@vonng.com?subject=Pigsty Professional"
+
+  - key: enterprise
+    name: Enterprise
+    tier: Enterprise
+    tierZh: 企业版
+    tagline: Best for Fortune 500
+    taglineZh: 大型企业的坚实后盾
+    price: $60K
+    priceZh: ¥40 万
+    period: /year
+    periodZh: /年
+    features:
+      - Commercial license, ~50 nodes
+      - PostgreSQL 13–18 · custom packages
+      - 10 DBA hours / month · RDS OEM
+      - 7×24 SLA · 30-minute response
+      - Monthly health check report
+    featuresZh:
+      - 商业授权许可，参考规模 50 节点
+      - PostgreSQL 13–18 · 定制软件包
+      - 每月 10 个 DBA 工时 · RDS OEM
+      - 7×24 SLA · 30 分钟内响应
+      - 月度健康检查报告
+    cta: Talk to us
+    ctaZh: 商务洽谈
+    url: "mailto:rh@vonng.com?subject=Pigsty Enterprise"
+    urlZh: "mailto:rh@vonng.com?subject=Pigsty Enterprise"
+
+note: Commercial support is currently available in Asia; subscriptions are billed annually.
+noteZh: 订阅按年计费；超出节点可按需加购，支持 30 天企业评估试用。
+detail_url: https://pigsty.io/price
+detail_url_zh: https://pigsty.cc/price
+
+# ------------------------------------------------------------
+# 规格对照表（/price 页）。单元格 "Y"/"N" 渲染为图标，其余原样输出。
+# 列顺序与 tiers 一致：OSS / Standard / Professional / Enterprise
+# ------------------------------------------------------------
+matrix:
+  - group: Licensing
+    groupZh: 许可授权
+    rows:
+      - name: License type
+        nameZh: 许可证类型
+        cells: ["Apache-2.0", "Commercial", "Commercial", "Commercial"]
+        cellsZh: ["Apache-2.0", "商业许可", "商业许可", "商业许可"]
+      - name: Redistribution rights
+        nameZh: 再分发权限
+        cells: ["Y", "N", "N", "Y"]
+        cellsZh: ["Y", "N", "N", "Y"]
+  - group: Scale limits
+    groupZh: 规模限制
+    rows:
+      - name: Database nodes
+        nameZh: 数据库节点数
+        cells: ["Unlimited", "≤5", "≤15", "Reference: 50"]
+        cellsZh: ["不限", "≤5", "≤15", "参考规模：50"]
+      - name: PostgreSQL majors
+        nameZh: PostgreSQL 版本
+        cells: ["18 (14–18)", "16–18", "14–18", "13–18 · custom"]
+        cellsZh: ["18（14–18 可选）", "16–18", "14–18", "13–18 · 按需定制"]
+      - name: Offline packages
+        nameZh: 离线软件包
+        cells: ["el10, d13, u24", "+ el9, d12, u22", "+ arm64", "Custom"]
+        cellsZh: ["el10 / d13 / u24", "+ el9 / d12 / u22", "+ arm64", "定制"]
+  - group: Technical support
+    groupZh: 技术支持
+    rows:
+      - name: Support channel
+        nameZh: 支持渠道
+        cells: ["Community forum", "Email", "Email / Slack", "Dedicated channel"]
+        cellsZh: ["社区论坛", "邮件", "邮件 / 微信", "专属通道"]
+      - name: Response time
+        nameZh: 响应时间
+        cells: ["-", "Within a business day", "< 4 hours", "< 30 minutes"]
+        cellsZh: ["-", "工作日内", "< 4 小时", "< 30 分钟"]
+      - name: Service hours
+        nameZh: 服务时间
+        cells: ["-", "Business hours", "Business hours", "7×24"]
+        cellsZh: ["-", "工作日", "工作日", "7×24"]
+      - name: Expert consultation
+        nameZh: 数据库专家咨询
+        cells: ["-", "-", "5 hours / month", "10 hours / month"]
+        cellsZh: ["-", "-", "5 小时/月", "10 小时/月"]
+  - group: Value-added services
+    groupZh: 增值服务
+    rows:
+      - name: Health check reports
+        nameZh: 健康检查报告
+        cells: ["N", "Annual", "Quarterly", "Monthly"]
+        cellsZh: ["N", "年度", "季度", "月度"]
+      - name: Architecture review
+        nameZh: 架构咨询
+        cells: ["N", "N", "Y", "Y"]
+        cellsZh: ["N", "N", "Y", "Y"]
+      - name: Emergency response
+        nameZh: 紧急故障处理
+        cells: ["N", "N", "Paid option", "Y"]
+        cellsZh: ["N", "N", "付费", "Y"]
+      - name: Custom development
+        nameZh: 定制开发
+        cells: ["N", "N", "Paid option", "Paid option"]
+        cellsZh: ["N", "N", "付费选项", "付费选项"]
+  - group: Price
+    groupZh: 价格
+    rows:
+      - name: Annual price
+        nameZh: 订阅价格
+        price_row: true
+        cells: ["Free", "$8K / year", "$24K / year", "$60K / year"]
+        cellsZh: ["免费", "¥5 万 / 年", "¥15 万 / 年", "¥40 万 / 年"]
+
+# ------------------------------------------------------------
+# 常见问题（/price 页）
+# ------------------------------------------------------------
+faq:
+  - q: What does the commercial version offer?
+    qZh: 商业版提供哪些服务？
+    a: Commercial subscriptions include a commercial license, warranty and bug-fix guarantees, custom offline packages, exclusive support from industry-leading experts for hard problems, response-time SLAs, and broader Linux / PostgreSQL version coverage.
+    aZh: 商业版提供商业授权许可证、质保与缺陷修复承诺、定制离线软件包、业界顶尖专家的疑难杂症兜底、响应时间 SLA，以及更宽广的 Linux 与 PostgreSQL 版本支持范围。
+  - q: How are nodes counted?
+    qZh: 节点数量是如何计算的？
+    a: Node count refers to the number of distinct IP addresses managed by Pigsty.
+    aZh: 节点数量指 Pigsty 纳入管理的独立 IP 地址数量。
+  - q: Can I try before I buy?
+    qZh: 可以先试用再购买吗？
+    a: Absolutely — the open-source version is fully functional and identical in core capability, so evaluate as long as you like. We also offer a 30-day enterprise trial.
+    aZh: 当然可以！开源版功能完整，与商业版核心能力一致，您可以充分评估后再决定。我们也提供 30 天企业评估试用。
+  - q: How do I get invoices and contracts?
+    qZh: 如何获取发票和合同？
+    a: We provide standard invoices and business contracts. Contact rh@vonng.com for commercial details.
+    aZh: 我们提供普通发票 / 增值税发票和标准商务合同，商务细节请联系 rh@vonng.com。
+  - q: What payment methods are supported?
+    qZh: 支持哪些支付方式？
+    a: We accept wire transfer, PayPal, and major credit cards.
+    aZh: 订阅服务支持对公转账；专家号与咨询支持支付宝、微信等多种支付方式。
+  - q: What if I need more nodes?
+    qZh: 需要更多节点怎么办？
+    a: Additional nodes beyond your plan can be purchased separately, and Enterprise plans support custom configurations for your actual needs.
+    aZh: 超出方案的节点可按需加购，企业版还支持根据实际需求定制方案，详情请联系商务。

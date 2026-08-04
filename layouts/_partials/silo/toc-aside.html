@@ -1,0 +1,59 @@
+{{- /* 右侧栏（占位列 + fixed 面板）：actions 行（标题图标钮=整栏隐藏开关 +
+       语言直切 + 亮暗直切）→ 目录 → 页面元链接 → 标签云。
+       面板 fixed 定位：右侧正文滚动到底时不随文档移动（fumadocs 行为）；
+       整栏可隐藏（html[data-silo-toc=collapsed]），右上浮动钮恢复。
+       入参：dict "page" . "hasToc" bool */ -}}
+{{- $p := .page -}}
+{{- $hasToc := .hasToc -}}
+{{- $languageTarget := "" -}}
+{{- $languageLabel := "" -}}
+{{- range $p.Translations -}}
+  {{- $languageTarget = .RelPermalink -}}
+  {{- $languageLabel = default .Language.Lang .Language.Label -}}
+{{- end -}}
+{{- if not $languageTarget -}}
+  {{- range $p.Site.Home.Translations -}}
+    {{- $languageTarget = .RelPermalink -}}
+    {{- $languageLabel = default .Language.Lang .Language.Label -}}
+  {{- end -}}
+{{- end -}}
+<aside class="silo-toc d-print-none">
+  <div class="silo-toc__panel">
+    <div class="silo-toc__actions">
+      {{ if $hasToc -}}
+      <button type="button" class="silo-toc__title-btn" data-silo-right-toggle
+        title="{{ T "silo_toc_hide" }}" aria-label="{{ T "silo_toc_hide" }}">
+        {{- partialCached "silo/icon.html" "text-align-start" "text-align-start" -}}
+      </button>
+      <h3 class="silo-toc__title">{{ T "toc_on_this_page" }}</h3>
+      {{ else -}}
+      <button type="button" class="silo-toc__title-btn" data-silo-right-toggle
+        title="{{ T "silo_toc_hide" }}" aria-label="{{ T "silo_toc_hide" }}">
+        {{- partialCached "silo/icon.html" "panel-right" "panel-right" -}}
+      </button>
+      {{ end -}}
+      <span class="silo-toc__actions-spacer"></span>
+      {{ if $languageTarget -}}
+      <a class="silo-iconbtn silo-iconbtn--sm" href="{{ $languageTarget }}"
+        title="{{ $languageLabel }}" aria-label="{{ $languageLabel }}">
+        {{- partialCached "silo/icon.html" "languages" "languages" -}}
+      </a>
+      {{ end -}}
+      <button type="button" class="silo-iconbtn silo-iconbtn--sm silo-quick-theme" data-silo-theme-toggle
+        title="{{ T "silo_theme_toggle" }}" aria-label="{{ T "silo_theme_toggle" }}">
+        {{- partialCached "silo/icon.html" "sun" "sun" -}}
+        {{- partialCached "silo/icon.html" "moon" "moon" -}}
+      </button>
+    </div>
+    {{ if $hasToc }}{{ partial "toc.html" $p }}{{ end }}
+    {{ partial "page-meta-links.html" $p }}
+    {{ partial "taxonomy_terms_clouds.html" $p }}
+  </div>
+</aside>
+{{/* 整栏隐藏后的右上恢复钮（fixed，仅 collapsed + ≥xl 显示）。 */}}
+<div class="silo-toc-float d-print-none">
+  <button type="button" class="silo-iconbtn" data-silo-right-toggle
+    title="{{ T "silo_toc_show" }}" aria-label="{{ T "silo_toc_show" }}">
+    {{- partialCached "silo/icon.html" "panel-right" "panel-right" -}}
+  </button>
+</div>

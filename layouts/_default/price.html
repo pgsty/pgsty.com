@@ -1,0 +1,200 @@
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $description := .Description | default .Site.Params.description -}}
+{{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
+{{- $services := hugo.Data.portal.services -}}
+{{- $pricing := hugo.Data.portal.pricing -}}
+{{- $socialImage := "img/pgsty-social-card.png" | absURL -}}
+{{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
+<!DOCTYPE html>
+<html lang="{{ $locale }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{{ .Title }} - PGSTY</title>
+  <meta name="description" content="{{ $description }}">
+  {{ if hugo.IsProduction -}}
+  <meta name="robots" content="index, follow">
+  {{ else -}}
+  <meta name="robots" content="noindex, nofollow">
+  {{ end -}}
+  <meta name="author" content="{{ $entity }}">
+  <meta name="theme-color" content="#0b1119">
+  <meta name="color-scheme" content="dark light">
+
+  <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+  <link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}">
+  <link rel="apple-touch-icon" href="{{ "favicons/apple-touch-icon.png" | relURL }}">
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{ range .AllTranslations -}}
+  <link rel="alternate" hreflang="{{ .Language.Locale | default .Language.Lang }}" href="{{ .Permalink }}">
+  {{ end -}}
+  {{ range where .AllTranslations "Language.Lang" "en" -}}
+  <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+  {{ end }}
+
+  <meta property="og:title" content="{{ .Title }}">
+  <meta property="og:description" content="{{ $description }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:site_name" content="PGSTY">
+  <meta property="og:image" content="{{ $socialImage }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ .Title }}">
+  <meta name="twitter:description" content="{{ $description }}">
+  <meta name="twitter:image" content="{{ $socialImage }}">
+
+  {{ partial "portal/head-assets.html" . }}
+</head>
+<body class="landing-page portal-page price-page">
+  <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
+
+  {{ partial "portal/nav.html" (dict "page" . "active" "price") }}
+
+  <main id="main">
+
+    <!-- ============ 价格 HERO ============ -->
+    <section class="hero price-hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="landing-container">
+        <div class="section-head section-head--center" data-reveal>
+          <p class="section-eyebrow section-eyebrow--center anim" style="--d:0"><span class="silkscreen">{{ if $zh }}PRICING · 服务定价{{ else }}PRICING{{ end }}</span></p>
+          <h1 class="section-title anim" style="--d:1">{{ if $zh }}简单透明的价格{{ else }}Simple, transparent pricing{{ end }}</h1>
+          <p class="section-subtitle anim" style="--d:2">{{ if $zh }}按节点计费而非 vCPU —— 从免费开源到企业级 SLA，丰俭由人。{{ else }}Billed per node, not per vCPU — from free open source to an enterprise SLA.{{ end }}</p>
+        </div>
+
+        <div class="tier-grid price-hero-grid anim" style="--d:3">
+          {{ range $pricing.tiers }}
+          <article class="tier-card{{ if .featured }} tier-card--featured{{ end }}">
+            {{ if .featured }}<span class="tier-badge">{{ if $zh }}推荐{{ else }}POPULAR{{ end }}</span>{{ end }}
+            <header class="tier-head">
+              <p class="tier-tier silkscreen">{{ if $zh }}{{ .tierZh }}{{ else }}{{ .tier }}{{ end }}</p>
+              <p class="tier-tagline">{{ if $zh }}{{ .taglineZh }}{{ else }}{{ .tagline }}{{ end }}</p>
+            </header>
+            <p class="tier-price"><b>{{ if $zh }}{{ .priceZh }}{{ else }}{{ .price }}{{ end }}</b><span>{{ if $zh }}{{ .periodZh }}{{ else }}{{ .period }}{{ end }}</span></p>
+            <ul class="tier-features">
+              {{ $feats := cond $zh .featuresZh .features }}
+              {{ range $feats }}<li><i class="fas fa-check" aria-hidden="true"></i>{{ . }}</li>{{ end }}
+            </ul>
+            <a href="{{ if $zh }}{{ .urlZh }}{{ else }}{{ .url }}{{ end }}" class="btn {{ if .featured }}btn-primary{{ else }}btn-line{{ end }} tier-cta">{{ if $zh }}{{ .ctaZh }}{{ else }}{{ .cta }}{{ end }}</a>
+          </article>
+          {{ end }}
+        </div>
+
+        <p class="pricing-note" data-reveal>
+          {{ if $zh }}{{ $pricing.noteZh }}{{ else }}{{ $pricing.note }}{{ end }}
+          <a href="{{ if $zh }}https://pigsty.cc/docs/about/service/{{ else }}https://pigsty.io/docs/about/service/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}阅读订阅说明 →{{ else }}Read the service terms →{{ end }}</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 规格对照 ============ -->
+    <section class="landing-section cmp-section">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}DATASHEET · 规格对照{{ else }}DATASHEET{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}功能对比{{ else }}Feature comparison{{ end }}</h2>
+          <p class="section-subtitle">{{ if $zh }}详细了解各方案的功能差异。{{ else }}A detailed look at what each plan includes.{{ end }}</p>
+        </div>
+
+        <div class="cmp-wrap" data-reveal>
+          <table class="cmp-table">
+            <thead>
+              <tr>
+                <th class="cmp-feature">{{ if $zh }}功能特性{{ else }}Feature{{ end }}</th>
+                {{ range $pricing.tiers }}
+                <th{{ if .featured }} class="cmp-hl"{{ end }}>{{ .name }}</th>
+                {{ end }}
+              </tr>
+            </thead>
+            <tbody>
+              {{ range $pricing.matrix }}
+              <tr class="cmp-group"><td colspan="5">{{ if $zh }}{{ .groupZh }}{{ else }}{{ .group }}{{ end }}</td></tr>
+              {{ range .rows }}
+              <tr{{ if .price_row }} class="cmp-price-row"{{ end }}>
+                <td class="cmp-feature">{{ if $zh }}{{ .nameZh }}{{ else }}{{ .name }}{{ end }}</td>
+                {{ $cells := cond $zh .cellsZh .cells }}
+                {{ range $i, $c := $cells }}
+                <td{{ if eq $i 2 }} class="cmp-hl"{{ end }}>
+                  {{- if eq $c "Y" }}<i class="fas fa-check cmp-yes" aria-label="{{ if $zh }}支持{{ else }}Yes{{ end }}"></i>
+                  {{- else if eq $c "N" }}<i class="fas fa-minus cmp-no" aria-label="{{ if $zh }}不含{{ else }}No{{ end }}"></i>
+                  {{- else }}{{ $c }}{{ end -}}
+                </td>
+                {{ end }}
+              </tr>
+              {{ end }}
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 按需专家服务 ============ -->
+    <section class="landing-section services">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}ON DEMAND · 按需服务{{ else }}ON-DEMAND SERVICES{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}专家服务，按需采购{{ else }}Expert services, pay as you go{{ end }}</h2>
+          <p class="section-subtitle">{{ if $zh }}不订阅也能找到我们 —— 业界顶级数据库专家坐堂问诊。{{ else }}No subscription required — industry-leading database experts, on call.{{ end }}</p>
+        </div>
+
+        <div class="svc-grid" data-reveal>
+          {{ range $services }}
+          <article class="svc-card">
+            <span class="svc-icon"><i class="fas {{ .icon }}" aria-hidden="true"></i></span>
+            <h3 class="svc-name">{{ if $zh }}{{ .nameZh }}{{ else }}{{ .name }}{{ end }}</h3>
+            <p class="svc-desc">{{ if $zh }}{{ .descZh }}{{ else }}{{ .desc }}{{ end }}</p>
+            <p class="svc-price">{{ if $zh }}{{ .priceZh }}{{ else }}{{ .price }}{{ end }}</p>
+          </article>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="landing-section faq-section">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}FAQ · 常见问题{{ else }}FAQ{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}常见问题{{ else }}Frequently asked questions{{ end }}</h2>
+        </div>
+
+        <div class="faq-grid" data-reveal>
+          {{ range $pricing.faq }}
+          <div class="faq-item">
+            <h3 class="faq-q">{{ if $zh }}{{ .qZh }}{{ else }}{{ .q }}{{ end }}</h3>
+            <p class="faq-a">{{ if $zh }}{{ .aZh }}{{ else }}{{ .a }}{{ end }}</p>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="landing-section contact-band">
+      <div class="landing-container">
+        <div class="contact-inner" data-reveal>
+          <h2 class="contact-title">{{ if $zh }}还有疑问？欢迎咨询{{ else }}Have questions? Let's talk{{ end }}</h2>
+          <p class="contact-desc">{{ if $zh }}我们随时为您解答疑问，帮助您选择最适合的方案。{{ else }}We're happy to help you pick the plan that fits.{{ end }}</p>
+          <div class="contact-ctas">
+            <a href="mailto:rh@vonng.com" class="btn btn-primary"><i class="fas fa-envelope" aria-hidden="true"></i> rh@vonng.com</a>
+            {{ if $zh }}
+            <a href="https://pigsty.cc/docs/about/community/" target="_blank" rel="noopener" class="btn btn-ghost"><i class="fab fa-weixin" aria-hidden="true"></i> 微信：RuohangFeng</a>
+            {{ else }}
+            <a href="https://discord.gg/wDzt5VyWEz" target="_blank" rel="noopener" class="btn btn-ghost"><i class="fab fa-discord" aria-hidden="true"></i> Discord</a>
+            {{ end }}
+            <a href="{{ if $zh }}https://pigsty.cc/docs/about/service/{{ else }}https://pigsty.io/docs/about/service/{{ end }}" target="_blank" rel="noopener" class="btn btn-line"><i class="fas fa-book" aria-hidden="true"></i> {{ if $zh }}订阅说明{{ else }}Service Terms{{ end }}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  {{ partial "portal/footer.html" . }}
+
+  <script src="{{ "js/landing-v3.js" | relURL }}?v={{ substr (md5 (readFile "static/js/landing-v3.js")) 0 8 }}"></script>
+</body>
+</html>

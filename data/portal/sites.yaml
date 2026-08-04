@@ -1,0 +1,57 @@
+# ============================================================
+# 站点矩阵 — 云服务与社区站点板块数据源
+# ============================================================
+- key: pgext
+  name: PGEXT.CLOUD
+  url: https://pgext.cloud
+  glyph: EXT
+  kind: Extension Cloud
+  kindZh: PG 扩展云
+  desc: The PostgreSQL extension directory — 2,230 extensions catalogued, 562 packaged and ready to install.
+  descZh: PostgreSQL 扩展目录 —— 收录 2,230 个扩展，其中 562 个已打包可直接安装。
+
+- key: pgcenter
+  name: PG.CENTER
+  url: https://pg.center
+  glyph: 中文
+  kind: Chinese PG Portal
+  kindZh: 中文 PostgreSQL 网
+  desc: The Chinese PostgreSQL portal — full translation of postgresql.org with docs for PG 14–19.
+  descZh: 中文 PostgreSQL 门户 —— postgresql.org 全站翻译，覆盖 PG 14–19 中文文档。
+
+- key: pgdoc
+  name: PG DOCS 中文
+  url: https://pg.center/docs
+  glyph: DOC
+  kind: Translated Manuals
+  kindZh: 中文手册翻译
+  desc: Chinese translations of the PostgreSQL manual, plus Patroni, PgBouncer, and pgBackRest docs.
+  descZh: PostgreSQL 手册中文翻译，以及 Patroni / PgBouncer / pgBackRest 中文文档。
+
+- key: demo
+  name: DEMO.PIGSTY.IO
+  url: https://demo.pigsty.io
+  glyph: LIVE
+  kind: Live Demo
+  kindZh: 在线演示
+  desc: A living Pigsty deployment — explore the real monitoring stack and Grafana dashboards.
+  descZh: 一个持续运行的 Pigsty 部署 —— 直接体验真实监控栈与 Grafana 仪表盘。
+
+- key: silo
+  name: SILO.PGSTY.COM
+  url: https://silo.pgsty.com
+  glyph: S3
+  kind: Silo Docs
+  kindZh: Silo 文档站
+  desc: Bilingual documentation for Silo — the maintained S3-compatible object storage fork.
+  descZh: Silo 双语文档站 —— 持续维护的 S3 兼容对象存储分支。
+
+- key: docs
+  name: PIGSTY.IO / .CC
+  url: https://pigsty.io
+  urlZh: https://pigsty.cc
+  glyph: PG
+  kind: Product Docs
+  kindZh: 产品文档
+  desc: Pigsty documentation in English and Chinese — concepts, playbooks, and reference.
+  descZh: Pigsty 中英文档 —— 概念、剧本与参考手册。

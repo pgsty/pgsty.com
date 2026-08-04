@@ -1,0 +1,38 @@
+# ============================================================
+# 按需专业服务 — 与 pigsty.cc/price · pigsty.io/price 对齐（2026-08）
+# ============================================================
+- key: ticket
+  icon: fa-graduation-cap
+  name: Quick Consultation
+  nameZh: 挂专家号
+  desc: Fast diagnosis of a database issue, or a custom Pigsty offline package.
+  descZh: 快速诊断一个数据库问题，或定制 Pigsty 离线安装包。
+  price: $30 / issue
+  priceZh: ¥300 / 问题
+
+- key: session
+  icon: fa-chalkboard-user
+  name: Expert Session
+  nameZh: 专家咨询
+  desc: Deep dive into a specific topic with industry-leading expertise.
+  descZh: 深入探讨某一主题，分享行业顶级经验与认知。
+  price: $400 / session
+  priceZh: ¥3,000 / 案例
+
+- key: rescue
+  icon: fa-truck-medical
+  name: Emergency Response
+  nameZh: 紧急救援
+  desc: Architecture upgrades, data migration, incident response, data recovery.
+  descZh: 架构升级、数据迁移、紧急故障响应与数据恢复。
+  price: $4,000 / day
+  priceZh: ¥30,000 / 人天
+
+- key: retainer
+  icon: fa-user-tie
+  name: Expert Retainer
+  nameZh: 专家顾问
+  desc: Custom development, private deployment, large-scale RDS & DBaaS build-out.
+  descZh: 功能定制、私有化部署、规模化 RDS & DBaaS 自建。
+  price: Contact us
+  priceZh: 面议

@@ -1,0 +1,84 @@
+# ============================================================
+# 开源项目注册表 — 首页 OSS 板块数据源
+# 星数等远程计数用 bin/metrics.py 或手工更新（2026-08-04 校准）
+# ============================================================
+- key: pigsty
+  name: PIGSTY
+  flagship: true
+  repo: https://github.com/pgsty/pigsty
+  site: https://pigsty.io
+  siteZh: https://pigsty.cc
+  version: v4.4.0
+  license: Apache-2.0
+  stars: 5347
+  lang: Ansible
+  kind: PG DISTRIBUTION
+  kindZh: PG 发行版
+  desc: Battery-included, local-first PostgreSQL distribution — a free & better RDS alternative. Self-healing HA, PITR, SOTA monitoring, and 444 extensions out of the box.
+  descZh: 开箱即用、本地优先的 PostgreSQL 发行版 —— 免费且更好的 RDS 替代。自愈高可用、时间点恢复、顶级监控与 444 个扩展开箱即用。
+  install: "curl -fsSL https://repo.pigsty.io/get | bash"
+  installZh: "curl -fsSL https://repo.pigsty.cc/get | bash"
+
+- key: pig
+  name: PIG
+  repo: https://github.com/pgsty/pig
+  site: https://pigsty.io/docs/pig
+  siteZh: https://pigsty.cc/docs/pig
+  version: v1.6.1
+  license: Apache-2.0
+  stars: 196
+  lang: Go
+  kind: PACKAGE MANAGER
+  kindZh: 包管理器
+  desc: PostgreSQL & extension package manager — PG 14–18 with 562 extensions on EL / Debian / Ubuntu, amd64 & arm64, agent-friendly structured output.
+  descZh: PostgreSQL 与扩展包管理器 —— PG 14–18 × 562 个扩展，覆盖 EL / Debian / Ubuntu 与双架构，Agent 友好的结构化输出。
+  install: "curl -fsSL https://repo.pigsty.io/pig | bash"
+  installZh: "curl -fsSL https://repo.pigsty.cc/pig | bash"
+
+- key: pg_exporter
+  name: PG_EXPORTER
+  repo: https://github.com/pgsty/pg_exporter
+  site: https://pigsty.io/docs/pg_exporter
+  siteZh: https://pigsty.cc/docs/pg_exporter
+  version: v1.4.1
+  license: Apache-2.0
+  stars: 356
+  lang: Go
+  kind: METRICS EXPORTER
+  kindZh: 指标导出器
+  desc: Advanced PostgreSQL & PgBouncer metrics exporter for Prometheus — 600+ metrics with declarative config and dynamic collector planning.
+  descZh: 为 Prometheus 打造的 PostgreSQL / PgBouncer 指标导出器 —— 600+ 指标，声明式配置与动态采集规划。
+  install: "docker pull pgsty/pg_exporter"
+  installZh: "docker pull pgsty/pg_exporter"
+
+- key: silo
+  name: SILO
+  repo: https://github.com/pgsty/minio
+  site: https://silo.pgsty.com
+  siteZh: https://silo.pgsty.com/zh/
+  version: RELEASE.2026-06
+  license: AGPL-3.0
+  stars: 1940
+  lang: Go
+  kind: OBJECT STORAGE
+  kindZh: 对象存储
+  desc: Community-maintained MinIO fork — S3-compatible object storage with continued security updates, a restored console, and full release artifacts.
+  descZh: 社区维护的 MinIO 分支 —— S3 兼容对象存储，持续安全更新、恢复的管理控制台与完整发行制品。
+  install: "docker pull pgsty/minio"
+  installZh: "docker pull pgsty/minio"
+
+- key: piglet
+  name: PIGLET
+  repo: https://github.com/pgsty/pigsty
+  site: https://pigsty.io/docs/piglet
+  siteZh: https://pigsty.cc/docs/piglet
+  version: v4.4.0
+  license: Apache-2.0
+  stars: 5347
+  lang: Ansible
+  kind: AI RUNTIME SANDBOX
+  kindZh: AI 运行时沙箱
+  desc: Pigsty lightweight runtime for AI coding — PostgreSQL + JuiceFS + Claude Code in one box, with PITR time machine and copy-on-write instant clone.
+  descZh: 基于 Pigsty 的 AI Coding 轻量运行时 —— PostgreSQL + JuiceFS + Claude Code 一体，自带 PITR 时间机器与写时复制秒级克隆。
+  install: "curl -fsSL https://repo.pigsty.io/get | bash"
+  installZh: "curl -fsSL https://repo.pigsty.cc/get | bash"

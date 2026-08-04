@@ -1,0 +1,13 @@
+# ============================================================
+# 首页指标 — 手工校准（2026-08-04），远程数可用 GitHub API 刷新
+# ============================================================
+pigsty_stars: 5347        # github.com/pgsty/pigsty
+org_stars: 7800           # pigsty + pig + pg_exporter + minio 主仓库合计（展示用整数）
+extensions_packaged: 562  # pig 打包分发的扩展数
+extensions_catalog: 2230  # pgext.cloud 收录目录数
+extensions_bundled: 444   # pigsty 发行版内置扩展数
+pg_majors: 5              # PG 14-18 五个大版本
+kernels: 9                # 可替换 PG 内核数（Babelfish/IvorySQL/openHalo 等）
+docker_pulls_silo: 484163
+metrics_per_instance: 600 # pg_exporter 指标数
+since_year: 2018          # 公司/项目起始年份（待与 about 页核对）

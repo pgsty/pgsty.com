@@ -1,0 +1,50 @@
+{{- /* 门户导航。入参：dict "page" . "active" "home|price" */ -}}
+{{- $page := .page -}}
+{{- $active := .active | default "home" -}}
+{{- $zh := eq $page.Site.Language.Lang "zh" -}}
+{{- $metrics := hugo.Data.portal.metrics -}}
+{{- $home := relLangURL "" -}}
+<header class="landing-header" data-header>
+  <div class="landing-container">
+    <nav class="landing-nav" aria-label="{{ if $zh }}主导航{{ else }}Main navigation{{ end }}">
+      <a href="{{ $home }}" class="nav-brand" aria-label="{{ if $zh }}PGSTY 首页{{ else }}PGSTY home{{ end }}">
+        <img src="{{ "img/logo/logo.svg" | relURL }}" alt="" class="nav-logo">
+        <span class="nav-title">PGSTY</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="{{ $home }}#postgres" class="nav-link">{{ if $zh }}产品{{ else }}Product{{ end }}</a>
+        <a href="{{ $home }}#service" class="nav-link">{{ if $zh }}服务{{ else }}Services{{ end }}</a>
+        <a href="{{ relLangURL "price/" }}" class="nav-link{{ if eq $active "price" }} nav-link--active{{ end }}">{{ if $zh }}价格{{ else }}Pricing{{ end }}</a>
+        <a href="{{ $home }}#yours" class="nav-link">{{ if $zh }}理念{{ else }}Values{{ end }}</a>
+        <a href="{{ $home }}#about" class="nav-link">{{ if $zh }}关于{{ else }}About{{ end }}</a>
+        <button type="button" class="nav-util" data-theme-toggle title="{{ if $zh }}切换深浅主题{{ else }}Switch light / dark mode{{ end }}" aria-label="{{ if $zh }}切换深浅主题{{ else }}Switch light / dark mode{{ end }}">
+          {{- partialCached "silo/icon.html" "sun" "sun" -}}
+          {{- partialCached "silo/icon.html" "moon" "moon" -}}
+        </button>
+        {{ range $page.Translations }}
+        <a href="{{ .RelPermalink }}" class="nav-util" title="{{ .Language.Label }}" aria-label="{{ .Language.Label }}">{{ partialCached "silo/icon.html" "languages" "languages" }}</a>
+        {{ end }}
+        <a href="https://github.com/pgsty" class="nav-github" target="_blank" rel="noopener" title="GitHub">
+          {{ partialCached "silo/icon.html" "github" "github" }}
+          <span class="nav-count">{{ partial "compact-number.html" $metrics.pigsty_stars }}</span>
+        </a>
+      </div>
+
+      <button class="mobile-menu-toggle" type="button" aria-label="{{ if $zh }}打开菜单{{ else }}Open menu{{ end }}" aria-expanded="false" data-menu-toggle>
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="mobile-menu" data-mobile-menu>
+  <a href="{{ $home }}#postgres" class="mobile-menu-link">{{ if $zh }}旗舰产品{{ else }}Product{{ end }}</a>
+  <a href="{{ $home }}#service" class="mobile-menu-link">{{ if $zh }}专业服务{{ else }}Services{{ end }}</a>
+  <a href="{{ relLangURL "price/" }}" class="mobile-menu-link{{ if eq $active "price" }} mobile-menu-link--active{{ end }}">{{ if $zh }}订阅价格{{ else }}Pricing{{ end }}</a>
+  <a href="{{ $home }}#yours" class="mobile-menu-link">{{ if $zh }}理念{{ else }}Values{{ end }}</a>
+  <a href="{{ $home }}#about" class="mobile-menu-link">{{ if $zh }}关于我们{{ else }}About{{ end }}</a>
+  {{ range $page.Translations }}<a href="{{ .RelPermalink }}" class="mobile-menu-link"><i class="fas fa-language" aria-hidden="true"></i> {{ .Language.Label }}</a>{{ end }}
+  <button type="button" class="mobile-menu-link mobile-menu-link--btn" data-theme-toggle><i class="fas fa-moon" aria-hidden="true"></i> {{ if $zh }}浅色 / 深色{{ else }}Light / Dark{{ end }}</button>
+  <a href="https://github.com/pgsty" class="mobile-menu-link" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> GitHub · {{ partial "compact-number.html" $metrics.pigsty_stars }}</a>
+</div>

@@ -1,0 +1,19 @@
+{{- /* 门户页面公共资产：首帧主题引导 + 自托管字体 + 图标 + 样式（内容指纹缓存） */ -}}
+<script>
+  (function () {
+    var theme = null;
+    try { theme = window.localStorage.getItem('pgsty-landing-theme'); } catch (error) {}
+    if (theme !== 'light' && theme !== 'dark') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+  })();
+</script>
+
+<link rel="stylesheet" href="{{ "fonts/fonts.css" | relURL }}">
+<link rel="stylesheet" href="{{ "vendor/fontawesome/css/all.min.css" | relURL }}">
+{{- range slice "css/landing-v3.css" "css/portal-v1.css" }}
+<link rel="stylesheet" href="{{ . | relURL }}?v={{ substr (md5 (readFile (path.Join "static" .))) 0 8 }}">
+{{- end }}
