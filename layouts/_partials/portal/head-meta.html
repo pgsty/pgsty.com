@@ -1,0 +1,48 @@
+{{- /* 门户子页公共 <head> 元信息：标题（<页名> — PGSTY）/ 描述 / canonical /
+     hreflang / OG / Twitter。入参：页面上下文 `.`。
+     首页 head 定制较多（Organization JSON-LD 等），不走此 partial。 */ -}}
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $description := .Description | default .Site.Params.description -}}
+{{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
+{{- $socialImage := "img/pgsty-social-card.png" | absURL -}}
+{{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{{ .Title }} — PGSTY</title>
+<meta name="description" content="{{ $description }}">
+{{ if hugo.IsProduction -}}
+<meta name="robots" content="index, follow">
+{{ else -}}
+<meta name="robots" content="noindex, nofollow">
+{{ end -}}
+<meta name="author" content="{{ $entity }}">
+<meta name="application-name" content="PGSTY">
+<meta name="theme-color" content="#0b1119">
+<meta name="color-scheme" content="dark light">
+
+<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+<link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}">
+<link rel="apple-touch-icon" href="{{ "favicons/apple-touch-icon.png" | relURL }}">
+<link rel="canonical" href="{{ .Permalink }}">
+{{ range .AllTranslations -}}
+<link rel="alternate" hreflang="{{ .Language.Locale | default .Language.Lang }}" href="{{ .Permalink }}">
+{{ end -}}
+{{ range where .AllTranslations "Language.Lang" "en" -}}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+{{ end }}
+<meta property="og:title" content="{{ .Title }} — PGSTY">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="PGSTY">
+<meta property="og:locale" content="{{ replace $locale "-" "_" }}">
+{{ range .Translations -}}
+<meta property="og:locale:alternate" content="{{ replace (.Language.Locale | default .Language.Lang) "-" "_" }}">
+{{ end -}}
+<meta property="og:image" content="{{ $socialImage }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ .Title }} — PGSTY">
+<meta name="twitter:description" content="{{ $description }}">
+<meta name="twitter:image" content="{{ $socialImage }}">

@@ -1,9 +1,12 @@
-{{- /* 门户导航。入参：dict "page" . "active" "home|price" */ -}}
+{{- /* 门户导航。入参：dict "page" . "active" "home|price|solutions|about"
+     规则（PRD §4.3）：字母序列只是首页叙事装置，导航一律用语义词。 */ -}}
 {{- $page := .page -}}
 {{- $active := .active | default "home" -}}
 {{- $zh := eq $page.Site.Language.Lang "zh" -}}
-{{- $metrics := hugo.Data.portal.metrics -}}
+{{- $m := hugo.Data.brand.metrics -}}
 {{- $home := relLangURL "" -}}
+{{- $docs := cond $zh "https://pigsty.cc/docs/" "https://pigsty.io/docs/" -}}
+{{- $dist := cond $zh "https://pigsty.cc" "https://pigsty.io" -}}
 <header class="landing-header" data-header>
   <div class="landing-container">
     <nav class="landing-nav" aria-label="{{ if $zh }}主导航{{ else }}Main navigation{{ end }}">
@@ -13,11 +16,35 @@
       </a>
 
       <div class="nav-links">
-        <a href="{{ $home }}#postgres" class="nav-link">{{ if $zh }}产品{{ else }}Product{{ end }}</a>
+        <div class="nav-item">
+          <a href="{{ $home }}#postgres" class="nav-link">{{ if $zh }}产品{{ else }}Product{{ end }} <i class="fas fa-chevron-down nav-caret" aria-hidden="true"></i></a>
+          <div class="nav-dropdown">
+            <div class="dropdown-group">
+              <ul class="dropdown-col">
+                <li><a href="{{ $dist }}" target="_blank" rel="noopener"><i class="fas fa-database" aria-hidden="true"></i> {{ if $zh }}发行版 · Pigsty{{ else }}Distribution · Pigsty{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>
+                <li><a href="{{ $home }}#infras"><i class="fas fa-server" aria-hidden="true"></i> {{ if $zh }}生态基础设施{{ else }}Infrastructure{{ end }}</a></li>
+                <li><a href="{{ $home }}#glass"><i class="fas fa-chart-area" aria-hidden="true"></i> {{ if $zh }}可观测性{{ else }}Observability{{ end }}</a></li>
+                <li><a href="{{ $home }}#toolbox"><i class="fas fa-toolbox" aria-hidden="true"></i> {{ if $zh }}工具箱{{ else }}Toolbox{{ end }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <a href="{{ relLangURL "solutions/cloud-exit/" }}" class="nav-link{{ if eq $active "solutions" }} nav-link--active{{ end }}">{{ if $zh }}方案{{ else }}Solutions{{ end }}</a>
         <a href="{{ $home }}#service" class="nav-link">{{ if $zh }}服务{{ else }}Services{{ end }}</a>
         <a href="{{ relLangURL "price/" }}" class="nav-link{{ if eq $active "price" }} nav-link--active{{ end }}">{{ if $zh }}价格{{ else }}Pricing{{ end }}</a>
-        <a href="{{ $home }}#yours" class="nav-link">{{ if $zh }}理念{{ else }}Values{{ end }}</a>
-        <a href="{{ $home }}#about" class="nav-link">{{ if $zh }}关于{{ else }}About{{ end }}</a>
+        <div class="nav-item">
+          <a href="{{ relLangURL "about/" }}" class="nav-link{{ if eq $active "about" }} nav-link--active{{ end }}">{{ if $zh }}公司{{ else }}Company{{ end }} <i class="fas fa-chevron-down nav-caret" aria-hidden="true"></i></a>
+          <div class="nav-dropdown">
+            <div class="dropdown-group">
+              <ul class="dropdown-col">
+                <li><a href="{{ relLangURL "about/" }}"><i class="fas fa-landmark" aria-hidden="true"></i> {{ if $zh }}关于我们{{ else }}About{{ end }}</a></li>
+                <li><a href="{{ $home }}#yours"><i class="fas fa-flag" aria-hidden="true"></i> {{ if $zh }}理念{{ else }}Values{{ end }}</a></li>
+                <li><a href="{{ $home }}#contact"><i class="fas fa-envelope" aria-hidden="true"></i> {{ if $zh }}联系{{ else }}Contact{{ end }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <a href="{{ $docs }}" class="nav-link" target="_blank" rel="noopener">{{ if $zh }}文档{{ else }}Docs{{ end }} <i class="fas fa-arrow-up-right-from-square nav-caret" aria-hidden="true"></i></a>
         <button type="button" class="nav-util" data-theme-toggle title="{{ if $zh }}切换深浅主题{{ else }}Switch light / dark mode{{ end }}" aria-label="{{ if $zh }}切换深浅主题{{ else }}Switch light / dark mode{{ end }}">
           {{- partialCached "silo/icon.html" "sun" "sun" -}}
           {{- partialCached "silo/icon.html" "moon" "moon" -}}
@@ -27,7 +54,7 @@
         {{ end }}
         <a href="https://github.com/pgsty" class="nav-github" target="_blank" rel="noopener" title="GitHub">
           {{ partialCached "silo/icon.html" "github" "github" }}
-          <span class="nav-count">{{ partial "compact-number.html" $metrics.pigsty_stars }}</span>
+          <span class="nav-count">{{ partial "compact-number.html" $m.github_stars }}</span>
         </a>
       </div>
 
@@ -39,12 +66,14 @@
 </header>
 
 <div class="mobile-menu" data-mobile-menu>
-  <a href="{{ $home }}#postgres" class="mobile-menu-link">{{ if $zh }}旗舰产品{{ else }}Product{{ end }}</a>
+  <a href="{{ $home }}#postgres" class="mobile-menu-link">{{ if $zh }}产品{{ else }}Product{{ end }}</a>
+  <a href="{{ relLangURL "solutions/cloud-exit/" }}" class="mobile-menu-link{{ if eq $active "solutions" }} mobile-menu-link--active{{ end }}">{{ if $zh }}方案 · 下云{{ else }}Solutions · Cloud Exit{{ end }}</a>
   <a href="{{ $home }}#service" class="mobile-menu-link">{{ if $zh }}专业服务{{ else }}Services{{ end }}</a>
   <a href="{{ relLangURL "price/" }}" class="mobile-menu-link{{ if eq $active "price" }} mobile-menu-link--active{{ end }}">{{ if $zh }}订阅价格{{ else }}Pricing{{ end }}</a>
+  <a href="{{ relLangURL "about/" }}" class="mobile-menu-link{{ if eq $active "about" }} mobile-menu-link--active{{ end }}">{{ if $zh }}关于我们{{ else }}About{{ end }}</a>
   <a href="{{ $home }}#yours" class="mobile-menu-link">{{ if $zh }}理念{{ else }}Values{{ end }}</a>
-  <a href="{{ $home }}#about" class="mobile-menu-link">{{ if $zh }}关于我们{{ else }}About{{ end }}</a>
+  <a href="{{ $docs }}" class="mobile-menu-link" target="_blank" rel="noopener">{{ if $zh }}产品文档{{ else }}Docs{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
   {{ range $page.Translations }}<a href="{{ .RelPermalink }}" class="mobile-menu-link"><i class="fas fa-language" aria-hidden="true"></i> {{ .Language.Label }}</a>{{ end }}
   <button type="button" class="mobile-menu-link mobile-menu-link--btn" data-theme-toggle><i class="fas fa-moon" aria-hidden="true"></i> {{ if $zh }}浅色 / 深色{{ else }}Light / Dark{{ end }}</button>
-  <a href="https://github.com/pgsty" class="mobile-menu-link" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> GitHub · {{ partial "compact-number.html" $metrics.pigsty_stars }}</a>
+  <a href="https://github.com/pgsty" class="mobile-menu-link" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> GitHub · {{ partial "compact-number.html" $m.github_stars }}</a>
 </div>

@@ -1,0 +1,27 @@
+{{- /* 联络横幅。入参：dict "page" .，可选：
+     "title" / "desc" 覆盖默认文案；"pricing" true 时第三颗按钮换成价格页。 */ -}}
+{{- $page := .page -}}
+{{- $zh := eq $page.Site.Language.Lang "zh" -}}
+{{- $title := .title | default (cond $zh "聊聊你的 PostgreSQL" "Let's talk PostgreSQL") -}}
+{{- $desc := .desc | default (cond $zh "商务咨询、订阅采购，或是一个棘手的数据库问题 —— 直接找到专家本人。" "A commercial inquiry, a subscription, or a hard database problem — reach the expert directly.") -}}
+<section class="landing-section contact-band" id="contact">
+  <div class="landing-container">
+    <div class="contact-inner" data-reveal>
+      <h2 class="contact-title">{{ $title }}</h2>
+      <p class="contact-desc">{{ $desc }}</p>
+      <div class="contact-ctas">
+        <a href="mailto:rh@vonng.com" class="btn btn-primary"><i class="fas fa-envelope" aria-hidden="true"></i> rh@vonng.com</a>
+        {{ if $zh }}
+        <a href="https://pigsty.cc/docs/about/community/" target="_blank" rel="noopener" class="btn btn-ghost"><i class="fab fa-weixin" aria-hidden="true"></i> 微信：RuohangFeng</a>
+        {{ else }}
+        <a href="https://discord.gg/wDzt5VyWEz" target="_blank" rel="noopener" class="btn btn-ghost"><i class="fab fa-discord" aria-hidden="true"></i> Discord</a>
+        {{ end }}
+        {{ if .pricing }}
+        <a href="{{ relLangURL "price/" }}" class="btn btn-line"><i class="fas fa-tags" aria-hidden="true"></i> {{ if $zh }}查看价格{{ else }}See Pricing{{ end }}</a>
+        {{ else }}
+        <a href="https://github.com/orgs/pgsty/discussions" target="_blank" rel="noopener" class="btn btn-line"><i class="fab fa-github" aria-hidden="true"></i> Discussions</a>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>

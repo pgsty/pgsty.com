@@ -1,0 +1,31 @@
+# ============================================================
+# 品牌事实与易变数字唯一来源（PRD §2 / §9）
+# 模板一律经 hugo.Data.brand.* 引用；content/ 或 layouts/ 里
+# 硬编码这些数字视为 bug（验收 grep 见 CLAUDE.md）。
+# 相邻数据：订阅档位 → data/portal/pricing.yaml
+#          按需服务 → data/portal/services.yaml
+#          项目版本与星数 → data/portal/projects.yaml
+# 星数刷新：bin/metrics.py update
+# ============================================================
+
+# 字标（wordmark）：解释缩写来历，只出现在字母板与页脚，不做 hero 标题
+wordmark: PostgreSQL In Great STYle
+
+# 价值主张（tagline）：hero / OG / 页脚用
+tagline: Production Grade. Self-hosted. Truly Yours.
+tagline_zh: 生产级自建，产权归你          # 官网 / 合同 / 标书默认
+tagline_zh_community: 生产级自建，谁也拿不走   # 社区 / 周边物料
+tagline_zh_xinchuang: 生产级自建，主权在你     # 信创 / 政企场景（中文信创页）
+
+metrics:
+  github_stars: 5347        # github.com/pgsty/pigsty（bin/metrics.py update 回写）
+  org_stars: 7800           # 主要仓库星数合计（展示用整数）
+  ext_catalogued: 2230      # PGEXT.CLOUD 收录扩展数
+  ext_packaged: 562         # 已打包可安装扩展数 —— 对外唯一扩展数口径（PRD §10.1）
+  ext_bundled: 444          # TODO(user)：语义待确认（PRD §12.2）——确认前禁止上页
+  kernels: 9                # 可替换 PG 内核数（MSSQL / Oracle / MySQL / Mongo 兼容等）
+  pg_majors: "14–18"        # 支持的 PostgreSQL 大版本
+  metrics_per_instance: 600 # pg_exporter 单实例指标数（600+）
+  series_per_instance: 3000 # 单实例时间序列（约 3,000 条）
+  docker_pulls_silo: 484163
+  since_year: 2018          # 公司 / 项目起始年份

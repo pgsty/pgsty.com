@@ -1,6 +1,6 @@
 ---
-title: "PGSTY — PostgreSQL in Great STYle"
-description: "The company behind Pigsty: open-source PostgreSQL distribution, tooling, and enterprise-grade expert services, from Singapore & Haikou."
+title: "PGSTY — Production-Grade Self-Hosted PostgreSQL"
+description: "The company behind Pigsty: the open-source PostgreSQL distribution, ecosystem infrastructure, and expert services — from Singapore."
 url: "/"
 type: home
 ---

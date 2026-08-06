@@ -1,0 +1,313 @@
+{{- /* /solutions/cloud-exit/ — 全站转化主页（PRD §7.2）。
+     结构：论点 → TCO 对比表（核心资产）→ 迁移路径 → 反对意见处理 →
+     案例占位 → CTA → FAQ（含 FAQPage 结构化数据）。
+     数字规则：TCO 单元格必须 price+source+date 齐备才渲染，否则出 TODO 占位。 */ -}}
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
+{{- $brand := hugo.Data.brand -}}
+{{- $m := $brand.metrics -}}
+{{- $tco := hugo.Data.portal.tco -}}
+{{- $svc := hugo.Data.portal.services -}}
+{{- $tiers := hugo.Data.portal.pricing.tiers -}}
+{{- $ticket := index (where $svc "key" "ticket") 0 -}}
+{{- $session := index (where $svc "key" "session") 0 -}}
+{{- $rescue := index (where $svc "key" "rescue") 0 -}}
+{{- $oss := index (where $tiers "key" "oss") 0 -}}
+{{- $std := index (where $tiers "key" "standard") 0 -}}
+{{- $essays := cond $zh "https://pigsty.cc/blog/cloud/" "https://pigsty.io/blog/cloud/" -}}
+{{- /* 列顺序：中文站以阿里云为主列（PRD §7.2） */ -}}
+{{- $cols := cond $zh (slice "aliyun" "aws" "self") (slice "aws" "aliyun" "self") -}}
+{{- $colNames := dict
+      "aws" (cond $zh "AWS RDS（3 年）" "AWS RDS (3-yr)")
+      "aliyun" (cond $zh "阿里云 RDS（3 年）" "Alibaba Cloud RDS (3-yr)")
+      "self" (cond $zh "自建硬件 + Pigsty 订阅（3 年）" "Self-host + Pigsty (3-yr)") -}}
+{{- $faq := slice
+  (dict
+    "q" "Is self-hosting really cheaper than cloud RDS?"
+    "qZh" "自建真的比云 RDS 便宜吗？"
+    "a" "For steady production workloads, usually — you stop paying a rental premium, and the gap widens with scale. The table above holds the math so you can check us; your own answer comes out of a one-day assessment of your actual cloud bill."
+    "aZh" "对长期稳定的生产负载，通常是的：省下的是租金溢价，规模越大差距越大。上面的表格就是摆出来让你核账的；你自己的答案，拿一份真实账单花一天评估就能算出来。"
+  )
+  (dict
+    "q" "Don't we need a full-time DBA to self-host?"
+    "qZh" "没有全职 DBA，敢自建吗？"
+    "a" "Pigsty packages top-tier DBA judgment into software — it gives a junior engineer 70%+ of a professional DBA's capability. For the hard remainder, subscriptions and expert services are served by the people who wrote the code."
+    "aZh" "Pigsty 把顶尖 DBA 的判断力铸进了软件，让初级工程师拥有专业 DBA 70% 以上的能力；最难啃的那部分，由写代码的人以订阅与专家服务兜底。"
+  )
+  (dict
+    "q" "What about high availability and disaster recovery?"
+    "qZh" "高可用和容灾怎么办？"
+    "a" (printf "Self-healing HA on Patroni and etcd, point-in-time recovery with pgBackRest, and %v+ metrics per instance watching it all — the guarantees RDS sells, in software you control. A live cluster runs in the open at demo.pigsty.io." $m.metrics_per_instance)
+    "aZh" (printf "Patroni + etcd 自愈故障切换，pgBackRest 时间点恢复，单实例 %v+ 监控指标盯着 —— RDS 卖的那些承诺，这里是你自己掌控的软件。demo.pigsty.io 上有一套公开运行的真实集群。" $m.metrics_per_instance)
+  )
+  (dict
+    "q" "How disruptive is the migration itself?"
+    "qZh" "迁移过程会不会伤筋动骨？"
+    "a" "The path is incremental: assess first, pilot on a spare machine (one command), then cut over with logical replication and a rehearsed rollback plan. When logical replication fits your schema, the cutover window comes down to minutes — and the assessment tells you whether it fits."
+    "aZh" "路线是渐进的：先评估，再拿一台闲置机器起试点（一条命令），最后用逻辑复制切换，带演练过的回滚预案。模式合适时，切换窗口可以压到分钟级 —— 合不合适，评估阶段就能给你答案。"
+  )
+  (dict
+    "q" "We're not even on PostgreSQL yet — does this still apply?"
+    "qZh" "我们还没用上 PostgreSQL，也能下云吗？"
+    "a" (printf "Yes. Pigsty ships %v swappable kernels with MSSQL / Oracle / MySQL / Mongo compatibility options, and Oracle-to-PostgreSQL migration is one of our standard expert engagements." $m.kernels)
+    "aZh" (printf "可以。Pigsty 内置 %v 种可替换内核，提供 MSSQL / Oracle / MySQL / Mongo 兼容选项；去 O 迁移本来就是我们的常规专家项目。" $m.kernels)
+  )
+-}}
+<!DOCTYPE html>
+<html lang="{{ $locale }}" class="no-js">
+<head>
+  {{ partial "portal/head-meta.html" . }}
+  <script type="application/ld+json">
+  {{- $items := slice -}}
+  {{- range $faq -}}
+    {{- $items = $items | append (dict "@type" "Question" "name" (cond $zh .qZh .q) "acceptedAnswer" (dict "@type" "Answer" "text" (cond $zh .aZh .a))) -}}
+  {{- end }}
+  {{ dict "@context" "https://schema.org" "@type" "FAQPage" "mainEntity" $items | jsonify (dict "indent" "  ") | safeJS }}
+  </script>
+  {{ partial "portal/head-assets.html" . }}
+</head>
+<body class="landing-page portal-page exit-page">
+  <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
+
+  {{ partial "portal/nav.html" (dict "page" . "active" "solutions") }}
+
+  <main id="main">
+
+    <!-- ============ 论点 ============ -->
+    <section class="hero page-hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="landing-container">
+        <div class="section-head section-head--center" data-reveal>
+          <p class="section-eyebrow section-eyebrow--center anim" style="--d:0"><span class="silkscreen"><a class="crumb-link" href="{{ relLangURL "solutions/" }}">{{ if $zh }}SOLUTIONS · 方案{{ else }}SOLUTIONS{{ end }}</a> · CLOUD EXIT</span></p>
+          <h1 class="section-title anim" style="--d:1">{{ if $zh }}下云，把数据库拿回来{{ else }}Stop renting your database{{ end }}</h1>
+          <p class="section-subtitle anim" style="--d:2">{{ if $zh }}下云不是情怀，是一笔算得清的账 —— 这里有账本，也有路线图。{{ else }}Cloud exit isn't sentiment — it's a balance-sheet decision. Here's the ledger, and the road.{{ end }}</p>
+        </div>
+
+        <div class="portal-prose portal-prose--center anim" style="--d:3">
+          {{ if $zh }}
+          <p>云数据库当年解决的是真问题：把 PostgreSQL 跑好，过去确实需要一位专家。租一个省心的 RDS，在那个年代是理性的选择。但这些年，高可用、备份恢复、监控告警这些「DBA 的手艺」被一样样做进了开源软件 —— 你付的租金，买的越来越多是十年前的稀缺性。</p>
+          <p>与此同时，两条价格曲线岔开了：NVMe 存储和整机服务器一年比一年便宜，云上 RDS 的标价却没怎么跟着降。你留在云上的每一年，租与买的差距都在扩大 —— 完整的论证在我们的<a href="{{ $essays }}" target="_blank" rel="noopener">下云专栏</a>里。</p>
+          <p>拥有不等于单干。Pigsty 把企业级 PostgreSQL 的整套能力做成了开源软件，作者本人的订阅与专家服务在后面兜底 —— 下面是账，和路。</p>
+          {{ else }}
+          <p>Managed databases solved a real problem: running PostgreSQL well used to take a specialist, and renting one from the cloud was the rational call. But year by year, the DBA's craft — HA, backup and recovery, monitoring — has been built into open-source software. More and more, the rent buys you scarcity that no longer exists.</p>
+          <p>Meanwhile the price curves have split: NVMe storage and commodity servers get cheaper every year, while RDS list prices barely move. Every year you stay, the gap between renting and owning compounds — the long-form case lives in our <a href="{{ $essays }}" target="_blank" rel="noopener">cloud-exit essays</a>.</p>
+          <p>Owning doesn't mean going it alone. Pigsty packages the whole enterprise-PostgreSQL stack as open source, with the author's subscriptions and expert services behind it. Below: the ledger, then the road.</p>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TCO 对比表（核心资产） ============ -->
+    <section class="landing-section" id="tco">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}TCO · 三年总拥有成本{{ else }}TCO · 3-YEAR COST OF OWNERSHIP{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}租三年，还是买三年{{ else }}Three years of rent vs. three years of ownership{{ end }}</h2>
+          <p class="section-subtitle">{{ if $zh }}三档典型规格，同口径对比。每个数字都必须带公开来源与抓取日期 —— 数据到位前，空格就摆在这里。{{ else }}Three typical specs, compared on equal footing. Every figure must carry a public source and a retrieval date — until then, the blanks stay visible.{{ end }}</p>
+        </div>
+
+        {{- $s := newScratch -}}
+        {{- $s.Set "notes" (slice) -}}
+        <div class="cmp-wrap" data-reveal>
+          <table class="cmp-table tco-table">
+            <thead>
+              <tr>
+                <th class="cmp-feature">{{ if $zh }}规格（含存储）{{ else }}Spec (incl. storage) {{ end }}</th>
+                {{ range $cols }}<th{{ if eq . "self" }} class="cmp-hl"{{ end }}>{{ index $colNames . }}</th>{{ end }}
+              </tr>
+            </thead>
+            <tbody>
+              {{ range $spec := $tco.specs }}
+              <tr>
+                <td class="cmp-feature">{{ if $zh }}{{ $spec.labelZh }}{{ else }}{{ $spec.label }}{{ end }}</td>
+                {{ range $col := $cols }}
+                {{ $cell := index $spec $col }}
+                <td{{ if eq $col "self" }} class="cmp-hl"{{ end }}>
+                  {{- if and $cell.price $cell.source $cell.date -}}
+                    {{- $notes := $s.Get "notes" -}}
+                    {{- $s.Set "notes" ($notes | append (dict "col" (index $colNames $col) "spec" (cond $zh $spec.labelZh $spec.label) "source" $cell.source "date" $cell.date)) -}}
+                    <b>{{ $cell.price }}</b><sup class="tco-ref"><a href="#tco-sources">[{{ len ($s.Get "notes") }}]</a></sup>
+                  {{- else -}}
+                    <span class="todo-chip" title="{{ if $zh }}待用户提供：数字 + 来源 URL + 抓取日期{{ else }}Pending: figure + source URL + retrieval date{{ end }}">TODO</span>
+                  {{- end -}}
+                </td>
+                {{ end }}
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tco-method" data-reveal id="tco-sources">
+          <p class="silkscreen tco-method-title">{{ if $zh }}METHODOLOGY · 口径说明{{ else }}METHODOLOGY{{ end }}</p>
+          <ul class="tco-method-list">
+            {{ if $zh }}
+            <li>RDS 列 = 官方价格计算器口径：高可用（主备 / Multi-AZ）实例 + 规格所列存储，3 年预留 / 包年包月总额；AWS 取 us-east-1（美元），阿里云取华东 1 杭州（人民币）。</li>
+            <li>自建列 = 2 × 商用服务器整机（按 3 年直线折旧 —— 保守口径，服务器常用 5 年以上）+ 3 年 Pigsty 订阅（按实际节点数取档）+ 托管电力估算。</li>
+            <li>两侧均不含人力成本 —— 运维负担的问题在下方「反对意见」里正面回答。</li>
+            <li>币种不做换算：请在你所在的币区内做同列对比（AWS vs 自建美元报价；阿里云 vs 自建人民币报价）。</li>
+            <li><b>数字规则：</b>每个数字必须带公开价目页 URL 与抓取日期脚注；没有来源的数字不上表。</li>
+            {{ else }}
+            <li>RDS columns = the vendor's own calculator: high-availability (Multi-AZ / primary-standby) instance plus the storage listed in the spec, 3-year reserved / prepaid total; AWS priced in us-east-1 (USD), Alibaba Cloud in Hangzhou (CNY).</li>
+            <li>Self-host column = 2 × commodity servers (straight-line depreciation over 3 years — conservative; servers commonly serve 5+) + a 3-year Pigsty subscription sized by node count + a colocation & power estimate.</li>
+            <li>People costs are excluded on both sides — the ops-burden question is answered head-on under "Objections" below.</li>
+            <li>No currency conversion: compare within your currency zone (AWS vs. a USD hardware quote; Alibaba Cloud vs. a CNY quote).</li>
+            <li><b>The rule:</b> every figure carries a footnote with a public price-page URL and retrieval date; unsourced numbers don't get a cell.</li>
+            {{ end }}
+          </ul>
+          {{ $notes := $s.Get "notes" }}
+          {{ if $notes }}
+          <ol class="tco-sources-list">
+            {{ range $i, $n := $notes }}
+            <li>{{ $n.col }} · {{ $n.spec }} — <a href="{{ $n.source }}" target="_blank" rel="noopener">{{ $n.source }}</a>{{ if $zh }}（抓取于 {{ $n.date }}）{{ else }} (retrieved {{ $n.date }}){{ end }}</li>
+            {{ end }}
+          </ol>
+          {{ else }}
+          {{- /* TODO(user)：按 data/portal/tco.yaml 头部指引填入 价格+来源+日期（PRD §7.2） */}}
+          <p class="tco-pending">{{ if $zh }}来源脚注：待填。数字只随「公开价目页 URL + 抓取日期」一起出现。{{ else }}Source footnotes: pending. Figures appear only together with a public price-page URL and retrieval date.{{ end }}</p>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 迁移路径：四步 ============ -->
+    <section class="landing-section" id="path">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}THE ROAD · 迁移路径{{ else }}THE ROAD{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}下云四步{{ else }}Four steps out{{ end }}</h2>
+          <p class="section-subtitle">{{ if $zh }}每一步都有对应的服务档位接得住 —— 从一次挂号到全程兜底，丰俭由人。{{ else }}Each step maps to a service tier that can catch you — from a single consultation to full coverage, your call.{{ end }}</p>
+        </div>
+
+        <div class="exit-steps" data-reveal>
+          <article class="step-card">
+            <div class="step-head"><span class="step-num">1</span><span class="step-title">{{ if $zh }}评估{{ else }}Assess{{ end }}</span></div>
+            <ul class="step-lines">
+              {{ if $zh }}
+              <li>盘点实例、规格与依赖</li>
+              <li>用真实账单算 TCO</li>
+              <li>标出难点与迁移顺序</li>
+              {{ else }}
+              <li>Inventory instances, specs, dependencies</li>
+              <li>Run the TCO math on your real bill</li>
+              <li>Flag the hard parts, order the moves</li>
+              {{ end }}
+            </ul>
+            <p class="step-map">≈ {{ if $zh }}{{ $ticket.nameZh }} {{ $ticket.priceZh }} · {{ $session.nameZh }} {{ $session.priceZh }}{{ else }}{{ $ticket.name }} {{ $ticket.price }} · {{ $session.name }} {{ $session.price }}{{ end }}</p>
+          </article>
+          <article class="step-card">
+            <div class="step-head"><span class="step-num">2</span><span class="step-title">{{ if $zh }}试点{{ else }}Pilot{{ end }}</span></div>
+            <ul class="step-lines">
+              {{ if $zh }}
+              <li>拿一台闲置机器，一条命令拉起</li>
+              <li>把非关键业务先搬上去</li>
+              <li>用监控大盘验证 HA 与 PITR</li>
+              {{ else }}
+              <li>One spare machine, one command</li>
+              <li>Move a non-critical workload first</li>
+              <li>Prove HA & PITR on the dashboards</li>
+              {{ end }}
+            </ul>
+            <p class="step-map">≈ {{ if $zh }}{{ $oss.tierZh }} · {{ $oss.priceZh }}{{ else }}{{ $oss.tier }} · {{ $oss.price }}{{ end }}</p>
+          </article>
+          <article class="step-card">
+            <div class="step-head"><span class="step-num">3</span><span class="step-title">{{ if $zh }}迁移{{ else }}Migrate{{ end }}</span></div>
+            <ul class="step-lines">
+              {{ if $zh }}
+              <li>逻辑复制做在线同步</li>
+              <li>演练切换与回滚预案</li>
+              <li>选窗口执行，分钟级切换</li>
+              {{ else }}
+              <li>Logical replication keeps data in sync</li>
+              <li>Rehearse cutover and rollback</li>
+              <li>Execute in a planned, minutes-long window</li>
+              {{ end }}
+            </ul>
+            <p class="step-map">≈ {{ if $zh }}{{ $rescue.nameZh }} {{ $rescue.priceZh }}{{ else }}{{ $rescue.name }} {{ $rescue.price }}{{ end }}</p>
+          </article>
+          <article class="step-card">
+            <div class="step-head"><span class="step-num">4</span><span class="step-title">{{ if $zh }}运维{{ else }}Operate{{ end }}</span></div>
+            <ul class="step-lines">
+              {{ if $zh }}
+              <li>自愈高可用与自动备份接管日常</li>
+              <li>大盘与告警守着夜班</li>
+              <li>订阅兜底疑难杂症</li>
+              {{ else }}
+              <li>Self-healing HA & automated backups take the routine</li>
+              <li>Dashboards and alerts take the night shift</li>
+              <li>A subscription takes the hard cases</li>
+              {{ end }}
+            </ul>
+            <p class="step-map">≈ {{ if $zh }}订阅 {{ $std.priceZh }} 起{{ $std.periodZh }}{{ else }}Subscription from {{ $std.price }}{{ $std.period }}{{ end }}</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 反对意见处理 ============ -->
+    <section class="landing-section" id="objections">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}OBJECTIONS · 反对意见{{ else }}OBJECTIONS{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}你会被问到的三句话{{ else }}The three pushbacks you'll hear{{ end }}</h2>
+        </div>
+
+        <div class="objection-grid" data-reveal>
+          <div class="faq-item">
+            <h3 class="faq-q">{{ if $zh }}「自建运维负担太重。」{{ else }}"Self-hosting is an ops burden."{{ end }}</h3>
+            <p class="faq-a">{{ if $zh }}手搓高可用、备份、监控的年代确实如此。Pigsty 把这些做成了软件 —— 让初级工程师拥有专业 DBA 70% 以上的能力；最难的那一截，由写代码的人提供服务兜底。{{ else }}It was, when HA, backups, and monitoring were hand-built. Pigsty ships them as software — it gives a junior engineer 70%+ of a professional DBA's capability — and the author's expert services stand behind the hardest stretch.{{ end }}</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-q">{{ if $zh }}「高可用我们做不过云厂商。」{{ else }}"We can't do HA as well as the cloud."{{ end }}</h3>
+            <p class="faq-a">{{ if $zh }}你不用自己做：Patroni + etcd 自愈故障切换、pgBackRest 时间点恢复，默认配置就是生产级。demo.pigsty.io 上跑着一套公开的真实集群，随时去看。{{ else }}You don't have to build it: self-healing failover on Patroni + etcd and point-in-time recovery with pgBackRest ship as defaults. A real cluster runs in the open at demo.pigsty.io — go look.{{ end }}</p>
+          </div>
+          <div class="faq-item">
+            {{- /* Phase 2 起指向 /trust/（PRD §7.2.4） */}}
+            <h3 class="faq-q">{{ if $zh }}「合规与安全过不了关。」{{ else }}"Compliance won't allow it."{{ end }}</h3>
+            <p class="faq-a">{{ if $zh }}自建恰恰是多数合规体制下更顺的路：数据留在你的法域，密钥在你手里，支持离线与气隙交付，Ansible IaC 全程可审计。专门的信任页面正在路上，眼下的问题直接问我们。{{ else }}Self-hosting is usually the compliant path, not the risky one: data stays in your jurisdiction on your keys, offline and air-gapped delivery is supported, and the Ansible IaC leaves an audit trail. A dedicated trust page is on its way — until then, ask us directly.{{ end }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 参考案例（占位，无书面许可不上任何客户信息） ============ -->
+    <section class="landing-section" id="cases">
+      <div class="landing-container">
+        {{- /* TODO(user)：客户案例素材 + 书面许可（PRD §7.2.5 / §12）——齐备前保持此占位 */}}
+        <div class="todo-flag" data-reveal>
+          <p>{{ if $zh }}<b>参考案例位。</b>等客户书面授权后上线 —— 没有白纸黑字的许可，我们不放任何客户的名字。{{ else }}<b>Reference cases go here.</b> They ship once customers approve in writing — no written permission, no names on this page.{{ end }}</p>
+        </div>
+      </div>
+    </section>
+
+    {{ partial "portal/contact-band.html" (dict "page" .
+        "title" (cond $zh "把你的下云账算清楚" "Let's price out your exit")
+        "desc" (cond $zh "发一份近期账单和规格清单过来，你会得到一个直接的答案：这笔账对你划不划算。" "Send a recent invoice and a spec list — you'll get a straight answer on whether the math works for you.")
+        "pricing" true) }}
+
+    <!-- ============ FAQ ============ -->
+    <section class="landing-section faq-section" id="faq">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}FAQ · 常见问题{{ else }}FAQ{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}下云常见问题{{ else }}Cloud-exit questions, answered{{ end }}</h2>
+        </div>
+
+        <div class="faq-grid" data-reveal>
+          {{ range $faq }}
+          <div class="faq-item">
+            <h3 class="faq-q">{{ if $zh }}{{ .qZh }}{{ else }}{{ .q }}{{ end }}</h3>
+            <p class="faq-a">{{ if $zh }}{{ .aZh }}{{ else }}{{ .a }}{{ end }}</p>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  {{ partial "portal/footer.html" . }}
+
+  {{ partial "portal/foot-scripts.html" . }}
+</body>
+</html>

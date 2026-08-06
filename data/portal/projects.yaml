@@ -14,8 +14,8 @@
   lang: Ansible
   kind: PG DISTRIBUTION
   kindZh: PG 发行版
-  desc: Battery-included, local-first PostgreSQL distribution — a free & better RDS alternative. Self-healing HA, PITR, SOTA monitoring, and 444 extensions out of the box.
-  descZh: 开箱即用、本地优先的 PostgreSQL 发行版 —— 免费且更好的 RDS 替代。自愈高可用、时间点恢复、顶级监控与 444 个扩展开箱即用。
+  desc: Battery-included, local-first PostgreSQL distribution — a free & better RDS alternative. Self-healing HA, PITR, SOTA monitoring, and 562 ready-to-install extensions.
+  descZh: 开箱即用、本地优先的 PostgreSQL 发行版 —— 免费且更好的 RDS 替代。自愈高可用、时间点恢复、顶级监控与 562 个即装即用的扩展。
   install: "curl -fsSL https://repo.pigsty.io/get | bash"
   installZh: "curl -fsSL https://repo.pigsty.cc/get | bash"
 
@@ -67,18 +67,6 @@
   install: "docker pull pgsty/minio"
   installZh: "docker pull pgsty/minio"
 
-- key: piglet
-  name: PIGLET
-  repo: https://github.com/pgsty/pigsty
-  site: https://pigsty.io/docs/piglet
-  siteZh: https://pigsty.cc/docs/piglet
-  version: v4.4.0
-  license: Apache-2.0
-  stars: 5347
-  lang: Ansible
-  kind: AI RUNTIME SANDBOX
-  kindZh: AI 运行时沙箱
-  desc: Pigsty lightweight runtime for AI coding — PostgreSQL + JuiceFS + Claude Code in one box, with PITR time machine and copy-on-write instant clone.
-  descZh: 基于 Pigsty 的 AI Coding 轻量运行时 —— PostgreSQL + JuiceFS + Claude Code 一体，自带 PITR 时间机器与写时复制秒级克隆。
-  install: "curl -fsSL https://repo.pigsty.io/get | bash"
-  installZh: "curl -fsSL https://repo.pigsty.cc/get | bash"
+# piglet：原条目的 repo / 文档链接与安装命令均指向主项目，疑为占位（PRD §10.2）。
+# 等真实 repo / docs 链接与版本号到位后再恢复条目（PRD §6.8 / §12.3）；
+# 眼下 T 板块以正文一句话提及，不出卡片。

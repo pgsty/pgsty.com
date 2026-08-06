@@ -17,7 +17,7 @@ import sys
 import urllib.parse
 
 
-SITE_HOSTS = {"silo.pgsty.com", "www.silo.pgsty.com"}
+SITE_HOSTS = {"pgsty.com", "www.pgsty.com"}
 LINK_ATTRIBUTES = {"href", "src"}
 SKIP_SCHEMES = {"data", "javascript", "mailto", "tel", "blob"}
 
@@ -83,7 +83,7 @@ def resolve_internal_url(source_route: str, raw_url: str) -> tuple[str, str] | N
     if parsed.scheme and parsed.scheme not in {"http", "https"}:
         return None
 
-    base = f"https://silo.pgsty.com{source_route}"
+    base = f"https://pgsty.com{source_route}"
     absolute = urllib.parse.urlsplit(urllib.parse.urljoin(base, raw_url))
     if absolute.hostname and absolute.hostname not in SITE_HOSTS:
         return None

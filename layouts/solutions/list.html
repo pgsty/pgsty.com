@@ -1,0 +1,46 @@
+{{- /* /solutions/ — 极简索引页（PRD §4.2）：一段导语 + 卡片列表。
+     Phase 1 只有 cloud-exit 上线；后续方案以文字预告，不放假链接。 */ -}}
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
+<!DOCTYPE html>
+<html lang="{{ $locale }}" class="no-js">
+<head>
+  {{ partial "portal/head-meta.html" . }}
+  {{ partial "portal/head-assets.html" . }}
+</head>
+<body class="landing-page portal-page solutions-page">
+  <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
+
+  {{ partial "portal/nav.html" (dict "page" . "active" "solutions") }}
+
+  <main id="main">
+    <section class="hero page-hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="landing-container">
+        <div class="section-head section-head--center" data-reveal>
+          <p class="section-eyebrow section-eyebrow--center anim" style="--d:0"><span class="silkscreen">{{ if $zh }}SOLUTIONS · 解决方案{{ else }}SOLUTIONS{{ end }}</span></p>
+          <h1 class="section-title anim" style="--d:1">{{ if $zh }}你要干什么，从这里进{{ else }}Start from what you're trying to do{{ end }}</h1>
+          <p class="section-subtitle anim" style="--d:2">{{ if $zh }}六字母讲的是我们有什么；这里按你的目标组织 —— 每个方案都对齐到技术栈、服务档位和一笔算得清的账。{{ else }}The six letters say what we have; this page is organized by your goal — each solution maps to the stack, the service tiers, and math you can check.{{ end }}</p>
+        </div>
+
+        <div class="sol-grid anim" style="--d:3">
+          <a class="sol-card" href="{{ relLangURL "solutions/cloud-exit/" }}">
+            <p class="sol-kind silkscreen">{{ if $zh }}CLOUD EXIT · 下云{{ else }}CLOUD EXIT{{ end }}</p>
+            <h2 class="sol-name">{{ if $zh }}下云，把数据库拿回来{{ else }}Stop renting your database{{ end }}</h2>
+            <p class="sol-desc">{{ if $zh }}RDS 的能力，硬件的价格：三年 TCO 对照、四步迁移路线，以及每一步接得住你的服务档位。{{ else }}RDS guarantees at hardware prices: a three-year TCO comparison, a four-step migration road, and a service tier to catch you at every step.{{ end }}</p>
+            <span class="sol-go" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <p class="sol-coming" data-reveal>{{ if $zh }}在路上：去 O 迁移 · 把 Pigsty 运营成你自己的 RDS · 信创与气隙主权栈 · 容灾与合规。{{ else }}In the works: Oracle migration · running Pigsty as your own RDS · sovereign & air-gapped stacks · compliance and DR.{{ end }}</p>
+      </div>
+    </section>
+
+    {{ partial "portal/contact-band.html" (dict "page" .) }}
+  </main>
+
+  {{ partial "portal/footer.html" . }}
+
+  {{ partial "portal/foot-scripts.html" . }}
+</body>
+</html>

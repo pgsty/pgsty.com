@@ -1,5 +1,6 @@
 {{- /* 门户页脚。入参：页面上下文 `.`；实体按语言拆分（英文=新加坡，中文=海口） */ -}}
 {{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $brand := hugo.Data.brand -}}
 {{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
 {{- $home := relLangURL "" -}}
 <footer class="landing-footer">
@@ -12,8 +13,10 @@
         </a>
         <p class="footer-tagline">
           <b class="ini ini-p">P</b>ostgreSQL <b class="ini ini-i">I</b>n <b class="ini ini-g">G</b>reat <b class="ini ini-s">S</b><b class="ini ini-t">T</b><b class="ini ini-y">Y</b>le<br>
-          {{ if $zh }}开源 PostgreSQL 发行版与专业服务{{ else }}Open-source PostgreSQL distribution & expert services{{ end }}
+          {{ if $zh }}{{ $brand.tagline_zh }}{{ else }}{{ $brand.tagline }}{{ end }}
         </p>
+        {{- /* §3.3 克制条款：missing-i 梗页脚只此一行 */}}
+        <p class="footer-missing-i">{{ if $zh }}少了一个 i？<a href="{{ relLangURL "about/" }}">见「关于」</a>。{{ else }}The missing i? <a href="{{ relLangURL "about/" }}">See About</a>.{{ end }}</p>
         <p class="footer-slogan">{{ if $zh }}助您用<span class="hl-good">好数据库</span>，<span class="hl-use">用好</span>数据库{{ else }}Run a good database — and run it well.{{ end }}</p>
       </div>
 
@@ -60,7 +63,10 @@
     </div>
 
     <div class="footer-bottom">
-      <div class="footer-copyright">&copy; 2018-{{ now.Year }} <a href="{{ if $zh }}https://vonng.com{{ else }}https://vonng.com/en/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}冯若航{{ else }}Ruohang Feng{{ end }}</a> @ <a href="https://github.com/pgsty" target="_blank" rel="noopener">{{ $entity }}</a></div>
+      <div class="footer-copyright">
+        &copy; 2018-{{ now.Year }} <a href="{{ if $zh }}https://vonng.com{{ else }}https://vonng.com/en/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}冯若航{{ else }}Ruohang Feng{{ end }}</a> @ <a href="https://github.com/pgsty" target="_blank" rel="noopener">{{ $entity }}</a>
+        <span class="footer-trademarks">{{ if $zh }}PIGSTY® 与 PGSTY® 为注册商标{{ else }}PIGSTY® and PGSTY® are registered trademarks{{ end }}</span>
+      </div>
       <div class="footer-lang-switch">
         {{- range .Translations -}}
         <a href="{{ .RelPermalink }}" lang="{{ .Language.Locale }}">{{ .Language.Label }}</a>
