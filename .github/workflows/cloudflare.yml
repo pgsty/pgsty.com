@@ -1,4 +1,4 @@
-# Build the site and publish it to the `gh-pages` branch.
+# Build the site and publish it to the `page` branch.
 # Cloudflare Pages is wired to that branch (Git integration) and serves the
 # result on its default *.pages.dev hostname.
 name: Deploy to Cloudflare Pages
@@ -63,12 +63,12 @@ jobs:
       - name: Check internal links
         run: python3 bin/check_internal_links.py public
 
-      - name: Publish to gh-pages branch
+      - name: Publish to page branch
         if: github.event_name != 'pull_request'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
+          publish_branch: page
           publish_dir: ./public
           force_orphan: true
           user_name: 'github-actions[bot]'

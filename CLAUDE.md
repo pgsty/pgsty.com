@@ -10,9 +10,9 @@
 - `make check` — 严格构建（--panicOnWarning）+ bin/check_internal_links.py
 - `bin/metrics.py update` — 刷新 data/portal 里的 GitHub 星数
 
-推到 main 触发两条流水线：`.github/workflows/cloudflare.yml` 构建后强推 `gh-pages`
-分支（Cloudflare Pages 接该分支）；`.github/workflows/github-pages.yml` 用
-`--baseURL` 覆盖成仓库名子路径后经 artifact 部署到 GitHub Pages。两者都不配自定义域名。
+推到 main 触发 `.github/workflows/cloudflare.yml`：构建 + 内链检查后强推产物到
+**`page`** 分支（分支名固定，与 pigsty.cc 一致，勿改），Cloudflare Pages 接该分支，
+用默认域名。不用 GitHub Pages —— 私有仓库 + free 组织，计划不支持。
 
 ## 关键约定
 
