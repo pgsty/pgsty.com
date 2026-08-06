@@ -11,6 +11,7 @@
 {{- $mainRepo := cond $zh "https://repo.pigsty.cc" "https://repo.pigsty.io" -}}
 {{- $install := cond $zh "https://pigsty.cc/docs/setup/install" "https://pigsty.io/docs/setup/install" -}}
 {{- $essays := cond $zh "https://pigsty.cc/blog/cloud/" "https://pigsty.io/blog/cloud/" -}}
+{{- $silo := index (where $projects "key" "silo") 0 -}}
 {{- /* 实体按语言拆分：英文站只写新加坡公司，中文站只写中国公司 */ -}}
 {{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
 <!DOCTYPE html>
@@ -169,8 +170,8 @@
                   <a class="hex hex--s anim" style="--d:8" href="#service" title="{{ if $zh }}04 · 专业服务与订阅{{ else }}04 · Expert services{{ end }}">
                     <b class="hex-letter">S</b><span class="hex-word">SERVICE</span><small class="hex-gloss">{{ if $zh }}专业服务{{ else }}EXPERT SUPPORT{{ end }}</small>
                   </a>
-                  <a class="hex hex--t anim" style="--d:9" href="#toolbox" title="{{ if $zh }}05 · 命令行工具箱{{ else }}05 · The CLI toolbox{{ end }}">
-                    <b class="hex-letter">T</b><span class="hex-word">TOOLBOX</span><small class="hex-gloss">{{ if $zh }}工具箱{{ else }}CLI TOOLS{{ end }}</small>
+                  <a class="hex hex--t anim" style="--d:9" href="#toolbox" title="{{ if $zh }}05 · 开源工具箱{{ else }}05 · The open-source toolbox{{ end }}">
+                    <b class="hex-letter">T</b><span class="hex-word">TOOLBOX</span><small class="hex-gloss">{{ if $zh }}工具箱{{ else }}OSS TOOLS{{ end }}</small>
                   </a>
                   <a class="hex hex--y anim" style="--d:10" href="#yours" title="{{ if $zh }}06 · 数据主权与理念{{ else }}06 · Sovereignty & values{{ end }}">
                     <b class="hex-letter">Y</b><span class="hex-word">YOURS</span><small class="hex-gloss">{{ if $zh }}自主可控{{ else }}SOVEREIGNTY{{ end }}</small>
@@ -253,9 +254,9 @@
             <span class="stat-value" data-count="{{ $m.kernels }}">{{ $m.kernels }}</span>
             <span class="stat-label">{{ if $zh }}可替换 PG 内核{{ else }}Swappable PG Kernels{{ end }}</span>
           </a>
-          <a href="{{ relLangURL "about/" }}" class="stat-item">
-            <span class="stat-value">{{ $m.since_year }}</span>
-            <span class="stat-label">{{ if $zh }}创立年份 · Since{{ else }}In business since{{ end }}</span>
+          <a href="{{ relLangURL "about/" }}#timeline" class="stat-item">
+            <span class="stat-value">{{ $m.oss_since_year }}</span>
+            <span class="stat-label">{{ if $zh }}开源起步 · Since{{ else }}Open source since{{ end }}</span>
           </a>
         </div>
       </div>
@@ -476,15 +477,16 @@
         <div class="section-head" data-reveal>
           <p class="section-eyebrow letter-eyebrow">
             <span class="lhx lhx--t" aria-hidden="true">T</span>
-            <span class="silkscreen">05 · TOOLBOX {{ if $zh }}· 工具箱{{ else }}· THE CLI TOOLBOX{{ end }}</span>
+            <span class="silkscreen">05 · TOOLBOX {{ if $zh }}· 工具箱{{ else }}· THE TOOLBOX{{ end }}</span>
             <span class="eyebrow-trace" aria-hidden="true"></span>
           </p>
           <h2 class="section-title">{{ if $zh }}顺手的兵器，全部开源{{ else }}Sharp tools, all open source{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}为 PostgreSQL 生态打造的命令行工具箱 —— 结构化输出、Agent 友好，人和 AI 都用得顺手。{{ else }}A CLI toolbox for the PostgreSQL ecosystem — structured output, agent-friendly, comfortable for humans and AIs alike.{{ end }}</p>
+          <p class="section-subtitle">{{ if $zh }}围绕发行版的成套兵器 —— 对象存储、包管理器、仓库管理与可视化平台；结构化输出、Agent 友好，人和 AI 都用得顺手。{{ else }}The toolbox around the distribution — object storage, package manager, repo manager, and console; structured output, agent-friendly, comfortable for humans and AIs alike.{{ end }}</p>
         </div>
 
         <div class="repo-grid" data-reveal>
-          {{ range where $projects "key" "pig" }}
+          {{- /* 顺序固定：Silo 第一（第二旗舰项目），PIG 第二 */}}
+          {{ range $k := slice "silo" "pig" }}{{ range where $projects "key" $k }}
           <article class="repo-card">
             <header class="repo-head">
               <span class="repo-name"><i class="fas fa-cube" aria-hidden="true"></i>{{ .name }}</span>
@@ -506,11 +508,23 @@
               <a href="{{ if $zh }}{{ .siteZh }}{{ else }}{{ .site }}{{ end }}" target="_blank" rel="noopener"><i class="fas fa-book-open" aria-hidden="true"></i> {{ if $zh }}文档{{ else }}Docs{{ end }}</a>
             </footer>
           </article>
+          {{ end }}{{ end }}
+
+          {{- /* 未发布项目：占位卡，无链接 / 版本 / 安装命令（数据见 projects.yaml placeholder 条目） */}}
+          {{ range where $projects "placeholder" true }}
+          <article class="repo-card repo-card--ph">
+            <header class="repo-head">
+              <span class="repo-name"><i class="fas fa-cube" aria-hidden="true"></i>{{ .name }}</span>
+              <span class="repo-meta"><span class="repo-chip repo-chip--soon">{{ if $zh }}敬请期待{{ else }}COMING SOON{{ end }}</span></span>
+            </header>
+            <p class="repo-kind silkscreen">{{ if $zh }}{{ .kindZh }}{{ else }}{{ .kind }}{{ end }}</p>
+            <p class="repo-desc">{{ if $zh }}{{ .descZh }}{{ else }}{{ .desc }}{{ end }}</p>
+          </article>
           {{ end }}
 
           {{- /* piglet 卡按 PRD §6.8 撤下（原卡链接与安装命令均指向主项目，系占位）。
                TODO(user)：拿到真实 repo / docs 链接与版本号后恢复项目卡（§12.3） */}}
-          <article class="workshop-note">
+          <article class="workshop-note workshop-note--wide">
             <p class="workshop-head silkscreen"><i aria-hidden="true"></i>{{ if $zh }}IN THE WORKSHOP · 工坊在制{{ else }}IN THE WORKSHOP{{ end }}</p>
             <p class="workshop-desc">{{ if $zh }}台面上还有一件正在打磨的兵器 —— <b>piglet</b>：面向 AI Coding 的轻量运行时，把 PostgreSQL、JuiceFS 与 Claude Code 装进一个盒子，自带 PITR 时间机器与写时复制秒级克隆。{{ else }}Also on the bench — <b>piglet</b>, a lightweight runtime for AI coding: PostgreSQL + JuiceFS + Claude Code in one box, with a PITR time machine and copy-on-write instant clones.{{ end }}</p>
           </article>
@@ -581,7 +595,7 @@
         <div class="about-teaser" data-reveal>
           <div class="about-teaser-copy">
             <p class="teaser-mission">{{ if $zh }}我们的使命，是帮助这个世界用好 PostgreSQL。{{ else }}Our mission is to help the world make the most of PostgreSQL.{{ end }}</p>
-            <p>{{ if $zh }}始于 2018 年一位 DBA 的工具箱，如今长成一套完整的开源 PostgreSQL 生态 —— PGSTY 是 GitHub 上 <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> 组织背后的公司，也是奇绩创坛 S22 校友项目。{{ else }}What began in 2018 as one DBA's toolbox is now a complete open-source PostgreSQL ecosystem — PGSTY is the company behind the <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> organization on GitHub, and a MiraclePlus S22 alumnus.{{ end }}</p>
+            <p>{{ if $zh }}始于 2018 年一位 DBA 的工具箱，如今长成一套完整的开源 PostgreSQL 生态：发行版 <a href="https://pigsty.cc" target="_blank" rel="noopener">Pigsty</a>、我们替整个社区接手维护的对象存储分支 <a href="https://silo.pgsty.com/zh/" target="_blank" rel="noopener">Silo</a>（{{ partial "compact-number.html" $silo.stars }} 星标），还有 <a href="https://pgext.cloud" target="_blank" rel="noopener">pgext.cloud</a> 扩展目录。PGSTY 是 GitHub 上 <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> 组织背后的公司，也是奇绩创坛 S22 校友项目。{{ else }}What began in 2018 as one DBA's toolbox is now a complete open-source PostgreSQL ecosystem: the <a href="https://pigsty.io" target="_blank" rel="noopener">Pigsty</a> distribution, <a href="https://silo.pgsty.com" target="_blank" rel="noopener">Silo</a> — the object-storage fork we maintain for the whole community ({{ partial "compact-number.html" $silo.stars }} stars) — and the <a href="https://pgext.cloud" target="_blank" rel="noopener">pgext.cloud</a> extension catalog. PGSTY is the company behind the <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> organization on GitHub, and a MiraclePlus S22 alumnus.{{ end }}</p>
             <p>{{ if $zh }}我们刻意把公司保持得很小：支持不设工单分层，接电话的就是写代码的那个人。{{ else }}And we keep the company deliberately small: no support tiers — when you call, you reach the person who wrote the code.{{ end }}</p>
             <a href="{{ relLangURL "about/" }}" class="btn btn-primary">{{ if $zh }}关于 PGSTY{{ else }}About PGSTY{{ end }} →</a>
           </div>

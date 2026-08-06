@@ -1,12 +1,12 @@
-{{- /* /solutions/cloud-exit/ — 全站转化主页（PRD §7.2）。
-     结构：论点 → TCO 对比表（核心资产）→ 迁移路径 → 反对意见处理 →
-     案例占位 → CTA → FAQ（含 FAQPage 结构化数据）。
-     数字规则：TCO 单元格必须 price+source+date 齐备才渲染，否则出 TODO 占位。 */ -}}
+{{- /* /solutions/cloud-exit/ — 下云宣言 + 账本（PRD §7.2，2026-08 v2 重构）。
+     结构：论点 → 判词 → 核月单价谱系 → 交互计算器 → 口径与来源 →
+     公开案例 → 迁移路径 → 反对意见 → 下云文选 → CTA → FAQ。
+     所有数字出自 data/portal/cloudcost.yaml（含来源），禁止在此硬编码。 */ -}}
 {{- $zh := eq .Site.Language.Lang "zh" -}}
 {{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
 {{- $brand := hugo.Data.brand -}}
 {{- $m := $brand.metrics -}}
-{{- $tco := hugo.Data.portal.tco -}}
+{{- $cc := hugo.Data.portal.cloudcost -}}
 {{- $svc := hugo.Data.portal.services -}}
 {{- $tiers := hugo.Data.portal.pricing.tiers -}}
 {{- $ticket := index (where $svc "key" "ticket") 0 -}}
@@ -14,19 +14,17 @@
 {{- $rescue := index (where $svc "key" "rescue") 0 -}}
 {{- $oss := index (where $tiers "key" "oss") 0 -}}
 {{- $std := index (where $tiers "key" "standard") 0 -}}
-{{- $essays := cond $zh "https://pigsty.cc/blog/cloud/" "https://pigsty.io/blog/cloud/" -}}
-{{- /* 列顺序：中文站以阿里云为主列（PRD §7.2） */ -}}
-{{- $cols := cond $zh (slice "aliyun" "aws" "self") (slice "aws" "aliyun" "self") -}}
-{{- $colNames := dict
-      "aws" (cond $zh "AWS RDS（3 年）" "AWS RDS (3-yr)")
-      "aliyun" (cond $zh "阿里云 RDS（3 年）" "Alibaba Cloud RDS (3-yr)")
-      "self" (cond $zh "自建硬件 + Pigsty 订阅（3 年）" "Self-host + Pigsty (3-yr)") -}}
+{{- $blogBase := cond $zh "https://vonng.com/cloud/" "https://vonng.com/en/cloud/" -}}
+{{- $essaysHome := cond $zh "https://vonng.com/cloud/" "https://vonng.com/en/cloud/" -}}
+{{- $specMax := 0 -}}
+{{- $sp := dict -}}
+{{- range $cc.spectrum }}{{ if gt .price $specMax }}{{ $specMax = .price }}{{ end }}{{ $sp = merge $sp (dict .key .price) }}{{ end -}}
 {{- $faq := slice
   (dict
     "q" "Is self-hosting really cheaper than cloud RDS?"
     "qZh" "自建真的比云 RDS 便宜吗？"
-    "a" "For steady production workloads, usually — you stop paying a rental premium, and the gap widens with scale. The table above holds the math so you can check us; your own answer comes out of a one-day assessment of your actual cloud bill."
-    "aZh" "对长期稳定的生产负载，通常是的：省下的是租金溢价，规模越大差距越大。上面的表格就是摆出来让你核账的；你自己的答案，拿一份真实账单花一天评估就能算出来。"
+    "a" "For steady production workloads, yes — usually by multiples. The numbers above are list prices you can verify; run your own spec through the calculator, then check it against a real invoice. The gap widens with scale."
+    "aZh" "对长期稳定的生产负载，是的，而且通常差出好几倍。上面全是可以核对的挂牌价：把你的规格丢进计算器里算一遍，再对一张真实账单，规模越大差距越大。"
   )
   (dict
     "q" "Don't we need a full-time DBA to self-host?"
@@ -73,100 +71,248 @@
 
   <main id="main">
 
-    <!-- ============ 论点 ============ -->
+    <!-- ============ 论点（manifesto 开场） ============ -->
     <section class="hero page-hero">
       <div class="hero-bg" aria-hidden="true"></div>
       <div class="landing-container">
         <div class="section-head section-head--center" data-reveal>
           <p class="section-eyebrow section-eyebrow--center anim" style="--d:0"><span class="silkscreen"><a class="crumb-link" href="{{ relLangURL "solutions/" }}">{{ if $zh }}SOLUTIONS · 方案{{ else }}SOLUTIONS{{ end }}</a> · CLOUD EXIT</span></p>
           <h1 class="section-title anim" style="--d:1">{{ if $zh }}下云，把数据库拿回来{{ else }}Stop renting your database{{ end }}</h1>
-          <p class="section-subtitle anim" style="--d:2">{{ if $zh }}下云不是情怀，是一笔算得清的账 —— 这里有账本，也有路线图。{{ else }}Cloud exit isn't sentiment — it's a balance-sheet decision. Here's the ledger, and the road.{{ end }}</p>
+          <p class="section-subtitle anim" style="--d:2">{{ if $zh }}下云不是情怀，是一笔算得清的账。这一页就是账本：单价、案例、路线图，每个数字都有出处。{{ else }}Cloud exit isn't sentiment — it's arithmetic. This page is the ledger: unit prices, receipts, and the road out, every figure with a source.{{ end }}</p>
         </div>
 
         <div class="portal-prose portal-prose--center anim" style="--d:3">
           {{ if $zh }}
-          <p>云数据库当年解决的是真问题：把 PostgreSQL 跑好，过去确实需要一位专家。租一个省心的 RDS，在那个年代是理性的选择。但这些年，高可用、备份恢复、监控告警这些「DBA 的手艺」被一样样做进了开源软件 —— 你付的租金，买的越来越多是十年前的稀缺性。</p>
-          <p>与此同时，两条价格曲线岔开了：NVMe 存储和整机服务器一年比一年便宜，云上 RDS 的标价却没怎么跟着降。你留在云上的每一年，租与买的差距都在扩大 —— 完整的论证在我们的<a href="{{ $essays }}" target="_blank" rel="noopener">下云专栏</a>里。</p>
-          <p>拥有不等于单干。Pigsty 把企业级 PostgreSQL 的整套能力做成了开源软件，作者本人的订阅与专家服务在后面兜底 —— 下面是账，和路。</p>
+          <p>云数据库当年解决的是真问题：把 PostgreSQL 跑好，过去确实需要一位专家，租个省心的 RDS 是理性选择。但这些年，高可用、备份恢复、监控告警这些「DBA 的手艺」被一样样做进了开源软件 —— 你付的租金，买的越来越多是十年前的稀缺性。</p>
+          <p>与此同时，两条价格曲线彻底岔开了。同样一核算力跑一个月：自建物理机大约 <b>¥{{ $sp.idc }}</b>，租阿里云的高可用 RDS 要 <b>¥{{ $sp.rds2 }}–{{ $sp.rds8 }}</b>，租 AWS 的要 <b>¥{{ $sp.awss4 }}–{{ lang.FormatNumber 0 $sp.awsha8 }}</b><sup class="tco-ref"><a href="#exit-sources">[1]</a></sup>。计算与存储硬件一年比一年便宜，云数据库的挂牌价却纹丝不动 —— 你留在云上的每一年，租与买的差距都在复利。</p>
+          <p>拥有不等于单干。Pigsty 把企业级 PostgreSQL 的整套能力做成了开源软件，作者本人的订阅与专家服务在后面兜底。下面是账，然后是路。</p>
           {{ else }}
-          <p>Managed databases solved a real problem: running PostgreSQL well used to take a specialist, and renting one from the cloud was the rational call. But year by year, the DBA's craft — HA, backup and recovery, monitoring — has been built into open-source software. More and more, the rent buys you scarcity that no longer exists.</p>
-          <p>Meanwhile the price curves have split: NVMe storage and commodity servers get cheaper every year, while RDS list prices barely move. Every year you stay, the gap between renting and owning compounds — the long-form case lives in our <a href="{{ $essays }}" target="_blank" rel="noopener">cloud-exit essays</a>.</p>
+          <p>Managed databases solved a real problem: running PostgreSQL well used to take a specialist, and renting one was the rational call. But year by year the DBA's craft — HA, backup and recovery, monitoring — has been built into open-source software. More and more, the rent buys scarcity that no longer exists.</p>
+          <p>Meanwhile the price curves have split for good. One vCPU running for one month: about <b>¥{{ $sp.idc }}</b> on a self-hosted dedicated server, <b>¥{{ $sp.rds2 }}–{{ $sp.rds8 }}</b> on Aliyun's HA RDS, <b>¥{{ $sp.awss4 }}–{{ lang.FormatNumber 0 $sp.awsha8 }}</b> on AWS<sup class="tco-ref"><a href="#exit-sources">[1]</a></sup>. Hardware gets cheaper every year; RDS list prices barely move. Every year you stay, the gap between renting and owning compounds.</p>
           <p>Owning doesn't mean going it alone. Pigsty packages the whole enterprise-PostgreSQL stack as open source, with the author's subscriptions and expert services behind it. Below: the ledger, then the road.</p>
           {{ end }}
         </div>
       </div>
     </section>
 
-    <!-- ============ TCO 对比表（核心资产） ============ -->
-    <section class="landing-section" id="tco">
+    <!-- ============ 判词（stat tiles） ============ -->
+    <section class="landing-section exit-tiles" id="verdict">
       <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}TCO · 三年总拥有成本{{ else }}TCO · 3-YEAR COST OF OWNERSHIP{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title">{{ if $zh }}租三年，还是买三年{{ else }}Three years of rent vs. three years of ownership{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}三档典型规格，同口径对比。每个数字都必须带公开来源与抓取日期 —— 数据到位前，空格就摆在这里。{{ else }}Three typical specs, compared on equal footing. Every figure must carry a public source and a retrieval date — until then, the blanks stay visible.{{ end }}</p>
-        </div>
-
-        {{- $s := newScratch -}}
-        {{- $s.Set "notes" (slice) -}}
-        <div class="cmp-wrap" data-reveal>
-          <table class="cmp-table tco-table">
-            <thead>
-              <tr>
-                <th class="cmp-feature">{{ if $zh }}规格（含存储）{{ else }}Spec (incl. storage) {{ end }}</th>
-                {{ range $cols }}<th{{ if eq . "self" }} class="cmp-hl"{{ end }}>{{ index $colNames . }}</th>{{ end }}
-              </tr>
-            </thead>
-            <tbody>
-              {{ range $spec := $tco.specs }}
-              <tr>
-                <td class="cmp-feature">{{ if $zh }}{{ $spec.labelZh }}{{ else }}{{ $spec.label }}{{ end }}</td>
-                {{ range $col := $cols }}
-                {{ $cell := index $spec $col }}
-                <td{{ if eq $col "self" }} class="cmp-hl"{{ end }}>
-                  {{- if and $cell.price $cell.source $cell.date -}}
-                    {{- $notes := $s.Get "notes" -}}
-                    {{- $s.Set "notes" ($notes | append (dict "col" (index $colNames $col) "spec" (cond $zh $spec.labelZh $spec.label) "source" $cell.source "date" $cell.date)) -}}
-                    <b>{{ $cell.price }}</b><sup class="tco-ref"><a href="#tco-sources">[{{ len ($s.Get "notes") }}]</a></sup>
-                  {{- else -}}
-                    <span class="todo-chip" title="{{ if $zh }}待用户提供：数字 + 来源 URL + 抓取日期{{ else }}Pending: figure + source URL + retrieval date{{ end }}">TODO</span>
-                  {{- end -}}
-                </td>
-                {{ end }}
-              </tr>
-              {{ end }}
-            </tbody>
-          </table>
-        </div>
-
-        <div class="tco-method" data-reveal id="tco-sources">
-          <p class="silkscreen tco-method-title">{{ if $zh }}METHODOLOGY · 口径说明{{ else }}METHODOLOGY{{ end }}</p>
-          <ul class="tco-method-list">
-            {{ if $zh }}
-            <li>RDS 列 = 官方价格计算器口径：高可用（主备 / Multi-AZ）实例 + 规格所列存储，3 年预留 / 包年包月总额；AWS 取 us-east-1（美元），阿里云取华东 1 杭州（人民币）。</li>
-            <li>自建列 = 2 × 商用服务器整机（按 3 年直线折旧 —— 保守口径，服务器常用 5 年以上）+ 3 年 Pigsty 订阅（按实际节点数取档）+ 托管电力估算。</li>
-            <li>两侧均不含人力成本 —— 运维负担的问题在下方「反对意见」里正面回答。</li>
-            <li>币种不做换算：请在你所在的币区内做同列对比（AWS vs 自建美元报价；阿里云 vs 自建人民币报价）。</li>
-            <li><b>数字规则：</b>每个数字必须带公开价目页 URL 与抓取日期脚注；没有来源的数字不上表。</li>
-            {{ else }}
-            <li>RDS columns = the vendor's own calculator: high-availability (Multi-AZ / primary-standby) instance plus the storage listed in the spec, 3-year reserved / prepaid total; AWS priced in us-east-1 (USD), Alibaba Cloud in Hangzhou (CNY).</li>
-            <li>Self-host column = 2 × commodity servers (straight-line depreciation over 3 years — conservative; servers commonly serve 5+) + a 3-year Pigsty subscription sized by node count + a colocation & power estimate.</li>
-            <li>People costs are excluded on both sides — the ops-burden question is answered head-on under "Objections" below.</li>
-            <li>No currency conversion: compare within your currency zone (AWS vs. a USD hardware quote; Alibaba Cloud vs. a CNY quote).</li>
-            <li><b>The rule:</b> every figure carries a footnote with a public price-page URL and retrieval date; unsourced numbers don't get a cell.</li>
-            {{ end }}
-          </ul>
-          {{ $notes := $s.Get "notes" }}
-          {{ if $notes }}
-          <ol class="tco-sources-list">
-            {{ range $i, $n := $notes }}
-            <li>{{ $n.col }} · {{ $n.spec }} — <a href="{{ $n.source }}" target="_blank" rel="noopener">{{ $n.source }}</a>{{ if $zh }}（抓取于 {{ $n.date }}）{{ else }} (retrieved {{ $n.date }}){{ end }}</li>
-            {{ end }}
-          </ol>
-          {{ else }}
-          {{- /* TODO(user)：按 data/portal/tco.yaml 头部指引填入 价格+来源+日期（PRD §7.2） */}}
-          <p class="tco-pending">{{ if $zh }}来源脚注：待填。数字只随「公开价目页 URL + 抓取日期」一起出现。{{ else }}Source footnotes: pending. Figures appear only together with a public price-page URL and retrieval date.{{ end }}</p>
+        <div class="stats-grid" data-reveal>
+          {{ range $cc.tiles }}
+          <a href="#exit-sources" class="stat-item">
+            <span class="stat-value">{{ .value }}</span>
+            <span class="stat-label">{{ if $zh }}{{ .labelZh }}{{ else }}{{ .label }}{{ end }}<sup class="tco-ref">[{{ .src }}]</sup></span>
+          </a>
           {{ end }}
         </div>
+      </div>
+    </section>
+
+    <!-- ============ 核月单价谱系 ============ -->
+    <section class="landing-section" id="spectrum">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}THE LEDGER · 核月单价{{ else }}THE LEDGER{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}一核算力跑一个月，各要多少钱{{ else }}One vCPU, one month — what each way costs{{ end }}</h2>
+          <p class="section-subtitle">{{ if $zh }}把所有方案折算到同一个单位：¥ / 核·月。自建那根短得可怜的条，就是全文的论点。{{ else }}Everything reduced to one unit: ¥ per vCPU·month. The stubby self-host bar is the whole argument.{{ end }}</p>
+        </div>
+
+        <figure class="chart-block" data-reveal>
+          <div class="chart-legend" aria-hidden="true">
+            <span class="lg-chip lg-chip--self">{{ if $zh }}自建{{ else }}Self-host{{ end }}</span>
+            <span class="lg-chip lg-chip--ecs">{{ if $zh }}租算力{{ else }}Rented compute{{ end }}</span>
+            <span class="lg-chip lg-chip--rds">{{ if $zh }}租数据库{{ else }}Rented database{{ end }}</span>
+          </div>
+          <ul class="spec-chart" role="list">
+            {{ range $cc.spectrum }}
+            <li class="spec-row" tabindex="0"
+                aria-label="{{ if $zh }}{{ .labelZh }}：¥{{ lang.FormatNumber 0 .price }} / 核·月（{{ .noteZh }}）{{ else }}{{ .label }}: ¥{{ lang.FormatNumber 0 .price }} per vCPU·month ({{ .note }}){{ end }}"
+                data-tip="{{ if $zh }}{{ .noteZh }}{{ else }}{{ .note }}{{ end }}">
+              <span class="spec-label">{{ if $zh }}{{ .labelZh }}{{ else }}{{ .label }}{{ end }}</span>
+              <span class="spec-track"><i class="spec-fill spec-fill--{{ .group }}" style="width:{{ div (mul .price 100.0) $specMax }}%"></i></span>
+              <b class="spec-val">¥{{ lang.FormatNumber 0 .price }}</b>
+            </li>
+            {{ end }}
+          </ul>
+          <figcaption class="chart-caption">
+            {{ if $zh }}单位 ¥/核·月 · 阿里云为华东区高可用挂牌均价，AWS 为 us-east 按需价按 {{ $cc.meta.fx }} 折算 · 价格抓取 {{ $cc.meta.captured }}<sup class="tco-ref"><a href="#exit-sources">[1][2]</a></sup><br>{{ $cc.oracle_note.labelZh }}<sup class="tco-ref"><a href="#exit-sources">[{{ $cc.oracle_note.src }}]</a></sup>
+            {{ else }}Unit: ¥/vCPU·month · Aliyun = east-China HA list-price average; AWS = us-east on-demand at {{ $cc.meta.fx }} CNY/USD · captured {{ $cc.meta.captured }}<sup class="tco-ref"><a href="#exit-sources">[1][2]</a></sup><br>{{ $cc.oracle_note.label }}<sup class="tco-ref"><a href="#exit-sources">[{{ $cc.oracle_note.src }}]</a></sup>{{ end }}
+          </figcaption>
+          <details class="chart-data">
+            <summary>{{ if $zh }}查看数据表{{ else }}View as table{{ end }}</summary>
+            <div class="cmp-wrap">
+              <table class="cmp-table">
+                <thead><tr><th class="cmp-feature">{{ if $zh }}方案{{ else }}Option{{ end }}</th><th>{{ if $zh }}¥ / 核·月{{ else }}¥ / vCPU·mo{{ end }}</th><th class="cmp-feature">{{ if $zh }}口径{{ else }}Basis{{ end }}</th><th>{{ if $zh }}来源{{ else }}Src{{ end }}</th></tr></thead>
+                <tbody>
+                  {{ range $cc.spectrum }}
+                  <tr><td class="cmp-feature">{{ if $zh }}{{ .labelZh }}{{ else }}{{ .label }}{{ end }}</td><td><b>{{ lang.FormatNumber 0 .price }}</b></td><td class="cmp-feature">{{ if $zh }}{{ .noteZh }}{{ else }}{{ .note }}{{ end }}</td><td><a href="#exit-sources">[{{ .src }}]</a></td></tr>
+                  {{ end }}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ 交互计算器 ============ -->
+    <section class="landing-section" id="calculator">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}CALCULATOR · 算你的账{{ else }}CALCULATOR{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}把你的规格丢进来算算{{ else }}Run your own numbers{{ end }}</h2>
+          <p class="section-subtitle">{{ if $zh }}选规格、选内存比、选付费周期 —— 看看同一套硬件，租和买到底差多少。{{ else }}Pick a spec, a memory ratio, and a billing term — see what the same capacity costs to rent versus to own.{{ end }}</p>
+        </div>
+
+        <div class="calc-card" id="cloudcalc" data-reveal>
+          <div class="calc-controls">
+            <label class="calc-field">
+              <span class="calc-field-label silkscreen">vCPU</span>
+              <select data-cc="vcpu" class="calc-select">
+                {{ range $cc.calc.vcpus }}<option value="{{ . }}"{{ if eq . $cc.calc.default_vcpu }} selected{{ end }}>{{ . }} vCPU</option>{{ end }}
+              </select>
+            </label>
+            <div class="calc-field">
+              <span class="calc-field-label silkscreen">{{ if $zh }}内存比{{ else }}RAM ratio{{ end }}</span>
+              <div class="calc-seg" role="group" aria-label="{{ if $zh }}内存配比{{ else }}Memory ratio{{ end }}">
+                {{ range $cc.calc.ratios }}<button type="button" data-cc="ratio" data-value="{{ .key }}" aria-pressed="{{ if eq .key $cc.calc.default_ratio }}true{{ else }}false{{ end }}">{{ .label }}</button>{{ end }}
+              </div>
+            </div>
+            <div class="calc-field">
+              <span class="calc-field-label silkscreen">{{ if $zh }}付费周期{{ else }}Term{{ end }}</span>
+              <div class="calc-seg" role="group" aria-label="{{ if $zh }}付费周期{{ else }}Billing term{{ end }}">
+                {{ range $cc.calc.terms }}<button type="button" data-cc="term" data-value="{{ .key }}" aria-pressed="{{ if eq .key $cc.calc.default_term }}true{{ else }}false{{ end }}">{{ if $zh }}{{ .labelZh }}{{ else }}{{ .label }}{{ end }}</button>{{ end }}
+              </div>
+            </div>
+            <div class="calc-field">
+              <span class="calc-field-label silkscreen">{{ if $zh }}货币{{ else }}Currency{{ end }}</span>
+              <div class="calc-seg" role="group" aria-label="{{ if $zh }}货币{{ else }}Currency{{ end }}">
+                <button type="button" data-cc="currency" data-value="cny" aria-pressed="{{ if $zh }}true{{ else }}false{{ end }}">¥ CNY</button>
+                <button type="button" data-cc="currency" data-value="usd" aria-pressed="{{ if $zh }}false{{ else }}true{{ end }}">$ USD</button>
+              </div>
+            </div>
+            <label class="calc-field calc-field--check">
+              <input type="checkbox" data-cc="sub">
+              <span>{{ if $zh }}自建方案叠加 Pigsty 专业版订阅（{{ $std.priceZh }}/年量级）{{ else }}Add a Pigsty Pro subscription to the self-host bars ({{ (index (where $tiers "key" "pro") 0).price }}/yr){{ end }}</span>
+            </label>
+          </div>
+
+          <p class="cc-verdict" role="status" aria-live="polite"></p>
+
+          <div class="cc-chart">
+            {{ $rows := slice
+              (dict "key" "rds" "group" "rds")
+              (dict "key" "aws" "group" "rds")
+              (dict "key" "ecs" "group" "ecs")
+              (dict "key" "idc" "group" "self") }}
+            {{ range $rows }}
+            <div class="cc-row" data-row="{{ .key }}">
+              <span class="cc-label">
+                {{- if eq .key "rds" }}{{ if $zh }}阿里云 RDS 高可用{{ else }}Aliyun RDS HA{{ end }}
+                {{- else if eq .key "aws" }}{{ if $zh }}AWS RDS 多可用区{{ else }}AWS RDS Multi-AZ{{ end }}
+                {{- else if eq .key "ecs" }}{{ if $zh }}阿里云 ECS + Pigsty{{ else }}Aliyun ECS + Pigsty{{ end }}
+                {{- else }}{{ if $zh }}IDC 自建 + Pigsty{{ else }}IDC self-host + Pigsty{{ end }}{{ end -}}
+                <i class="cc-note"></i>
+              </span>
+              <span class="cc-track"><i class="cc-fill cc-fill--{{ .group }}"></i></span>
+              <span class="cc-out"><b class="cc-val"></b><em class="cc-mult"></em></span>
+            </div>
+            {{ end }}
+            <p class="cc-aws-na" hidden>{{ if $zh }}AWS 无 1:2 内存比的常规 RDS 机型，该行按当前选择隐藏。{{ else }}AWS has no standard RDS class at a 1:2 RAM ratio — that row is hidden for this selection.{{ end }}</p>
+          </div>
+
+          <details class="chart-data">
+            <summary>{{ if $zh }}查看数据表{{ else }}View as table{{ end }}</summary>
+            <div class="cmp-wrap">
+              <table class="cmp-table cc-table">
+                <thead><tr><th class="cmp-feature">{{ if $zh }}方案{{ else }}Option{{ end }}</th><th>{{ if $zh }}每月{{ else }}Monthly{{ end }}</th><th>{{ if $zh }}每年{{ else }}Yearly{{ end }}</th><th>{{ if $zh }}倍数{{ else }}Multiple{{ end }}</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </details>
+
+          <p class="calc-footnote">{{ if $zh }}价格为 {{ $cc.meta.captured }} 抓取的挂牌口径（谱系图同源）；折扣阶梯：按需 1.5× · 包月 1× · 包三年 0.45× · 包五年 0.32×（阿里云口径，ECS 按相同阶梯估算；AWS 长约用 3 年预留价，无五年档）。两侧均不含人力与存储 —— 云盘的账见<a href="{{ $blogBase }}ebs/" target="_blank" rel="noopener">另一篇</a>。{{ else }}List prices as captured {{ $cc.meta.captured }} (same dataset as the chart above). Discount ladder: on-demand 1.5× · monthly 1× · 3-yr 0.45× · 5-yr 0.32× (Aliyun's ladder, applied to ECS as an estimate; AWS long terms use 3-yr reserved — it has no 5-yr tier). People costs and storage excluded on both sides — block storage has <a href="{{ $blogBase }}ebs/" target="_blank" rel="noopener">its own reckoning</a>.{{ end }}</p>
+        </div>
+
+        {{- /* 计算器配置（单一数据源渲染，JS 零硬编码数字） */}}
+        <script type="application/json" id="cloudcalc-data">
+        {{ dict
+          "locale" (cond $zh "zh-CN" "en-US")
+          "fx" $cc.meta.fx
+          "defaults" (dict "vcpu" $cc.calc.default_vcpu "ratio" $cc.calc.default_ratio "term" $cc.calc.default_term "currency" (cond $zh "cny" "usd"))
+          "terms" $cc.calc.terms
+          "prices" (dict
+            "aliyunRds" $cc.calc.aliyun_rds
+            "aliyunEcs" $cc.calc.aliyun_ecs
+            "awsOd" $cc.calc.aws_rds_ha_od
+            "aws3y" $cc.calc.aws_rds_ha_3y
+            "idc" $cc.calc.idc_core_month
+            "subUsdYear" $cc.calc.sub_pro_usd_year)
+          "strings" (dict
+            "optRds" (cond $zh "阿里云 RDS 高可用" "Aliyun RDS HA")
+            "optAws" (cond $zh "AWS RDS 多可用区" "AWS RDS Multi-AZ")
+            "optEcs" (cond $zh "阿里云 ECS + Pigsty" "Aliyun ECS + Pigsty")
+            "optIdc" (cond $zh "IDC 自建 + Pigsty" "IDC self-host + Pigsty")
+            "awsOnDemand" (cond $zh "按需价" "on-demand")
+            "aws3yr" (cond $zh "3 年预留价" "3-yr reserved")
+            "withSub" (cond $zh "含专业版订阅" "incl. Pro subscription")
+            "perMonth" (cond $zh " /月" "/mo")
+            "perYear" (cond $zh " /年" "/yr")
+            "verdict" (cond $zh "同一规格：云数据库 {rds}/月，自建 {idc}/月 —— 差 {mult} 倍。" "Same capacity: {rds}/mo rented vs {idc}/mo owned — a {mult}× gap.")
+            "verdictFlip" (cond $zh "当前组合下租（{rds}/月）比买（{idc}/月）便宜 —— 专业版订阅要在更大规模才划算，小规模先用免费开源版就好。" "With these options renting ({rds}/mo) beats owning ({idc}/mo) — a Pro subscription pays off at larger scale; at this size, start with the free OSS edition."))
+        | jsonify | safeJS }}
+        </script>
+      </div>
+    </section>
+
+    <!-- ============ 口径与来源 ============ -->
+    <section class="landing-section exit-method" id="exit-sources">
+      <div class="landing-container">
+        <div class="tco-method" data-reveal>
+          <p class="silkscreen tco-method-title">{{ if $zh }}METHODOLOGY & SOURCES · 口径与来源{{ else }}METHODOLOGY & SOURCES{{ end }}</p>
+          <ul class="tco-method-list">
+            {{ if $zh }}
+            <li>统一单位为 <b>¥ / 核·月</b>：实例包月价 ÷ vCPU 数。阿里云取华东区 RDS PG 高可用版（双节点）全规格挂牌均价；AWS 取 us-east 按需价按 {{ $cc.meta.fx }} 汇率折算；抓取时间 {{ $cc.meta.captured }}。</li>
+            <li>自建 ¥{{ $cc.calc.idc_core_month }} 为独占物理机（64C/384G）五年摊销口径，与探探（¥19.5）、DHH（约 ¥25）公开的自建实测同一量级。</li>
+            <li>均为实例算力价格，<b>不含存储</b>（云盘溢价另有专文）与人力（运维负担问题见下方「反对意见」）。</li>
+            <li>价格会变：以厂商价格页现价为准 —— {{ range $i, $v := $cc.vendors }}{{ if $i }} · {{ end }}<a href="{{ $v.url }}" target="_blank" rel="noopener">{{ $v.labelZh }}</a>{{ end }}。</li>
+            {{ else }}
+            <li>The common unit is <b>¥ per vCPU·month</b>: monthly instance price ÷ vCPU count. Aliyun = east-China HA (dual-node) RDS PG list-price average across specs; AWS = us-east on-demand converted at {{ $cc.meta.fx }} CNY/USD; captured {{ $cc.meta.captured }}.</li>
+            <li>The ¥{{ $cc.calc.idc_core_month }} self-host figure is a dedicated 64C/384G server amortized over five years — the same order as Tantan's (¥19.5) and DHH's (~¥25) published self-hosting numbers.</li>
+            <li>Compute prices only: <b>storage excluded</b> (cloud block storage has its own essay), people excluded on both sides (see "Objections").</li>
+            <li>Prices move — verify against the vendors' own pages: {{ range $i, $v := $cc.vendors }}{{ if $i }} · {{ end }}<a href="{{ $v.url }}" target="_blank" rel="noopener">{{ $v.label }}</a>{{ end }}.</li>
+            {{ end }}
+          </ul>
+          <ol class="tco-sources-list">
+            {{ range $cc.sources }}
+            <li id="src-{{ .id }}">{{ if $zh }}{{ .titleZh }}{{ else }}{{ .title }}{{ end }} — <a href="{{ $blogBase }}{{ .slug }}/" target="_blank" rel="noopener">vonng.com/{{ if not $zh }}en/{{ end }}cloud/{{ .slug }}/</a></li>
+            {{ end }}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 公开案例 ============ -->
+    <section class="landing-section" id="cases">
+      <div class="landing-container">
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}RECEIPTS · 公开案例{{ else }}RECEIPTS{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}先走的人，账都晒出来了{{ else }}The ones who left already showed their math{{ end }}</h2>
+        </div>
+
+        <div class="case-grid" data-reveal>
+          {{ range $cc.cases }}
+          <article class="case-card">
+            <p class="case-org silkscreen">{{ .org }}</p>
+            <p class="case-stat">{{ if $zh }}{{ .statZh }}{{ else }}{{ .stat }}{{ end }}</p>
+            <p class="case-body">{{ if $zh }}{{ .bodyZh }}{{ else }}{{ .body }}{{ end }}</p>
+            <a class="case-src" href="{{ $blogBase }}{{ (index (where $cc.sources "id" .src) 0).slug }}/" target="_blank" rel="noopener">{{ if $zh }}出处 [{{ .src }}] →{{ else }}Source [{{ .src }}] →{{ end }}</a>
+          </article>
+          {{ end }}
+        </div>
+        {{- /* PGSTY 自有客户案例仍需书面授权后上线（PRD §7.2.5 / §12） */}}
+        <p class="case-note" data-reveal>{{ if $zh }}以上是公开报道的行业案例。至于我们自己客户的名字 —— 只在拿到书面授权后出现。{{ else }}These are public, third-party stories. Our own customers' names appear here only with written permission.{{ end }}</p>
       </div>
     </section>
 
@@ -255,7 +401,7 @@
         <div class="objection-grid" data-reveal>
           <div class="faq-item">
             <h3 class="faq-q">{{ if $zh }}「自建运维负担太重。」{{ else }}"Self-hosting is an ops burden."{{ end }}</h3>
-            <p class="faq-a">{{ if $zh }}手搓高可用、备份、监控的年代确实如此。Pigsty 把这些做成了软件 —— 让初级工程师拥有专业 DBA 70% 以上的能力；最难的那一截，由写代码的人提供服务兜底。{{ else }}It was, when HA, backups, and monitoring were hand-built. Pigsty ships them as software — it gives a junior engineer 70%+ of a professional DBA's capability — and the author's expert services stand behind the hardest stretch.{{ end }}</p>
+            <p class="faq-a">{{ if $zh }}手搓高可用、备份、监控的年代确实如此。Pigsty 把这些做成了软件 —— 让初级工程师拥有专业 DBA 70% 以上的能力；最难的那一截，由写代码的人提供服务兜底。探探两三个人的 DBA 团队管着两万五千核，就是这套逻辑的实证。{{ else }}It was, when HA, backups, and monitoring were hand-built. Pigsty ships them as software — it gives a junior engineer 70%+ of a professional DBA's capability — and the author's expert services stand behind the hardest stretch. Tantan's two-to-three-person DBA team running 25,000 cores is this logic, proven.{{ end }}</p>
           </div>
           <div class="faq-item">
             <h3 class="faq-q">{{ if $zh }}「高可用我们做不过云厂商。」{{ else }}"We can't do HA as well as the cloud."{{ end }}</h3>
@@ -270,13 +416,28 @@
       </div>
     </section>
 
-    <!-- ============ 参考案例（占位，无书面许可不上任何客户信息） ============ -->
-    <section class="landing-section" id="cases">
+    <!-- ============ 下云文选（manifesto 索引） ============ -->
+    <section class="landing-section" id="essays">
       <div class="landing-container">
-        {{- /* TODO(user)：客户案例素材 + 书面许可（PRD §7.2.5 / §12）——齐备前保持此占位 */}}
-        <div class="todo-flag" data-reveal>
-          <p>{{ if $zh }}<b>参考案例位。</b>等客户书面授权后上线 —— 没有白纸黑字的许可，我们不放任何客户的名字。{{ else }}<b>Reference cases go here.</b> They ship once customers approve in writing — no written permission, no names on this page.{{ end }}</p>
+        <div class="section-head" data-reveal>
+          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}THE ESSAYS · 下云文选{{ else }}THE ESSAYS{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
+          <h2 class="section-title">{{ if $zh }}把整套论证读完{{ else }}Read the whole argument{{ end }}</h2>
+          <p class="section-subtitle">{{ if $zh }}这一页只是摘要。完整的立论、数据与案例，在作者写了四年的下云专栏里 —— 以下十篇是入口。{{ else }}This page is the digest. The full case — data, receipts, and philosophy — lives in the author's four-year cloud-exit column. These ten essays are the way in.{{ end }}</p>
         </div>
+
+        <div class="essay-groups" data-reveal>
+          {{ range $cc.essays }}
+          <div class="essay-group">
+            <p class="essay-group-title silkscreen">{{ if $zh }}{{ .groupZh }}{{ else }}{{ .group }}{{ end }}</p>
+            <ul class="essay-list">
+              {{ range .items }}
+              <li><a href="{{ $blogBase }}{{ .slug }}/" target="_blank" rel="noopener">{{ if $zh }}{{ .titleZh }}{{ else }}{{ .title }}{{ end }} <i aria-hidden="true">↗</i></a></li>
+              {{ end }}
+            </ul>
+          </div>
+          {{ end }}
+        </div>
+        <p class="essay-more" data-reveal><a href="{{ $essaysHome }}" target="_blank" rel="noopener">{{ if $zh }}下云专栏全部文章 →{{ else }}The full cloud-exit column →{{ end }}</a></p>
       </div>
     </section>
 
@@ -309,5 +470,6 @@
   {{ partial "portal/footer.html" . }}
 
   {{ partial "portal/foot-scripts.html" . }}
+  <script src="{{ "js/cloud-calc.js" | relURL }}?v={{ substr (md5 (readFile "static/js/cloud-calc.js")) 0 8 }}"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@
 {{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
 {{- $brand := hugo.Data.brand -}}
 {{- $m := $brand.metrics -}}
+{{- $silo := index (where hugo.Data.portal.projects "key" "silo") 0 -}}
 {{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
 <!DOCTYPE html>
 <html lang="{{ $locale }}" class="no-js">
@@ -53,9 +54,11 @@
         </div>
         <div class="portal-prose portal-prose--center anim" style="--d:3">
           {{ if $zh }}
-          <p>{{ $m.since_year }} 年，这一切从一位 DBA 的私人工具箱开始 —— 一堆把 PostgreSQL 跑好的脚本。此后它长成了开源发行版 Pigsty，长出了包管理器、指标导出器和对象存储，也长出了整个生态共用的软件仓库与扩展目录。工具箱变成了生态，作者身后有了一家公司：PGSTY。</p>
+          <p>{{ $m.since_year }} 年，这一切从一位 DBA 的私人工具箱开始 —— 一堆把 PostgreSQL 跑好的脚本。{{ $m.oss_since_year }} 年它开源，长成了发行版 Pigsty，随后长出包管理器、指标导出器，以及整个生态共用的软件仓库与扩展目录。</p>
+          <p>半路上还多了第二面旗帜：<a href="https://silo.pgsty.com/zh/" target="_blank" rel="noopener">Silo</a> —— 我们替整个社区接手维护的 MinIO 分支。S3 兼容对象存储，安全更新、管理控制台与完整发行制品都还在线，如今已有 {{ partial "compact-number.html" $silo.stars }} 星标。维护好一个被上游放下的项目，和写出一个新项目一样，是对生态实打实的贡献。工具箱变成了生态，作者身后有了一家公司：PGSTY。</p>
           {{ else }}
-          <p>In {{ $m.since_year }} this was one DBA's private toolbox — a pile of scripts for running PostgreSQL properly. Since then it has grown into the open-source distribution Pigsty, then a package manager, a metrics exporter, an object store, and the public repositories and extension catalog the wider ecosystem runs on. The toolbox became an ecosystem, and behind its author now stands a company: PGSTY.</p>
+          <p>In {{ $m.since_year }} this was one DBA's private toolbox — a pile of scripts for running PostgreSQL properly. It went open source in {{ $m.oss_since_year }}, grew into the Pigsty distribution, then a package manager, a metrics exporter, and the public repositories and extension catalog the wider ecosystem runs on.</p>
+          <p>Along the way we raised a second flag: <a href="https://silo.pgsty.com" target="_blank" rel="noopener">Silo</a>, the community-maintained fork of MinIO — S3-compatible object storage with security updates, a working console, and full release artifacts still shipping, now at {{ partial "compact-number.html" $silo.stars }} stars. Keeping alive a project its upstream set down is as real a contribution as writing a new one. The toolbox became an ecosystem, and behind its author now stands a company: PGSTY.</p>
           {{ end }}
         </div>
       </div>
@@ -114,12 +117,19 @@
               <p>{{ if $zh }}Pigsty 从一位 DBA 的私人工具箱起步 —— 把 PostgreSQL 跑好的那些脚本。{{ else }}Pigsty begins as one DBA's personal toolbox — the scripts for running PostgreSQL properly.{{ end }}</p>
             </div>
           </li>
-          {{- /* TODO(user)：开源发布时间与 3–5 个中间里程碑（年份 + 一句话），见 PRD §7.1.3 / §12.7 */}}
+          <li>
+            <span class="tl-mark">{{ $m.oss_since_year }}</span>
+            <div class="tl-body">
+              <b>{{ if $zh }}开源{{ else }}Open source{{ end }}</b>
+              <p>{{ if $zh }}Pigsty 开源发布 —— 私人工具箱变成公共项目。{{ else }}Pigsty goes open source — the private toolbox becomes a public project.{{ end }}</p>
+            </div>
+          </li>
+          {{- /* TODO(user)：中间还差 2–4 个里程碑（年份 + 一句话），见 PRD §7.1.3 / §12.7 */}}
           <li class="timeline-todo">
             <span class="tl-mark">TODO</span>
             <div class="tl-body">
               <b>{{ if $zh }}里程碑整理中{{ else }}Milestones under excavation{{ end }}</b>
-              <p>{{ if $zh }}开源发布与中间的 3–5 个节点，待作者本人补记。{{ else }}The open-source release and three to five way-points in between, pending from the author.{{ end }}</p>
+              <p>{{ if $zh }}这中间还有两三个节点（版本、社区、Silo 接手……），待作者本人补记。{{ else }}A few way-points in between (releases, community, taking on Silo…), pending from the author.{{ end }}</p>
             </div>
           </li>
           <li>

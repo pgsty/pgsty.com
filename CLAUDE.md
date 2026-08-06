@@ -24,6 +24,8 @@
     grep -rn "5347\|5,347\|562\|2230\|2,230\|444" content/ layouts/ i18n/ | grep -v data/   # 应为空
 
 `ext_bundled: 444` 语义未确认（PRD §12.2），**禁止上页**；对外扩展数唯一口径 = ext_packaged(562)。
+`kernels: 12` 以 pigsty.io 首页「12 PG kernel forks」口径为准；`oss_since_year: 2020` 供指标带
+「Open source since」，`since_year: 2018` 只用于 EST. 与版权行，两者勿混。
 
 ## 页面与布局
 
@@ -43,10 +45,18 @@
   head-meta（子页 <head>，标题模式 `<页名> — PGSTY`）、nav（`dict "page" . "active"
   "home|price|solutions|about"`，含 Product/Company 纯 CSS 下拉）、footer、
   contact-band（可传 title/desc/pricing 参数）、foot-scripts。
-- cloud-exit 的 TCO 表数据在 data/portal/tco.yaml：单元格必须 price+source+date
-  三者齐备才渲染数字，否则出 TODO 占位。**禁止无来源数字**（PRD §7.2）。
+- cloud-exit 是「下云宣言 + 账本」页：全部成本数字在 **data/portal/cloudcost.yaml**
+  （核月单价谱系 / 计算器矩阵 / 判词 / 案例 / 文选 / 来源），出处 = vonng.com/cloud
+  公开文章（EN 用 /en/cloud 镜像，均已核实存在），价格抓取口径 2025-04、汇率 7.24。
+  **禁止无来源数字**；模板与 JS 里硬编码成本数字视为 bug。交互计算器：
+  static/js/cloud-calc.js 读页面内 #cloudcalc-data JSON（模板从 cloudcost.yaml 渲染）。
+  图表系列色 = 部署形态三分组，两套主题 token（.exit-page --cx-*）均过 dataviz
+  六项校验，改色需重跑校验；每张图配 details 数据表与直标数值。
 - 页面上凡待用户拍板的事实一律 `TODO(user)` 占位（可见 `.todo-flag` / `.todo-chip`
   或 HTML 注释），严禁编造：SLA、客户案例、piglet 链接、里程碑年份等。
+- T 板块项目卡顺序固定：Silo 第一（第二旗舰）、PIG 第二；未发布项目（sow / dor）
+  用 projects.yaml `placeholder: true` 条目出「敬请期待」卡 —— 无链接 / 版本 / 星数 /
+  安装命令，发布后补全字段并移除 placeholder。piglet 以工坊铭牌一句话提及。
 
 ## 关键约定
 

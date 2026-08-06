@@ -1,0 +1,211 @@
+# ============================================================
+# /solutions/cloud-exit/ — 云成本数据集（谱系图 / 计算器 / 判词 / 案例 / 文选）
+#
+# 数字规则（PRD §7.2）：每个数字必须可溯源。本页所有价格出自作者公开发表的
+# 成本分析（sources 列表），底稿为 RDS 成本核算工作表：
+#   阿里云 = 华东区 RDS PG 高可用版挂牌价（2025-04 抓取，全规格均价）
+#   AWS    = us-east 按需价，按汇率 7.24 折算人民币
+#   自建   = 独占物理机五年摊销口径（64C/384G），与探探/DHH 实测同量级
+# 单位：¥ / vCPU·月（核月单价）。现价以厂商价格页为准（vendors 链接）。
+# ============================================================
+
+meta:
+  captured: "2025-04"
+  fx: 7.24
+  unit: "¥ / vCPU·month"
+  unitZh: "¥ / 核·月"
+
+# ------------------------------------------------------------
+# 核月单价谱系（横向条形图，线性坐标，条端直标数值）
+# group: self=自建 · ecs=租算力 · rds=租数据库（图例三色，顺序固定）
+# ------------------------------------------------------------
+spectrum:
+  - key: idc
+    group: self
+    price: 19
+    src: 1
+    label: "IDC self-host (Pigsty)"
+    labelZh: "IDC 自建（Pigsty）"
+    note: "dedicated 64C/384G node, 5-yr amortized"
+    noteZh: "独占物理机 64C/384G · 五年摊销"
+  - key: ecs8
+    group: ecs
+    price: 180
+    src: 2
+    label: "Aliyun ECS (1:8 RAM)"
+    labelZh: "阿里云 ECS（1:8 内存比）"
+    note: "dedicated, no oversell"
+    noteZh: "独占无超卖"
+  - key: rds2
+    group: rds
+    price: 270
+    src: 1
+    label: "Aliyun RDS HA (1:2)"
+    labelZh: "阿里云 RDS 高可用（1:2）"
+    note: "dual-node, list-price average"
+    noteZh: "双节点 · 挂牌均价"
+  - key: polar8
+    group: rds
+    price: 400
+    src: 1
+    label: "Aliyun PolarDB Enterprise (1:8)"
+    labelZh: "阿里云 PolarDB 企业版（1:8）"
+    note: "dedicated spec"
+    noteZh: "独享规格"
+  - key: rds8
+    group: rds
+    price: 432
+    src: 1
+    label: "Aliyun RDS HA (1:8)"
+    labelZh: "阿里云 RDS 高可用（1:8）"
+    note: "dual-node, list-price average"
+    noteZh: "双节点 · 挂牌均价"
+  - key: awss4
+    group: rds
+    price: 580
+    src: 1
+    label: "AWS RDS single-AZ (1:4)"
+    labelZh: "AWS RDS 单可用区（1:4）"
+    note: "on-demand, @7.24"
+    noteZh: "按需 · 汇率 7.24"
+  - key: awsha4
+    group: rds
+    price: 1160
+    src: 1
+    label: "AWS RDS Multi-AZ (1:4)"
+    labelZh: "AWS RDS 多可用区（1:4）"
+    note: "on-demand, @7.24"
+    noteZh: "按需 · 汇率 7.24"
+  - key: awsha8
+    group: rds
+    price: 1582
+    src: 1
+    label: "AWS RDS Multi-AZ (1:8)"
+    labelZh: "AWS RDS 多可用区（1:8）"
+    note: "on-demand, @7.24"
+    noteZh: "按需 · 汇率 7.24"
+
+# 谱系图注脚：Oracle 授权跳出坐标三个数量级，只做文字注记
+oracle_note:
+  price: 10000
+  label: "Oracle license runs ¥10,000 per core·month — three orders of magnitude off this chart."
+  labelZh: "Oracle 授权约 ¥10,000 / 核·月 —— 高出这张图三个数量级，不予入图。"
+  src: 1
+
+# ------------------------------------------------------------
+# 交互计算器数据（¥/核·月 包月基准价；折扣阶梯另乘）
+# ------------------------------------------------------------
+calc:
+  vcpus: [2, 4, 8, 16, 32, 64, 104]
+  default_vcpu: 16
+  ratios:
+    - { key: x2, label: "1:2" }
+    - { key: x4, label: "1:4" }
+    - { key: x8, label: "1:8" }
+  default_ratio: x4
+  terms:
+    - { key: od, mult: 1.5,  label: "On-demand",    labelZh: "按需" }
+    - { key: m1, mult: 1.0,  label: "Monthly",      labelZh: "包月" }
+    - { key: y3, mult: 0.45, label: "3-yr prepaid", labelZh: "包三年" }
+    - { key: y5, mult: 0.32, label: "5-yr prepaid", labelZh: "包五年" }
+  default_term: m1
+  aliyun_rds: { x2: 270, x4: 339, x8: 432 }   # 高可用版全规格均价
+  aliyun_ecs: { x2: 107, x4: 138, x8: 180 }   # 独占无超卖；折扣按相同阶梯估算
+  aws_rds_ha_od: { x4: 1160, x8: 1582 }       # Multi-AZ 按需
+  aws_rds_ha_3y: { x4: 257,  x8: 343 }        # Multi-AZ 3 年预留；AWS 无五年档
+  idc_core_month: 19                          # 五年摊销，不随付费周期变化
+  sub_pro_usd_year: 24000                     # Pigsty 专业版订阅（= pricing.yaml Professional $24K/年），计算器可选叠加
+
+# ------------------------------------------------------------
+# 判词（stat tiles）
+# ------------------------------------------------------------
+tiles:
+  - value: "5–15×"
+    label: "typical cloud-database premium over self-hosting"
+    labelZh: "云数据库相对自建的典型溢价"
+    src: 4
+  - value: "100×+"
+    label: "cloud block-storage premium at the top tiers"
+    labelZh: "云盘高档位相对硬件的溢价"
+    src: 3
+  - value: "$10M"
+    label: "DHH's five-year cloud-exit savings"
+    labelZh: "DHH 下云五年省下的钱"
+    src: 5
+  - value: "$400M"
+    label: "what Ahrefs saved in 3 years by not going cloud"
+    labelZh: "Ahrefs 不上云三年省下的钱"
+    src: 6
+
+# ------------------------------------------------------------
+# 公开案例（非 PGSTY 客户名单；客户案例仍需书面授权后另行上线）
+# ------------------------------------------------------------
+cases:
+  - key: dhh
+    org: "37signals · DHH"
+    stat: "$10M / 5 yr"
+    statZh: "五年省 ~$10M"
+    body: "Moved seven apps including HEY off AWS onto owned hardware. Savings passed $1M in year one and ran ahead of projections."
+    bodyZh: "把 HEY 在内的七个应用搬离 AWS，回到自有硬件。下云首年就省下超过一百万美元，实际节省跑赢了预期。"
+    src: 5
+  - key: ahrefs
+    org: "Ahrefs"
+    stat: "$400M / 3 yr"
+    statZh: "三年省 ~$4 亿"
+    body: "The search-index giant priced its own datacenter against AWS list prices, line by line: staying off the cloud saved roughly $400M over three years."
+    bodyZh: "这家搜索索引巨头把自建机房和 AWS 挂牌价逐项对了一遍账：不上云，三年省下约四亿美元。"
+    src: 6
+  - key: tantan
+    org: "Tantan · 探探"
+    stat: "25,000 vCPU"
+    statZh: "25,000 核自建"
+    body: "Runs PostgreSQL & Redis on ~25,000 self-hosted cores at millions of QPS, with a DBA team of two to three — the ¥19.5 core·month reference behind the chart above."
+    bodyZh: "约 25,000 核自建 PostgreSQL 与 Redis，扛数百万 QPS，DBA 团队两三个人 —— 就是上图 ¥19.5 核月成本的原型。"
+    src: 1
+  - key: rednote
+    org: "RedNote · 小红书"
+    stat: "Self-host first"
+    statZh: "自建优先"
+    body: "A platform that grew up in the cloud-native era, now steering its infrastructure strategy toward self-hosting first."
+    bodyZh: "在云原生时代长大的内容平台，基础设施战略正在转向自建优先。"
+    src: 7
+
+# ------------------------------------------------------------
+# 下云文选（manifesto 精选索引；EN 链接为 vonng.com/en 镜像，均已核实存在）
+# ------------------------------------------------------------
+essays:
+  - group: "The math"
+    groupZh: "算账"
+    items:
+      - { slug: rds,    title: "Are Cloud Databases an IQ Tax?",            titleZh: "云数据库是不是智商税" }
+      - { slug: ecs,    title: "Analyzing Alibaba Cloud Compute Cost",      titleZh: "剖析阿里云服务器算力成本" }
+      - { slug: ebs,    title: "Is Cloud Block Storage a Slaughter Scam?",  titleZh: "云盘是不是杀猪盘" }
+      - { slug: finops, title: "FinOps: The Endgame Is Cloud-Exit",         titleZh: "FinOps 终点是下云" }
+  - group: "The receipts"
+    groupZh: "案例"
+    items:
+      - { slug: odyssey-done,      title: "DHH: Cloud-Exit Saved Over Ten Million", titleZh: "DHH：下云省下千万美元" }
+      - { slug: ahrefs-saving,     title: "How Ahrefs Saved $400M by Not Going Cloud", titleZh: "Ahrefs 不上云，省下四亿美元" }
+      - { slug: rednote-cloud-exit, title: "Did RedNote Exit the Cloud?",   titleZh: "小红书究竟有没有下云？" }
+  - group: "The creed"
+    groupZh: "立场"
+    items:
+      - { slug: paradigm, title: "Paradigm Shift: From Cloud to Local-First", titleZh: "范式转移：从云到本地优先" }
+      - { slug: data-sovereignty-manifesto, title: "The Data Sovereignty Manifesto", titleZh: "数据主权宣言" }
+      - { slug: bonus,    title: "Reclaim the Hardware Bonus",               titleZh: "重新拿回计算机硬件的红利" }
+
+# ------------------------------------------------------------
+# 来源（页面脚注按 id 引用；价格数据抓取时间见 meta.captured）
+# ------------------------------------------------------------
+sources:
+  - { id: 1, slug: rds,               title: "Are Cloud Databases an IQ Tax?",        titleZh: "云数据库是不是智商税" }
+  - { id: 2, slug: ecs,               title: "Analyzing Alibaba Cloud Compute Cost",  titleZh: "剖析阿里云服务器算力成本" }
+  - { id: 3, slug: ebs,               title: "Is Cloud Block Storage a Slaughter Scam?", titleZh: "云盘是不是杀猪盘" }
+  - { id: 4, slug: paradigm,          title: "Paradigm Shift: From Cloud to Local-First", titleZh: "范式转移：从云到本地优先" }
+  - { id: 5, slug: odyssey-done,      title: "DHH: Cloud-Exit Saved Over Ten Million", titleZh: "DHH：下云省下千万美元" }
+  - { id: 6, slug: ahrefs-saving,     title: "How Ahrefs Saved $400M by Not Going Cloud", titleZh: "Ahrefs 不上云，省下四亿美元" }
+  - { id: 7, slug: rednote-cloud-exit, title: "Did RedNote Exit the Cloud?",          titleZh: "小红书究竟有没有下云？" }
+
+vendors:
+  - { label: "AWS RDS for PostgreSQL pricing", labelZh: "AWS RDS PostgreSQL 价格页", url: "https://aws.amazon.com/rds/postgresql/pricing/" }
+  - { label: "Alibaba Cloud price calculator", labelZh: "阿里云价格计算器", url: "https://www.aliyun.com/price/product" }

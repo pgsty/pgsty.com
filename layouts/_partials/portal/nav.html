@@ -22,6 +22,8 @@
             <div class="dropdown-group">
               <ul class="dropdown-col">
                 <li><a href="{{ $dist }}" target="_blank" rel="noopener"><i class="fas fa-database" aria-hidden="true"></i> {{ if $zh }}发行版 · Pigsty{{ else }}Distribution · Pigsty{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>
+                <li><a href="https://silo.pgsty.com{{ if $zh }}/zh/{{ end }}" target="_blank" rel="noopener"><i class="fas fa-box-archive" aria-hidden="true"></i> {{ if $zh }}对象存储 · Silo{{ else }}Object Storage · Silo{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>
+                <li><a href="https://pgext.cloud" target="_blank" rel="noopener"><i class="fas fa-puzzle-piece" aria-hidden="true"></i> {{ if $zh }}扩展云 · PGEXT{{ else }}Extension Cloud · PGEXT{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>
                 <li><a href="{{ $home }}#infras"><i class="fas fa-server" aria-hidden="true"></i> {{ if $zh }}生态基础设施{{ else }}Infrastructure{{ end }}</a></li>
                 <li><a href="{{ $home }}#glass"><i class="fas fa-chart-area" aria-hidden="true"></i> {{ if $zh }}可观测性{{ else }}Observability{{ end }}</a></li>
                 <li><a href="{{ $home }}#toolbox"><i class="fas fa-toolbox" aria-hidden="true"></i> {{ if $zh }}工具箱{{ else }}Toolbox{{ end }}</a></li>

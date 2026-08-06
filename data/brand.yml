@@ -18,14 +18,15 @@ tagline_zh_community: 生产级自建，谁也拿不走   # 社区 / 周边物�
 tagline_zh_xinchuang: 生产级自建，主权在你     # 信创 / 政企场景（中文信创页）
 
 metrics:
-  github_stars: 5347        # github.com/pgsty/pigsty（bin/metrics.py update 回写）
+  github_stars: 5482        # github.com/pgsty/pigsty（bin/metrics.py update 回写）
   org_stars: 7800           # 主要仓库星数合计（展示用整数）
   ext_catalogued: 2230      # PGEXT.CLOUD 收录扩展数
   ext_packaged: 562         # 已打包可安装扩展数 —— 对外唯一扩展数口径（PRD §10.1）
   ext_bundled: 444          # TODO(user)：语义待确认（PRD §12.2）——确认前禁止上页
-  kernels: 9                # 可替换 PG 内核数（MSSQL / Oracle / MySQL / Mongo 兼容等）
+  kernels: 12               # 可替换 PG 内核数 —— pigsty.io 首页口径「12 PG kernel forks」（2026-08-06 核对）
   pg_majors: "14–18"        # 支持的 PostgreSQL 大版本
   metrics_per_instance: 600 # pg_exporter 单实例指标数（600+）
   series_per_instance: 3000 # 单实例时间序列（约 3,000 条）
   docker_pulls_silo: 484163
-  since_year: 2018          # 公司 / 项目起始年份
+  since_year: 2018          # 公司 / 项目起始年份（EST. / 版权行用）
+  oss_since_year: 2020      # 开源起步年份（指标带「Open source since」用）

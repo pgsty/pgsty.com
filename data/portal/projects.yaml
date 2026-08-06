@@ -10,7 +10,7 @@
   siteZh: https://pigsty.cc
   version: v4.4.0
   license: Apache-2.0
-  stars: 5347
+  stars: 5482
   lang: Ansible
   kind: PG DISTRIBUTION
   kindZh: PG 发行版
@@ -42,7 +42,7 @@
   siteZh: https://pigsty.cc/docs/pg_exporter
   version: v1.4.1
   license: Apache-2.0
-  stars: 356
+  stars: 357
   lang: Go
   kind: METRICS EXPORTER
   kindZh: 指标导出器
@@ -58,7 +58,7 @@
   siteZh: https://silo.pgsty.com/zh/
   version: RELEASE.2026-06
   license: AGPL-3.0
-  stars: 1940
+  stars: 1954
   lang: Go
   kind: OBJECT STORAGE
   kindZh: 对象存储
@@ -67,6 +67,26 @@
   install: "docker pull pgsty/minio"
   installZh: "docker pull pgsty/minio"
 
+# —— 占位条目（placeholder: true）：未发布 / 未公开 repo，只出「敬请期待」卡，
+#    不放链接、版本、星数与安装命令。发布后补全字段并移除 placeholder。
+- key: sow
+  name: SOW
+  placeholder: true
+  kind: REPO MANAGER
+  kindZh: 仓库管理器
+  desc: Repository manager for the Pigsty ecosystem — in the works.
+  descZh: Pigsty 生态的软件仓库管理器 —— 打磨中。
+  # TODO(user): 发布后补 repo / site / version / desc
+
+- key: dor
+  name: DOR
+  placeholder: true
+  kind: MANAGEMENT CONSOLE
+  kindZh: 可视化管理平台
+  desc: Visual management console for Pigsty — in the works.
+  descZh: Pigsty 可视化管理平台 —— 打磨中。
+  # TODO(user): 发布后补 repo / site / version / desc
+
 # piglet：原条目的 repo / 文档链接与安装命令均指向主项目，疑为占位（PRD §10.2）。
 # 等真实 repo / docs 链接与版本号到位后再恢复条目（PRD §6.8 / §12.3）；
-# 眼下 T 板块以正文一句话提及，不出卡片。
+# 眼下 T 板块以工坊铭牌一句话提及，不出卡片。

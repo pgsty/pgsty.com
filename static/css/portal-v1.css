@@ -1202,3 +1202,286 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 .artifact-plate-foot { border-top: 1px solid var(--line); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--silk); }
 .artifact-plate-foot i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); animation: mark-breathe 2.6s ease-in-out infinite; }
 .artifact-plate-foot b { margin-left: auto; color: var(--copper); }
+
+/* ------------------------------------------------------------
+   25. T 板块：占位项目卡（未发布，无链接）+ 宽幅工坊铭牌
+   ------------------------------------------------------------ */
+.repo-card--ph { border-style: dashed; background: var(--bg-soft); }
+.repo-chip--soon { color: var(--copper); border-color: var(--copper-dim); border-style: dashed; letter-spacing: 0.12em; }
+.repo-grid .workshop-note--wide { grid-column: 1 / -1; }
+@media (max-width: 860px) { .repo-grid .workshop-note--wide { grid-column: auto; } }
+
+/* ------------------------------------------------------------
+   26. 图表基元（/solutions/cloud-exit/）
+   系列色 = 部署形态三分组（顺序固定：自建 / 租算力 / 租数据库），
+   两套主题色均通过 dataviz 六项校验（CVD / 对比度 / 亮度带）：
+   light #358a5c/#2b6ca3/#c2403a · dark #4aa06e/#3d93ce/#d95f5f
+   ------------------------------------------------------------ */
+.exit-page {
+  --cx-self: #358a5c;
+  --cx-ecs: #2b6ca3;
+  --cx-rds: #c2403a;
+}
+html[data-theme="dark"] .exit-page {
+  --cx-self: #4aa06e;
+  --cx-ecs: #3d93ce;
+  --cx-rds: #d95f5f;
+}
+
+.exit-tiles { padding-top: 0; }
+.exit-tiles .stat-label sup { margin-left: 2px; }
+.exit-method { padding-top: 0; }
+
+.chart-block { margin: 0; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 16px; }
+.lg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+.lg-chip::before { content: ''; width: 10px; height: 10px; border-radius: 3px; }
+.lg-chip--self::before { background: var(--cx-self); }
+.lg-chip--ecs::before { background: var(--cx-ecs); }
+.lg-chip--rds::before { background: var(--cx-rds); }
+
+.spec-chart { list-style: none; margin: 0; padding: 0; }
+.spec-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(150px, 240px) minmax(0, 1fr) 76px;
+  align-items: center;
+  gap: 14px;
+  padding: 5px 0;
+  border-radius: 6px;
+}
+.spec-label { font-size: 0.86rem; color: var(--ink-soft); line-height: 1.35; }
+.spec-track { position: relative; height: 16px; background: color-mix(in srgb, var(--line) 42%, transparent); border-radius: 0 4px 4px 0; }
+.spec-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  min-width: 3px;
+  border-radius: 0 4px 4px 0;
+  transition: width 400ms ease;
+}
+.spec-fill--self { background: var(--cx-self); }
+.spec-fill--ecs { background: var(--cx-ecs); }
+.spec-fill--rds { background: var(--cx-rds); }
+.spec-val { font-family: var(--font-mono); font-size: 0.86rem; font-weight: 600; color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
+/* 悬停 / 聚焦提示：口径说明 */
+.spec-row::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 2px);
+  z-index: 5;
+  padding: 5px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--bg-elev-2);
+  box-shadow: var(--shadow-sm);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease;
+}
+.spec-row:hover::after,
+.spec-row:focus-visible::after { opacity: 1; }
+.spec-row:hover .spec-label,
+.spec-row:focus-visible .spec-label { color: var(--ink); }
+
+.chart-caption {
+  margin-top: 14px;
+  font-size: 0.76rem;
+  line-height: 1.7;
+  color: var(--ink-mute);
+}
+.chart-data { margin-top: 12px; }
+.chart-data > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  color: var(--silk);
+}
+.chart-data > summary:hover { color: var(--copper); }
+.chart-data .cmp-wrap { margin-top: 10px; }
+.chart-data .cmp-table { min-width: 560px; font-size: 0.82rem; }
+
+@media (max-width: 640px) {
+  .spec-row { grid-template-columns: minmax(0, 1fr) 70px; grid-template-areas: "label val" "track track"; gap: 4px 10px; padding: 7px 0; }
+  .spec-label { grid-area: label; font-size: 0.8rem; }
+  .spec-track { grid-area: track; }
+  .spec-val { grid-area: val; }
+  .spec-row::after { white-space: normal; }
+}
+
+/* ------------------------------------------------------------
+   27. 交互计算器
+   ------------------------------------------------------------ */
+.calc-card {
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elev);
+  box-shadow: var(--shadow-md);
+}
+.calc-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px 26px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px dashed var(--line-strong);
+}
+.calc-field { display: flex; flex-direction: column; gap: 7px; }
+.calc-field-label { font-size: 0.62rem; }
+.calc-select {
+  padding: 8px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--bg-elev-2);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+.calc-seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 8px; overflow: hidden; }
+.calc-seg button {
+  padding: 8px 13px;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+.calc-seg button + button { border-left: 1px solid var(--line); }
+.calc-seg button:hover { color: var(--ink); background: var(--bg-elev-2); }
+.calc-seg button[aria-pressed="true"] {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-ink);
+}
+.calc-field--check {
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.calc-field--check input { accent-color: var(--btn-primary-bg); width: 16px; height: 16px; }
+
+.cc-verdict {
+  margin: 0 0 16px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.02rem, 1.7vw, 1.3rem);
+  color: var(--ink);
+}
+.cc-chart { display: flex; flex-direction: column; gap: 10px; }
+.cc-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr) 150px;
+  align-items: center;
+  gap: 14px;
+}
+.cc-label { font-size: 0.86rem; color: var(--ink-soft); line-height: 1.3; }
+.cc-note { display: block; font-style: normal; font-family: var(--font-mono); font-size: 0.64rem; color: var(--ink-mute); }
+.cc-track { position: relative; height: 16px; background: color-mix(in srgb, var(--line) 42%, transparent); border-radius: 0 4px 4px 0; }
+.cc-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  min-width: 3px;
+  border-radius: 0 4px 4px 0;
+  transition: width 320ms ease;
+}
+.cc-fill--self { background: var(--cx-self); }
+.cc-fill--ecs { background: var(--cx-ecs); }
+.cc-fill--rds { background: var(--cx-rds); }
+.cc-out { display: flex; align-items: baseline; justify-content: flex-end; gap: 8px; }
+.cc-val { font-family: var(--font-mono); font-size: 0.88rem; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cc-mult {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--cx-rds);
+  white-space: nowrap;
+}
+.cc-aws-na { margin: 4px 0 0; font-size: 0.76rem; color: var(--ink-mute); }
+.calc-footnote { margin: 16px 0 0; font-size: 0.76rem; line-height: 1.7; color: var(--ink-mute); }
+
+@media (max-width: 640px) {
+  .cc-row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "label out" "track track"; gap: 4px 10px; }
+  .cc-label { grid-area: label; }
+  .cc-track { grid-area: track; }
+  .cc-out { grid-area: out; }
+  .calc-controls { gap: 12px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spec-fill, .cc-fill { transition: none; }
+}
+
+/* ------------------------------------------------------------
+   28. 公开案例卡 / 下云文选
+   ------------------------------------------------------------ */
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.case-card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-elev);
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+.case-card:hover { transform: translateY(-3px); border-color: var(--card-hover-border); box-shadow: var(--shadow-md); }
+.case-org { margin: 0; }
+.case-stat {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  color: var(--copper);
+}
+.case-body { margin: 0; flex-grow: 1; font-size: 0.86rem; line-height: 1.7; color: var(--ink-soft); }
+.case-src { font-family: var(--font-mono); font-size: 0.74rem; color: var(--silk); }
+.case-src:hover { color: var(--copper); }
+.case-note { margin: 20px 0 0; text-align: center; font-size: 0.82rem; color: var(--ink-mute); }
+@media (max-width: 1080px) { .case-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .case-grid { grid-template-columns: 1fr; } }
+
+.essay-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.essay-group {
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-elev);
+}
+.essay-group-title { margin: 0 0 12px; color: var(--copper); }
+.essay-list { margin: 0; padding: 0; list-style: none; }
+.essay-list li { margin-bottom: 9px; }
+.essay-list a { font-size: 0.9rem; line-height: 1.5; color: var(--ink-soft); }
+.essay-list a:hover { color: var(--pg-strong); }
+.essay-list a i { font-style: normal; font-size: 0.72em; color: var(--ink-mute); }
+.essay-more { margin: 22px 0 0; text-align: center; font-family: var(--font-mono); font-size: 0.88rem; }
+.essay-more a { color: var(--copper); }
+.essay-more a:hover { color: var(--pg-strong); }
+@media (max-width: 900px) { .essay-groups { grid-template-columns: 1fr; } }
