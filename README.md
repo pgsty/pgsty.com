@@ -22,6 +22,22 @@ make build    # 产出到 public/
 make check    # 模块校验 + 严格构建 + 内链检查
 ```
 
+## 部署
+
+推送到 `main` 触发两条独立流水线（`.github/workflows/`）：
+
+| 工作流 | 产物 | 线上地址 |
+|--------|------|----------|
+| `cloudflare.yml` | 构建后强推到 `gh-pages` 分支 | Cloudflare Pages 接该分支，默认 `*.pages.dev` |
+| `github-pages.yml` | 以 Actions artifact 直接部署 | `https://pgsty.github.io/pgsty.com/` |
+
+两者用同一份源码，区别只在 baseURL：Cloudflare 沿用 `hugo.yaml` 里的 `https://pgsty.com/`；
+GitHub Pages 带仓库名子路径，故构建时用 `--baseURL` 覆盖（模板一律走 `relURL`，子路径无碍）。
+Pull Request 只跑 Cloudflare 那条的构建与内链检查，不部署。
+
+一次性设置：Cloudflare Pages 新建项目接本仓库、生产分支选 `gh-pages`、构建命令留空
+（产物已是静态文件）；GitHub 仓库 Settings → Pages 的 Source 选 **GitHub Actions**。
+
 ## 结构速览
 
 | 路径 | 说明 |

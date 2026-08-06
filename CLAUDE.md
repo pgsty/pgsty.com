@@ -10,6 +10,10 @@
 - `make check` — 严格构建（--panicOnWarning）+ bin/check_internal_links.py
 - `bin/metrics.py update` — 刷新 data/portal 里的 GitHub 星数
 
+推到 main 触发两条流水线：`.github/workflows/cloudflare.yml` 构建后强推 `gh-pages`
+分支（Cloudflare Pages 接该分支）；`.github/workflows/github-pages.yml` 用
+`--baseURL` 覆盖成仓库名子路径后经 artifact 部署到 GitHub Pages。两者都不配自定义域名。
+
 ## 关键约定
 
 - 首页布局在 `layouts/index.html`，**不走 Docsy 模板**，双语用 `{{ if $zh }}` 内联；
