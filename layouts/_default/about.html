@@ -55,10 +55,10 @@
         <div class="portal-prose portal-prose--center anim" style="--d:3">
           {{ if $zh }}
           <p>{{ $m.since_year }} 年，这一切从一位 DBA 的私人工具箱开始 —— 一堆把 PostgreSQL 跑好的脚本。{{ $m.oss_since_year }} 年它开源，长成了发行版 Pigsty，随后长出包管理器、指标导出器，以及整个生态共用的软件仓库与扩展目录。</p>
-          <p>半路上还多了第二面旗帜：<a href="https://silo.pgsty.com/zh/" target="_blank" rel="noopener">Silo</a> —— 我们替整个社区接手维护的 MinIO 分支。S3 兼容对象存储，安全更新、管理控制台与完整发行制品都还在线，如今已有 {{ partial "compact-number.html" $silo.stars }} 星标。维护好一个被上游放下的项目，和写出一个新项目一样，是对生态实打实的贡献。工具箱变成了生态，作者身后有了一家公司：PGSTY。</p>
+          <p>半路上还多了第二面旗帜：<a href="https://silo.pgsty.com/zh/" target="_blank" rel="noopener">Silo</a> —— PIGSTY 维护的 MinIO 分支。S3 兼容对象存储，持续安全更新，管理控制台与完整发行制品都还在线，如今已有 {{ partial "compact-number.html" $silo.stars }} 星标。维护好一个被上游放下的项目，和写出一个新项目一样，是对生态实打实的贡献。工具箱变成了生态，作者身后有了一家公司：PGSTY。</p>
           {{ else }}
           <p>In {{ $m.since_year }} this was one DBA's private toolbox — a pile of scripts for running PostgreSQL properly. It went open source in {{ $m.oss_since_year }}, grew into the Pigsty distribution, then a package manager, a metrics exporter, and the public repositories and extension catalog the wider ecosystem runs on.</p>
-          <p>Along the way we raised a second flag: <a href="https://silo.pgsty.com" target="_blank" rel="noopener">Silo</a>, the community-maintained fork of MinIO — S3-compatible object storage with security updates, a working console, and full release artifacts still shipping, now at {{ partial "compact-number.html" $silo.stars }} stars. Keeping alive a project its upstream set down is as real a contribution as writing a new one. The toolbox became an ecosystem, and behind its author now stands a company: PGSTY.</p>
+          <p>Along the way we raised a second flag: <a href="https://silo.pgsty.com" target="_blank" rel="noopener">Silo</a>, the PIGSTY-maintained fork of MinIO — S3-compatible object storage with ongoing security updates, a working console, and full release artifacts still shipping, now at {{ partial "compact-number.html" $silo.stars }} stars. Keeping alive a project its upstream set down is as real a contribution as writing a new one. The toolbox became an ecosystem, and behind its author now stands a company: PGSTY.</p>
           {{ end }}
         </div>
       </div>

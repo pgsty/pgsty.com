@@ -10,7 +10,8 @@
 {{- $socialAlt := cond $zh "PGSTY — 开源 PostgreSQL 发行版与专业服务" "PGSTY — open-source PostgreSQL distribution & expert services" -}}
 {{- $mainRepo := cond $zh "https://repo.pigsty.cc" "https://repo.pigsty.io" -}}
 {{- $install := cond $zh "https://pigsty.cc/docs/setup/install" "https://pigsty.io/docs/setup/install" -}}
-{{- $essays := cond $zh "https://pigsty.cc/blog/cloud/" "https://pigsty.io/blog/cloud/" -}}
+{{- /* 下云专栏一律指作者博客（用户 2026-08 指示） */ -}}
+{{- $essays := cond $zh "https://vonng.com/cloud/" "https://vonng.com/en/cloud/" -}}
 {{- $silo := index (where $projects "key" "silo") 0 -}}
 {{- /* 实体按语言拆分：英文站只写新加坡公司，中文站只写中国公司 */ -}}
 {{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
@@ -184,14 +185,10 @@
               </div>
             </figure>
 
-            {{- /* 字标归位于字母板下（PRD §3.1 / §6.1）：In 的 i 弱化处理，与 missing-i 短版同框。
-                 §3.3 克制条款：这个梗全站只完整出现两处 —— 此处短版 + /about/ 长版 */}}
+            {{- /* 字标归位于字母板下（PRD §3.1 / §6.1）。missing-i 的解释按用户指示不放 hero，
+                 只留 .wm-i 微交互；完整故事在 /about/ 长版 + 页脚一行提示 */}}
             <div class="board-epigraph anim" style="--d:7">
               <p class="board-wordmark"><b class="ini ini-p">P</b>ostgreSQL <b class="wm-i">i</b>n <b class="ini ini-g">G</b>reat <b class="ini ini-s">S</b><b class="ini ini-t">T</b><b class="ini ini-y">Y</b>le</p>
-              <p class="board-missing-i" id="missing-i">
-                {{ if $zh }}<strong>PIGSTY</strong> 是产品，六个字母；<strong>PGSTY</strong> 是公司，五个。少掉的那个 <strong class="mi">i</strong> 是 <strong>Infrastructure</strong> —— 我们为整个生态运营的公共仓库、镜像、离线包与扩展目录。那是我们送出去的一个字母：向所有人免费，永远免费。
-                {{ else }}<strong>PIGSTY</strong> is the product — six letters. <strong>PGSTY</strong> is the company — five. The missing <strong class="mi">i</strong> stands for <strong>Infrastructure</strong>: the public repositories, mirrors, offline packages, and the extension catalog we run for the whole ecosystem. It's the letter we gave away — free for everyone, forever.{{ end }}
-              </p>
             </div>
           </div>
         </div>
@@ -323,7 +320,7 @@
           </p>
           <h2 class="section-title">{{ if $zh }}撑起 PG 生态的公共基础设施{{ else }}Public infrastructure for the PostgreSQL ecosystem{{ end }}</h2>
           <p class="section-subtitle">{{ if $zh }}软件仓库、扩展分发、对象存储 —— 我们长期运营整个生态赖以运转的地基，全球与中国大陆双线可达。{{ else }}Software repositories, extension delivery, object storage — we run the foundations the ecosystem stands on, reachable worldwide and inside mainland China alike.{{ end }}</p>
-          <p class="gift-note">{{ if $zh }}这一层就是那份礼物 —— <a href="#missing-i">见上文少掉的 i</a>。{{ else }}This layer is the gift — <a href="#missing-i">see the missing i above</a>.{{ end }}</p>
+          <p class="gift-note">{{ if $zh }}这一层，就是公司名里少掉的那个 i —— <a href="{{ relLangURL "about/" }}#missing-i">缘由见「关于」</a>。{{ else }}This layer is the missing i in the company's name — <a href="{{ relLangURL "about/" }}#missing-i">the story is on the About page</a>.{{ end }}</p>
         </div>
 
         <div class="module-row module-row--reverse" data-reveal>
@@ -334,7 +331,7 @@
               <li>{{ if $zh }}全球 CDN 软件仓库 repo.pigsty.io，中国大陆镜像 repo.pigsty.cc{{ else }}Global CDN repo at repo.pigsty.io, with mainland-China mirror repo.pigsty.cc{{ end }}</li>
               <li>{{ if $zh }}PGEXT.CLOUD 扩展云：收录 {{ lang.FormatNumber 0 $m.ext_catalogued }} 个扩展，{{ $m.ext_packaged }} 个已打包即装{{ else }}PGEXT.CLOUD — {{ lang.FormatNumber 0 $m.ext_catalogued }} extensions catalogued, {{ $m.ext_packaged }} packaged & installable{{ end }}</li>
               <li>{{ if $zh }}精确到操作系统小版本的离线安装包，断网环境照常交付{{ else }}Offline packages pinned to exact OS minor versions — deliverable air-gapped{{ end }}</li>
-              <li>{{ if $zh }}Silo：持续维护的 S3 兼容对象存储（MinIO 社区分支）{{ else }}Silo — a maintained S3-compatible object storage (community MinIO fork){{ end }}</li>
+              <li>{{ if $zh }}Silo：PIGSTY 维护的 MinIO 分支，S3 兼容对象存储，持续安全更新{{ else }}Silo — the PIGSTY-maintained MinIO fork: S3-compatible, with ongoing security updates{{ end }}</li>
             </ul>
             <p class="module-value">{{ if $zh }}生态的可持续，是一种基础设施{{ else }}Ecosystem continuity is itself infrastructure{{ end }}</p>
             <div class="section-links module-links">
@@ -522,12 +519,7 @@
           </article>
           {{ end }}
 
-          {{- /* piglet 卡按 PRD §6.8 撤下（原卡链接与安装命令均指向主项目，系占位）。
-               TODO(user)：拿到真实 repo / docs 链接与版本号后恢复项目卡（§12.3） */}}
-          <article class="workshop-note workshop-note--wide">
-            <p class="workshop-head silkscreen"><i aria-hidden="true"></i>{{ if $zh }}IN THE WORKSHOP · 工坊在制{{ else }}IN THE WORKSHOP{{ end }}</p>
-            <p class="workshop-desc">{{ if $zh }}台面上还有一件正在打磨的兵器 —— <b>piglet</b>：面向 AI Coding 的轻量运行时，把 PostgreSQL、JuiceFS 与 Claude Code 装进一个盒子，自带 PITR 时间机器与写时复制秒级克隆。{{ else }}Also on the bench — <b>piglet</b>, a lightweight runtime for AI coding: PostgreSQL + JuiceFS + Claude Code in one box, with a PITR time machine and copy-on-write instant clones.{{ end }}</p>
-          </article>
+          {{- /* piglet（piglet.run）按用户 2026-08 指示暂不露出；上线后以完整项目卡回归 */}}
         </div>
       </div>
     </section>
@@ -547,7 +539,7 @@
 
         <div class="module-row module-row--reverse" data-reveal>
           <div class="module-content">
-            <h3 class="module-title"><a href="{{ if $zh }}https://pigsty.cc/blog/cloud/{{ else }}https://pigsty.io/blog/cloud/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}我们所相信的{{ else }}What we stand for{{ end }}</a></h3>
+            <h3 class="module-title"><a href="{{ $essays }}" target="_blank" rel="noopener">{{ if $zh }}我们所相信的{{ else }}What we stand for{{ end }}</a></h3>
             <p class="module-motto"><span aria-hidden="true">✊</span> {{ if $zh }}自由不是功能，是承诺{{ else }}Freedom isn't a feature — it's a commitment{{ end }}</p>
             <ul class="module-list">
               <li>{{ if $zh }}完整功能开源：Apache-2.0，不限节点，无阉割无暗门{{ else }}Fully-featured open source: Apache-2.0, unlimited nodes, nothing held back{{ end }}</li>
@@ -557,7 +549,7 @@
             </ul>
             <p class="module-value">{{ if $zh }}助您用好数据库，用好数据库{{ else }}Run a good database — and run it well{{ end }}</p>
             <div class="section-links module-links">
-              <a href="{{ if $zh }}https://pigsty.cc/blog/cloud/{{ else }}https://pigsty.io/blog/cloud/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}下云专栏{{ else }}Cloud-Exit Essays{{ end }} →</a>
+              <a href="{{ $essays }}" target="_blank" rel="noopener">{{ if $zh }}下云专栏{{ else }}Cloud-Exit Essays{{ end }} →</a>
               <a href="https://pg.center" target="_blank" rel="noopener">PG.CENTER →</a>
               {{ if $zh }}<a href="https://pg.center/docs" target="_blank" rel="noopener">PostgreSQL 中文文档 →</a>
               {{ else }}<a href="https://pg.center/docs" target="_blank" rel="noopener">Translated Docs →</a>{{ end }}
@@ -595,7 +587,7 @@
         <div class="about-teaser" data-reveal>
           <div class="about-teaser-copy">
             <p class="teaser-mission">{{ if $zh }}我们的使命，是帮助这个世界用好 PostgreSQL。{{ else }}Our mission is to help the world make the most of PostgreSQL.{{ end }}</p>
-            <p>{{ if $zh }}始于 2018 年一位 DBA 的工具箱，如今长成一套完整的开源 PostgreSQL 生态：发行版 <a href="https://pigsty.cc" target="_blank" rel="noopener">Pigsty</a>、我们替整个社区接手维护的对象存储分支 <a href="https://silo.pgsty.com/zh/" target="_blank" rel="noopener">Silo</a>（{{ partial "compact-number.html" $silo.stars }} 星标），还有 <a href="https://pgext.cloud" target="_blank" rel="noopener">pgext.cloud</a> 扩展目录。PGSTY 是 GitHub 上 <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> 组织背后的公司，也是奇绩创坛 S22 校友项目。{{ else }}What began in 2018 as one DBA's toolbox is now a complete open-source PostgreSQL ecosystem: the <a href="https://pigsty.io" target="_blank" rel="noopener">Pigsty</a> distribution, <a href="https://silo.pgsty.com" target="_blank" rel="noopener">Silo</a> — the object-storage fork we maintain for the whole community ({{ partial "compact-number.html" $silo.stars }} stars) — and the <a href="https://pgext.cloud" target="_blank" rel="noopener">pgext.cloud</a> extension catalog. PGSTY is the company behind the <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> organization on GitHub, and a MiraclePlus S22 alumnus.{{ end }}</p>
+            <p>{{ if $zh }}始于 2018 年一位 DBA 的工具箱，如今长成一套完整的开源 PostgreSQL 生态：发行版 <a href="https://pigsty.cc" target="_blank" rel="noopener">Pigsty</a>、PIGSTY 维护的 MinIO 分支 <a href="https://silo.pgsty.com/zh/" target="_blank" rel="noopener">Silo</a>（持续安全更新，{{ partial "compact-number.html" $silo.stars }} 星标），还有 <a href="https://pgext.cloud" target="_blank" rel="noopener">pgext.cloud</a> 扩展目录。PGSTY 是 GitHub 上 <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> 组织背后的公司，也是奇绩创坛 S22 校友项目。{{ else }}What began in 2018 as one DBA's toolbox is now a complete open-source PostgreSQL ecosystem: the <a href="https://pigsty.io" target="_blank" rel="noopener">Pigsty</a> distribution, <a href="https://silo.pgsty.com" target="_blank" rel="noopener">Silo</a> — the PIGSTY-maintained MinIO fork with ongoing security updates ({{ partial "compact-number.html" $silo.stars }} stars) — and the <a href="https://pgext.cloud" target="_blank" rel="noopener">pgext.cloud</a> extension catalog. PGSTY is the company behind the <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> organization on GitHub, and a MiraclePlus S22 alumnus.{{ end }}</p>
             <p>{{ if $zh }}我们刻意把公司保持得很小：支持不设工单分层，接电话的就是写代码的那个人。{{ else }}And we keep the company deliberately small: no support tiers — when you call, you reach the person who wrote the code.{{ end }}</p>
             <a href="{{ relLangURL "about/" }}" class="btn btn-primary">{{ if $zh }}关于 PGSTY{{ else }}About PGSTY{{ end }} →</a>
           </div>

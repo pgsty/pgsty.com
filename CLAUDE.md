@@ -35,8 +35,9 @@
   **G 板块 2026-08 由 GRAPHICS 改名 GLASS**；`#graphics` 是 `#glass` 的别名
   （section id=glass，内层 container id=graphics），老外链不能断，勿删。
 - hero 主标题 = tagline（brand.yml），字标 `PostgreSQL In Great STYle` 在字母板下方
-  （`.board-epigraph`，`In` 的 i 用 `.wm-i` 弱化）。**missing-i 梗全站只完整出现两处**：
-  首页短版 + /about/ 长版；页脚只许一行提示（§3.3 克制条款）。
+  （`.board-epigraph`，`In` 的 i 用 `.wm-i` 弱化）。**hero 不解释 i 为什么少**（用户
+  2026-08 指示）：missing-i 故事只在 /about/ 长版 + 页脚一行提示；I 板块 gift-note
+  链接指 /about/#missing-i。
 - 子页均为独立完整 HTML 布局：/price/（layouts/_default/price.html）、
   /about/（layouts/_default/about.html，alias /company/about/）、
   /solutions/（layouts/solutions/list.html）、/solutions/cloud-exit/（layouts/solutions/cloud-exit.html）。
@@ -46,17 +47,24 @@
   "home|price|solutions|about"`，含 Product/Company 纯 CSS 下拉）、footer、
   contact-band（可传 title/desc/pricing 参数）、foot-scripts。
 - cloud-exit 是「下云宣言 + 账本」页：全部成本数字在 **data/portal/cloudcost.yaml**
-  （核月单价谱系 / 计算器矩阵 / 判词 / 案例 / 文选 / 来源），出处 = vonng.com/cloud
-  公开文章（EN 用 /en/cloud 镜像，均已核实存在），价格抓取口径 2025-04、汇率 7.24。
-  **禁止无来源数字**；模板与 JS 里硬编码成本数字视为 bug。交互计算器：
-  static/js/cloud-calc.js 读页面内 #cloudcalc-data JSON（模板从 cloudcost.yaml 渲染）。
-  图表系列色 = 部署形态三分组，两套主题 token（.exit-page --cx-*）均过 dataviz
-  六项校验，改色需重跑校验；每张图配 details 数据表与直标数值。
+  （三大件谱系[数据库/算力/对象存储] / 计算器矩阵 / 判词 / 案例 / 行业锚点 / 文选 /
+  来源），出处 = vonng.com/cloud 公开文章（EN 用 /en/cloud 镜像，均逐篇核实）+
+  厂商价格页（refs 带抓取日期）；算力与 RDS 口径 2025-04、汇率 7.24。
+  **禁止无来源数字**；模板与 JS 里硬编码成本数字视为 bug。
+  交互计算器（static/js/cloud-calc.js 读 #cloudcalc-data JSON）：八旋钮 = vCPU ×
+  内存比 × 节点数 × 存储 × 付费周期 × 订阅档位 × 币种 × 月/年；节点模型 = RDS 单节点
+  按单实例基础版（≈高可用÷2.35）、双节点按高可用、更多按主备+只读；云侧存储一律
+  按单份保守计，自建每节点一份全量副本；订阅取所选币种的挂牌价（非汇率换算）。
+  图表两套色板（.exit-page）：--cx-*（部署三分组）与 --cx2-*（堆叠成分：算力/存储/
+  订阅），四组 token 全部过 dataviz 六项校验，改色需重跑；每张图配 details 数据表
+  与直标数值。**模板坑**：谱系取 max 时 int/float 混用的 `gt` 会退化成字符串比较，
+  必须 `gt (float .price) $max`。
 - 页面上凡待用户拍板的事实一律 `TODO(user)` 占位（可见 `.todo-flag` / `.todo-chip`
   或 HTML 注释），严禁编造：SLA、客户案例、piglet 链接、里程碑年份等。
-- T 板块项目卡顺序固定：Silo 第一（第二旗舰）、PIG 第二；未发布项目（sow / dor）
-  用 projects.yaml `placeholder: true` 条目出「敬请期待」卡 —— 无链接 / 版本 / 星数 /
-  安装命令，发布后补全字段并移除 placeholder。piglet 以工坊铭牌一句话提及。
+- T 板块项目卡顺序固定：Silo 第一（第二旗舰，文案口径「PIGSTY 维护的 MinIO 分支，
+  持续安全更新」）、PIG 第二；未发布项目（sow / boar）用 projects.yaml
+  `placeholder: true` 条目出「敬请期待」卡 —— 无链接 / 版本 / 星数 / 安装命令，
+  发布后补全字段并移除 placeholder。piglet（piglet.run）暂不露出，上线后以完整卡回归。
 
 ## 关键约定
 

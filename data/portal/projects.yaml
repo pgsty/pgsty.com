@@ -62,8 +62,8 @@
   lang: Go
   kind: OBJECT STORAGE
   kindZh: 对象存储
-  desc: Community-maintained MinIO fork — S3-compatible object storage with continued security updates, a restored console, and full release artifacts.
-  descZh: 社区维护的 MinIO 分支 —— S3 兼容对象存储，持续安全更新、恢复的管理控制台与完整发行制品。
+  desc: The MinIO fork maintained by PIGSTY — S3-compatible object storage with continued security updates, a restored console, and full release artifacts.
+  descZh: PIGSTY 维护的 MinIO 分支 —— S3 兼容对象存储，持续安全更新、恢复的管理控制台与完整发行制品。
   install: "docker pull pgsty/minio"
   installZh: "docker pull pgsty/minio"
 
@@ -78,8 +78,8 @@
   descZh: Pigsty 生态的软件仓库管理器 —— 打磨中。
   # TODO(user): 发布后补 repo / site / version / desc
 
-- key: dor
-  name: DOR
+- key: boar
+  name: BOAR
   placeholder: true
   kind: MANAGEMENT CONSOLE
   kindZh: 可视化管理平台

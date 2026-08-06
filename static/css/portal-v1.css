@@ -793,17 +793,6 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
   transition: color 200ms ease, opacity 200ms ease;
 }
 .board-wordmark:hover .wm-i { color: var(--brand-i); opacity: 1; }
-.board-missing-i {
-  margin: 0 auto;
-  max-width: 540px;
-  padding-left: 14px;
-  border-left: 2px solid color-mix(in srgb, var(--brand-i) 55%, transparent);
-  font-size: 0.83rem;
-  line-height: 1.8;
-  color: var(--ink-mute);
-}
-.board-missing-i strong { color: var(--ink-soft); font-weight: 600; }
-.board-missing-i .mi { color: var(--brand-i); }
 
 /* ------------------------------------------------------------
    13. 三岔路口（audience doors，PRD §5.2）
@@ -859,29 +848,6 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 .gift-note { margin: 12px 0 0; font-size: 0.85rem; color: var(--ink-mute); }
 .gift-note a { color: var(--brand-i); border-bottom: 1px dashed color-mix(in srgb, var(--brand-i) 55%, transparent); }
 .gift-note a:hover { border-bottom-style: solid; }
-
-/* ------------------------------------------------------------
-   15. T 板块工坊铭牌（piglet 一句话提及，代替占位项目卡）
-   ------------------------------------------------------------ */
-.workshop-note {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px 22px;
-  border: 1px dashed var(--line-strong);
-  border-radius: var(--radius-md);
-  background: var(--bg-soft);
-}
-.workshop-head { margin: 0; display: inline-flex; align-items: center; gap: 8px; }
-.workshop-head i {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--copper);
-  animation: mark-breathe 2.6s ease-in-out infinite;
-}
-.workshop-desc { margin: 0; font-size: 0.9rem; line-height: 1.7; color: var(--ink-soft); }
-.workshop-desc b { color: var(--ink); }
 
 /* ------------------------------------------------------------
    16. Y 板块深读出口 / 首页 about teaser
@@ -1208,8 +1174,6 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
    ------------------------------------------------------------ */
 .repo-card--ph { border-style: dashed; background: var(--bg-soft); }
 .repo-chip--soon { color: var(--copper); border-color: var(--copper-dim); border-style: dashed; letter-spacing: 0.12em; }
-.repo-grid .workshop-note--wide { grid-column: 1 / -1; }
-@media (max-width: 860px) { .repo-grid .workshop-note--wide { grid-column: auto; } }
 
 /* ------------------------------------------------------------
    26. 图表基元（/solutions/cloud-exit/）
@@ -1221,11 +1185,18 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
   --cx-self: #358a5c;
   --cx-ecs: #2b6ca3;
   --cx-rds: #c2403a;
+  /* 计算器堆叠分段（成分维度）：算力 / 存储 / 订阅 —— 同样过双主题六项校验 */
+  --cx2-compute: #2b6ca3;
+  --cx2-storage: #b4762e;
+  --cx2-sub: #6b5ca8;
 }
 html[data-theme="dark"] .exit-page {
   --cx-self: #4aa06e;
   --cx-ecs: #3d93ce;
   --cx-rds: #d95f5f;
+  --cx2-compute: #3d93ce;
+  --cx2-storage: #bd8842;
+  --cx2-sub: #8a7ad0;
 }
 
 .exit-tiles { padding-top: 0; }
@@ -1247,6 +1218,14 @@ html[data-theme="dark"] .exit-page {
 .lg-chip--self::before { background: var(--cx-self); }
 .lg-chip--ecs::before { background: var(--cx-ecs); }
 .lg-chip--rds::before { background: var(--cx-rds); }
+.lg-chip--compute::before { background: var(--cx2-compute); }
+.lg-chip--storage::before { background: var(--cx2-storage); }
+.lg-chip--subx::before { background: var(--cx2-sub); }
+
+/* 三大件分块 */
+.ledger-block { margin-bottom: clamp(32px, 4vw, 52px); }
+.ledger-block:last-child { margin-bottom: 0; }
+.ledger-sub { margin: 0 0 12px; color: var(--copper); }
 
 .spec-chart { list-style: none; margin: 0; padding: 0; }
 .spec-row {
@@ -1406,6 +1385,24 @@ html[data-theme="dark"] .exit-page {
 .cc-fill--self { background: var(--cx-self); }
 .cc-fill--ecs { background: var(--cx-ecs); }
 .cc-fill--rds { background: var(--cx-rds); }
+
+/* 堆叠成分条：外层定总宽，内层按成分 flex 分配，2px 间隔为留白规范 */
+.cc-fillwrap {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  min-width: 4px;
+  display: flex;
+  gap: 2px;
+  border-radius: 0 4px 4px 0;
+  overflow: hidden;
+  transition: width 320ms ease;
+}
+.cc-seg { flex-basis: 0; min-width: 2px; }
+.cc-seg--compute { background: var(--cx2-compute); }
+.cc-seg--storage { background: var(--cx2-storage); }
+.cc-seg--sub { background: var(--cx2-sub); }
+.calc-legend { margin-bottom: 14px; }
 .cc-out { display: flex; align-items: baseline; justify-content: flex-end; gap: 8px; }
 .cc-val { font-family: var(--font-mono); font-size: 0.88rem; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .cc-mult {
@@ -1485,3 +1482,24 @@ html[data-theme="dark"] .exit-page {
 .essay-more a { color: var(--copper); }
 .essay-more a:hover { color: var(--pg-strong); }
 @media (max-width: 900px) { .essay-groups { grid-template-columns: 1fr; } }
+
+/* ------------------------------------------------------------
+   29. 对象存储小算盘 / 行业价签
+   ------------------------------------------------------------ */
+.obj-calc { margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--line-strong); }
+.calc-controls--slim { padding-bottom: 12px; margin-bottom: 14px; border-bottom: none; align-items: center; }
+.obj-verdict {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  color: var(--ink);
+}
+.exit-anchors { padding-top: 0; }
+.anchor-table td b { color: var(--ink); font-family: var(--font-mono); font-size: 0.92rem; }
+.anchor-table td.cmp-feature:last-child,
+.anchor-table th.cmp-feature:last-child { text-align: left; font-size: 0.8rem; color: var(--ink-mute); }
+.anchor-row--pigsty td { background: color-mix(in srgb, var(--copper) 8%, transparent); }
+.anchor-row--pigsty td b { color: var(--copper); }
+.anchor-note { margin: 16px auto 0; max-width: 760px; text-align: center; font-size: 0.86rem; line-height: 1.75; color: var(--ink-soft); }
+.tco-refs-list { list-style: none; padding-left: 0; margin-top: 8px; }
