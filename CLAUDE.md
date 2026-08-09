@@ -1,6 +1,6 @@
 # PGSTY Portal (pgsty.com)
 
-公司门户站：Hugo + Docsy，脚手架复制自 ~/pgsty/silo.pgsty.com。
+公司门户站：Hugo + OINK（`github.com/pgsty/oink` Hugo Module）。
 英文 `/`，中文 `/zh/`。首页 + /price/ + /about/ + /solutions/cloud-exit/ 四个核心页面。
 信息架构 = 双轴：纵轴六字母（我们有什么），横轴 Solutions（你要干什么）——PRD v2（2026-08）。
 
@@ -11,9 +11,10 @@
 - `make check` — 严格构建（--panicOnWarning）+ bin/check_internal_links.py
 - `bin/metrics.py update` — 刷新 data/brand.yml 与 data/portal/projects.yaml 里的 GitHub 星数
 
-推到 main 触发 `.github/workflows/cloudflare.yml`：构建 + 内链检查后强推产物到
-**`page`** 分支（分支名固定，与 pigsty.cc 一致，勿改），Cloudflare Pages 接该分支，
-用默认域名。不用 GitHub Pages —— 私有仓库 + free 组织，计划不支持。
+推到 main 后有两条独立部署链：`.github/workflows/pages.yml` 构建并部署 GitHub
+Pages；Cloudflare Pages 的 `pgsty-com` 项目直接连接 main，以 Hugo 构建并服务
+pgsty.com。两边固定使用 Hugo extended 0.164.0，不能把本地构建、Actions 成功、
+Cloudflare 部署和公开域名可访问混为同一验收状态。
 
 ## 数字单源（验收红线）
 
@@ -29,7 +30,7 @@
 
 ## 页面与布局
 
-- 首页 `layouts/index.html`，**不走 Docsy 模板**，双语用 `{{ if $zh }}` 内联；
+- 首页 `layouts/index.html`，**不走 OINK 标准页面模板**，双语用 `{{ if $zh }}` 内联；
   数据从 `hugo.Data.brand.*` / `hugo.Data.portal.*` 读取（`.Site.Data` 已弃用）。
 - 板块锚点：`#postgres #infras #glass #service #toolbox #yours`。
   **G 板块 2026-08 由 GRAPHICS 改名 GLASS**；`#graphics` 是 `#glass` 的别名
@@ -84,9 +85,8 @@
 - bin/check_internal_links.py 校验站内链接与锚点（含 hreflang 绝对链接，
   SITE_HOSTS=pgsty.com），且**站内不得链接 alias 重定向页**（如 /company/about/）。
 - 无跟踪脚本 —— 与零遥测主张一致；如需统计需用户选自托管方案（PRD §12.10）。
-- 文档章节（layouts/docs 等 Docsy chrome）是 silo 带来的休眠设施，当前无内容；
-  若启用文档需先清理其中的 SILO 品牌残留（layouts/_partials/footer.html、
-  head-end hook、head-css 等）。
+- 文档与博客的标准布局、导航、搜索、短代码由 OINK 提供，当前仓库不复制这些
+  框架文件；若启用相应内容，应优先通过 OINK 的公开覆盖点定制，避免重新分叉主题。
 
 ## 公司事实（写文案时用）
 

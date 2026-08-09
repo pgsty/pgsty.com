@@ -16,9 +16,9 @@ module:
   proxy: direct
   hugoVersion:
     extended: true
-    min: "0.155.0"
+    min: "0.160.1"
   imports:
-    - path: github.com/google/docsy
+    - path: github.com/pgsty/oink
       disable: false
 
 #=======================================#
@@ -135,7 +135,7 @@ markup:
 # Outputs
 #=======================================#
 outputs:
-  home: [HTML, RSS, JSON]
+  home: [HTML, RSS]
   page: [HTML]
   section: [HTML, RSS]
 
@@ -162,7 +162,7 @@ params:
   github_repo: https://github.com/pgsty/pgsty.com
   github_branch: main
 
-  # 站内搜索沿用项目自有实现；关闭 Docsy offlineSearch（详见 silo 上游注释）。
+  # 站内搜索由 OINK 提供；关闭其 Docsy 兼容参数 offlineSearch。
   offlineSearch: false
   prism_syntax_highlighting: false
 
