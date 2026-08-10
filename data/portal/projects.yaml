@@ -1,48 +1,48 @@
 # ============================================================
 # 开源项目注册表 — 首页 OSS 板块数据源
-# 星数等远程计数用 bin/metrics.py 或手工更新（2026-08-04 校准）
+# 星数等远程计数用 bin/metrics.py 或手工更新（2026-08-10 校准）
 # ============================================================
 - key: pigsty
   name: PIGSTY
   flagship: true
   repo: https://github.com/pgsty/pigsty
-  site: https://pigsty.io
-  siteZh: https://pigsty.cc
+  site: https://pigsty.io/
+  siteZh: https://pigsty.cc/
   version: v4.4.0
   license: Apache-2.0
-  stars: 5482
+  stars: 5510
   lang: Ansible
   kind: PG DISTRIBUTION
   kindZh: PG 发行版
-  desc: Battery-included, local-first PostgreSQL distribution — a free & better RDS alternative. Self-healing HA, PITR, SOTA monitoring, and 562 ready-to-install extensions.
-  descZh: 开箱即用、本地优先的 PostgreSQL 发行版 —— 免费且更好的 RDS 替代。自愈高可用、时间点恢复、顶级监控与 562 个即装即用的扩展。
+  desc: Battery-included, local-first PostgreSQL distribution — a free & better RDS alternative. Self-healing HA, PITR, SOTA monitoring, and 572 ready-to-install extensions.
+  descZh: 开箱即用、本地优先的 PostgreSQL 发行版 —— 免费且更好的 RDS 替代。自愈高可用、时间点恢复、顶级监控与 572 个即装即用的扩展。
   install: "curl -fsSL https://repo.pigsty.io/get | bash"
   installZh: "curl -fsSL https://repo.pigsty.cc/get | bash"
 
 - key: pig
   name: PIG
   repo: https://github.com/pgsty/pig
-  site: https://pigsty.io/docs/pig
-  siteZh: https://pigsty.cc/docs/pig
+  site: https://pig.pgsty.com/
+  siteZh: https://pig.pgsty.com/zh/
   version: v1.6.1
   license: Apache-2.0
-  stars: 196
+  stars: 199
   lang: Go
   kind: PACKAGE MANAGER
   kindZh: 包管理器
-  desc: PostgreSQL & extension package manager — PG 14–18 with 562 extensions on EL / Debian / Ubuntu, amd64 & arm64, agent-friendly structured output.
-  descZh: PostgreSQL 与扩展包管理器 —— PG 14–18 × 562 个扩展，覆盖 EL / Debian / Ubuntu 与双架构，Agent 友好的结构化输出。
+  desc: PostgreSQL & extension package manager — PG 14–18 with 572 extensions on EL / Debian / Ubuntu, amd64 & arm64, agent-friendly structured output.
+  descZh: PostgreSQL 与扩展包管理器 —— PG 14–18 × 572 个扩展，覆盖 EL / Debian / Ubuntu 与双架构，Agent 友好的结构化输出。
   install: "curl -fsSL https://repo.pigsty.io/pig | bash"
   installZh: "curl -fsSL https://repo.pigsty.cc/pig | bash"
 
 - key: pg_exporter
   name: PG_EXPORTER
   repo: https://github.com/pgsty/pg_exporter
-  site: https://pigsty.io/docs/pg_exporter
-  siteZh: https://pigsty.cc/docs/pg_exporter
+  site: https://exp.pgsty.com/
+  siteZh: https://exp.pgsty.com/zh/
   version: v1.4.1
   license: Apache-2.0
-  stars: 357
+  stars: 358
   lang: Go
   kind: METRICS EXPORTER
   kindZh: 指标导出器
@@ -54,11 +54,11 @@
 - key: silo
   name: SILO
   repo: https://github.com/pgsty/minio
-  site: https://silo.pgsty.com
+  site: https://silo.pgsty.com/
   siteZh: https://silo.pgsty.com/zh/
-  version: RELEASE.2026-06
+  version: RELEASE.2026-08-06
   license: AGPL-3.0
-  stars: 1954
+  stars: 2141
   lang: Go
   kind: OBJECT STORAGE
   kindZh: 对象存储
@@ -67,26 +67,22 @@
   install: "docker pull pgsty/minio"
   installZh: "docker pull pgsty/minio"
 
-# —— 占位条目（placeholder: true）：未发布 / 未公开 repo，只出「敬请期待」卡，
-#    不放链接、版本、星数与安装命令。发布后补全字段并移除 placeholder。
 - key: sow
   name: SOW
-  placeholder: true
+  repo: https://github.com/pgsty/sow
+  site: https://sow.pgsty.com/
+  siteZh: https://sow.pgsty.com/zh/
+  version: v0.3.0
+  license: Apache-2.0
+  stars: 1
+  lang: Go
   kind: REPO MANAGER
   kindZh: 仓库管理器
-  desc: Repository manager for the Pigsty ecosystem — in the works.
-  descZh: Pigsty 生态的软件仓库管理器 —— 打磨中。
-  # TODO(user): 发布后补 repo / site / version / desc
-
-- key: boar
-  name: BOAR
-  placeholder: true
-  kind: MANAGEMENT CONSOLE
-  kindZh: 可视化管理平台
-  desc: Visual management console for Pigsty — in the works.
-  descZh: Pigsty 可视化管理平台 —— 打磨中。
-  # TODO(user): 发布后补 repo / site / version / desc
+  desc: Self-contained RPM / YUM and DEB / APT repository manager — one-command indexing, managed workspaces, immutable generations, and incremental publishing.
+  descZh: 自包含的 RPM / YUM 与 DEB / APT 仓库管理器 —— 一条命令完成索引，并支持托管工作区、不可变代际与增量发布。
+  install: "sow create ./packages"
+  installZh: "sow create ./packages"
 
 # piglet：原条目的 repo / 文档链接与安装命令均指向主项目，疑为占位（PRD §10.2）。
 # 等真实 repo / docs 链接与版本号到位后再恢复条目（PRD §6.8 / §12.3）；
-# 眼下 T 板块以工坊铭牌一句话提及，不出卡片。
+# 眼下 T 板块不露出。

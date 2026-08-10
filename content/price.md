@@ -4,3 +4,23 @@ description: "PGSTY subscription plans and on-demand expert services — from fr
 layout: "price"
 translationKey: "price"
 ---
+
+Pigsty and the rest of the open-source stack remain free to use. PGSTY charges
+for assurance, response, and expert work rather than for access to the core
+software.
+
+## Subscription plans
+
+- **Open Source** is the self-supported community option.
+- **Standard** adds business-hours guidance for production users.
+- **Professional** adds stronger response commitments and direct expert access.
+- **Enterprise** covers continuous, mission-critical operations with a 7×24
+  service commitment.
+
+Subscriptions are billed per managed node. The [interactive pricing
+page](/price/) contains the current prices, currencies, scope, and comparison.
+
+## On-demand expertise
+
+Architecture review, migration, deployment, training, health checks, incident
+response, and custom engineering can also be purchased as discrete services.

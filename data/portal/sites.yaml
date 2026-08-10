@@ -3,16 +3,16 @@
 # ============================================================
 - key: pgext
   name: PGEXT.CLOUD
-  url: https://pgext.cloud
+  url: https://pgext.cloud/
   glyph: EXT
   kind: Extension Cloud
   kindZh: PG 扩展云
-  desc: The PostgreSQL extension directory — 2,230 extensions catalogued, 562 packaged and ready to install.
-  descZh: PostgreSQL 扩展目录 —— 收录 2,230 个扩展，其中 562 个已打包可直接安装。
+  desc: The PostgreSQL extension directory — 2,230 extensions catalogued, 572 packaged and ready to install.
+  descZh: PostgreSQL 扩展目录 —— 收录 2,230 个扩展，其中 572 个已打包可直接安装。
 
 - key: pgcenter
   name: PG.CENTER
-  url: https://pg.center
+  url: https://pg.center/
   glyph: 中文
   kind: Chinese PG Portal
   kindZh: 中文 PostgreSQL 网
@@ -21,7 +21,7 @@
 
 - key: pgdoc
   name: PG DOCS 中文
-  url: https://pg.center/docs
+  url: https://pg.center/docs/
   glyph: DOC
   kind: Translated Manuals
   kindZh: 中文手册翻译
@@ -30,7 +30,7 @@
 
 - key: demo
   name: DEMO.PIGSTY.IO
-  url: https://demo.pigsty.io
+  url: https://demo.pigsty.io/
   glyph: LIVE
   kind: Live Demo
   kindZh: 在线演示
@@ -39,7 +39,7 @@
 
 - key: silo
   name: SILO.PGSTY.COM
-  url: https://silo.pgsty.com
+  url: https://silo.pgsty.com/
   glyph: S3
   kind: Silo Docs
   kindZh: Silo 文档站
@@ -48,8 +48,8 @@
 
 - key: docs
   name: PIGSTY.IO / .CC
-  url: https://pigsty.io
-  urlZh: https://pigsty.cc
+  url: https://pigsty.io/
+  urlZh: https://pigsty.cc/
   glyph: PG
   kind: Product Docs
   kindZh: 产品文档

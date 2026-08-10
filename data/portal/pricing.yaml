@@ -23,8 +23,8 @@ tiers:
       - 社区论坛支持
     cta: Download
     ctaZh: 立即下载
-    url: https://pigsty.io/docs/setup/install
-    urlZh: https://pigsty.cc/docs/setup/install
+    url: https://pigsty.io/docs/setup/install/
+    urlZh: https://pigsty.cc/docs/setup/install/
 
   - key: standard
     name: Standard
@@ -42,7 +42,7 @@ tiers:
       - Weekday email support
       - Annual health check report
     featuresZh:
-      - 商业授权许可，≤5 节点
+      - 商业许可，≤5 节点
       - PostgreSQL 16–18
       - 工作日邮件支持
       - 年度健康检查报告
@@ -69,7 +69,7 @@ tiers:
       - Response within 4 hours
       - Quarterly health check report
     featuresZh:
-      - 商业授权许可，≤15 节点
+      - 商业许可，≤15 节点
       - PostgreSQL 14–18 · 离线软件包
       - 每月 5 个 DBA 专家工时
       - 4 小时内响应
@@ -90,13 +90,13 @@ tiers:
     period: /year
     periodZh: /年
     features:
-      - Commercial license, ~50 nodes
+      - Commercial license, reference: 50 nodes
       - PostgreSQL 13–18 · custom packages
       - 10 DBA hours / month · RDS OEM
       - 7×24 SLA · 30-minute response
       - Monthly health check report
     featuresZh:
-      - 商业授权许可，参考规模 50 节点
+      - 商业许可，参考规模 50 节点
       - PostgreSQL 13–18 · 定制软件包
       - 每月 10 个 DBA 工时 · RDS OEM
       - 7×24 SLA · 30 分钟内响应
@@ -108,8 +108,8 @@ tiers:
 
 note: Commercial support is currently available in Asia; subscriptions are billed annually.
 noteZh: 订阅按年计费；超出节点可按需加购，支持 30 天企业评估试用。
-detail_url: https://pigsty.io/price
-detail_url_zh: https://pigsty.cc/price
+detail_url: https://pigsty.io/price/
+detail_url_zh: https://pigsty.cc/price/
 
 # ------------------------------------------------------------
 # 规格对照表（/price 页）。单元格 "Y"/"N" 渲染为图标，其余原样输出。
@@ -196,7 +196,7 @@ faq:
   - q: What does the commercial version offer?
     qZh: 商业版提供哪些服务？
     a: Commercial subscriptions include a commercial license, warranty and bug-fix guarantees, custom offline packages, exclusive support from industry-leading experts for hard problems, response-time SLAs, and broader Linux / PostgreSQL version coverage.
-    aZh: 商业版提供商业授权许可证、质保与缺陷修复承诺、定制离线软件包、业界顶尖专家的疑难杂症兜底、响应时间 SLA，以及更宽广的 Linux 与 PostgreSQL 版本支持范围。
+    aZh: 商业版提供商业许可、质保与缺陷修复承诺、定制离线软件包、业界顶尖专家的疑难杂症兜底、响应时间 SLA，以及更宽广的 Linux 与 PostgreSQL 版本支持范围。
   - q: How are nodes counted?
     qZh: 节点数量是如何计算的？
     a: Node count refers to the number of distinct IP addresses managed by Pigsty.

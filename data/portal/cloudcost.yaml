@@ -283,7 +283,7 @@ sources:
 
 # 厂商与条款参考页（带抓取日期；价格随时会变，以现价为准）
 refs:
-  - { key: svc,       label: "Pigsty subscription & service terms",  labelZh: "Pigsty 订阅与服务条款", url: "https://pigsty.cc/docs/about/service",                     date: "2026-08-06" }
+  - { key: svc,       label: "Pigsty subscription & service terms",  labelZh: "Pigsty 订阅与服务条款", url: "https://pigsty.cc/docs/about/service/",                    date: "2026-08-06" }
   - { key: ebsprice,  label: "AWS EBS pricing (us-east-1)",          labelZh: "AWS EBS 价格页（us-east-1）", url: "https://aws.amazon.com/ebs/pricing/",                 date: "2026-08-06" }
   - { key: essdprice, label: "Aliyun cloud-disk price reference",    labelZh: "阿里云云盘价格参考页", url: "https://www.foreignserver.com/aliyun/sjpjiage2025.html",   date: "2026-08-06" }
 

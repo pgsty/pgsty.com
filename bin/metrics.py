@@ -25,6 +25,7 @@ REPOS = {
     "pig": "pgsty/pig",
     "pg_exporter": "pgsty/pg_exporter",
     "silo": "pgsty/minio",
+    "sow": "pgsty/sow",
 }
 
 
