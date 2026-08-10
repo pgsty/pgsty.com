@@ -1,5 +1,5 @@
 /**
- * SILO landing interactions, reused from Pigsty Landing v3.
+ * PGSTY portal interactions, based on Pigsty Landing v3.
  * Theme switch / command copy / reveal / counters / gallery.
  */
 

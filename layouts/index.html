@@ -9,7 +9,7 @@
 {{- $socialImage := "img/pgsty-social-card.png" | absURL -}}
 {{- $socialAlt := cond $zh "PGSTY — 开源 PostgreSQL 发行版与专业服务" "PGSTY — open-source PostgreSQL distribution & expert services" -}}
 {{- $mainRepo := cond $zh "https://repo.pigsty.cc" "https://repo.pigsty.io" -}}
-{{- $install := cond $zh "https://pigsty.cc/docs/setup/install" "https://pigsty.io/docs/setup/install" -}}
+{{- $install := cond $zh "https://pigsty.cc/docs/setup/install/" "https://pigsty.io/docs/setup/install/" -}}
 {{- /* 下云专栏一律指作者博客（用户 2026-08 指示） */ -}}
 {{- $essays := cond $zh "https://vonng.com/cloud/" "https://vonng.com/en/cloud/" -}}
 {{- $silo := index (where $projects "key" "silo") 0 -}}
@@ -34,9 +34,7 @@
   <meta name="theme-color" content="#0b1119">
   <meta name="color-scheme" content="dark light">
 
-  <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
-  <link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}">
-  <link rel="apple-touch-icon" href="{{ "favicons/apple-touch-icon.png" | relURL }}">
+  {{ partialCached "favicons.html" . }}
   <link rel="canonical" href="{{ .Permalink }}">
   {{ range .AllTranslations -}}
   <link rel="alternate" hreflang="{{ .Language.Locale | default .Language.Lang }}" href="{{ .Permalink }}">
@@ -44,9 +42,7 @@
   {{ range where .AllTranslations "Language.Lang" "en" -}}
   <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
   {{ end -}}
-  {{ with .OutputFormats.Get "rss" -}}
-  <link rel="alternate" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }} RSS" href="{{ .Permalink }}">
-  {{ end }}
+  {{ partial "portal/alternate-formats.html" . }}
 
   <meta property="og:title" content="{{ .Title }}">
   <meta property="og:description" content="{{ $description }}">
@@ -243,7 +239,7 @@
             <span class="stat-value" data-count="{{ $m.github_stars }}">{{ lang.FormatNumber 0 $m.github_stars }}</span>
             <span class="stat-label">{{ if $zh }}GitHub 星标{{ else }}GitHub Stars{{ end }}</span>
           </a>
-          <a href="https://pgext.cloud" target="_blank" rel="noopener" class="stat-item">
+          <a href="https://pgext.cloud/" target="_blank" rel="noopener" class="stat-item">
             <span class="stat-value" data-count="{{ $m.ext_packaged }}">{{ lang.FormatNumber 0 $m.ext_packaged }}</span>
             <span class="stat-label">{{ if $zh }}打包分发的 PG 扩展{{ else }}Extensions Packaged{{ end }}</span>
           </a>
@@ -274,17 +270,17 @@
 
         <div class="module-row" data-reveal>
           <div class="module-content">
-            <h3 class="module-title"><a href="{{ if $zh }}https://pigsty.cc{{ else }}https://pigsty.io{{ end }}" target="_blank" rel="noopener">{{ if $zh }}自建企业级 PostgreSQL 所需的一切{{ else }}Everything you need to self-host PostgreSQL{{ end }}</a></h3>
+            <h3 class="module-title"><a href="{{ if $zh }}https://pigsty.cc/{{ else }}https://pigsty.io/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}自建企业级 PostgreSQL 所需的一切{{ else }}Everything you need to self-host PostgreSQL{{ end }}</a></h3>
             <p class="module-motto"><span aria-hidden="true">◇</span> {{ if $zh }}从笔记本到数据中心，一条命令{{ else }}Laptop to datacenter, one command{{ end }}</p>
             <ul class="module-list">
               <li>{{ if $zh }}基于 Patroni / etcd 的自愈高可用，pgBackRest 时间点恢复{{ else }}Self-healing HA on Patroni / etcd, PITR with pgBackRest{{ end }}</li>
-              <li>{{ if $zh }}<a href="https://pgext.cloud" target="_blank" rel="noopener">{{ $m.ext_packaged }} 个扩展</a>与 {{ $m.kernels }} 种内核：MSSQL / Oracle / MySQL / Mongo 兼容{{ else }}<a href="https://pgext.cloud" target="_blank" rel="noopener">{{ $m.ext_packaged }} extensions</a> & {{ $m.kernels }} kernels: MSSQL / Oracle / MySQL / Mongo compatible{{ end }}</li>
+              <li>{{ if $zh }}<a href="https://pgext.cloud/" target="_blank" rel="noopener">{{ $m.ext_packaged }} 个扩展</a>与 {{ $m.kernels }} 种内核：MSSQL / Oracle / MySQL / Mongo 兼容{{ else }}<a href="https://pgext.cloud/" target="_blank" rel="noopener">{{ $m.ext_packaged }} extensions</a> & {{ $m.kernels }} kernels: MSSQL / Oracle / MySQL / Mongo compatible{{ end }}</li>
               <li>{{ if $zh }}Ansible 声明式 IaC：基础设施即代码，一切尽在掌控{{ else }}Declarative Ansible IaC — infrastructure as code, under your control{{ end }}</li>
               <li>{{ if $zh }}Apache-2.0 完整开源，不限节点，无功能阉割{{ else }}Fully open source under Apache-2.0 — unlimited nodes, nothing held back{{ end }}</li>
             </ul>
             <p class="module-value">{{ if $zh }}让初级工程师拥有专业 DBA 70% 以上的能力{{ else }}Gives a junior engineer 70%+ of a professional DBA's capability{{ end }}</p>
             <div class="section-links module-links">
-              <a href="{{ if $zh }}https://pigsty.cc/docs/setup/install{{ else }}https://pigsty.io/docs/setup/install{{ end }}" target="_blank" rel="noopener">{{ if $zh }}快速上手{{ else }}Get Started{{ end }} →</a>
+              <a href="{{ if $zh }}https://pigsty.cc/docs/setup/install/{{ else }}https://pigsty.io/docs/setup/install/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}快速上手{{ else }}Get Started{{ end }} →</a>
               <a href="{{ if $zh }}https://pigsty.cc/docs/{{ else }}https://pigsty.io/docs/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}产品文档{{ else }}Documentation{{ end }} →</a>
               <a href="https://github.com/pgsty/pigsty" target="_blank" rel="noopener">GitHub →</a>
             </div>
@@ -325,7 +321,7 @@
 
         <div class="module-row module-row--reverse" data-reveal>
           <div class="module-content">
-            <h3 class="module-title"><a href="https://pgext.cloud" target="_blank" rel="noopener">{{ if $zh }}地基由我们打理，你只管构建{{ else }}We maintain the ground you build on{{ end }}</a></h3>
+            <h3 class="module-title"><a href="https://pgext.cloud/" target="_blank" rel="noopener">{{ if $zh }}地基由我们打理，你只管构建{{ else }}We maintain the ground you build on{{ end }}</a></h3>
             <p class="module-motto"><span aria-hidden="true">▦</span> {{ if $zh }}断网、合规、国产化，都有答案{{ else }}Air-gapped, compliant, sovereign — all covered{{ end }}</p>
             <ul class="module-list">
               <li>{{ if $zh }}全球 CDN 软件仓库 repo.pigsty.io，中国大陆镜像 repo.pigsty.cc{{ else }}Global CDN repo at repo.pigsty.io, with mainland-China mirror repo.pigsty.cc{{ end }}</li>
@@ -335,7 +331,7 @@
             </ul>
             <p class="module-value">{{ if $zh }}生态的可持续，是一种基础设施{{ else }}Ecosystem continuity is itself infrastructure{{ end }}</p>
             <div class="section-links module-links">
-              <a href="https://pgext.cloud" target="_blank" rel="noopener">PGEXT.CLOUD →</a>
+              <a href="https://pgext.cloud/" target="_blank" rel="noopener">PGEXT.CLOUD →</a>
               <a href="https://silo.pgsty.com{{ if $zh }}/zh/{{ end }}" target="_blank" rel="noopener">SILO →</a>
               <a href="{{ if $zh }}https://pigsty.cc/docs/repo/{{ else }}https://pigsty.io/docs/repo/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}软件仓库{{ else }}Repositories{{ end }} →</a>
             </div>
@@ -373,7 +369,7 @@
 
         <div class="module-row" data-reveal>
           <div class="module-content">
-            <h3 class="module-title"><a href="https://demo.pigsty.io" target="_blank" rel="noopener">{{ if $zh }}监控不是插件，是第一公民{{ else }}Observability is a first-class citizen{{ end }}</a></h3>
+            <h3 class="module-title"><a href="https://demo.pigsty.io/" target="_blank" rel="noopener">{{ if $zh }}监控不是插件，是第一公民{{ else }}Observability is a first-class citizen{{ end }}</a></h3>
             <p class="module-motto"><span aria-hidden="true">◉</span> {{ if $zh }}先看见，再优化{{ else }}See it before you tune it{{ end }}</p>
             <ul class="module-list">
               <li>{{ if $zh }}pg_exporter：声明式配置的 PostgreSQL / PgBouncer 指标导出器{{ else }}pg_exporter — declarative metrics exporter for PostgreSQL & PgBouncer{{ end }}</li>
@@ -383,7 +379,7 @@
             </ul>
             <p class="module-value">{{ if $zh }}用图表解读数据库，是我们的母语{{ else }}Reading databases through dashboards is our native tongue{{ end }}</p>
             <div class="section-links module-links">
-              <a href="https://demo.pigsty.io" target="_blank" rel="noopener">{{ if $zh }}在线演示{{ else }}Live Demo{{ end }} →</a>
+              <a href="https://demo.pigsty.io/" target="_blank" rel="noopener">{{ if $zh }}在线演示{{ else }}Live Demo{{ end }} →</a>
               <a href="{{ if $zh }}https://pigsty.cc/docs/pg_exporter/{{ else }}https://pigsty.io/docs/pg_exporter/{{ end }}" target="_blank" rel="noopener">pg_exporter →</a>
               <a href="{{ if $zh }}https://pigsty.cc/docs/infra/{{ else }}https://pigsty.io/docs/infra/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}监控文档{{ else }}Monitoring Docs{{ end }} →</a>
             </div>
@@ -478,15 +474,15 @@
             <span class="eyebrow-trace" aria-hidden="true"></span>
           </p>
           <h2 class="section-title">{{ if $zh }}顺手的兵器，全部开源{{ else }}Sharp tools, all open source{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}围绕发行版的成套兵器 —— 对象存储、包管理器、仓库管理与可视化平台；结构化输出、Agent 友好，人和 AI 都用得顺手。{{ else }}The toolbox around the distribution — object storage, package manager, repo manager, and console; structured output, agent-friendly, comfortable for humans and AIs alike.{{ end }}</p>
+          <p class="section-subtitle">{{ if $zh }}围绕发行版的成套兵器 —— 对象存储、包管理器、指标导出器与仓库管理器；结构化输出、Agent 友好，人和 AI 都用得顺手。{{ else }}The toolbox around the distribution — object storage, package manager, metrics exporter, and repo manager; structured output, agent-friendly, comfortable for humans and AIs alike.{{ end }}</p>
         </div>
 
         <div class="repo-grid" data-reveal>
-          {{- /* 顺序固定：Silo 第一（第二旗舰项目），PIG 第二 */}}
-          {{ range $k := slice "silo" "pig" }}{{ range where $projects "key" $k }}
+          {{- /* 顺序固定：两项基础设施在上，两项配套工具在下 */}}
+          {{ range $k := slice "silo" "pig" "pg_exporter" "sow" }}{{ range where $projects "key" $k }}
           <article class="repo-card">
             <header class="repo-head">
-              <span class="repo-name"><i class="fas fa-cube" aria-hidden="true"></i>{{ .name }}</span>
+              <a class="repo-name" href="{{ if $zh }}{{ .siteZh }}{{ else }}{{ .site }}{{ end }}" target="_blank" rel="noopener"><i class="fas fa-cube" aria-hidden="true"></i>{{ .name }}</a>
               <span class="repo-meta">
                 <span class="repo-chip repo-chip--ver">{{ .version }}</span>
                 <span class="repo-chip">{{ .license }}</span>
@@ -506,18 +502,6 @@
             </footer>
           </article>
           {{ end }}{{ end }}
-
-          {{- /* 未发布项目：占位卡，无链接 / 版本 / 安装命令（数据见 projects.yaml placeholder 条目） */}}
-          {{ range where $projects "placeholder" true }}
-          <article class="repo-card repo-card--ph">
-            <header class="repo-head">
-              <span class="repo-name"><i class="fas fa-cube" aria-hidden="true"></i>{{ .name }}</span>
-              <span class="repo-meta"><span class="repo-chip repo-chip--soon">{{ if $zh }}敬请期待{{ else }}COMING SOON{{ end }}</span></span>
-            </header>
-            <p class="repo-kind silkscreen">{{ if $zh }}{{ .kindZh }}{{ else }}{{ .kind }}{{ end }}</p>
-            <p class="repo-desc">{{ if $zh }}{{ .descZh }}{{ else }}{{ .desc }}{{ end }}</p>
-          </article>
-          {{ end }}
 
           {{- /* piglet（piglet.run）按用户 2026-08 指示暂不露出；上线后以完整项目卡回归 */}}
         </div>
@@ -547,12 +531,12 @@
               <li>{{ if $zh }}云中立：上云、下云、混合皆可，拒绝供应商锁定{{ else }}Cloud-neutral: on-prem, cloud, or hybrid — no vendor lock-in{{ end }}</li>
               <li>{{ if $zh }}回馈社区：PostgreSQL 中文文档翻译，与 pg.center 中文 PostgreSQL 网{{ else }}Giving back: Chinese PostgreSQL documentation and the pg.center community portal{{ end }}</li>
             </ul>
-            <p class="module-value">{{ if $zh }}助您用好数据库，用好数据库{{ else }}Run a good database — and run it well{{ end }}</p>
+            <p class="module-value">{{ if $zh }}选对数据库，也把它运行好{{ else }}Run a good database — and run it well{{ end }}</p>
             <div class="section-links module-links">
               <a href="{{ $essays }}" target="_blank" rel="noopener">{{ if $zh }}下云专栏{{ else }}Cloud-Exit Essays{{ end }} →</a>
-              <a href="https://pg.center" target="_blank" rel="noopener">PG.CENTER →</a>
-              {{ if $zh }}<a href="https://pg.center/docs" target="_blank" rel="noopener">PostgreSQL 中文文档 →</a>
-              {{ else }}<a href="https://pg.center/docs" target="_blank" rel="noopener">Translated Docs →</a>{{ end }}
+              <a href="https://pg.center/" target="_blank" rel="noopener">PG.CENTER →</a>
+              {{ if $zh }}<a href="https://pg.center/docs/" target="_blank" rel="noopener">PostgreSQL 中文文档 →</a>
+              {{ else }}<a href="https://pg.center/docs/" target="_blank" rel="noopener">Translated Docs →</a>{{ end }}
             </div>
           </div>
           <div class="module-visual">

@@ -267,6 +267,9 @@ html[data-theme="dark"] .lhx--s { --hc: #8b93a0; }
   color: var(--ink);
 }
 .repo-name i { color: var(--pg); font-size: 0.9em; }
+a.repo-name { color: var(--ink); }
+a.repo-name:hover { color: var(--pg-strong); }
+a.repo-name:hover i { color: var(--copper); }
 .repo-meta { display: inline-flex; flex-wrap: wrap; gap: 6px; }
 .repo-chip {
   display: inline-flex;
@@ -943,13 +946,6 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 }
 .tl-body b { display: block; font-size: 0.98rem; font-weight: 700; color: var(--ink); }
 .tl-body p { margin: 4px 0 0; font-size: 0.88rem; line-height: 1.7; color: var(--ink-soft); }
-.timeline-todo .tl-body {
-  padding: 12px 16px;
-  border: 1.5px dashed var(--copper-dim);
-  border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--copper) 6%, transparent);
-}
-.timeline-todo .tl-mark { color: var(--ink-mute); }
 @media (max-width: 620px) {
   .timeline::before { left: 66px; }
   .timeline li { grid-template-columns: 66px minmax(0, 1fr); gap: 0 18px; }
@@ -996,47 +992,7 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 .entity-legal-line { padding-top: 10px; border-top: 1px dashed var(--line-strong); font-size: 0.8rem !important; color: var(--ink-mute) !important; }
 
 /* ------------------------------------------------------------
-   21. TODO 占位（PRD §0.3：凡缺事实，留醒目占位）
-   ------------------------------------------------------------ */
-.todo-flag {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 18px 22px;
-  border: 1.5px dashed var(--copper-dim);
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--copper) 6%, transparent);
-}
-.todo-flag::before {
-  content: 'TODO';
-  flex: none;
-  margin-top: 3px;
-  padding: 2px 9px;
-  border: 1px solid var(--copper-dim);
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  color: var(--copper);
-}
-.todo-flag p { margin: 0; font-size: 0.9rem; line-height: 1.7; color: var(--ink-soft); }
-.todo-flag b { color: var(--ink); }
-
-.todo-chip {
-  display: inline-block;
-  padding: 2px 10px;
-  border: 1px dashed var(--copper-dim);
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: var(--copper);
-}
-
-/* ------------------------------------------------------------
-   22. /solutions/ 索引卡
+   21. /solutions/ 索引卡
    ------------------------------------------------------------ */
 .sol-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; max-width: 780px; margin-inline: auto; }
 .sol-card {
@@ -1143,7 +1099,7 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 
 /* ------------------------------------------------------------
    24. 基建端点铭牌（I 板块）
-   原样式只存在于 silo-v3.css（门户不加载），此前一直裸奔 —— 移植过来
+   门户自有组件，不依赖主题或产品站样式。
    ------------------------------------------------------------ */
 .artifact-plate {
   display: block;
@@ -1168,12 +1124,6 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 .artifact-plate-foot { border-top: 1px solid var(--line); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--silk); }
 .artifact-plate-foot i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); animation: mark-breathe 2.6s ease-in-out infinite; }
 .artifact-plate-foot b { margin-left: auto; color: var(--copper); }
-
-/* ------------------------------------------------------------
-   25. T 板块：占位项目卡（未发布，无链接）+ 宽幅工坊铭牌
-   ------------------------------------------------------------ */
-.repo-card--ph { border-style: dashed; background: var(--bg-soft); }
-.repo-chip--soon { color: var(--copper); border-color: var(--copper-dim); border-style: dashed; letter-spacing: 0.12em; }
 
 /* ------------------------------------------------------------
    26. 图表基元（/solutions/cloud-exit/）

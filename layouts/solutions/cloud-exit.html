@@ -82,7 +82,7 @@
       <div class="hero-bg" aria-hidden="true"></div>
       <div class="landing-container">
         <div class="section-head section-head--center" data-reveal>
-          <p class="section-eyebrow section-eyebrow--center anim" style="--d:0"><span class="silkscreen"><a class="crumb-link" href="{{ relLangURL "solutions/" }}">{{ if $zh }}SOLUTIONS · 方案{{ else }}SOLUTIONS{{ end }}</a> · CLOUD EXIT</span></p>
+          <p class="section-eyebrow section-eyebrow--center anim" style="--d:0"><span class="silkscreen"><a class="crumb-link" href="{{ relLangURL "solutions/" }}">SOLUTIONS</a> · {{ if $zh }}下云{{ else }}CLOUD EXIT{{ end }}</span></p>
           <h1 class="section-title anim" style="--d:1">{{ if $zh }}下云，把数据库拿回来{{ else }}Stop renting your database{{ end }}</h1>
           <p class="section-subtitle anim" style="--d:2">{{ if $zh }}下云不是情怀，是一笔算得清的账。这一页就是账本：单价、案例、路线图，每个数字都有出处。{{ else }}Cloud exit isn't sentiment — it's arithmetic. This page is the ledger: unit prices, receipts, and the road out, every figure with a source.{{ end }}</p>
         </div>
@@ -227,7 +227,7 @@
         <div class="section-head" data-reveal>
           <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}CALCULATOR · 算你的账{{ else }}CALCULATOR{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
           <h2 class="section-title">{{ if $zh }}把你的集群丢进来算算{{ else }}Price out your own cluster{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}规格、节点数、存储、付费周期、订阅档位 —— 五个旋钮拧到你的场景，看租和买到底差多少。{{ else }}Spec, node count, storage, billing term, subscription tier — five dials to your scenario, and see what renting versus owning really costs.{{ end }}</p>
+          <p class="section-subtitle">{{ if $zh }}vCPU、内存比、节点数、存储、付费周期、订阅档位、币种与月/年视图 —— 八个旋钮拧到你的场景，看租和买到底差多少。{{ else }}Set eight controls — vCPU, RAM ratio, nodes, storage, billing term, subscription tier, currency, and monthly or annual view — to see what renting versus owning really costs.{{ end }}</p>
         </div>
 
         <div class="calc-card" id="cloudcalc" data-reveal>
@@ -550,7 +550,7 @@
           <div class="faq-item">
             {{- /* Phase 2 起指向 /trust/（PRD §7.2.4） */}}
             <h3 class="faq-q">{{ if $zh }}「合规与安全过不了关。」{{ else }}"Compliance won't allow it."{{ end }}</h3>
-            <p class="faq-a">{{ if $zh }}自建恰恰是多数合规体制下更顺的路：数据留在你的法域，密钥在你手里，支持离线与气隙交付，Ansible IaC 全程可审计。专门的信任页面正在路上，眼下的问题直接问我们。{{ else }}Self-hosting is usually the compliant path, not the risky one: data stays in your jurisdiction on your keys, offline and air-gapped delivery is supported, and the Ansible IaC leaves an audit trail. A dedicated trust page is on its way — until then, ask us directly.{{ end }}</p>
+            <p class="faq-a">{{ if $zh }}自建恰恰是多数合规体制下更顺的路：数据留在你的法域，密钥在你手里，支持离线与气隙交付，Ansible IaC 全程可审计。需要针对具体环境核对证据与边界时，可以直接联系我们。{{ else }}Self-hosting is usually the compliant path, not the risky one: data stays in your jurisdiction on your keys, offline and air-gapped delivery is supported, and the Ansible IaC leaves an audit trail. Contact us to review the evidence and boundaries for your environment.{{ end }}</p>
           </div>
         </div>
       </div>
