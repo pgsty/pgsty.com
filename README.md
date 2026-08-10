@@ -4,22 +4,26 @@
 [![GitHub Pages](https://github.com/pgsty/pgsty.com/actions/workflows/pages.yml/badge.svg)](https://github.com/pgsty/pgsty.com/actions/workflows/pages.yml)
 [![Hugo](https://img.shields.io/badge/Hugo-extended%200.164.0-FF4088?logo=hugo)](https://gohugo.io/)
 
-The bilingual PGSTY corporate portal imports
-[`github.com/pgsty/oink`](https://github.com/pgsty/oink) as its Hugo theme.
-Local overrides are limited to the bespoke home, about, pricing, and solutions
-pages; OINK owns the standard navigation, search, content blocks, shortcodes,
-and documentation/blog layouts.
+The bilingual PGSTY corporate portal pins
+[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v0.2.0` as its Hugo
+theme. The site keeps bespoke home, about, pricing, and solutions layouts while
+OINK supplies the reusable content system, shortcodes, icon set, favicon
+conventions, and Markdown/LLMS output formats.
 
 ## Run
 
 ```sh
-make dev
-make check
+make d  # Debug with the sibling ../oink checkout
+make s  # Serve with the theme version pinned in go.mod
+make b  # Build with the pinned theme
+make c  # Run the complete site check
 ```
 
-`make check` verifies the module graph, performs a strict production build, and
-checks rendered internal links. To update the pinned theme intentionally, run
-`make update-theme`, review `go.mod` and `go.sum`, then rerun the checks.
+`make d` creates an ignored `go.work` without pinning the preview port. The long
+targets are `debug`, `serve`, `build`, and `check`; `dev` retains the pinned-theme
+preview. `make c` validates rendered HTML, Markdown, and `llms.txt` links. To
+update the pinned theme intentionally, run `make update-theme`, review `go.mod`
+and `go.sum`, then rerun the checks.
 
 ## Deploy
 

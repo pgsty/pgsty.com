@@ -1,4 +1,4 @@
-# Build the OINK site against the GitHub Pages URL and deploy it from an
+# Build the PGSTY site against the GitHub Pages URL and deploy it from an
 # Actions artifact. Repository Settings -> Pages must use "GitHub Actions".
 name: Deploy to GitHub Pages
 

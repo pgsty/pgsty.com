@@ -22,9 +22,7 @@
 <meta name="theme-color" content="#0b1119">
 <meta name="color-scheme" content="dark light">
 
-<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
-<link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}">
-<link rel="apple-touch-icon" href="{{ "favicons/apple-touch-icon.png" | relURL }}">
+{{ partialCached "favicons.html" . }}
 <link rel="canonical" href="{{ .Permalink }}">
 {{ range .AllTranslations -}}
 <link rel="alternate" hreflang="{{ .Language.Locale | default .Language.Lang }}" href="{{ .Permalink }}">
@@ -32,6 +30,7 @@
 {{ range where .AllTranslations "Language.Lang" "en" -}}
 <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
 {{ end }}
+{{ partial "portal/alternate-formats.html" . }}
 <meta property="og:title" content="{{ .Title }} — PGSTY">
 <meta property="og:description" content="{{ $description }}">
 <meta property="og:type" content="website">

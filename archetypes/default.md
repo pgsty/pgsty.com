@@ -2,7 +2,7 @@
 title: "{{ replace .Name "-" " " | title }}"
 description: ""
 weight: 100
+draft: true
 ---
 
-Write the Silo-specific documentation here.
-
+Draft the PGSTY page content here.

@@ -17,3 +17,7 @@
 {{- range slice "css/landing-v3.css" "css/portal-v1.css" }}
 <link rel="stylesheet" href="{{ . | relURL }}?v={{ substr (md5 (readFile (path.Join "static" .))) 0 8 }}">
 {{- end }}
+
+{{ if hugo.IsProduction -}}
+{{ partial "google_analytics.html" . -}}
+{{ end -}}

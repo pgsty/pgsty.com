@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 — PGSTY</title>
   <meta name="robots" content="noindex, follow">
-  <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+  {{ partialCached "favicons.html" . }}
   <script>
     (function () {
       var theme = null;
@@ -26,6 +26,7 @@
     .nf-code { font-family: var(--font-display); font-weight: 700; font-size: clamp(4rem, 12vw, 7rem); line-height: 1; }
     .nf-msg { margin: 14px 0 26px; color: var(--ink-soft); }
   </style>
+  {{ if hugo.IsProduction }}{{ partial "google_analytics.html" . }}{{ end }}
 </head>
 <body class="landing-page">
   <main class="nf-wrap">

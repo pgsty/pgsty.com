@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate rendered Silo routes, assets, fragments, and canonical targets.
+"""Validate rendered PGSTY routes, assets, fragments, and canonical targets.
 
 Run this after Hugo has built the site. External hosts are deliberately not
 requested: this gate proves the site's own link contract without making a local
@@ -49,6 +49,12 @@ def parse_document(path: pathlib.Path) -> DocumentParser:
     parser.feed(path.read_text(encoding="utf-8", errors="replace"))
     parser.close()
     return parser
+
+
+def parse_markdown_links(path: pathlib.Path) -> list[str]:
+    """Extract ordinary Markdown link destinations from generated text outputs."""
+    text = path.read_text(encoding="utf-8", errors="replace")
+    return [match.group(1).strip("<>") for match in re.finditer(r"\[[^\]]*\]\(([^\s)]+)", text)]
 
 
 def route_for_file(public: pathlib.Path, path: pathlib.Path) -> str:
@@ -103,34 +109,44 @@ def main() -> int:
         path.resolve(): parse_document(path) for path in html_files
     }
 
+    text_files = sorted(public.rglob("*.md")) + sorted(public.rglob("llms.txt"))
     failures: dict[str, list[str]] = collections.defaultdict(list)
     checked = 0
+
+    def check_link(source_route: str, raw_url: str) -> None:
+        nonlocal checked
+        target = resolve_internal_url(source_route, raw_url)
+        if target is None:
+            return
+        checked += 1
+        route, fragment = target
+        candidates = target_candidates(public, route)
+        existing = next((candidate.resolve() for candidate in candidates if candidate.exists()), None)
+        if existing is None:
+            failures[f"missing target {route}"].append(source_route)
+            return
+        if existing.suffix.lower() == ".html":
+            target_document = documents.get(existing)
+            if target_document is None:
+                target_document = parse_document(existing)
+                documents[existing] = target_document
+            if target_document.redirect_target:
+                failures[
+                    f"non-canonical redirect target {route} -> {target_document.redirect_target}"
+                ].append(source_route)
+                return
+            if fragment and fragment not in target_document.ids:
+                failures[f"missing fragment {route}#{fragment}"].append(source_route)
+
     for source_path, document in documents.items():
         source_route = route_for_file(public, source_path)
         for raw_url in document.links:
-            target = resolve_internal_url(source_route, raw_url)
-            if target is None:
-                continue
-            checked += 1
-            route, fragment = target
-            candidates = target_candidates(public, route)
-            existing = next((candidate.resolve() for candidate in candidates if candidate.exists()), None)
-            if existing is None:
-                failures[f"missing target {route}"].append(source_route)
-                continue
-            if existing.suffix.lower() == ".html":
-                target_document = documents.get(existing)
-                if target_document is None:
-                    target_document = parse_document(existing)
-                    documents[existing] = target_document
-                if target_document.redirect_target:
-                    failures[
-                        f"non-canonical redirect target {route} -> {target_document.redirect_target}"
-                    ].append(source_route)
-                    continue
-            if fragment and existing.suffix.lower() == ".html":
-                if fragment not in target_document.ids:
-                    failures[f"missing fragment {route}#{fragment}"].append(source_route)
+            check_link(source_route, raw_url)
+
+    for source_path in text_files:
+        source_route = route_for_file(public, source_path)
+        for raw_url in parse_markdown_links(source_path):
+            check_link(source_route, raw_url)
 
     if failures:
         print(f"internal link check failed: {len(failures)} distinct target errors", file=sys.stderr)
@@ -143,7 +159,10 @@ def main() -> int:
             print(f"- {problem} <- {sample}", file=sys.stderr)
         return 1
 
-    print(f"internal link check passed: {checked} rendered internal references across {len(html_files)} HTML files")
+    print(
+        f"internal link check passed: {checked} rendered internal references across "
+        f"{len(html_files)} HTML and {len(text_files)} Markdown/LLMS files"
+    )
     return 0
 
 

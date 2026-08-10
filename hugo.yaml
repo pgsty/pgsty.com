@@ -10,6 +10,13 @@ enableGitInfo: false
 hasCJKLanguage: true
 
 #=======================================#
+# Services
+#=======================================#
+services:
+  googleAnalytics:
+    id: G-JLB25NYKJX
+
+#=======================================#
 # Hugo Module
 #=======================================#
 module:
@@ -39,6 +46,10 @@ languages:
           name: Product
           weight: 10
           url: /#postgres
+        - identifier: solutions
+          name: Solutions
+          weight: 15
+          pageRef: /solutions
         - identifier: services
           name: Services
           weight: 20
@@ -46,7 +57,7 @@ languages:
         - identifier: pricing
           name: Pricing
           weight: 30
-          url: /price/
+          pageRef: /price
         - identifier: values
           name: Values
           weight: 35
@@ -54,7 +65,7 @@ languages:
         - identifier: about
           name: About
           weight: 40
-          url: /#about
+          pageRef: /about
         - identifier: github
           name: GitHub
           weight: 50
@@ -74,6 +85,10 @@ languages:
           name: 产品
           weight: 10
           url: /zh/#postgres
+        - identifier: solutions
+          name: 解决方案
+          weight: 15
+          pageRef: /solutions
         - identifier: services
           name: 服务
           weight: 20
@@ -81,7 +96,7 @@ languages:
         - identifier: pricing
           name: 价格
           weight: 30
-          url: /zh/price/
+          pageRef: /price
         - identifier: values
           name: 理念
           weight: 35
@@ -89,7 +104,7 @@ languages:
         - identifier: about
           name: 关于
           weight: 40
-          url: /zh/#about
+          pageRef: /about
         - identifier: github
           name: GitHub
           weight: 50
@@ -135,9 +150,9 @@ markup:
 # Outputs
 #=======================================#
 outputs:
-  home: [HTML, RSS]
-  page: [HTML]
-  section: [HTML, RSS]
+  home: [HTML, RSS, markdown, LLMS]
+  page: [HTML, markdown]
+  section: [HTML, RSS, markdown]
 
 #=======================================#
 # Site parameters
@@ -146,7 +161,6 @@ params:
   description: The company behind Pigsty — open-source PostgreSQL distribution, tooling, and enterprise services.
   images:
     - img/pgsty-social-card.png
-  version: 0.1.0
   copyright:
     authors: PGSTY PTE. LTD.
     from_year: 2018
@@ -157,8 +171,6 @@ params:
   # ICP 备案号（单行页脚居中显示，链接到 beian.miit.gov.cn；留空则不渲染）。
   footer_icp: ""
 
-  archived_version: false
-  url_latest_version: https://pgsty.com
   github_repo: https://github.com/pgsty/pgsty.com
   github_branch: main
 
@@ -170,7 +182,6 @@ params:
     breadcrumb_disable: false
     navbar_logo: true
     navbar_translucent_over_cover_disable: false
-    navbar_theme: dark
     sidebar_menu_compact: true
     sidebar_menu_foldable: true
     sidebar_menu_truncate: 2000

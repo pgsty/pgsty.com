@@ -6,9 +6,10 @@
 
 ## 命令
 
-- `make dev` — 本地预览（hugo server）
-- `make build` — 生产构建（--minify --cleanDestinationDir）
-- `make check` — 严格构建（--panicOnWarning）+ bin/check_internal_links.py
+- `make d` / `make debug` — 用相邻的 `../oink` checkout 调试主题
+- `make s` / `make serve` — 用 go.mod 固定的主题版本本地预览
+- `make b` / `make build` — 生产构建（--minify --cleanDestinationDir）
+- `make c` / `make check` — 严格构建（--panicOnWarning）+ bin/check_internal_links.py
 - `bin/metrics.py update` — 刷新 data/brand.yml 与 data/portal/projects.yaml 里的 GitHub 星数
 
 推到 main 后有两条独立部署链：`.github/workflows/pages.yml` 构建并部署 GitHub
@@ -22,9 +23,9 @@ Cloudflare 部署和公开域名可访问混为同一验收状态。
 （`hugo.Data.brand.metrics.*`）；价格档位在 data/portal/pricing.yaml 与 services.yaml，
 项目版本与星数在 data/portal/projects.yaml。content/ 或 layouts/ 硬编码视为 bug，验收命令：
 
-    grep -rn "5347\|5,347\|562\|2230\|2,230\|444" content/ layouts/ i18n/ | grep -v data/   # 应为空
+    grep -rn "5347\|5,347\|572\|2230\|2,230" content/ layouts/ i18n/ | grep -v data/   # 应为空
 
-`ext_bundled: 444` 语义未确认（PRD §12.2），**禁止上页**；对外扩展数唯一口径 = ext_packaged(562)。
+对外扩展数唯一口径 = ext_packaged(572)。
 `kernels: 12` 以 pigsty.io 首页「12 PG kernel forks」口径为准；`oss_since_year: 2020` 供指标带
 「Open source since」，`since_year: 2018` 只用于 EST. 与版权行，两者勿混。
 
@@ -60,12 +61,11 @@ Cloudflare 部署和公开域名可访问混为同一验收状态。
   订阅），四组 token 全部过 dataviz 六项校验，改色需重跑；每张图配 details 数据表
   与直标数值。**模板坑**：谱系取 max 时 int/float 混用的 `gt` 会退化成字符串比较，
   必须 `gt (float .price) $max`。
-- 页面上凡待用户拍板的事实一律 `TODO(user)` 占位（可见 `.todo-flag` / `.todo-chip`
-  或 HTML 注释），严禁编造：SLA、客户案例、piglet 链接、里程碑年份等。
-- T 板块项目卡顺序固定：Silo 第一（第二旗舰，文案口径「PIGSTY 维护的 MinIO 分支，
-  持续安全更新」）、PIG 第二；未发布项目（sow / boar）用 projects.yaml
-  `placeholder: true` 条目出「敬请期待」卡 —— 无链接 / 版本 / 星数 / 安装命令，
-  发布后补全字段并移除 placeholder。piglet（piglet.run）暂不露出，上线后以完整卡回归。
+- 待用户拍板的事实保留在源码注释或数据占位中，公开页面不得渲染 `TODO`；严禁编造
+  SLA、客户案例、piglet 链接、里程碑年份等。
+- T 板块项目卡顺序固定：Silo、PIG、pg_exporter、SOW；四张卡都使用
+  projects.yaml 的完整版本、协议、星数、描述与命令，标题及文档入口指向各自独立官网。
+  piglet 在真实仓库、官网、版本与安装方式齐备前暂不露出（PRD §6.8）。
 
 ## 关键约定
 
@@ -74,7 +74,7 @@ Cloudflare 部署和公开域名可访问混为同一验收状态。
 - 样式分两层：`static/css/landing-v3.css` 是家族设计系统（Pigsty Landing v3，
   与 pigsty.cc / silo.pgsty.com 共享，token 与品牌六色勿改）；门户组件全部在
   `static/css/portal-v1.css`（含 v2 新增：doors / epigraph / timeline / manifesto /
-  todo-flag / tco / artifact-plate 等）。CSS 用内容 md5 做缓存指纹（见 head-assets）。
+  tco / artifact-plate 等）。CSS 用内容 md5 做缓存指纹（见 head-assets）。
 - hero 蜂窝主板：`.hex` 用负 margin 居中，**不能用 transform 居中**
   （`.anim` 入场动画会覆写 transform）。
 - 主题切换 localStorage key：`pgsty-landing-theme`。
@@ -84,7 +84,8 @@ Cloudflare 部署和公开域名可访问混为同一验收状态。
   pigsty.cc/docs/about/service 为准，改动需同步。
 - bin/check_internal_links.py 校验站内链接与锚点（含 hreflang 绝对链接，
   SITE_HOSTS=pgsty.com），且**站内不得链接 alias 重定向页**（如 /company/about/）。
-- 无跟踪脚本 —— 与零遥测主张一致；如需统计需用户选自托管方案（PRD §12.10）。
+- Google Analytics 仅在生产构建启用，Measurement ID 为 `G-JLB25NYKJX`；本地预览
+  不加载统计脚本，产品本身的零遥测主张不变。
 - 文档与博客的标准布局、导航、搜索、短代码由 OINK 提供，当前仓库不复制这些
   框架文件；若启用相应内容，应优先通过 OINK 的公开覆盖点定制，避免重新分叉主题。
 

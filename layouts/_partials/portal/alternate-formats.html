@@ -1,0 +1,7 @@
+{{- /* Advertise the non-HTML representations enabled by OINK 0.2.0. */ -}}
+{{ range .AlternativeOutputFormats -}}
+<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}">
+{{ end -}}
+{{ with .OutputFormats.Get "LLMS" -}}
+<link rel="alternate" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}" title="LLMS index">
+{{ end -}}
