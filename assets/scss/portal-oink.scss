@@ -1,0 +1,4 @@
+// Compile only OINK's composable homepage components for the bespoke portal.
+// The rest of the OINK shell stays module-owned and is loaded by standard
+// content layouts when those surfaces are enabled.
+@import 'td/landing';

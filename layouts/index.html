@@ -560,6 +560,21 @@
       </div>
     </section>
 
+    {{- /* OINK 0.2.0 可组合首页区块：内容与顺序由 data/home/<lang>.yaml 驱动。 */ -}}
+    {{- $homeData := partial "home-data.html" . -}}
+    {{- with $homeData.sections }}
+    <div class="oink-landing portal-oink">
+      {{- range $index, $section := . }}
+        {{- partial "home/section.html" (dict
+          "page" $
+          "home" $homeData
+          "entry" $section
+          "index" $index
+        ) -}}
+      {{- end }}
+    </div>
+    {{- end }}
+
     <!-- ============ ABOUT TEASER：三行文案 + 创始人卡，长内容归 /about/（PRD §6.10） ============ -->
     <section class="landing-section about" id="about">
       <div class="landing-container">

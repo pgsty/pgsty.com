@@ -171,12 +171,12 @@
       </div>
     </section>
 
-    <!-- ============ 实体与法务 + 创始人 ============ -->
+    <!-- ============ 实体 + 创始人 ============ -->
     <section class="landing-section" id="company">
       <div class="landing-container">
         <div class="section-head" data-reveal>
           <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}THE COMPANY · 公司与创始人{{ else }}THE COMPANY & THE FOUNDER{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title">{{ if $zh }}主体、商标与履历{{ else }}Entity, trademarks, and track record{{ end }}</h2>
+          <h2 class="section-title">{{ if $zh }}主体与履历{{ else }}Entity and track record{{ end }}</h2>
         </div>
 
         {{- /* TODO(user)：国内主体在英文站的展示口径待拍板（PRD §2 legal_entity_domestic / §12.1）；
@@ -193,7 +193,7 @@
             <p class="entity-loc"><i class="fas fa-location-dot" aria-hidden="true"></i> Singapore</p>
             <p class="entity-desc">Serving global subscriptions, expert services, and partnerships.</p>
             {{ end }}
-            <p class="entity-desc entity-legal-line">{{ if $zh }}PIGSTY® 与 PGSTY® 为注册商标 · EST. {{ $m.since_year }}{{ else }}PIGSTY® and PGSTY® are registered trademarks · EST. {{ $m.since_year }}{{ end }}</p>
+            <p class="entity-desc entity-founded-line">EST. {{ $m.since_year }}</p>
           </article>
 
           <article class="entity-card">

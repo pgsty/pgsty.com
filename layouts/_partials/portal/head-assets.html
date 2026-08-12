@@ -18,6 +18,12 @@
 <link rel="stylesheet" href="{{ . | relURL }}?v={{ substr (md5 (readFile (path.Join "static" .))) 0 8 }}">
 {{- end }}
 
+{{- /* 首页的可组合内容区块直接编译自当前锁定的 OINK 模块。 */ -}}
+{{- if .IsHome }}
+{{- $oinkLanding := resources.Get "scss/portal-oink.scss" | toCSS | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $oinkLanding.RelPermalink }}" integrity="{{ $oinkLanding.Data.Integrity }}" crossorigin="anonymous">
+{{- end }}
+
 {{ if hugo.IsProduction -}}
 {{ partial "google_analytics.html" . -}}
 {{ end -}}

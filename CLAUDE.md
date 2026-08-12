@@ -9,7 +9,7 @@
 - `make d` / `make debug` — 用相邻的 `../oink` checkout 调试主题
 - `make s` / `make serve` — 用 go.mod 固定的主题版本本地预览
 - `make b` / `make build` — 生产构建（--minify --cleanDestinationDir）
-- `make c` / `make check` — 严格构建（--panicOnWarning）+ bin/check_internal_links.py
+- `make c` / `make check` — 严格构建（--panicOnWarning）+ 品牌声明与内部链接检查
 - `bin/metrics.py update` — 刷新 data/brand.yml 与 data/portal/projects.yaml 里的 GitHub 星数
 
 推到 main 后有两条独立部署链：`.github/workflows/pages.yml` 构建并部署 GitHub
@@ -32,7 +32,8 @@ Cloudflare 部署和公开域名可访问混为同一验收状态。
 ## 页面与布局
 
 - 首页 `layouts/index.html`，**不走 OINK 标准页面模板**，双语用 `{{ if $zh }}` 内联；
-  数据从 `hugo.Data.brand.*` / `hugo.Data.portal.*` 读取（`.Site.Data` 已弃用）。
+  专属模块从 `hugo.Data.brand.*` / `hugo.Data.portal.*` 读取，可组合扩展区块由
+  `data/home/<lang>.yaml` 经 OINK dispatcher 渲染（`.Site.Data` 已弃用）。
 - 板块锚点：`#postgres #infras #glass #service #toolbox #yours`。
   **G 板块 2026-08 由 GRAPHICS 改名 GLASS**；`#graphics` 是 `#glass` 的别名
   （section id=glass，内层 container id=graphics），老外链不能断，勿删。
@@ -93,7 +94,8 @@ Cloudflare 部署和公开域名可访问混为同一验收状态。
 
 - PGSTY PTE. LTD.（新加坡，全球业务）+ 海口龙华辟技数据中心（中国大陆，
   统一社会信用代码 92460000MAG0XJ569B）。
-- PIGSTY® / PGSTY® 为注册商标；创始人冯若航（@Vonng），奇绩创坛 S22。
+- PIGSTY / PGSTY 当前只作普通品牌名称使用，不附加任何登记状态符号或声明；
+  创始人冯若航（@Vonng），奇绩创坛 S22。
 - 创始人履历（/about/ 全列）：Pigsty 作者（2018 至今）、PostgreSQL 从业 11 年、
   PG 中文文档译者（pg.center）、DDIA 中文译者、曾任职 Alibaba/Tantan/Apple、
   推动 PGDG 官方仓库支持 loong64（2026-07）。

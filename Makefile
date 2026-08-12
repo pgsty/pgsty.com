@@ -30,6 +30,7 @@ build:
 check:
 	go mod verify
 	$(HUGO) build --minify --cleanDestinationDir --printPathWarnings --printI18nWarnings --panicOnWarning
+	python3 bin/check_brand_claims.py
 	python3 bin/check_internal_links.py public
 
 update-theme:

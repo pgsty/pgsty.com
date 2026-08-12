@@ -8,7 +8,10 @@ The bilingual PGSTY corporate portal pins
 [`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v0.2.0` as its Hugo
 theme. The site keeps bespoke home, about, pricing, and solutions layouts while
 OINK supplies the reusable content system, shortcodes, icon set, favicon
-conventions, and Markdown/LLMS output formats.
+conventions, and Markdown/LLMS output formats. The bespoke homepage also
+dispatches its extensible content band from `data/home/<language>.yaml` through
+OINK's composable section API, so generic sections can evolve without copying
+theme templates into this repository.
 
 ## Run
 
@@ -21,9 +24,10 @@ make c  # Run the complete site check
 
 `make d` creates an ignored `go.work` without pinning the preview port. The long
 targets are `debug`, `serve`, `build`, and `check`; `dev` retains the pinned-theme
-preview. `make c` validates rendered HTML, Markdown, and `llms.txt` links. To
-update the pinned theme intentionally, run `make update-theme`, review `go.mod`
-and `go.sum`, then rerun the checks.
+preview. `make c` validates rendered HTML, Markdown, and `llms.txt` links, and
+rejects any false PGSTY/PIGSTY registered-trademark claim in source or output.
+To update the pinned theme intentionally, run `make update-theme`, review
+`go.mod` and `go.sum`, then rerun the checks.
 
 ## Deploy
 

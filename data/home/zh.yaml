@@ -1,0 +1,20 @@
+# OINK 0.2.0 可组合首页区块；这些区块在门户自定义模块之后渲染。
+# 后续增删或调整顺序只改此处，无需修改 layouts/index.html。
+sections:
+  - type: faq
+    key: buyer_faq
+
+buyer_faq:
+  eyebrow: 常见问题
+  title: 开始之前，团队通常会问这些
+  desc: 软件始终开源；订阅与专家服务是在同一套技术栈上增加确定性保障。
+  items:
+    - question: Pigsty 真的可以免费用于生产环境吗？
+      answer: '可以。[Pigsty](https://pigsty.cc/) 与核心技术栈采用 Apache-2.0 协议，不限制节点数，也没有功能阉割。只有在需要支持、响应承诺或专家工作时才需要付费。'
+      open: true
+    - question: PGSTY 订阅买到的是什么？
+      answer: '订阅购买的是开源技术栈之上的确定性：直接指导、响应承诺，以及生产系统运维支持；它不会解锁另一套专有版本。当前档位与范围请看[价格方案](price/)。'
+    - question: 可以帮助我们下云，或者从 Oracle 迁移吗？
+      answer: '可以。服务可以覆盖架构设计、成本测算、迁移预演、分阶段切换、回退方案与生产交接；可以先从[下云方案](solutions/cloud-exit/)开始。'
+    - question: 生产环境出故障时，谁来处理？
+      answer: '你会直接联系到编写并运营这些软件的工程师，不经过分层工单队列。具体负载或故障可以[直接联系作者](#contact)。'

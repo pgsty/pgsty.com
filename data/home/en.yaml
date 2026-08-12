@@ -1,0 +1,33 @@
+# OINK 0.2.0 composable sections rendered after the bespoke portal modules.
+# Reorder or extend this list without changing layouts/index.html.
+sections:
+  - type: faq
+    key: buyer_faq
+
+buyer_faq:
+  eyebrow: Practical questions
+  title: What teams usually ask before they start
+  desc: The software stays open; subscriptions and expert work add assurance around the same stack.
+  items:
+    - question: Is Pigsty really free to use in production?
+      answer: >-
+        Yes. [Pigsty](https://pigsty.io/) and the core stack are Apache-2.0
+        software, with no node limit or feature gate. You pay only when you
+        want optional support, response commitments, or expert work.
+      open: true
+    - question: What does a PGSTY subscription buy?
+      answer: >-
+        A subscription buys assurance around the open-source stack: direct
+        guidance, response commitments, and help operating production systems.
+        It does not unlock a separate proprietary edition. See the current
+        [plans and scope](price/).
+    - question: Can you help us leave RDS or migrate from Oracle?
+      answer: >-
+        Yes. Engagements can cover architecture, cost modelling, rehearsal,
+        staged cutover, rollback planning, and production handover. Start with
+        the [Cloud Exit solution](solutions/cloud-exit/).
+    - question: Who handles a production incident?
+      answer: >-
+        You reach the engineer who writes and operates the software, without a
+        tiered support queue. For a concrete workload or incident,
+        [contact the author](#contact) directly.

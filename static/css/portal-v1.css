@@ -874,7 +874,7 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 @media (max-width: 860px) { .about-teaser { grid-template-columns: 1fr; } }
 
 /* ------------------------------------------------------------
-   17. 页脚补充：missing-i 提示行 + 商标行
+   17. 页脚补充：missing-i 提示行
    ------------------------------------------------------------ */
 .footer-missing-i { margin: 0 0 6px; font-size: 0.76rem; color: var(--ink-mute); }
 .footer-missing-i a {
@@ -882,7 +882,6 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
   border-bottom: 1px dashed var(--line-strong);
 }
 .footer-missing-i a:hover { color: var(--pg-strong); border-bottom-style: solid; }
-.footer-trademarks { display: block; margin-top: 3px; font-size: 0.72rem; color: var(--ink-mute); }
 
 /* ------------------------------------------------------------
    18. 子页通用：hero / 正文散文列 / 面包屑链接
@@ -989,7 +988,29 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
   opacity: 0.85;
   transform: rotate(45deg);
 }
-.entity-legal-line { padding-top: 10px; border-top: 1px dashed var(--line-strong); font-size: 0.8rem !important; color: var(--ink-mute) !important; }
+.entity-founded-line { padding-top: 10px; border-top: 1px dashed var(--line-strong); font-size: 0.8rem !important; color: var(--ink-mute) !important; }
+
+/* OINK 0.2.0 homepage components inherit the portal's design tokens. */
+.portal-oink {
+  --bs-body-bg: var(--bg);
+  --bs-body-color: var(--ink);
+  --bs-border-color: var(--line);
+  --bs-font-monospace: var(--font-mono);
+  --bs-font-sans-serif: var(--font-body);
+  --bs-link-color: var(--pg);
+  --bs-link-hover-color: var(--pg-strong);
+  --bs-secondary-bg: var(--bg-soft);
+  --bs-secondary-color: var(--ink-soft);
+  --bs-tertiary-color: var(--ink-mute);
+  --td-brand-copper: var(--copper);
+  --td-brand-copper-dim: var(--copper-dim);
+  --td-brand-elev: var(--bg-elev);
+  --td-brand-line-strong: var(--line-strong);
+  --td-brand-shadow-md: var(--shadow-md);
+  --td-brand-silk: var(--silk);
+}
+html[data-theme="dark"] .portal-oink { --bs-link-color-rgb: 93, 162, 221; }
+html[data-theme="light"] .portal-oink { --bs-link-color-rgb: 43, 108, 163; }
 
 /* ------------------------------------------------------------
    21. /solutions/ 索引卡
