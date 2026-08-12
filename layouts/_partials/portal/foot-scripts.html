@@ -1,2 +1,3 @@
 {{- /* 门户页面末尾脚本（内容指纹缓存）。 */ -}}
 <script src="{{ "js/landing-v3.js" | relURL }}?v={{ substr (md5 (readFile "static/js/landing-v3.js")) 0 8 }}"></script>
+{{ partial "portal/palette.html" . }}

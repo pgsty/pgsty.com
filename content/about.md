@@ -4,6 +4,8 @@ description: "PGSTY is the company behind Pigsty — the story of the missing i,
 layout: "about"
 translationKey: "about"
 aliases: ["/company/about/"]
+search_keywords: [company, founder, team, entity, history, PGSTY]
+search_boost: 1.15
 ---
 
 PGSTY PTE. LTD. is the company behind Pigsty. It maintains the open-source

@@ -3,6 +3,8 @@ title: "Pricing"
 description: "PGSTY subscription plans and on-demand expert services — from free open source to a 7×24 enterprise SLA, billed per node."
 layout: "price"
 translationKey: "price"
+search_keywords: [pricing, subscription, support, SLA, service, plans]
+search_boost: 1.25
 ---
 
 Pigsty and the rest of the open-source stack remain free to use. PGSTY charges

@@ -392,6 +392,21 @@ main { display: block; }
 }
 .nav-util:hover { color: var(--ink) !important; background: var(--bg-elev); }
 
+.nav-search {
+  gap: 5px;
+  min-width: 66px;
+  font-family: var(--font-mono);
+}
+.nav-search-shortcut {
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-mute);
+}
+@media (max-width: 1100px) {
+  .nav-search { min-width: 34px; }
+  .nav-search-shortcut { display: none; }
+}
+
 /* 与文档站同款 lucide/simple-icons 图标（18px）。 */
 .nav-util .td-shell-icon,
 .nav-github .td-shell-icon {
@@ -582,6 +597,14 @@ html[data-theme='dark'] [data-theme-toggle] .td-shell-icon--sun { display: block
 }
 .mobile-menu-link:last-child { border-bottom: none; }
 .mobile-menu-link i { width: 22px; color: var(--ink-mute); }
+.mobile-menu-link > .td-shell-icon { width: 20px; height: 20px; margin-right: 2px; }
+.mobile-menu-link--btn { display: flex; align-items: center; gap: 8px; width: 100%; }
+.mobile-menu-shortcut {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-mute);
+}
 
 /* ------------------------------------------------------------
    5. Hero — The Powered Board

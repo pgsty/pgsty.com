@@ -2,6 +2,8 @@
 title: "Solutions"
 description: "PGSTY solutions organized by what you're trying to do — starting with cloud exit: leave RDS without leaving the guarantees."
 translationKey: "solutions"
+search_keywords: [solutions, migration, cloud exit, self-hosting, data ownership]
+search_boost: 1.2
 ---
 
 PGSTY solutions are organized around the operational outcome you need, not a

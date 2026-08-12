@@ -18,7 +18,7 @@
   function getStoredTheme() {
     try {
       var v = window.localStorage.getItem(THEME_KEY);
-      return v === 'light' || v === 'dark' ? v : null;
+      return v === 'light' || v === 'dark' || v === 'auto' ? v : null;
     } catch (err) { return null; }
   }
 
@@ -33,6 +33,7 @@
   function applyTheme(theme) {
     var isLight = theme === 'light';
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-bs-theme', theme);
 
     document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
       var icon = btn.querySelector('i');
@@ -59,15 +60,39 @@
     } catch (err) { /* ignore */ }
   }
 
+  function applyThemePreference(preference) {
+    if (preference !== 'auto' && preference !== 'light' && preference !== 'dark') {
+      throw new Error('Unsupported theme');
+    }
+    setStoredTheme(preference);
+    var resolved = preference === 'auto'
+      ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+      : preference;
+    applyTheme(resolved);
+    return resolved;
+  }
+
+  window.PGSTYPortalTheme = {
+    applyPreference: applyThemePreference,
+    current: currentTheme
+  };
+
   function initThemeToggle() {
     applyTheme(currentTheme()); // 同步按钮图标 / 主题图片（data-theme 已由内联脚本设置）
     document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var next = currentTheme() === 'light' ? 'dark' : 'light';
-        applyTheme(next);
-        setStoredTheme(next);
+        applyThemePreference(next);
       });
     });
+
+    if (window.matchMedia) {
+      var media = window.matchMedia('(prefers-color-scheme: light)');
+      media.addEventListener('change', function () {
+        var stored = getStoredTheme();
+        if (!stored || stored === 'auto') applyTheme(media.matches ? 'light' : 'dark');
+      });
+    }
   }
 
   // ============================================
@@ -181,18 +206,37 @@
     var menu = document.querySelector('.mobile-menu');
     if (!toggle || !menu) return;
 
-    toggle.addEventListener('click', function () {
-      var active = menu.classList.toggle('active');
+    function setOpen(active) {
+      menu.classList.toggle('active', active);
       toggle.classList.toggle('active', active);
       toggle.setAttribute('aria-expanded', active ? 'true' : 'false');
+    }
+
+    if (window.OinkSurfaceCoordinator) {
+      window.OinkSurfaceCoordinator.register('mobile-menu', function () {
+        setOpen(false);
+      });
+    }
+
+    toggle.addEventListener('click', function () {
+      var active = !menu.classList.contains('active');
+      if (active && window.OinkSurfaceCoordinator) {
+        window.OinkSurfaceCoordinator.closeOthers('mobile-menu');
+      }
+      setOpen(active);
     });
 
-    menu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        menu.classList.remove('active');
-        toggle.classList.remove('active');
-        toggle.setAttribute('aria-expanded', 'false');
+    menu.querySelectorAll('a, [data-mobile-menu-dismiss]').forEach(function (item) {
+      item.addEventListener('click', function () {
+        setOpen(false);
       });
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && menu.classList.contains('active')) {
+        setOpen(false);
+        toggle.focus();
+      }
     });
   }
 

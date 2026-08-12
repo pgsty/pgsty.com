@@ -4,6 +4,8 @@ description: "PGSTY 是 Pigsty 背后的公司 —— 少掉的 i 的故事、�
 layout: "about"
 translationKey: "about"
 aliases: ["/company/about/"]
+search_keywords: [公司, 创始人, 团队, 主体, 履历, PGSTY]
+search_boost: 1.15
 ---
 
 PGSTY 是 Pigsty 背后的公司。中国大陆业务由海口龙华辟技数据中心承接，全球业务由

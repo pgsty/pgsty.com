@@ -2,6 +2,8 @@
 title: "解决方案"
 description: "按「你要干什么」组织的 PGSTY 方案索引 —— 从下云开始：离开 RDS，不离开那些保障。"
 translationKey: "solutions"
+search_keywords: [解决方案, 迁移, 下云, 自建, 数据主权]
+search_boost: 1.2
 ---
 
 PGSTY 按实际要解决的运维目标组织方案，而不是陈列一组专有产品。每套方案都由开源

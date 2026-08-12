@@ -1,0 +1,19 @@
+{{- /* Reuse OINK 0.3's language-local index, Command Palette, and shared
+     action registry without loading the standard documentation shell. */ -}}
+<div class="portal-palette">
+  {{ partial "shell/search-dialog.html" .Site.Home }}
+</div>
+<script type="application/json" id="oink-action-manifest">{{ partial "actions/manifest.html" . | jsonify | safeJS }}</script>
+{{- $paletteJS := slice
+  (resources.Get "js/third_party/lunr.min.js")
+  (resources.Get "js/surface-coordinator.js")
+  (resources.Get "js/action-registry.js")
+  (resources.Get "js/search-engine.js")
+  (resources.Get "js/palette-model.js")
+  (resources.Get "js/command-palette.js")
+  (resources.Get "js/portal-palette.js")
+-}}
+{{- $bundle := $paletteJS | resources.Concat "js/portal-palette.js" -}}
+{{- if hugo.IsProduction }}{{ $bundle = $bundle | minify | fingerprint }}{{ end -}}
+<script src="{{ $bundle.RelPermalink }}"
+  {{- with $bundle.Data.Integrity }} integrity="{{ . }}" crossorigin="anonymous"{{ end }}></script>

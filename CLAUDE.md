@@ -48,7 +48,9 @@ Cloudflare 部署和公开域名可访问混为同一验收状态。
 - 公共部件在 layouts/_partials/portal/：head-assets（主题引导+CSS 指纹）、
   head-meta（子页 <head>，标题模式 `<页名> — PGSTY`）、nav（`dict "page" . "active"
   "home|price|solutions|about"`，含 Product/Company 纯 CSS 下拉）、footer、
-  contact-band（可传 title/desc/pricing 参数）、foot-scripts。
+  contact-band（可传 title/desc/pricing 参数）、foot-scripts。`palette.html` 是 OINK 0.3
+  门户桥接层：只复用主题的分语言同源索引、Command Palette、共享页面动作与安全命令，
+  不引入会与门户导航冲突的整套 docs shell；`foot-scripts.html` 必须在每个门户布局末尾调用它。
 - cloud-exit 是「下云宣言 + 账本」页：全部成本数字在 **data/portal/cloudcost.yaml**
   （三大件谱系[数据库/算力/对象存储] / 计算器矩阵 / 判词 / 案例 / 行业锚点 / 文选 /
   来源），出处 = vonng.com/cloud 公开文章（EN 用 /en/cloud 镜像，均逐篇核实）+
@@ -79,6 +81,8 @@ Cloudflare 部署和公开域名可访问混为同一验收状态。
 - hero 蜂窝主板：`.hex` 用负 margin 居中，**不能用 transform 居中**
   （`.anim` 入场动画会覆写 transform）。
 - 主题切换 localStorage key：`pgsty-landing-theme`。
+- OINK 0.3 命令面板：`Cmd/Ctrl-K` 搜索并显示页面动作，`/` 直接进命令模式；
+  主题选项由门户桥接到同一 `pgsty-landing-theme` 状态，不得再引入第二套配色存储。
 - 中文站是本地化不是翻译，两边卖点各自成文；术语强制：self-hosted → **自建**
   （禁「自托管」）、cloud exit → **下云**、observability → **可观测性**。
 - 内容数字（价格 / 服务 / 指标）以 pigsty.cc/price、pigsty.io/price 与

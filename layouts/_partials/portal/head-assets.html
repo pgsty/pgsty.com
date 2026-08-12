@@ -3,10 +3,14 @@
   (function () {
     var theme = null;
     try { theme = window.localStorage.getItem('pgsty-landing-theme'); } catch (error) {}
-    if (theme !== 'light' && theme !== 'dark') {
+    if (theme !== 'light' && theme !== 'dark' && theme !== 'auto') {
+      theme = 'auto';
+    }
+    if (theme === 'auto') {
       theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     }
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-bs-theme', theme);
     document.documentElement.classList.remove('no-js');
     document.documentElement.classList.add('js');
   })();
@@ -17,6 +21,10 @@
 {{- range slice "css/landing-v3.css" "css/portal-v1.css" }}
 <link rel="stylesheet" href="{{ . | relURL }}?v={{ substr (md5 (readFile (path.Join "static" .))) 0 8 }}">
 {{- end }}
+
+{{- /* 命令面板样式从 OINK 0.3 单独编译，不引入文档壳层。 */ -}}
+{{- $oinkPalette := resources.Get "scss/portal-palette.scss" | toCSS | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $oinkPalette.RelPermalink }}" integrity="{{ $oinkPalette.Data.Integrity }}" crossorigin="anonymous">
 
 {{- /* 首页的可组合内容区块直接编译自当前锁定的 OINK 模块。 */ -}}
 {{- if .IsHome }}

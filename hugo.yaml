@@ -40,6 +40,21 @@ languages:
     params:
       description: The company behind Pigsty — open-source PostgreSQL distribution, tooling, and enterprise services.
       time_format_blog: 'January 02, 2006'
+      ui:
+        command_palette:
+          commands:
+            - id: product_docs
+              title: Open Pigsty documentation
+              description: Installation, operations, and reference guides
+              url: https://pigsty.io/docs/
+              icon: fa-solid fa-book
+              keywords: [docs, guide, install, operations]
+            - id: contact_pgsty
+              title: Contact PGSTY
+              description: Talk directly to the author and maintainer
+              url: /#contact
+              icon: fa-solid fa-envelope
+              keywords: [support, service, email, help]
     menu:
       main:
         - identifier: product
@@ -79,6 +94,21 @@ languages:
     params:
       description: Pigsty 背后的公司 —— 开源 PostgreSQL 发行版、工具链与企业级专业服务。
       time_format_blog: '2006年01月02日'
+      ui:
+        command_palette:
+          commands:
+            - id: product_docs
+              title: 打开 Pigsty 文档
+              description: 安装、运维与参考指南
+              url: https://pigsty.cc/docs/
+              icon: fa-solid fa-book
+              keywords: [文档, 指南, 安装, 运维]
+            - id: contact_pgsty
+              title: 联系 PGSTY
+              description: 直接联系作者与维护者
+              url: /#contact
+              icon: fa-solid fa-envelope
+              keywords: [支持, 服务, 邮件, 咨询]
     menu:
       main:
         - identifier: product
@@ -174,8 +204,11 @@ params:
   github_repo: https://github.com/pgsty/pgsty.com
   github_branch: main
 
-  # 站内搜索由 OINK 提供；关闭其 Docsy 兼容参数 offlineSearch。
-  offlineSearch: false
+  # OINK 0.3 为每种语言生成同源摘要索引，门户页通过 Command Palette 使用。
+  offlineSearch: true
+  offlineSearchIndex: summary
+  offlineSearchSummaryLength: 120
+  offlineSearchMaxResults: 10
   prism_syntax_highlighting: false
 
   ui:
@@ -189,6 +222,9 @@ params:
     sidebar_root_enabled: true
     ul_show: 2
     showLightDarkModeMenu: true
+    quick_links: [solutions, pricing, about]
+    page_context_menu:
+      assistant_links: false
     scrollSpy:
       disable: true
     sidebar_root_menu: true

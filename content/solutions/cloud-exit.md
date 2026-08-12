@@ -3,6 +3,8 @@ title: "Cloud Exit"
 description: "Leave cloud RDS without leaving the guarantees — the three-year cost math, a four-step migration road, and the experts behind it."
 layout: "cloud-exit"
 translationKey: "cloud-exit"
+search_keywords: [cloud exit, RDS, TCO, AWS, migration, self-hosting]
+search_boost: 1.4
 ---
 
 Cloud exit is a financial and operational decision, not a slogan. The goal is

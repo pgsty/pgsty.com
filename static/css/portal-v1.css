@@ -990,7 +990,7 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 }
 .entity-founded-line { padding-top: 10px; border-top: 1px dashed var(--line-strong); font-size: 0.8rem !important; color: var(--ink-mute) !important; }
 
-/* OINK 0.2.0 homepage components inherit the portal's design tokens. */
+/* OINK 0.3.0 homepage components and Command Palette inherit portal tokens. */
 .portal-oink {
   --bs-body-bg: var(--bg);
   --bs-body-color: var(--ink);
@@ -1008,9 +1008,49 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
   --td-brand-line-strong: var(--line-strong);
   --td-brand-shadow-md: var(--shadow-md);
   --td-brand-silk: var(--silk);
+  --td-code-font-family: var(--font-mono);
+  --td-display-font-family: var(--font-display);
+  --td-meta-font-family: var(--font-mono);
+  --td-ui-font-family: var(--font-body);
 }
 html[data-theme="dark"] .portal-oink { --bs-link-color-rgb: 93, 162, 221; }
 html[data-theme="light"] .portal-oink { --bs-link-color-rgb: 43, 108, 163; }
+
+html[data-td-shell-lock] { overflow: hidden; }
+
+.portal-palette {
+  --bs-body-bg: var(--bg);
+  --bs-body-color: var(--ink);
+  --bs-border-color: var(--line);
+  --td-shell-ease-dialog: cubic-bezier(0.22, 0.8, 0.3, 1);
+  --td-shell-muted-fg: var(--ink-mute);
+  --td-shell-popover: var(--bg-elev);
+  --td-shell-primary: var(--pg-strong);
+  --td-shell-primary-dim: color-mix(in srgb, var(--pg) 16%, transparent);
+  --td-shell-shadow-lg: var(--shadow-lg);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+.portal-palette .td-shell-icon { display: block; width: 18px; height: 18px; }
+.portal-palette .td-shell-search__item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.portal-palette .visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
 
 /* ------------------------------------------------------------
    21. /solutions/ 索引卡

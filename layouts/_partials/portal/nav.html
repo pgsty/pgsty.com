@@ -47,6 +47,10 @@
           </div>
         </div>
         <a href="{{ $docs }}" class="nav-link" target="_blank" rel="noopener">{{ if $zh }}文档{{ else }}Docs{{ end }} <i class="fas fa-arrow-up-right-from-square nav-caret" aria-hidden="true"></i></a>
+        <button type="button" class="nav-util nav-search" data-td-shell-search-open aria-haspopup="dialog" aria-expanded="false" title="{{ if $zh }}搜索与命令（⌘K）{{ else }}Search and commands (⌘K){{ end }}" aria-label="{{ if $zh }}搜索与命令{{ else }}Search and commands{{ end }}">
+          {{- partialCached "shell/icon.html" "search" "search" -}}
+          <span class="nav-search-shortcut" aria-hidden="true"><span data-td-shell-meta-key>⌘</span>K</span>
+        </button>
         <button type="button" class="nav-util" data-theme-toggle title="{{ if $zh }}切换深浅主题{{ else }}Switch light / dark mode{{ end }}" aria-label="{{ if $zh }}切换深浅主题{{ else }}Switch light / dark mode{{ end }}">
           {{- partialCached "shell/icon.html" "sun" "sun" -}}
           {{- partialCached "shell/icon.html" "moon" "moon" -}}
@@ -76,6 +80,7 @@
   <a href="{{ $home }}#yours" class="mobile-menu-link">{{ if $zh }}理念{{ else }}Values{{ end }}</a>
   <a href="{{ $docs }}" class="mobile-menu-link" target="_blank" rel="noopener">{{ if $zh }}产品文档{{ else }}Docs{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
   {{ range $page.Translations }}<a href="{{ .RelPermalink }}" class="mobile-menu-link"><i class="fas fa-language" aria-hidden="true"></i> {{ .Language.Label }}</a>{{ end }}
+  <button type="button" class="mobile-menu-link mobile-menu-link--btn" data-td-shell-search-open data-mobile-menu-dismiss aria-haspopup="dialog" aria-expanded="false">{{ partialCached "shell/icon.html" "search" "search" }} {{ if $zh }}搜索与命令{{ else }}Search and commands{{ end }} <span class="mobile-menu-shortcut"><span data-td-shell-meta-key>⌘</span>K</span></button>
   <button type="button" class="mobile-menu-link mobile-menu-link--btn" data-theme-toggle><i class="fas fa-moon" aria-hidden="true"></i> {{ if $zh }}浅色 / 深色{{ else }}Light / Dark{{ end }}</button>
   <a href="https://github.com/pgsty" class="mobile-menu-link" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> GitHub · {{ partial "compact-number.html" $m.github_stars }}</a>
 </div>

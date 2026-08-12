@@ -1,4 +1,4 @@
-{{- /* Advertise the non-HTML representations enabled by OINK 0.2.0. */ -}}
+{{- /* Advertise the non-HTML representations enabled by OINK 0.3.0. */ -}}
 {{ range .AlternativeOutputFormats -}}
 <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}">
 {{ end -}}

@@ -560,7 +560,7 @@
       </div>
     </section>
 
-    {{- /* OINK 0.2.0 可组合首页区块：内容与顺序由 data/home/<lang>.yaml 驱动。 */ -}}
+    {{- /* OINK 0.3.0 可组合首页区块：内容与顺序由 data/home/<lang>.yaml 驱动。 */ -}}
     {{- $homeData := partial "home-data.html" . -}}
     {{- with $homeData.sections }}
     <div class="oink-landing portal-oink">

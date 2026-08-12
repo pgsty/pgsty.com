@@ -3,6 +3,8 @@ title: "下云"
 description: "下云不是情怀，是财务决策 —— 三年成本对照、四步迁移路线，以及每一步兜底的专家服务。"
 layout: "cloud-exit"
 translationKey: "cloud-exit"
+search_keywords: [下云, RDS, TCO, 成本, 迁移, 自建]
+search_boost: 1.4
 ---
 
 下云是一项财务与运维决策，不是一句口号。目标是离开托管 RDS 的定价方式，同时保留

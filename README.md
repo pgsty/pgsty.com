@@ -5,13 +5,19 @@
 [![Hugo](https://img.shields.io/badge/Hugo-extended%200.164.0-FF4088?logo=hugo)](https://gohugo.io/)
 
 The bilingual PGSTY corporate portal pins
-[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v0.2.0` as its Hugo
+[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v0.3.0` as its Hugo
 theme. The site keeps bespoke home, about, pricing, and solutions layouts while
 OINK supplies the reusable content system, shortcodes, icon set, favicon
 conventions, and Markdown/LLMS output formats. The bespoke homepage also
 dispatches its extensible content band from `data/home/<language>.yaml` through
 OINK's composable section API, so generic sections can evolve without copying
 theme templates into this repository.
+
+Every portal page also reuses OINK 0.3's same-origin, language-separated search
+index and Command Palette. `Cmd/Ctrl-K` opens page discovery and shared page
+actions; `/` opens localized portal commands. The bridge lives in
+`layouts/_partials/portal/palette.html`, while the registry, index, ranking,
+dialog, and action behavior remain owned by the pinned theme.
 
 ## Run
 

@@ -3,6 +3,8 @@ title: "价格方案"
 description: "PGSTY 订阅方案与按需专家服务 —— 从免费开源到 7×24 企业级 SLA，按节点计费。"
 layout: "price"
 translationKey: "price"
+search_keywords: [价格, 订阅, 支持, SLA, 服务, 方案]
+search_boost: 1.25
 ---
 
 Pigsty 与其余开源技术栈始终可以免费使用。PGSTY 收取的是保障、响应与专家工作的
