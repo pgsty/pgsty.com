@@ -5,7 +5,7 @@
 [![Hugo](https://img.shields.io/badge/Hugo-extended%200.164.0-FF4088?logo=hugo)](https://gohugo.io/)
 
 The bilingual PGSTY corporate portal pins
-[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v0.3.0` as its Hugo
+[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v0.4.1` as its Hugo
 theme. The site keeps bespoke home, about, pricing, and solutions layouts while
 OINK supplies the reusable content system, shortcodes, icon set, favicon
 conventions, and Markdown/LLMS output formats. The bespoke homepage also
