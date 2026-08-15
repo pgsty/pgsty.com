@@ -13,7 +13,7 @@ dispatches its extensible content band from `data/home/<language>.yaml` through
 OINK's composable section API, so generic sections can evolve without copying
 theme templates into this repository.
 
-Every portal page also reuses OINK 0.3's same-origin, language-separated search
+Every portal page also reuses OINK's same-origin, language-separated search
 index and Command Palette. `Cmd/Ctrl-K` opens page discovery and shared page
 actions; `/` opens localized portal commands. The bridge lives in
 `layouts/_partials/portal/palette.html`, while the registry, index, ranking,

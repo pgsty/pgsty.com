@@ -204,7 +204,7 @@ params:
   github_repo: https://github.com/pgsty/pgsty.com
   github_branch: main
 
-  # OINK 0.3 为每种语言生成同源摘要索引，门户页通过 Command Palette 使用。
+  # OINK 为每种语言生成同源摘要索引，门户页通过 Command Palette 使用。
   offlineSearch: true
   offlineSearchIndex: summary
   offlineSearchSummaryLength: 120
