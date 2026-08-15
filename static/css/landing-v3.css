@@ -1744,6 +1744,10 @@ html.js [data-reveal].revealed { opacity: 1; transform: none; }
   .nav-links { display: none; }
   .mobile-menu-toggle { display: flex; }
   .landing-container { padding: 0 18px; }
+  .module-list li {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
   .hero { padding-top: 30px; }
   .hero-title { font-size: clamp(2.1rem, 9vw, 2.7rem); }
   .section-eyebrow { gap: 10px; }
