@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="{{ . | relURL }}?v={{ substr (md5 (readFile (path.Join "static" .))) 0 8 }}">
 {{- end }}
 
-{{- /* 命令面板样式从 OINK 0.3 单独编译，不引入文档壳层。 */ -}}
+{{- /* 命令面板样式从 OINK 0.5 单独编译，不引入文档壳层。 */ -}}
 {{- $oinkPalette := resources.Get "scss/portal-palette.scss" | toCSS | minify | fingerprint -}}
 <link rel="stylesheet" href="{{ $oinkPalette.RelPermalink }}" integrity="{{ $oinkPalette.Data.Integrity }}" crossorigin="anonymous">
 

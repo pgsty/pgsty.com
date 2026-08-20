@@ -158,6 +158,7 @@ markup:
     parser:
       attribute:
         block: true
+      wrapStandAloneImageWithinParagraph: false
       autoHeadingID: true
       autoHeadingIDType: github
     renderer:
@@ -205,53 +206,30 @@ params:
   github_branch: main
 
   # OINK 为每种语言生成同源摘要索引，门户页通过 Command Palette 使用。
-  offlineSearch: true
-  offlineSearchIndex: summary
-  offlineSearchSummaryLength: 120
-  offlineSearchMaxResults: 10
-  prism_syntax_highlighting: false
+  offline_search: true
+  offline_search_on_serve: true
+  offline_search_index: summary
+  offline_search_summary_length: 120
+  offline_search_max_results: 10
+  highlight_classes: true
 
   ui:
-    breadcrumb_disable: false
-    navbar_logo: true
-    navbar_translucent_over_cover_disable: false
+    breadcrumb: true
     sidebar_menu_compact: true
     sidebar_menu_foldable: true
     sidebar_menu_truncate: 2000
     sidebar_cache_limit: 1000
     sidebar_root_enabled: true
-    ul_show: 2
-    showLightDarkModeMenu: true
+    sidebar_expand_levels: 2
+    dark_mode: true
     quick_links: [solutions, pricing, about]
     page_context_menu:
       assistant_links: false
-    scrollSpy:
-      disable: true
+    scroll_spy: false
     sidebar_root_menu: true
     sidebar_width_min: 220
     sidebar_width_max: 480
     sidebar_item_overflow: ellipsis
     feedback:
       enable: false
-    readingtime:
-      enable: false
-
-  links:
-    user:
-      - name: Pigsty
-        url: https://pigsty.io
-        icon: fa fa-database
-        desc: Battery-included PostgreSQL distribution
-      - name: GitHub
-        url: https://github.com/pgsty
-        icon: fab fa-github
-        desc: PGSTY open-source organization
-    developer:
-      - name: Pigsty Repo
-        url: https://github.com/pgsty/pigsty
-        icon: fab fa-github
-        desc: Pigsty source repository
-      - name: Portal Source
-        url: https://github.com/pgsty/pgsty.com
-        icon: fab fa-github
-        desc: This website's repository
+    reading_time: false

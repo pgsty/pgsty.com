@@ -1,4 +1,4 @@
-# OINK 0.3.0 composable sections rendered after the bespoke portal modules.
+# OINK 0.5.0 composable sections rendered after the bespoke portal modules.
 # Reorder or extend this list without changing layouts/index.html.
 sections:
   - type: faq

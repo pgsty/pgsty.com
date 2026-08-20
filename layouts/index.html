@@ -560,18 +560,11 @@
       </div>
     </section>
 
-    {{- /* OINK 0.3.0 可组合首页区块：内容与顺序由 data/home/<lang>.yaml 驱动。 */ -}}
-    {{- $homeData := partial "home-data.html" . -}}
+    {{- /* OINK 0.5.0 可组合首页区块：内容与顺序由 data/home/<lang>.yaml 驱动。 */ -}}
+    {{- $homeData := partial "landing/home-data.html" . -}}
     {{- with $homeData.sections }}
-    <div class="oink-landing portal-oink">
-      {{- range $index, $section := . }}
-        {{- partial "home/section.html" (dict
-          "page" $
-          "home" $homeData
-          "entry" $section
-          "index" $index
-        ) -}}
-      {{- end }}
+    <div class="portal-oink">
+      {{- partial "landing/render.html" (dict "page" $ "data" $homeData) -}}
     </div>
     {{- end }}
 

@@ -990,7 +990,7 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 }
 .entity-founded-line { padding-top: 10px; border-top: 1px dashed var(--line-strong); font-size: 0.8rem !important; color: var(--ink-mute) !important; }
 
-/* OINK 0.3.0 homepage components and Command Palette inherit portal tokens. */
+/* OINK 0.5.0 homepage components and Command Palette inherit portal tokens. */
 .portal-oink {
   --bs-body-bg: var(--bg);
   --bs-body-color: var(--ink);
