@@ -143,13 +143,13 @@
             </div>
           </div>
 
+          {{- /* 2026-08：主板窗框（外框 + 顶栏 + 底栏）按用户指示去掉，只留蜂窝本身；
+               字标紧贴在蜂窝下方。.board-mount 是两者共用的宽度基准，
+               .board-epigraph 的负外边距按它的宽度解析，才能精确吃掉蜂窝下方的留白。 */}}
           <div class="hero-board anim" style="--d:2">
+            <div class="board-mount">
             <figure class="board-stage pgsty-stage" data-board aria-label="{{ if $zh }}PGSTY 公司主板：六大业务板块地图{{ else }}PGSTY company board: six business sections{{ end }}">
               <div class="pgsty-board">
-                <div class="pgsty-board-top">
-                  <span><i aria-hidden="true"></i>PGSTY // COMPANY BOARD</span>
-                  <b>EST. 2018</b>
-                </div>
                 <div class="hex-field">
                   <div class="hex hex--core anim" style="--d:4">
                     <img src="{{ "img/logo/logo.svg" | relURL }}" alt="" class="hex-logo">
@@ -174,10 +174,6 @@
                     <b class="hex-letter">Y</b><span class="hex-word">YOURS</span><small class="hex-gloss">{{ if $zh }}自主可控{{ else }}SOVEREIGNTY{{ end }}</small>
                   </a>
                 </div>
-                <div class="pgsty-board-foot">
-                  <span>P·I·G·S·T·Y</span>
-                  <span><i aria-hidden="true"></i>{{ if $zh }}六大板块 · 在线{{ else }}6 SECTIONS ONLINE{{ end }}</span>
-                </div>
               </div>
             </figure>
 
@@ -185,6 +181,7 @@
                  只留 .wm-i 微交互；完整故事在 /about/ 长版 + 页脚一行提示 */}}
             <div class="board-epigraph anim" style="--d:7">
               <p class="board-wordmark"><b class="ini ini-p">P</b>ostgreSQL <b class="wm-i">i</b>n <b class="ini ini-g">G</b>reat <b class="ini ini-s">S</b><b class="ini ini-t">T</b><b class="ini ini-y">Y</b>le</p>
+            </div>
             </div>
           </div>
         </div>

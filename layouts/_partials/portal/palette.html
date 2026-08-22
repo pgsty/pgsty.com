@@ -1,5 +1,8 @@
-{{- /* Reuse OINK 0.5's language-local index, Command Palette, and shared
-     action registry without loading the standard documentation shell. */ -}}
+{{- /* OINK 门户桥接层：复用主题的分语言同源索引、Command Palette、共享页面动作
+     与安全命令，外加 0.6 导航栏所需的那点运行时 —— 下拉面板（navbar-menu）、
+     悬停弹层与滚动阴影（base）、手机抽屉（landing）—— 但仍然不引入整套 docs
+     shell。dark-mode.js 刻意不在其中：配色状态归门户的 pgsty-landing-theme
+     所有，由 portal-palette.js 桥接。 */ -}}
 <div class="portal-palette">
   {{ partial "shell/search-dialog.html" .Site.Home }}
 </div>
@@ -11,6 +14,9 @@
   (resources.Get "js/search-engine.js")
   (resources.Get "js/palette-model.js")
   (resources.Get "js/command-palette.js")
+  (resources.Get "js/navbar-menu.js")
+  (resources.Get "js/base.js")
+  (resources.Get "js/landing.js")
   (resources.Get "js/portal-palette.js")
 -}}
 {{- $bundle := $paletteJS | resources.Concat "js/portal-palette.js" -}}

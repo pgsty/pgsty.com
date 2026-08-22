@@ -13,11 +13,24 @@ dispatches its extensible content band from `data/home/<language>.yaml` through
 OINK's composable section API, so generic sections can evolve without copying
 theme templates into this repository.
 
+Site navigation is OINK 0.6's own navbar: a centered menu tree with one-column
+icon dropdown panels, a boxed search trigger, and a phone drawer carrying the
+full labelled tree. Entries come from `menu.main` in `hugo.yaml` — one tree per
+language — and `layouts/_partials/portal/nav.html` only bridges them to the
+theme's `navbar-item` / `navbar-entry-link` / `navbar-group-items` partials.
+The portal carries no GitHub badge in its chrome; language and theme share one
+segmented control matching the search box, where the language trigger shows the
+target language's own short label. The chrome stylesheet is compiled from the
+pinned module in `assets/scss/portal-oink.scss`; `static/css/portal-v1.css` maps
+the Landing v3 palette onto the `--bs-*` / `--td-*` tokens it reads.
+
 Every portal page also reuses OINK's same-origin, language-separated search
-index and Command Palette. `Cmd/Ctrl-K` opens page discovery and shared page
-actions; `/` opens localized portal commands. The bridge lives in
+index and Command Palette. `Cmd/Ctrl-K` and `/` open page discovery and shared
+page actions; `\` opens localized portal commands. The bridge lives in
 `layouts/_partials/portal/palette.html`, while the registry, index, ranking,
-dialog, and action behavior remain owned by the pinned theme.
+dialog, and action behavior remain owned by the pinned theme. Colour state stays
+in the portal's own `pgsty-landing-theme` key — the theme's `dark-mode.js` is
+deliberately not loaded, so there is never a second store.
 
 ## Run
 

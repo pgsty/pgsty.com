@@ -22,15 +22,14 @@
 <link rel="stylesheet" href="{{ . | relURL }}?v={{ substr (md5 (readFile (path.Join "static" .))) 0 8 }}">
 {{- end }}
 
-{{- /* 命令面板样式从 OINK 0.5 单独编译，不引入文档壳层。 */ -}}
+{{- /* 命令面板样式从 OINK 单独编译，不引入文档壳层。 */ -}}
 {{- $oinkPalette := resources.Get "scss/portal-palette.scss" | toCSS | minify | fingerprint -}}
 <link rel="stylesheet" href="{{ $oinkPalette.RelPermalink }}" integrity="{{ $oinkPalette.Data.Integrity }}" crossorigin="anonymous">
 
-{{- /* 首页的可组合内容区块直接编译自当前锁定的 OINK 模块。 */ -}}
-{{- if .IsHome }}
-{{- $oinkLanding := resources.Get "scss/portal-oink.scss" | toCSS | minify | fingerprint -}}
-<link rel="stylesheet" href="{{ $oinkLanding.RelPermalink }}" integrity="{{ $oinkLanding.Data.Integrity }}" crossorigin="anonymous">
-{{- end }}
+{{- /* OINK 0.6 的导航栏 chrome 与可组合内容区块，直接编译自当前锁定的模块。
+     导航栏在每个门户页面都有，所以这份样式不再只给首页。 */ -}}
+{{- $oinkChrome := resources.Get "scss/portal-oink.scss" | toCSS | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $oinkChrome.RelPermalink }}" integrity="{{ $oinkChrome.Data.Integrity }}" crossorigin="anonymous">
 
 {{ if hugo.IsProduction -}}
 {{ partial "google_analytics.html" . -}}

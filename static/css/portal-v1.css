@@ -57,51 +57,19 @@
    2. 公司主板 — 六边形蜂窝（logo 的解构版）
    平顶六边形：宽 W，高 0.866W
    ------------------------------------------------------------ */
+/* 2026-08 起没有外框：蜂窝直接落在页面上，字标紧贴其下（用户指示）。
+   .board-mount 同时是蜂窝与字标的宽度基准 —— 字标那条负外边距按百分比解析，
+   必须和蜂窝共用同一个包含块，否则在不同视口下吃掉的留白量会跑偏。 */
+.board-mount { max-width: 560px; margin-inline: auto; }
+
 .pgsty-stage { margin: 0; }
 
-.pgsty-board {
-  max-width: 560px;
-  margin-inline: auto;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-lg);
-  background:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
-    var(--bg-elev);
-  background-size: 22px 22px, 22px 22px, auto;
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-}
-
-.pgsty-board-top,
-.pgsty-board-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 16px;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  color: var(--silk);
-}
-.pgsty-board-top { border-bottom: 1px solid var(--line); }
-.pgsty-board-foot { border-top: 1px solid var(--line); }
-.pgsty-board-top b { color: var(--copper); font-weight: 600; }
-.pgsty-board-top span,
-.pgsty-board-foot span { display: inline-flex; align-items: center; gap: 8px; }
-.pgsty-board-top i,
-.pgsty-board-foot i {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--ok);
-  animation: mark-breathe 2.6s ease-in-out infinite;
-}
+.pgsty-board { margin-inline: auto; }
 
 .hex-field {
   position: relative;
   aspect-ratio: 1 / 0.96;
-  margin: 3% 4%;
+  margin: 0;
 }
 
 .hex {
@@ -186,7 +154,7 @@ html[data-theme="dark"] .hex--s { --hc: #8b93a0; }
 .hex--core .hex-word { color: var(--silk); letter-spacing: 0.22em; }
 
 @media (max-width: 980px) {
-  .pgsty-board { max-width: 460px; }
+  .board-mount { max-width: 460px; }
   .hex-gloss { display: none; }
 }
 
@@ -742,11 +710,40 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 @media (max-width: 760px) { .faq-grid { grid-template-columns: 1fr; } }
 
 /* ------------------------------------------------------------
-   9. 页脚补充（品牌口号高亮）
+   9. 页脚补充（品牌口号高亮 + 门户自己的栅格比例）
    ------------------------------------------------------------ */
 .footer-slogan { margin: 10px 0 0; font-size: 0.85rem; color: var(--ink-soft); }
 .footer-slogan .hl-good { color: var(--copper); font-weight: 600; }
 .footer-slogan .hl-use { color: var(--pg-strong); font-weight: 600; }
+
+/* landing-v3 的 `2.2fr + 4×1fr` 是给链接较少的产品站设计的：在门户上品牌栏独吞
+   左侧近四成宽度，而它的文案只占其中三分之二，于是品牌块与链接列之间裂开一条
+   一百多像素的空白，右侧五列全挤在右半边。门户自己定比例：品牌栏收窄，六个轨道
+   均分整条内容列。栏目数也从四增到五（补上「公司」）。 */
+@media (min-width: 981px) {
+  .footer-grid {
+    grid-template-columns: minmax(220px, 1.7fr) repeat(5, minmax(0, 1fr));
+    gap: 32px 24px;
+  }
+  /* 品牌块的字号比链接列小一档，顶部基线要对齐到链接列的标题上。 */
+  .footer-brand { max-width: 34ch; }
+}
+
+/* 底栏的语言切换原本是两个裸文字链接，和左边的版权行分不出层次。 */
+.footer-lang-switch { gap: 8px; }
+.footer-lang-switch a {
+  padding: 4px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.footer-lang-switch a:hover {
+  border-color: var(--card-hover-border);
+  background: var(--bg-elev);
+  color: var(--pg-strong);
+}
 
 /* ------------------------------------------------------------
    10. 小修与响应式
@@ -775,9 +772,11 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 /* ------------------------------------------------------------
    12. 字母板题记 — 字标 + missing-i 短版（PRD §3.3 / §6.1）
    ------------------------------------------------------------ */
-.board-epigraph { max-width: 560px; margin: 20px auto 0; }
+/* 蜂窝下缘到 .hex-field 盒底还有 8.13% 宽度的空白（T 格底边在 87.87%，盒高 96%）。
+   负外边距先吃掉这段死区，再留一点呼吸 —— 字标于是正好贴在六边形下面。 */
+.board-epigraph { margin: -6.4% auto 0; }
 .board-wordmark {
-  margin: 0 0 12px;
+  margin: 0;
   text-align: center;
   font-family: var(--font-display);
   font-weight: 400;
@@ -990,8 +989,13 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
 }
 .entity-founded-line { padding-top: 10px; border-top: 1px dashed var(--line-strong); font-size: 0.8rem !important; color: var(--ink-mute) !important; }
 
-/* OINK 0.5.0 homepage components and Command Palette inherit portal tokens. */
-.portal-oink {
+/* ------------------------------------------------------------
+   22. OINK 桥接层 —— 主题令牌映射
+   OINK 0.6 的导航栏、命令面板与可组合首页区块全部读 --bs-* / --td-brand-*，
+   这里把 Landing v3 的调色板接上去；主题文件 td/brand 不编译（它会用主题自己
+   的配色覆盖全站）。td/shell/tokens 会由这些值推导出全部 --td-shell-*。
+   ------------------------------------------------------------ */
+:root {
   --bs-body-bg: var(--bg);
   --bs-body-color: var(--ink);
   --bs-border-color: var(--line);
@@ -1001,11 +1005,15 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
   --bs-link-hover-color: var(--pg-strong);
   --bs-secondary-bg: var(--bg-soft);
   --bs-secondary-color: var(--ink-soft);
+  --bs-tertiary-bg: var(--bg-elev-2);
   --bs-tertiary-color: var(--ink-mute);
   --td-brand-copper: var(--copper);
   --td-brand-copper-dim: var(--copper-dim);
   --td-brand-elev: var(--bg-elev);
+  --td-brand-header-bg: var(--header-bg);
   --td-brand-line-strong: var(--line-strong);
+  --td-brand-mark-gradient: var(--wordmark-gradient);
+  --td-brand-shadow-sm: var(--shadow-sm);
   --td-brand-shadow-md: var(--shadow-md);
   --td-brand-silk: var(--silk);
   --td-code-font-family: var(--font-mono);
@@ -1013,8 +1021,66 @@ a.repo-chip--star:hover { border-color: var(--copper); color: var(--ink); }
   --td-meta-font-family: var(--font-mono);
   --td-ui-font-family: var(--font-body);
 }
-html[data-theme="dark"] .portal-oink { --bs-link-color-rgb: 93, 162, 221; }
-html[data-theme="light"] .portal-oink { --bs-link-color-rgb: 43, 108, 163; }
+/* OINK 的导航栏常驻吸顶（50px）：锚点跳转要落在它下面，而不是被它盖住。 */
+html { scroll-padding-top: calc(50px + 1.5rem); }
+
+/* —— 右上角工具组 ——
+   门户不放 GitHub / Star，右侧只剩语言与配色两枚控件。裸图标挂在搜索框旁边会
+   显得散，所以把它们合成一枚分段控件：与搜索框同高、同边框、同圆角，中间一条
+   分隔线。语言触发器显示目标语言的母语短标（EN / 中文）而不是 fa-language 字形，
+   点一下直接切换，悬停展开完整列表。 */
+.td-site-header .portal-nav-utils {
+  display: inline-flex;
+  align-items: stretch;
+  height: 34px;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 8px;
+}
+.td-site-header .portal-nav-utils > * + * { border-inline-start: 1px solid var(--bs-border-color); }
+.td-site-header .portal-nav-utils .td-nav-util { height: 100%; border-radius: 0; }
+.td-site-header .portal-nav-utils > :first-child .td-nav-util {
+  border-start-start-radius: 7px;
+  border-end-start-radius: 7px;
+}
+.td-site-header .portal-nav-utils > :last-child .td-nav-util {
+  border-start-end-radius: 7px;
+  border-end-end-radius: 7px;
+}
+.td-site-header .portal-lang__trigger { min-width: 44px; padding: 0 9px; }
+/* 弹层里的语言项是 <a>，会被 landing-v3 的 `.landing-page a` 染成链接蓝，
+   于是「当前语言」和「可切换语言」看起来一模一样。压回中性色，只让 active 发蓝。 */
+.td-site-header .td-nav-hover-menu__option:not(.td-is-active) { color: var(--bs-body-color); }
+.td-site-header .td-nav-hover-menu__option:hover,
+.td-site-header .td-nav-hover-menu__option:focus-visible { color: var(--bs-link-hover-color); }
+.portal-lang__code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+/* 手机档：与主题的其他工具控件一样退到抽屉里，导航条只留搜索与抽屉入口。 */
+@media (max-width: 767.98px) {
+  .td-site-header .portal-nav-utils { display: none; }
+}
+
+/* 导航栏与抽屉自带 .d-print-none，但这条 Bootstrap 工具类不在门户的编译范围里。 */
+@media print { .d-print-none { display: none !important; } }
+
+/* OINK 的 landing 容器自带一层 44px 网格与不透明底色。门户的 body::before 已经
+   用 --grid-line 铺了同一张网格，而且是 position: fixed —— 两层叠在一起会随滚动
+   错位成摩尔纹。去掉区块自己那层，让页面底下那张唯一的网格透上来。 */
+.portal-oink .td-landing-landing { background: transparent; }
+.portal-oink .td-landing-landing::before { content: none; }
+
+html[data-theme="dark"] {
+  --bs-body-bg-rgb: 11, 17, 25;
+  --bs-link-color-rgb: 93, 162, 221;
+}
+html[data-theme="light"] {
+  --bs-body-bg-rgb: 241, 244, 248;
+  --bs-link-color-rgb: 43, 108, 163;
+}
 
 html[data-td-shell-lock] { overflow: hidden; }
 

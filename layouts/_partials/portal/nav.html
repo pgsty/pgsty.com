@@ -1,86 +1,133 @@
-{{- /* 门户导航。入参：dict "page" . "active" "home|price|solutions|about"
+{{- /* 门户导航（OINK 0.6 chrome）。入参：dict "page" . ["active" "…"]
+
+     导航条目一律来自 hugo.yaml 的 menu.main（双语各写一份），高亮由 OINK 的
+     navbar-entry-link.html 依据 pageRef / URL 自行判定，因此 "active" 参数只
+     为兼容旧调用点保留，不再参与渲染。
+
+     这是一层桥接而不是主题分叉：DOM 与全部样式都是 OINK 0.6 的 site-navbar，
+     条目、下拉面板与抽屉直接复用主题的 navbar-item / navbar-entry-link /
+     navbar-group-items；门户只决定「渲染哪些工具」——
+
+     · 不放 GitHub / Star 数（用户 2026-08 指示：这是公司门户，不是项目仓库页；
+       GitHub 仍在页脚的社区栏里）。
+     · 语言与配色合成右侧一枚分段控件（.portal-nav-utils），与搜索框同高同框；
+       语言触发器显示目标语言的母语短标，点一下直接切换，悬停展开完整列表 ——
+       比主题默认的 fa-language 字形清楚得多。数据仍取自主题的
+       language-targets.html（0.6 修好的相对链接）。
+     · 抽屉在每个门户页面都渲染（OINK 只在 Home/Landing 版式上给抽屉，而门户的
+       /price/ /about/ /solutions/ 都是自带版式的独立页面），并且把配色开关接到
+       门户自己的 pgsty-landing-theme 状态上，不引入第二套配色存储。
+
      规则（PRD §4.3）：字母序列只是首页叙事装置，导航一律用语义词。 */ -}}
 {{- $page := .page -}}
-{{- $active := .active | default "home" -}}
-{{- $zh := eq $page.Site.Language.Lang "zh" -}}
-{{- $m := hugo.Data.brand.metrics -}}
-{{- $home := relLangURL "" -}}
-{{- $docs := cond $zh "https://pigsty.cc/docs/" "https://pigsty.io/docs/" -}}
-{{- $dist := cond $zh "https://pigsty.cc" "https://pigsty.io" -}}
-<header class="landing-header" data-header>
-  <div class="landing-container">
-    <nav class="landing-nav" aria-label="{{ if $zh }}主导航{{ else }}Main navigation{{ end }}">
-      <a href="{{ $home }}" class="nav-brand" aria-label="{{ if $zh }}PGSTY 首页{{ else }}PGSTY home{{ end }}">
-        <img src="{{ "img/logo/logo.svg" | relURL }}" alt="" class="nav-logo">
-        <span class="nav-title">PGSTY</span>
+{{- $targets := partial "language-targets.html" $page -}}
+{{- /* 母语短标：导航条只有 34px 宽，"简体中文" / "English" 放不下。 */ -}}
+{{- $short := dict "en" "EN" "zh" "中文" -}}
+{{- $next := false -}}
+{{- $current := 0 -}}
+{{- range $i, $t := $targets }}{{ if $t.active }}{{ $current = $i }}{{ end }}{{ end -}}
+{{- if gt (len $targets) 1 }}{{ $next = index $targets (mod (add $current 1) (len $targets)) }}{{ end -}}
+<header class="td-site-header d-print-none" data-td-header>
+  <div class="td-site-container">
+    <nav class="td-site-nav" aria-label="{{ T "ui_main_nav" }}">
+      <a href="{{ relLangURL "" }}" class="td-nav-brand"
+         aria-label="PGSTY — {{ T "ui_home" }}"{{ if $page.IsHome }} aria-current="page"{{ end }}>
+        <img src="{{ "img/logo/logo.svg" | relURL }}" alt="" class="td-nav-logo" width="22" height="22">
+        <span class="td-nav-title">PGSTY</span>
       </a>
 
-      <div class="nav-links">
-        <div class="nav-item">
-          <a href="{{ $home }}#postgres" class="nav-link">{{ if $zh }}产品{{ else }}Product{{ end }} <i class="fas fa-chevron-down nav-caret" aria-hidden="true"></i></a>
-          <div class="nav-dropdown">
-            <div class="dropdown-group">
-              <ul class="dropdown-col">
-                <li><a href="{{ $dist }}" target="_blank" rel="noopener"><i class="fas fa-database" aria-hidden="true"></i> {{ if $zh }}发行版 · Pigsty{{ else }}Distribution · Pigsty{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>
-                <li><a href="https://silo.pgsty.com{{ if $zh }}/zh/{{ end }}" target="_blank" rel="noopener"><i class="fas fa-box-archive" aria-hidden="true"></i> {{ if $zh }}对象存储 · Silo{{ else }}Object Storage · Silo{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>
-                <li><a href="https://pgext.cloud" target="_blank" rel="noopener"><i class="fas fa-puzzle-piece" aria-hidden="true"></i> {{ if $zh }}扩展云 · PGEXT{{ else }}Extension Cloud · PGEXT{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>
-                <li><a href="{{ $home }}#infras"><i class="fas fa-server" aria-hidden="true"></i> {{ if $zh }}生态基础设施{{ else }}Infrastructure{{ end }}</a></li>
-                <li><a href="{{ $home }}#glass"><i class="fas fa-chart-area" aria-hidden="true"></i> {{ if $zh }}可观测性{{ else }}Observability{{ end }}</a></li>
-                <li><a href="{{ $home }}#toolbox"><i class="fas fa-toolbox" aria-hidden="true"></i> {{ if $zh }}工具箱{{ else }}Toolbox{{ end }}</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <a href="{{ relLangURL "solutions/cloud-exit/" }}" class="nav-link{{ if eq $active "solutions" }} nav-link--active{{ end }}">{{ if $zh }}方案{{ else }}Solutions{{ end }}</a>
-        <a href="{{ $home }}#service" class="nav-link">{{ if $zh }}服务{{ else }}Services{{ end }}</a>
-        <a href="{{ relLangURL "price/" }}" class="nav-link{{ if eq $active "price" }} nav-link--active{{ end }}">{{ if $zh }}价格{{ else }}Pricing{{ end }}</a>
-        <div class="nav-item">
-          <a href="{{ relLangURL "about/" }}" class="nav-link{{ if eq $active "about" }} nav-link--active{{ end }}">{{ if $zh }}公司{{ else }}Company{{ end }} <i class="fas fa-chevron-down nav-caret" aria-hidden="true"></i></a>
-          <div class="nav-dropdown">
-            <div class="dropdown-group">
-              <ul class="dropdown-col">
-                <li><a href="{{ relLangURL "about/" }}"><i class="fas fa-landmark" aria-hidden="true"></i> {{ if $zh }}关于我们{{ else }}About{{ end }}</a></li>
-                <li><a href="{{ $home }}#yours"><i class="fas fa-flag" aria-hidden="true"></i> {{ if $zh }}理念{{ else }}Values{{ end }}</a></li>
-                <li><a href="{{ $home }}#contact"><i class="fas fa-envelope" aria-hidden="true"></i> {{ if $zh }}联系{{ else }}Contact{{ end }}</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <a href="{{ $docs }}" class="nav-link" target="_blank" rel="noopener">{{ if $zh }}文档{{ else }}Docs{{ end }} <i class="fas fa-arrow-up-right-from-square nav-caret" aria-hidden="true"></i></a>
-        <button type="button" class="nav-util nav-search" data-td-shell-search-open aria-haspopup="dialog" aria-expanded="false" title="{{ if $zh }}搜索与命令（⌘K）{{ else }}Search and commands (⌘K){{ end }}" aria-label="{{ if $zh }}搜索与命令{{ else }}Search and commands{{ end }}">
-          {{- partialCached "shell/icon.html" "search" "search" -}}
-          <span class="nav-search-shortcut" aria-hidden="true"><span data-td-shell-meta-key>⌘</span>K</span>
-        </button>
-        <button type="button" class="nav-util" data-theme-toggle title="{{ if $zh }}切换深浅主题{{ else }}Switch light / dark mode{{ end }}" aria-label="{{ if $zh }}切换深浅主题{{ else }}Switch light / dark mode{{ end }}">
-          {{- partialCached "shell/icon.html" "sun" "sun" -}}
-          {{- partialCached "shell/icon.html" "moon" "moon" -}}
-        </button>
-        {{ range $page.Translations }}
-        <a href="{{ .RelPermalink }}" class="nav-util" title="{{ .Language.Label }}" aria-label="{{ .Language.Label }}">{{ partialCached "shell/icon.html" "languages" "languages" }}</a>
-        {{ end }}
-        <a href="https://github.com/pgsty" class="nav-github" target="_blank" rel="noopener" title="GitHub">
-          {{ partialCached "shell/icon.html" "github" "github" }}
-          <span class="nav-count">{{ partial "compact-number.html" $m.github_stars }}</span>
-        </a>
+      {{- /* 中区：菜单树，由三栏网格真正居中。 */ -}}
+      <div class="td-nav-links td-nav-menu-zone">
+        {{- range $index, $entry := $page.Site.Menus.main -}}
+          {{- partial "navbar-item.html" (dict "page" $page "entry" $entry "mode" "desktop" "index" $index) -}}
+        {{- end }}
       </div>
 
-      <button class="mobile-menu-toggle" type="button" aria-label="{{ if $zh }}打开菜单{{ else }}Open menu{{ end }}" aria-expanded="false" data-menu-toggle>
-        <span></span><span></span><span></span>
-      </button>
+      {{- /* 右区：搜索框领衔，其后是语言 + 配色的分段控件。 */ -}}
+      <div class="td-nav-links td-nav-util-zone">
+        <button type="button" class="td-nav-search-box" data-td-shell-search-open
+          title="{{ T "ui_search" }}" aria-label="{{ T "ui_search" }}"
+          aria-controls="td-shell-search" aria-expanded="false">
+          {{- partialCached "shell/icon.html" "search" "search" -}}
+          <span class="td-nav-search-box__hint">{{ T "ui_search" }}</span>
+          <kbd class="td-nav-search-box__kbd" aria-hidden="true">/</kbd>
+        </button>
+
+        <div class="portal-nav-utils">
+          {{- with $next }}
+          {{- $code := index (split .code "-") 0 }}
+          <div class="td-nav-hover-menu portal-lang" data-td-nav-hover>
+            <a class="td-nav-util portal-lang__trigger" href="{{ .url }}"
+              data-td-nav-hover-trigger lang="{{ .code }}" hreflang="{{ .code }}" dir="{{ .direction }}"
+              title="{{ T "ui_language_switch" }}: {{ .label }}"
+              aria-label="{{ T "ui_language_switch" }}: {{ .label }}" aria-expanded="false">
+              <span class="portal-lang__code">{{ index $short $code | default (upper $code) }}</span>
+            </a>
+            <div class="td-nav-hover-menu__pop" role="group" aria-label="{{ T "ui_language_select" }}">
+              {{- range $targets }}
+              {{- if .active }}
+              <span class="td-nav-hover-menu__option td-is-active" lang="{{ .code }}" dir="{{ .direction }}" aria-current="page">{{ .label }}</span>
+              {{- else }}
+              <a class="td-nav-hover-menu__option" href="{{ .url }}" lang="{{ .code }}" hreflang="{{ .code }}" dir="{{ .direction }}">{{ .label }}</a>
+              {{- end }}
+              {{- end }}
+            </div>
+          </div>
+          {{- end }}
+
+          {{- /* 点击直切亮/暗，悬停展开三档选择；两者都走 PGSTYPortalTheme。 */ -}}
+          <div class="td-nav-hover-menu td-nav-theme-menu" data-td-nav-hover>
+            <button type="button" class="td-nav-util" data-td-nav-hover-trigger data-td-theme-toggle
+              title="{{ T "ui_theme_toggle" }}" aria-label="{{ T "ui_theme_toggle" }}" aria-expanded="false">
+              {{- partialCached "shell/icon.html" "moon" "moon" -}}
+              {{- partialCached "shell/icon.html" "sun" "sun" -}}
+            </button>
+            <div class="td-nav-hover-menu__pop" role="group" aria-label="{{ T "ui_theme_toggle" }}">
+              <button type="button" class="td-nav-hover-menu__option" data-bs-theme-value="light" aria-pressed="false">
+                {{- partialCached "shell/icon.html" "sun" "navbar-theme-light" -}}<span>{{ T "ui_theme_light" }}</span>
+              </button>
+              <button type="button" class="td-nav-hover-menu__option" data-bs-theme-value="dark" aria-pressed="false">
+                {{- partialCached "shell/icon.html" "moon" "navbar-theme-dark" -}}<span>{{ T "ui_theme_dark" }}</span>
+              </button>
+              <button type="button" class="td-nav-hover-menu__option" data-bs-theme-value="auto" aria-pressed="false">
+                {{- partialCached "shell/icon.html" "contrast" "navbar-theme-auto" -}}<span>{{ T "ui_theme_auto" }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {{- /* 手机档的抽屉入口：OINK 只给 Home/Landing，门户的每个页面都要。 */ -}}
+        <button class="td-nav-util td-site-drawer-toggle" type="button" data-td-landing-menu-toggle
+          title="{{ T "ui_drawer_open" }}" aria-label="{{ T "ui_drawer_open" }}"
+          aria-controls="td-portal-drawer" aria-expanded="false">
+          {{- partialCached "shell/icon.html" "menu" "menu" -}}
+        </button>
+      </div>
     </nav>
   </div>
 </header>
 
-<div class="mobile-menu" data-mobile-menu>
-  <a href="{{ $home }}#postgres" class="mobile-menu-link">{{ if $zh }}产品{{ else }}Product{{ end }}</a>
-  <a href="{{ relLangURL "solutions/cloud-exit/" }}" class="mobile-menu-link{{ if eq $active "solutions" }} mobile-menu-link--active{{ end }}">{{ if $zh }}方案 · 下云{{ else }}Solutions · Cloud Exit{{ end }}</a>
-  <a href="{{ $home }}#service" class="mobile-menu-link">{{ if $zh }}专业服务{{ else }}Services{{ end }}</a>
-  <a href="{{ relLangURL "price/" }}" class="mobile-menu-link{{ if eq $active "price" }} mobile-menu-link--active{{ end }}">{{ if $zh }}订阅价格{{ else }}Pricing{{ end }}</a>
-  <a href="{{ relLangURL "about/" }}" class="mobile-menu-link{{ if eq $active "about" }} mobile-menu-link--active{{ end }}">{{ if $zh }}关于我们{{ else }}About{{ end }}</a>
-  <a href="{{ $home }}#yours" class="mobile-menu-link">{{ if $zh }}理念{{ else }}Values{{ end }}</a>
-  <a href="{{ $docs }}" class="mobile-menu-link" target="_blank" rel="noopener">{{ if $zh }}产品文档{{ else }}Docs{{ end }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
-  {{ range $page.Translations }}<a href="{{ .RelPermalink }}" class="mobile-menu-link"><i class="fas fa-language" aria-hidden="true"></i> {{ .Language.Label }}</a>{{ end }}
-  <button type="button" class="mobile-menu-link mobile-menu-link--btn" data-td-shell-search-open data-mobile-menu-dismiss aria-haspopup="dialog" aria-expanded="false">{{ partialCached "shell/icon.html" "search" "search" }} {{ if $zh }}搜索与命令{{ else }}Search and commands{{ end }} <span class="mobile-menu-shortcut"><span data-td-shell-meta-key>⌘</span>K</span></button>
-  <button type="button" class="mobile-menu-link mobile-menu-link--btn" data-theme-toggle><i class="fas fa-moon" aria-hidden="true"></i> {{ if $zh }}浅色 / 深色{{ else }}Light / Dark{{ end }}</button>
-  <a href="https://github.com/pgsty" class="mobile-menu-link" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> GitHub · {{ partial "compact-number.html" $m.github_stars }}</a>
+{{- /* 抽屉：手机档带标签的完整菜单树。语言与配色也放在这里 —— OINK 0.6 把它们
+     交给了 fat footer 的 dock，而门户用的是自己的页脚。 */ -}}
+<div class="td-site-drawer d-print-none" id="td-portal-drawer" data-td-landing-menu hidden>
+  <nav aria-label="{{ T "ui_main_nav" }}">
+    {{- range $page.Site.Menus.main }}
+      {{- partial "navbar-entry-link.html" (dict "page" $page "entry" . "class" "td-site-nav__menu-link" "region" "mobile") -}}
+      {{- if .HasChildren }}
+      <div class="td-site-drawer__children">
+        {{- partial "navbar-group-items.html" (dict "page" $page "items" .Children "mode" "mobile" "top" . "depth" 1) -}}
+      </div>
+      {{- end }}
+    {{- end }}
+    <button type="button" class="td-site-nav__menu-link td-site-nav__menu-link--button" data-td-shell-search-open data-td-landing-menu-dismiss
+      aria-haspopup="dialog" aria-expanded="false">{{ partialCached "shell/icon.html" "search" "search" }}<span>{{ T "ui_search" }}</span></button>
+    {{- range $page.Translations }}
+    <a class="td-site-nav__menu-link" href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}">{{ partialCached "shell/icon.html" "languages" "languages" }}<span>{{ .Language.Label }}</span></a>
+    {{- end }}
+    <button type="button" class="td-site-nav__menu-link td-site-nav__menu-link--button" data-td-theme-toggle>
+      {{- partialCached "shell/icon.html" "moon" "moon" -}}
+      {{- partialCached "shell/icon.html" "sun" "sun" -}}
+      <span>{{ T "ui_theme_toggle" }}</span>
+    </button>
+  </nav>
 </div>

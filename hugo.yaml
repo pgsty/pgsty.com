@@ -55,37 +55,101 @@ languages:
               url: /#contact
               icon: fa-solid fa-envelope
               keywords: [support, service, email, help]
+    # 导航树是门户导航条的唯一来源（layouts/_partials/portal/nav.html 只做桥接）。
+    # 站内条目一律写不带语言前缀的路径，OINK 的 navbar-entry-link 会用 relLangURL
+    # 补前缀；params.icon 决定下拉面板与抽屉里那一列图标。
     menu:
       main:
         - identifier: product
           name: Product
           weight: 10
           url: /#postgres
+          params: { icon: fa-solid fa-cube }
+        - identifier: product-pigsty
+          parent: product
+          name: Pigsty · Distribution
+          weight: 11
+          url: https://pigsty.io
+          params: { icon: fa-solid fa-database }
+        - identifier: product-silo
+          parent: product
+          name: Silo · Object Storage
+          weight: 12
+          url: https://silo.pgsty.com
+          params: { icon: fa-solid fa-box-archive }
+        - identifier: product-pgext
+          parent: product
+          name: PGEXT · Extension Cloud
+          weight: 13
+          url: https://pgext.cloud
+          params: { icon: fa-solid fa-puzzle-piece }
+        - identifier: product-infras
+          parent: product
+          name: Infrastructure
+          weight: 14
+          url: /#infras
+          params: { icon: fa-solid fa-server }
+        - identifier: product-glass
+          parent: product
+          name: Observability
+          weight: 15
+          url: /#glass
+          params: { icon: fa-solid fa-chart-area }
+        - identifier: product-toolbox
+          parent: product
+          name: Toolbox
+          weight: 16
+          url: /#toolbox
+          params: { icon: fa-solid fa-toolbox }
         - identifier: solutions
           name: Solutions
-          weight: 15
+          weight: 20
           pageRef: /solutions
+          params: { icon: fa-solid fa-diagram-project }
+        - identifier: solutions-cloud-exit
+          parent: solutions
+          name: Cloud Exit
+          weight: 21
+          pageRef: /solutions/cloud-exit
+          params: { icon: fa-solid fa-cloud-arrow-down }
         - identifier: services
           name: Services
-          weight: 20
+          weight: 30
           url: /#service
+          params: { icon: fa-solid fa-headset }
         - identifier: pricing
           name: Pricing
-          weight: 30
-          pageRef: /price
-        - identifier: values
-          name: Values
-          weight: 35
-          url: /#yours
-        - identifier: about
-          name: About
           weight: 40
-          pageRef: /about
-        - identifier: github
-          name: GitHub
+          pageRef: /price
+          params: { icon: fa-solid fa-tags }
+        - identifier: company
+          name: Company
           weight: 50
-          url: https://github.com/pgsty
-          pre: <i class='fa-brands fa-github'></i>
+          pageRef: /about
+          params: { icon: fa-solid fa-building }
+        - identifier: company-about
+          parent: company
+          name: About
+          weight: 51
+          pageRef: /about
+          params: { icon: fa-solid fa-circle-info }
+        - identifier: company-values
+          parent: company
+          name: Values
+          weight: 52
+          url: /#yours
+          params: { icon: fa-solid fa-flag }
+        - identifier: company-contact
+          parent: company
+          name: Contact
+          weight: 53
+          url: /#contact
+          params: { icon: fa-solid fa-envelope }
+        - identifier: docs
+          name: Docs
+          weight: 60
+          url: https://pigsty.io/docs/
+          params: { icon: fa-solid fa-book }
   zh:
     label: 简体中文
     locale: zh-CN
@@ -109,37 +173,99 @@ languages:
               url: /#contact
               icon: fa-solid fa-envelope
               keywords: [支持, 服务, 邮件, 咨询]
+    # 中文站是本地化不是翻译：条目结构与英文站一致，落点换成中国大陆可达的镜像。
     menu:
       main:
         - identifier: product
           name: 产品
           weight: 10
-          url: /zh/#postgres
+          url: /#postgres
+          params: { icon: fa-solid fa-cube }
+        - identifier: product-pigsty
+          parent: product
+          name: Pigsty · 发行版
+          weight: 11
+          url: https://pigsty.cc
+          params: { icon: fa-solid fa-database }
+        - identifier: product-silo
+          parent: product
+          name: Silo · 对象存储
+          weight: 12
+          url: https://silo.pgsty.com/zh/
+          params: { icon: fa-solid fa-box-archive }
+        - identifier: product-pgext
+          parent: product
+          name: PGEXT · 扩展云
+          weight: 13
+          url: https://pgext.cloud
+          params: { icon: fa-solid fa-puzzle-piece }
+        - identifier: product-infras
+          parent: product
+          name: 生态基础设施
+          weight: 14
+          url: /#infras
+          params: { icon: fa-solid fa-server }
+        - identifier: product-glass
+          parent: product
+          name: 可观测性
+          weight: 15
+          url: /#glass
+          params: { icon: fa-solid fa-chart-area }
+        - identifier: product-toolbox
+          parent: product
+          name: 工具箱
+          weight: 16
+          url: /#toolbox
+          params: { icon: fa-solid fa-toolbox }
         - identifier: solutions
           name: 解决方案
-          weight: 15
-          pageRef: /solutions
-        - identifier: services
-          name: 服务
           weight: 20
-          url: /zh/#service
+          pageRef: /solutions
+          params: { icon: fa-solid fa-diagram-project }
+        - identifier: solutions-cloud-exit
+          parent: solutions
+          name: 下云
+          weight: 21
+          pageRef: /solutions/cloud-exit
+          params: { icon: fa-solid fa-cloud-arrow-down }
+        - identifier: services
+          name: 专业服务
+          weight: 30
+          url: /#service
+          params: { icon: fa-solid fa-headset }
         - identifier: pricing
           name: 价格
-          weight: 30
-          pageRef: /price
-        - identifier: values
-          name: 理念
-          weight: 35
-          url: /zh/#yours
-        - identifier: about
-          name: 关于
           weight: 40
-          pageRef: /about
-        - identifier: github
-          name: GitHub
+          pageRef: /price
+          params: { icon: fa-solid fa-tags }
+        - identifier: company
+          name: 公司
           weight: 50
-          url: https://github.com/pgsty
-          pre: <i class='fa-brands fa-github'></i>
+          pageRef: /about
+          params: { icon: fa-solid fa-building }
+        - identifier: company-about
+          parent: company
+          name: 关于我们
+          weight: 51
+          pageRef: /about
+          params: { icon: fa-solid fa-circle-info }
+        - identifier: company-values
+          parent: company
+          name: 理念
+          weight: 52
+          url: /#yours
+          params: { icon: fa-solid fa-flag }
+        - identifier: company-contact
+          parent: company
+          name: 联系
+          weight: 53
+          url: /#contact
+          params: { icon: fa-solid fa-envelope }
+        - identifier: docs
+          name: 文档
+          weight: 60
+          url: https://pigsty.cc/docs/
+          params: { icon: fa-solid fa-book }
 
 #=======================================#
 # Taxonomies and blog URLs

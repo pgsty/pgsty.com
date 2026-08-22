@@ -1,2 +1,24 @@
-// Compile only OINK's composable homepage sections for the bespoke portal.
+// OINK 0.6 chrome for the bespoke portal: shell tokens, the site navbar (with
+// its dropdown panels, hover popovers, and phone drawer), the language
+// selector, the theme toggle, and the composable homepage sections.
+//
+// Deliberately *not* the documentation shell — the portal keeps its own
+// layouts, and only borrows the theme's chrome and landing components. The
+// Bootstrap layers below are imported for their functions, variables, and
+// mixins only (`media-breakpoint-up`); none of them emits CSS on its own.
+//
+// `td/brand` is excluded on purpose: it would repaint the whole site with the
+// theme's own palette. The portal maps its Landing v3 tokens onto the `--bs-*`
+// and `--td-*` names these files read — see portal-v1.css §22.
+@import '../third_party/bootstrap/scss/functions';
+@import 'td/variables_forward';
+@import 'variables_project';
+@import 'td/variables';
+@import '../third_party/bootstrap/scss/variables';
+@import '../third_party/bootstrap/scss/mixins';
+
+@import 'td/shell/tokens';
+@import 'td/language-selector';
+@import 'td/site-navbar';
+@import 'td/theme-toggle';
 @import 'td/landing';

@@ -43,9 +43,19 @@
       <div class="footer-column">
         <h4 class="footer-column-title silkscreen">{{ if $zh }}服务{{ else }}Services{{ end }}</h4>
         <ul class="footer-links">
+          <li><a href="{{ relLangURL "solutions/cloud-exit/" }}">{{ if $zh }}下云方案{{ else }}Cloud Exit{{ end }}</a></li>
           <li><a href="{{ $home }}#service">{{ if $zh }}专家服务{{ else }}Expert Services{{ end }}</a></li>
           <li><a href="{{ relLangURL "price/" }}">{{ if $zh }}订阅定价{{ else }}Pricing{{ end }}</a></li>
           <li><a href="{{ if $zh }}https://pigsty.cc/docs/about/service/{{ else }}https://pigsty.io/docs/about/service/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}订阅说明{{ else }}Service Terms{{ end }}</a></li>
+        </ul>
+      </div>
+
+      {{- /* 页脚原本没有任何「公司」入口 —— 导航栏有 Company，页脚却到不了 /about/。 */}}
+      <div class="footer-column">
+        <h4 class="footer-column-title silkscreen">{{ if $zh }}公司{{ else }}Company{{ end }}</h4>
+        <ul class="footer-links">
+          <li><a href="{{ relLangURL "about/" }}">{{ if $zh }}关于我们{{ else }}About{{ end }}</a></li>
+          <li><a href="{{ $home }}#yours">{{ if $zh }}我们的理念{{ else }}Values{{ end }}</a></li>
           <li><a href="mailto:rh@vonng.com">{{ if $zh }}商务咨询{{ else }}Contact Sales{{ end }}</a></li>
         </ul>
       </div>
