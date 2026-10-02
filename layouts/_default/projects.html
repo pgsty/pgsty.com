@@ -18,6 +18,8 @@
         <div class="contact-ctas"><a class="corp-link" href="{{ relLangURL "resources/" }}">{{ if $zh }}查找文档、软件仓库与知识库{{ else }}Find manuals, packages, and knowledge resources{{ end }} <span aria-hidden="true">→</span></a></div>
       </div>
     </section>
+
+    <!-- 软件卡片列表 -->
     <section class="corp-section">
       <div class="landing-container">
         <div class="corp-grid-2">
@@ -29,6 +31,73 @@
         </div>
       </div>
     </section>
+
+    <!-- 全栈开源协同工作流 -->
+    <section class="corp-section corp-section-tint" id="lifecycle">
+      <div class="landing-container">
+        <div class="corp-section-heading">
+          <div>
+            <p class="corp-eyebrow">{{ if $zh }}工具协同{{ else }}STACK SYNERGY{{ end }}</p>
+            <h2>{{ if $zh }}全栈开源协同，闭环数据基础设施{{ else }}A complete, closed-loop open-source stack{{ end }}</h2>
+          </div>
+          <p>{{ if $zh }}从本地沙箱验证、软件包构建，到生产集群高可用编排、S3 容灾归档与深度可观测性。各工具既能独立使用，又能无缝协同构筑生产闭环。{{ else }}From local sandboxing and package engineering to cluster HA orchestration, S3 disaster recovery, and real-time observability. Focused tools that form an end-to-end production architecture.{{ end }}</p>
+        </div>
+
+        <div class="corp-pipeline-grid">
+          <!-- 阶段 1 -->
+          <article class="corp-pipeline-card">
+            <div class="corp-pipeline-badge">
+              <span class="corp-pipeline-num">01</span>
+              <span class="corp-pipeline-tool">BARN</span>
+            </div>
+            <h3>{{ if $zh }}本地沙箱与实验{{ else }}Sandbox & Testing{{ end }}</h3>
+            <p>{{ if $zh }}快速启动轻量虚拟机，安全验证多节点拓扑与集群变更。{{ else }}Rapidly spin up lightweight VMs to test topologies and changes safely.{{ end }}</p>
+          </article>
+
+          <!-- 阶段 2 -->
+          <article class="corp-pipeline-card">
+            <div class="corp-pipeline-badge">
+              <span class="corp-pipeline-num">02</span>
+              <span class="corp-pipeline-tool">SOW & PIG</span>
+            </div>
+            <h3>{{ if $zh }}包管理与私有仓库{{ else }}Package Engineering{{ end }}</h3>
+            <p>{{ if $zh }}构建与发布 576+ 扩展原生包，支持离线自建源与镜像。{{ else }}Build 576+ extensions into native packages and manage private repos.{{ end }}</p>
+          </article>
+
+          <!-- 阶段 3 -->
+          <article class="corp-pipeline-card">
+            <div class="corp-pipeline-badge">
+              <span class="corp-pipeline-num">03</span>
+              <span class="corp-pipeline-tool">PIGSTY</span>
+            </div>
+            <h3>{{ if $zh }}自动化集群与高可用{{ else }}Cluster HA Automation{{ end }}</h3>
+            <p>{{ if $zh }}代码化编排生产级集群，Patroni 分布式共识与连接池治理。{{ else }}IaC automation for HA clusters with Patroni consensus and PgBouncer.{{ end }}</p>
+          </article>
+
+          <!-- 阶段 4 -->
+          <article class="corp-pipeline-card">
+            <div class="corp-pipeline-badge">
+              <span class="corp-pipeline-num">04</span>
+              <span class="corp-pipeline-tool">SILO</span>
+            </div>
+            <h3>{{ if $zh }}对象存储与秒级容灾{{ else }}S3 Storage & PITR{{ end }}</h3>
+            <p>{{ if $zh }}单二进制 S3 兼容存储，承载连续 WAL 归档与物理秒级 PITR。{{ else }}Zero-dependency S3 storage for continuous WAL archiving and PITR.{{ end }}</p>
+          </article>
+
+          <!-- 阶段 5 -->
+          <article class="corp-pipeline-card">
+            <div class="corp-pipeline-badge">
+              <span class="corp-pipeline-num">05</span>
+              <span class="corp-pipeline-tool">PG EXPORTER</span>
+            </div>
+            <h3>{{ if $zh }}内核监控与性能洞察{{ else }}Deep Observability{{ end }}</h3>
+            <p>{{ if $zh }}采集 600+ 数据库与连接池运行指标，驱动 Grafana 监控大盘。{{ else }}Scrape 600+ metrics into Prometheus and 30+ pre-built Grafana panels.{{ end }}</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 页面正文内容 -->
     <section class="corp-section">
       <div class="landing-container corp-prose">{{ .Content }}</div>
     </section>

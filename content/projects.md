@@ -3,7 +3,7 @@ title: "Software & Open-source Projects"
 description: "Explore Pigsty, Silo, PIG, pg_exporter, SOW and Barn: open-source software developed or maintained by PGSTY, with documentation and source repositories."
 layout: "projects"
 translationKey: "projects"
-search_keywords: [software, projects, open source, Pigsty, Silo, PIG, pg_exporter, SOW, Barn]
+search_keywords: [software, projects, open source, Pigsty, Silo, PIG, pg_exporter, SOW, Barn, infrastructure]
 ---
 
 ## Software you can inspect and evaluate

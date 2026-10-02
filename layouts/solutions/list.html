@@ -10,6 +10,7 @@
   <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
   {{ partial "portal/nav.html" (dict "page" . "active" "solutions") }}
   <main id="main">
+    <!-- ============ HERO 区域 ============ -->
     <section class="corp-page-hero">
       <div class="landing-container">
         <p class="corp-eyebrow">{{ if $zh }}解决方案{{ else }}Solutions{{ end }}</p>
@@ -17,6 +18,8 @@
         <p class="corp-lead">{{ if $zh }}把成本、可靠性、迁移复杂度和团队运维能力放在一起评估。我们的方案结合开源软件、工程实施与明确约定的技术支持。{{ else }}Evaluate cost, reliability, migration complexity and your team's operational capacity together. Our approach combines open-source software, engineering and an agreed support scope.{{ end }}</p>
       </div>
     </section>
+
+    <!-- ============ 交付路径 ============ -->
     <section class="corp-section">
       <div class="landing-container corp-grid-2">
         <article class="corp-card">
@@ -35,6 +38,140 @@
         </article>
       </div>
     </section>
+
+    <!-- ============ 业务负载场景方案 ============ -->
+    <section class="corp-section corp-section-tint" id="workloads">
+      <div class="landing-container">
+        <div class="corp-section-heading">
+          <div>
+            <p class="corp-eyebrow">{{ if $zh }}业务负载场景{{ else }}WORKLOAD SCENARIOS{{ end }}</p>
+            <h2>{{ if $zh }}为现代多元业务负载定制方案{{ else }}Tailored for modern data workloads{{ end }}</h2>
+          </div>
+          <p>{{ if $zh }}从大模型向量检索、时空物联网，到金融级高可用与湖仓联邦分析。PGSTY 基于开源扩展与内核生态，为您提供经生产实践检验的场景蓝图。{{ else }}From AI vector search and spatio-temporal IoT to financial-grade HA and lakehouse analytics, our blueprints build on the rich PostgreSQL ecosystem.{{ end }}</p>
+        </div>
+
+        <div class="corp-workload-grid">
+          <!-- 1. AI 向量检索 -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
+              <h3>{{ if $zh }}向量检索与大模型应用{{ else }}AI & Vector Retrieval{{ end }}</h3>
+            </div>
+            <span class="corp-tech-tags">pgvector · pgvectorscale · pg_search</span>
+            <p>{{ if $zh }}单条 SQL 混合执行密集向量与 BM25 全文检索，数据强一致且无需外部向量库。{{ else }}Execute dense vector and BM25 lexical hybrid queries in SQL with full transactional consistency.{{ end }}</p>
+          </article>
+
+          <!-- 2. 地理时空 -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span>
+              <h3>{{ if $zh }}地理时空数据与分析{{ else }}Geospatial Intelligence{{ end }}</h3>
+            </div>
+            <span class="corp-tech-tags">PostGIS · pgRouting · h3</span>
+            <p>{{ if $zh }}行业事实标准的空间分析引擎与 H3 空间网格，承载大规模轨迹计算与地图服务。{{ else }}The de facto spatial standard with PostGIS and Uber H3 hexagonal indexes for maps and logistics.{{ end }}</p>
+          </article>
+
+          <!-- 3. 物联网时序 -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-wave-square"></i></span>
+              <h3>{{ if $zh }}物联网与海量时序监控{{ else }}IoT & Time-Series Telemetry{{ end }}</h3>
+            </div>
+            <span class="corp-tech-tags">TimescaleDB · pg_timeseries</span>
+            <p>{{ if $zh }}超表自动时序分区、90% 以上列存压缩与连续物化聚合，从容应对高吞吐时序写入。{{ else }}Automatic hypertable time partitioning, 90%+ columnar compression, and real-time rollups.{{ end }}</p>
+          </article>
+
+          <!-- 4. 金融级高可用 -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+              <h3>{{ if $zh }}金融级高可用与分布式共识{{ else }}Mission-Critical Availability{{ end }}</h3>
+            </div>
+            <span class="corp-tech-tags">Patroni · DCS (etcd) · PgBouncer</span>
+            <p>{{ if $zh }}基于 Raft 共识的法定人数强同步与秒级故障自愈，支撑万级高并发与 RPO=0。{{ else }}DCS-backed quorum consensus with Patroni, sub-second failover, and zero data loss (RPO=0).{{ end }}</p>
+          </article>
+
+          <!-- 5. 轻量数仓与分析 -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-table-columns"></i></span>
+              <h3>{{ if $zh }}轻量数仓与湖仓联邦分析{{ else }}Lightweight HTAP & Analytics{{ end }}</h3>
+            </div>
+            <span class="corp-tech-tags">DuckDB FDW · Citus · Columnar</span>
+            <p>{{ if $zh }}在数据库内直接查询 Parquet/Iceberg 数据湖或水平分片，免去臃肿脆弱的 ETL。{{ else }}Query Parquet and Iceberg lakehouses via DuckDB FDW or shard with Citus, avoiding fragile ETL.{{ end }}</p>
+          </article>
+
+          <!-- 6. 信创私有云与纯离线 -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-server"></i></span>
+              <h3>{{ if $zh }}信创私有云与纯离线环境{{ else }}Private Cloud & Air-Gapped{{ end }}</h3>
+            </div>
+            <span class="corp-tech-tags">Silo · PIG · SOW · Offline Repo</span>
+            <p>{{ if $zh }}针对金融、政企与专网隔离环境，提供单机自闭环离线安装介质与全套私有软件包源。{{ else }}Complete air-gapped offline bundles, local S3 storage, and private repositories for isolated networks.{{ end }}</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 选型决策对照表 ============ -->
+    <section class="corp-section" id="comparison">
+      <div class="landing-container">
+        <div class="corp-section-heading">
+          <div>
+            <p class="corp-eyebrow">{{ if $zh }}选型决策对照{{ else }}DECISION MATRIX{{ end }}</p>
+            <h2>{{ if $zh }}为什么选择自建生产级 PostgreSQL？{{ else }}Why choose self-hosted PostgreSQL?{{ end }}</h2>
+          </div>
+          <p>{{ if $zh }}打破云厂商在算力、存储、扩展插件与升级周期上的层层加价与黑盒锁定，重新掌控属于您自己的数据基础设施。{{ else }}Break free from 3–5x cloud compute markups, extension limits, and black-box operational lock-in.{{ end }}</p>
+        </div>
+
+        <div class="cmp-wrap">
+          <table class="solutions-cmp-table">
+            <thead>
+              <tr>
+                <th class="col-dim">{{ if $zh }}评估维度{{ else }}Dimension{{ end }}</th>
+                <th class="col-pgsty">{{ if $zh }}PGSTY 生产级自建体系{{ else }}PGSTY Production Stack{{ end }}</th>
+                <th class="col-rds">{{ if $zh }}云厂商托管 RDS / PolarDB{{ else }}Cloud Managed RDS{{ end }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="cell-dim">{{ if $zh }}扩展与插件生态{{ else }}Extension ecosystem{{ end }}</td>
+                <td class="cell-pgsty">{{ if $zh }}576 款开箱即用，涵盖向量、时序、GIS 与图计算{{ else }}576 ready-to-use extensions (vectors, time-series, GIS, graphs){{ end }}</td>
+                <td class="cell-rds">{{ if $zh }}仅支持约 30–40 款通用扩展，受云厂商白名单严格限制{{ else }}Limited to ~30–40 generic extensions with strict cloud whitelists{{ end }}</td>
+              </tr>
+              <tr>
+                <td class="cell-dim">{{ if $zh }}内核引擎多样性{{ else }}Kernel distributions{{ end }}</td>
+                <td class="cell-pgsty">{{ if $zh }}12 款发行版（标准 PG, Citus, Timescale, IvorySQL 等）{{ else }}12 kernel flavors (Standard PG, Citus, Timescale, IvorySQL, etc.){{ end }}</td>
+                <td class="cell-rds">{{ if $zh }}仅限特定单一版本，无法按业务自由替换定制内核{{ else }}Locked to vendor-selected standard kernels with no distribution choice{{ end }}</td>
+              </tr>
+              <tr>
+                <td class="cell-dim">{{ if $zh }}基础设施成本{{ else }}Infrastructure TCO{{ end }}</td>
+                <td class="cell-pgsty">{{ if $zh }}降低 50%~80% 成本，裸机或按需计算，无资源加价{{ else }}Save 50%–80%, run on bare metal or VMs with zero hardware markup{{ end }}</td>
+                <td class="cell-rds">{{ if $zh }}承担 3~5 倍硬件溢价、高昂网络流出费与 IOPS 阶梯税{{ else }}3–5x compute markups, costly egress bandwidth, and per-IOPS surcharges{{ end }}</td>
+              </tr>
+              <tr>
+                <td class="cell-dim">{{ if $zh }}监控与可观测性{{ else }}Observability depth{{ end }}</td>
+                <td class="cell-pgsty">{{ if $zh }}600+ 生产指标、30+ Grafana 仪表盘与语句级火焰图{{ else }}600+ Prometheus metrics, 30+ Grafana dashboards, and query flamegraphs{{ end }}</td>
+                <td class="cell-rds">{{ if $zh }}仅提供少数预设黑盒曲线图，底层排查与诊断严重受限{{ else }}Black-box cloud metrics with limited diagnostic depth and sampling{{ end }}</td>
+              </tr>
+              <tr>
+                <td class="cell-dim">{{ if $zh }}数据主权与部署自由{{ else }}Sovereignty & portability{{ end }}</td>
+                <td class="cell-pgsty">{{ if $zh }}物理机、VMware、私有云或任意公有云，零锁定{{ else }}100% data sovereignty across bare metal, VMware, or any cloud IaaS{{ end }}</td>
+                <td class="cell-rds">{{ if $zh }}强绑定特定公有云专有基础设施与数据生态{{ else }}Deep vendor lock-in with proprietary storage formats and cloud ties{{ end }}</td>
+              </tr>
+              <tr>
+                <td class="cell-dim">{{ if $zh }}大版本升级与维护{{ else }}Upgrades & operations{{ end }}</td>
+                <td class="cell-pgsty">{{ if $zh }}随时自主规划原地秒级升级，完全由团队掌控节奏{{ else }}Plan in-place zero-downtime upgrades on your own engineering schedule{{ end }}</td>
+                <td class="cell-rds">{{ if $zh }}被动接受维护窗口与强制升级，EOL 周期受制于云厂商{{ else }}Subject to forced cloud maintenance windows and vendor lifecycle sunsets{{ end }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 行动号召横幅 ============ -->
     {{ partial "portal/contact-band.html" (dict "page" . "title" (cond $zh "从现有环境开始讨论" "Start with your current environment") "desc" (cond $zh "说明您的数据库、部署方式与目标，我们会与您确认评估范围。" "Tell us about your databases, deployment model and goals so we can define an assessment.")) }}
   </main>
   {{ partial "portal/footer.html" . }}

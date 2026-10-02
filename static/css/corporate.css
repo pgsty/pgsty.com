@@ -3329,4 +3329,242 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
   align-items: center;
 }
 
+/* --------------------------------------------------------------------------
+   11. Solutions Page Enriched Workload Grid & Decision Matrix
+   -------------------------------------------------------------------------- */
+.corp-workload-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 36px;
+}
 
+.corp-workload-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-normal) var(--ease-spring),
+              box-shadow var(--duration-normal) var(--ease-spring),
+              border-color var(--duration-normal) ease;
+}
+
+.corp-workload-card:hover {
+  border-color: var(--card-border-hover);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
+}
+
+.corp-workload-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.corp-workload-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: var(--pg-soft);
+  border: 1px solid var(--pg-border);
+  color: var(--pg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.corp-workload-card h3 {
+  font-size: 1.25rem;
+  line-height: 1.35;
+  margin: 0;
+  color: var(--ink-heading);
+}
+
+.corp-tech-tags {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 550;
+  color: var(--pg);
+  background: var(--bg-soft);
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  margin-bottom: 14px;
+  align-self: flex-start;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.corp-workload-card p {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin: 0;
+  min-height: calc(1.65em * 2);
+  text-wrap: pretty;
+}
+
+/* Decision Table in Solutions */
+.solutions-cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.solutions-cmp-table th,
+.solutions-cmp-table td {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.solutions-cmp-table thead th {
+  background: var(--bg-soft);
+  color: var(--ink-heading);
+  font-weight: 650;
+  font-size: 0.88rem;
+}
+
+.solutions-cmp-table th.col-dim {
+  width: 22%;
+}
+
+.solutions-cmp-table th.col-pgsty {
+  width: 40%;
+}
+
+.solutions-cmp-table th.col-rds {
+  width: 38%;
+}
+
+.solutions-cmp-table td.cell-dim {
+  font-weight: 600;
+  color: var(--ink-heading);
+  white-space: nowrap;
+}
+
+.solutions-cmp-table td.cell-pgsty {
+  background: color-mix(in srgb, var(--pg-soft) 50%, var(--card-bg));
+  color: var(--ink-body);
+  font-weight: 500;
+  border-inline: 1px solid var(--pg-border);
+}
+
+.solutions-cmp-table thead th.col-pgsty {
+  background: color-mix(in srgb, var(--pg-soft) 80%, var(--bg-soft));
+  color: var(--pg);
+  border-inline: 1px solid var(--pg-border);
+  border-top: 2px solid var(--pg);
+}
+
+.solutions-cmp-table td.cell-rds {
+  color: var(--ink-soft);
+}
+
+.solutions-cmp-table tbody tr:hover td {
+  background: var(--bg-hover);
+}
+
+.solutions-cmp-table tbody tr:hover td.cell-pgsty {
+  background: color-mix(in srgb, var(--pg-soft) 75%, var(--bg-hover));
+}
+
+/* --------------------------------------------------------------------------
+   12. Open-Source Stack Synergy Pipeline (Projects & Solutions)
+   -------------------------------------------------------------------------- */
+.corp-pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 36px;
+}
+
+.corp-pipeline-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-normal) var(--ease-spring),
+              box-shadow var(--duration-normal) var(--ease-spring),
+              border-color var(--duration-normal) ease;
+}
+
+.corp-pipeline-card:hover {
+  border-color: var(--card-border-hover);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
+}
+
+.corp-pipeline-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.corp-pipeline-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--pg);
+  background: var(--pg-soft);
+  border: 1px solid var(--pg-border);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.corp-pipeline-tool {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+.corp-pipeline-card h3 {
+  font-size: 1.05rem;
+  line-height: 1.35;
+  margin: 0 0 10px;
+  color: var(--ink-heading);
+}
+
+.corp-pipeline-card p {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0;
+  min-height: calc(1.6em * 2);
+  text-wrap: pretty;
+}
+
+@media (max-width: 1024px) {
+  .corp-pipeline-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .corp-workload-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .corp-pipeline-grid,
+  .corp-workload-grid {
+    grid-template-columns: 1fr;
+  }
+  .solutions-cmp-table th.col-dim,
+  .solutions-cmp-table td.cell-dim {
+    white-space: normal;
+  }
+}

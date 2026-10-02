@@ -3,7 +3,7 @@ title: "软件与开源项目"
 description: "了解 PGSTY 开发或维护的 Pigsty、Silo、PIG、pg_exporter、SOW 和 Barn，查看项目文档与公开源代码。"
 layout: "projects"
 translationKey: "projects"
-search_keywords: [软件, 项目, 开源, Pigsty, Silo, PIG, pg_exporter, SOW, Barn]
+search_keywords: [软件, 项目, 开源, Pigsty, Silo, PIG, pg_exporter, SOW, Barn, 基础设施]
 ---
 
 ## 可查看源码、可实际评估的软件
