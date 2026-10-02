@@ -90,7 +90,7 @@
       var media = window.matchMedia('(prefers-color-scheme: light)');
       media.addEventListener('change', function () {
         var stored = getStoredTheme();
-        if (!stored || stored === 'auto') applyTheme(media.matches ? 'light' : 'dark');
+        if (stored === 'auto') applyTheme(media.matches ? 'light' : 'dark');
       });
     }
   }

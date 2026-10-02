@@ -5,7 +5,7 @@
 {{- $description := .Description | default .Site.Params.description -}}
 {{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
 {{- $socialImage := "img/pgsty-social-card.png" | absURL -}}
-{{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
+{{- $entity := hugo.Data.company.legal_name -}}
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,7 @@
 {{ end -}}
 <meta name="author" content="{{ $entity }}">
 <meta name="application-name" content="PGSTY">
-<meta name="theme-color" content="#0b1119">
+<meta name="theme-color" content="#ffffff">
 <meta name="color-scheme" content="dark light">
 
 {{ partialCached "favicons.html" . }}
@@ -45,3 +45,4 @@
 <meta name="twitter:title" content="{{ .Title }} — PGSTY">
 <meta name="twitter:description" content="{{ $description }}">
 <meta name="twitter:image" content="{{ $socialImage }}">
+{{ partial "portal/organization.html" . }}

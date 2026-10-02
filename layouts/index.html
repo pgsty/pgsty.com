@@ -1,601 +1,271 @@
 {{- $zh := eq .Site.Language.Lang "zh" -}}
-{{- $description := .Description | default .Site.Params.description -}}
-{{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
 {{- $brand := hugo.Data.brand -}}
 {{- $m := $brand.metrics -}}
-{{- $projects := hugo.Data.portal.projects -}}
 {{- $services := hugo.Data.portal.services -}}
-{{- $pricing := hugo.Data.portal.pricing -}}
-{{- $socialImage := "img/pgsty-social-card.png" | absURL -}}
-{{- $socialAlt := cond $zh "PGSTY — 开源 PostgreSQL 发行版与专业服务" "PGSTY — open-source PostgreSQL distribution & expert services" -}}
-{{- $mainRepo := cond $zh "https://repo.pigsty.cc" "https://repo.pigsty.io" -}}
-{{- $install := cond $zh "https://pigsty.cc/docs/setup/install/" "https://pigsty.io/docs/setup/install/" -}}
-{{- /* 下云专栏一律指作者博客（用户 2026-08 指示） */ -}}
-{{- $essays := cond $zh "https://vonng.com/cloud/" "https://vonng.com/en/cloud/" -}}
-{{- $silo := index (where $projects "key" "silo") 0 -}}
-{{- /* 实体按语言拆分：英文站只写新加坡公司，中文站只写中国公司 */ -}}
-{{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
 <!DOCTYPE html>
-<html lang="{{ $locale }}" class="no-js">
+<html lang="{{ .Site.Language.Locale | default .Site.Language.Lang }}" class="no-js">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>{{ .Title }}</title>
-  <meta name="description" content="{{ $description }}">
-  {{ if hugo.IsProduction -}}
-  <meta name="robots" content="index, follow">
-  {{ else -}}
-  <meta name="robots" content="noindex, nofollow">
-  {{ end -}}
-  <meta name="author" content="{{ $entity }}">
-  <meta name="application-name" content="PGSTY">
-  <meta name="theme-color" content="#0b1119">
-  <meta name="color-scheme" content="dark light">
-
-  {{ partialCached "favicons.html" . }}
-  <link rel="canonical" href="{{ .Permalink }}">
-  {{ range .AllTranslations -}}
-  <link rel="alternate" hreflang="{{ .Language.Locale | default .Language.Lang }}" href="{{ .Permalink }}">
-  {{ end -}}
-  {{ range where .AllTranslations "Language.Lang" "en" -}}
-  <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
-  {{ end -}}
-  {{ partial "portal/alternate-formats.html" . }}
-
-  <meta property="og:title" content="{{ .Title }}">
-  <meta property="og:description" content="{{ $description }}">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="{{ .Permalink }}">
-  <meta property="og:site_name" content="PGSTY">
-  <meta property="og:locale" content="{{ replace $locale "-" "_" }}">
-  {{ range .Translations -}}
-  <meta property="og:locale:alternate" content="{{ replace (.Language.Locale | default .Language.Lang) "-" "_" }}">
-  {{ end -}}
-  <meta property="og:image" content="{{ $socialImage }}">
-  <meta property="og:image:alt" content="{{ $socialAlt }}">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ .Title }}">
-  <meta name="twitter:description" content="{{ $description }}">
-  <meta name="twitter:image" content="{{ $socialImage }}">
-  <meta name="twitter:image:alt" content="{{ $socialAlt }}">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": {{ $entity | jsonify | safeJS }},
-    "alternateName": ["PGSTY", "Pigsty"],
-    "url": {{ .Site.BaseURL | jsonify | safeJS }},
-    "logo": {{ "img/logo/logo.png" | absURL | jsonify | safeJS }},
-    "email": "rh@vonng.com",
-    "foundingDate": "2018",
-    "founder": {
-      "@type": "Person",
-      "name": {{ cond $zh "冯若航" "Ruohang Feng" | jsonify | safeJS }},
-      "alternateName": {{ cond $zh "Ruohang Feng" "冯若航" | jsonify | safeJS }},
-      "url": "https://vonng.com"
-    },
-    "sameAs": [
-      "https://github.com/pgsty",
-      "https://pigsty.io",
-      "https://pigsty.cc",
-      "https://pgext.cloud",
-      "https://pg.center"
-    ],
-    "description": {{ $description | jsonify | safeJS }}
-  }
-  </script>
-
+  {{ partial "portal/head-meta.html" . }}
   {{ partial "portal/head-assets.html" . }}
 </head>
-<body class="landing-page portal-page">
+<body class="landing-page portal-page corporate-page corporate-home">
   <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
-
-  {{ partial "portal/nav.html" (dict "page" . "active" "home") }}
-
+  {{ partial "portal/nav.html" (dict "page" .) }}
   <main id="main">
 
-    <!-- ============ HERO：公司是谁 ============ -->
-    <section class="hero" id="hero">
-      <div class="hero-bg" aria-hidden="true"></div>
+    <!-- ============ HERO 区域 ============ -->
+    <section class="corp-hero corp-hero-centered">
       <div class="landing-container">
-        <div class="hero-grid">
-          <div class="hero-copy">
-            <p class="hero-eyebrow anim" style="--d:0">
-              <span class="eyebrow-mark" aria-hidden="true"></span>
-              <span class="eyebrow-en">{{ if $zh }}海口龙华辟技数据中心{{ else }}PGSTY PTE. LTD.{{ end }}</span>
-              <span class="eyebrow-zh">{{ if $zh }}中国 · 海口{{ else }}SINGAPORE{{ end }}</span>
-            </p>
+        <p class="corp-eyebrow">{{ if $zh }}企业级 PostgreSQL · 生产级数据基础设施{{ else }}Enterprise PostgreSQL · Production Data Infrastructure{{ end }}</p>
+        <h1>
+          <span class="corp-hero-line">{{ if $zh }}开源数据基础设施{{ else }}Open Data Infrastructure{{ end }}</span>
+          <span class="corp-hero-line">{{ if $zh }}为真实生产而构建{{ else }}Built for Real Production{{ end }}</span>
+        </h1>
+        <p class="corp-hero-desc">
+          {{ if $zh }}以 PostgreSQL 为核心的开源软件栈，结合维护者的专业咨询与企业支持，让您真正掌控自己的数据基础设施。{{ else }}Open-source software built around PostgreSQL, paired with expert consulting and support so you stay in complete control of your data.{{ end }}
+        </p>
+        <div class="corp-actions">
+          <a class="btn btn-primary" href="{{ relLangURL "services/" }}">{{ if $zh }}了解专业服务{{ else }}Explore Our Services{{ end }} <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="{{ relLangURL "projects/" }}">{{ if $zh }}开源软件体系{{ else }}Open Source Software{{ end }} <span aria-hidden="true">→</span></a>
+        </div>
 
-            {{- /* Hero 主标题 = 价值主张 tagline（PRD §3.1 / §6.0）；字标移到字母板下方 */}}
-            <h1 class="hero-title portal-hero-title anim" style="--d:1">
-              {{ if $zh }}
-              <span class="ht-line">生产级自建，</span>
-              <span class="ht-line ht-line--yours">产权归你</span>
-              {{ else }}
-              <span class="ht-line">Production Grade.</span>
-              <span class="ht-line">Self-hosted.</span>
-              <span class="ht-line ht-line--yours">Truly Yours.</span>
-              {{ end }}
-            </h1>
-
-            <p class="hero-sub anim" style="--d:2">
-              {{ if $zh }}
-              <span>企业级 PostgreSQL 自建整体方案 —— 高可用、PITR、可观测、{{ $m.ext_packaged }} 个扩展，从笔记本到数据中心，一条命令。</span>
-              <span>Apache-2.0，节点不限，没有藏着掖着的部分。</span>
-              {{ else }}
-              <span>The complete self-hosting solution for enterprise-grade PostgreSQL — HA, PITR, observability, and {{ $m.ext_packaged }} extensions, from laptop to datacenter in one command.</span>
-              <span>Apache-2.0. Unlimited nodes. Nothing held back.</span>
-              {{ end }}
-            </p>
-
-            <div class="hero-ctas anim" style="--d:3">
-              <a href="{{ $install }}" target="_blank" rel="noopener" class="btn btn-primary"><i class="fas fa-rocket" aria-hidden="true"></i> {{ if $zh }}快速上手{{ else }}Get Started{{ end }}</a>
-              <a href="#contact" class="btn btn-ghost"><i class="fas fa-comment-dots" aria-hidden="true"></i> {{ if $zh }}直接找作者聊{{ else }}Talk to the Author{{ end }}</a>
+        <!-- 架构全景展示面板（现代化交互看板） -->
+        <div class="hero-showcase" data-reveal>
+          <div class="hero-showcase-header">
+            <div class="showcase-dots" aria-hidden="true">
+              <span class="dot dot--red"></span>
+              <span class="dot dot--yellow"></span>
+              <span class="dot dot--green"></span>
             </div>
-
-            <div class="command-box anim" style="--d:4">
-              <span class="command-prompt" aria-hidden="true">$</span>
-              <span class="command-text">curl -fsSL {{ $mainRepo }}/get | bash</span>
-              <button type="button" class="command-copy" data-copy-text="curl -fsSL {{ $mainRepo }}/get | bash" aria-label="{{ if $zh }}复制安装命令{{ else }}Copy install command{{ end }}"><i class="far fa-copy" aria-hidden="true"></i></button>
+            <div class="showcase-title">PGSTY STACK // PRODUCTION-READY ARCHITECTURE</div>
+            <div class="showcase-status"><span class="status-pulse"></span>{{ if $zh }}高可用集群就绪{{ else }}High Availability Ready{{ end }}</div>
+          </div>
+          <div class="hero-showcase-grid">
+            <div class="showcase-col">
+              <div class="showcase-icon"><i class="fa-solid fa-database"></i></div>
+              <h4>PostgreSQL</h4>
+              <p>{{ if $zh }}14–18 完整内核，Patroni 自动故障切换与多级高可用。{{ else }}Full PG 14–18 kernel with Patroni and etcd automated HA failover.{{ end }}</p>
+            </div>
+            <div class="showcase-col">
+              <div class="showcase-icon"><i class="fa-solid fa-layer-group"></i></div>
+              <h4>Silo & Storage</h4>
+              <p>{{ if $zh }}S3 兼容分布式对象存储，冷热分层与秒级 PITR 恢复。{{ else }}S3-compatible object storage with pgBackRest PITR point-in-time recovery.{{ end }}</p>
+            </div>
+            <div class="showcase-col">
+              <div class="showcase-icon"><i class="fa-solid fa-chart-line"></i></div>
+              <h4>Observability</h4>
+              <p>{{ if $zh }}Prometheus 与 Grafana，600+ 生产指标开箱即用。{{ else }}Prometheus and Grafana with 600+ instant production metric dashboards.{{ end }}</p>
+            </div>
+            <div class="showcase-col">
+              <div class="showcase-icon"><i class="fa-solid fa-cubes"></i></div>
+              <h4>Extension Matrix</h4>
+              <p>{{ if $zh }}PIG 专用包管理器，570+ 生产级扩展插件开箱即用。{{ else }}PIG package manager with 570+ ready-to-use production extensions.{{ end }}</p>
             </div>
           </div>
+          <div class="hero-showcase-footer">
+            <span class="showcase-tag">★ {{ $m.github_stars }} GitHub Stars</span>
+            <span class="showcase-tag">📦 {{ $m.ext_packaged }}+ {{ if $zh }}打包扩展{{ else }}Packaged Exts{{ end }}</span>
+            <span class="showcase-tag">⚡ {{ if $zh }}下云降低 50%~80% 成本{{ else }}Save 50%–80% Cloud Cost{{ end }}</span>
+            <span class="showcase-tag">🛡️ {{ if $zh }}100% 数据自主所有权{{ else }}100% Data Sovereignty{{ end }}</span>
+          </div>
+        </div>
 
-          {{- /* 2026-08：主板窗框（外框 + 顶栏 + 底栏）按用户指示去掉，只留蜂窝本身；
-               字标紧贴在蜂窝下方。.board-mount 是两者共用的宽度基准，
-               .board-epigraph 的负外边距按它的宽度解析，才能精确吃掉蜂窝下方的留白。 */}}
-          <div class="hero-board anim" style="--d:2">
-            <div class="board-mount">
-            <figure class="board-stage pgsty-stage" data-board aria-label="{{ if $zh }}PGSTY 公司主板：六大业务板块地图{{ else }}PGSTY company board: six business sections{{ end }}">
-              <div class="pgsty-board">
-                <div class="hex-field">
-                  <div class="hex hex--core anim" style="--d:4">
-                    <img src="{{ "img/logo/logo.svg" | relURL }}" alt="" class="hex-logo">
-                    <span class="hex-word">PGSTY</span>
-                  </div>
-                  <a class="hex hex--p anim" style="--d:5" href="#postgres" title="{{ if $zh }}01 · 旗舰发行版 Pigsty{{ else }}01 · Pigsty, the distribution{{ end }}">
-                    <b class="hex-letter">P</b><span class="hex-word">POSTGRES</span><small class="hex-gloss">{{ if $zh }}旗舰发行版{{ else }}DISTRIBUTION{{ end }}</small>
-                  </a>
-                  <a class="hex hex--i anim" style="--d:6" href="#infras" title="{{ if $zh }}02 · 生态基础设施{{ else }}02 · Ecosystem infrastructure{{ end }}">
-                    <b class="hex-letter">I</b><span class="hex-word">INFRAS</span><small class="hex-gloss">{{ if $zh }}基础设施{{ else }}INFRASTRUCTURE{{ end }}</small>
-                  </a>
-                  <a class="hex hex--g anim" style="--d:7" href="#glass" title="{{ if $zh }}03 · 监控与可观测性{{ else }}03 · Observability{{ end }}">
-                    <b class="hex-letter">G</b><span class="hex-word">GLASS</span><small class="hex-gloss">{{ if $zh }}可观测性{{ else }}OBSERVABILITY{{ end }}</small>
-                  </a>
-                  <a class="hex hex--s anim" style="--d:8" href="#service" title="{{ if $zh }}04 · 专业服务与订阅{{ else }}04 · Expert services{{ end }}">
-                    <b class="hex-letter">S</b><span class="hex-word">SERVICE</span><small class="hex-gloss">{{ if $zh }}专业服务{{ else }}EXPERT SUPPORT{{ end }}</small>
-                  </a>
-                  <a class="hex hex--t anim" style="--d:9" href="#toolbox" title="{{ if $zh }}05 · 开源工具箱{{ else }}05 · The open-source toolbox{{ end }}">
-                    <b class="hex-letter">T</b><span class="hex-word">TOOLBOX</span><small class="hex-gloss">{{ if $zh }}工具箱{{ else }}OSS TOOLS{{ end }}</small>
-                  </a>
-                  <a class="hex hex--y anim" style="--d:10" href="#yours" title="{{ if $zh }}06 · 数据主权与理念{{ else }}06 · Sovereignty & values{{ end }}">
-                    <b class="hex-letter">Y</b><span class="hex-word">YOURS</span><small class="hex-gloss">{{ if $zh }}自主可控{{ else }}SOVEREIGNTY{{ end }}</small>
-                  </a>
-                </div>
+      </div>
+    </section>
+
+    <!-- ============ 第一栏目：专业服务 (SERVICE) ============ -->
+    <section class="corp-section" id="service">
+      <div class="landing-container">
+        <div class="corp-section-heading">
+          <div>
+            <p class="corp-eyebrow">{{ if $zh }}专业服务{{ else }}WHAT WE DO{{ end }}</p>
+            <h2>{{ if $zh }}专业服务，来自核心维护者。{{ else }}Expert support from core maintainers.{{ end }}</h2>
+          </div>
+          <p>{{ if $zh }}从架构设计到日常生产运维，直接与熟悉底层设施的工程师合作，按需选择咨询、实施或长期支持。{{ else }}Work directly with the engineers who build and maintain the software, from architecture design to everyday operations.{{ end }}</p>
+        </div>
+
+        <!-- 4 核心服务支柱 (图标与标题横向组合) -->
+        <div class="corp-service-grid corp-service-grid--4">
+          <article class="corp-service">
+            <header class="corp-service-header">
+              <span class="corp-service-icon" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span>
+              <h3>{{ if $zh }}架构与部署{{ else }}Architecture & Deployment{{ end }}</h3>
+            </header>
+            <p>{{ if $zh }}评估规划 PostgreSQL 高可用流复制与灾备拓扑，建立标准化、可复现的企业级生产基线。{{ else }}Design PostgreSQL HA topologies, replication, and backups to establish production baselines.{{ end }}</p>
+            <a class="corp-link" href="{{ relLangURL "services/" }}#deployment">{{ if $zh }}查看交付内容{{ else }}Explore deployment{{ end }} <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="corp-service">
+            <header class="corp-service-header">
+              <span class="corp-service-icon" aria-hidden="true"><i class="fa-solid fa-arrow-right-arrow-left"></i></span>
+              <h3>{{ if $zh }}迁移与下云落地{{ else }}Migration & Cloud Exit{{ end }}</h3>
+            </header>
+            <p>{{ if $zh }}评估云数据库与自建负载，制定同步校验与平滑割接预案，协助业务安全下云降本 50%~80%。{{ else }}Evaluate cloud workloads and plan zero-downtime cutover to cut infrastructure costs 50%–80%.{{ end }}</p>
+            <a class="corp-link" href="{{ relLangURL "solutions/" }}">{{ if $zh }}查看解决方案{{ else }}Explore solutions{{ end }} <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="corp-service">
+            <header class="corp-service-header">
+              <span class="corp-service-icon" aria-hidden="true"><i class="fa-solid fa-headset"></i></span>
+              <h3>{{ if $zh }}技术订阅与 SLA{{ else }}Subscriptions & SLA{{ end }}</h3>
+            </header>
+            <p>{{ if $zh }}提供覆盖 7×24 的企业级商业订阅，包含 30 分钟应急响应、专家工时保障与健康巡检审计。{{ else }}Enterprise 24×7 technical subscriptions with 30-minute response and guaranteed DBA hours.{{ end }}</p>
+            <a class="corp-link" href="{{ relLangURL "price/" }}">{{ if $zh }}查看服务与价格{{ else }}View support plans{{ end }} <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="corp-service">
+            <header class="corp-service-header">
+              <span class="corp-service-icon" aria-hidden="true"><i class="fa-solid fa-truck-medical"></i></span>
+              <h3>{{ if $zh }}故障协助与调优{{ else }}Incident & Optimization{{ end }}</h3>
+            </header>
+            <p>{{ if $zh }}针对慢查询瓶颈、死锁争用、连接耗尽与故障恢复，提供高优先级按次或驻场专家工程协助。{{ else }}Emergency engineering rescue for query bottlenecks, deadlocks, and kernel-level performance.{{ end }}</p>
+            <a class="corp-link" href="{{ relLangURL "services/" }}">{{ if $zh }}咨询技术专家{{ else }}Consult an expert{{ end }} <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+
+        <!-- 按需专家服务参考（全部严格统一 2 行） -->
+        <div class="corp-ondemand-wrap">
+          <div class="ondemand-header">
+            <h4>{{ if $zh }}按需专业服务参考{{ else }}On-Demand Engineering Services{{ end }}</h4>
+            <a class="corp-link" href="{{ relLangURL "price/" }}">{{ if $zh }}完整规格对比表{{ else }}Compare full datasheet{{ end }} <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="ondemand-grid">
+            {{ range $services }}
+            <div class="ondemand-item">
+              <span class="ondemand-icon"><i class="fas {{ .icon }}"></i></span>
+              <div class="ondemand-info">
+                <h5>{{ if $zh }}{{ .nameZh }}{{ else }}{{ .name }}{{ end }}</h5>
+                <p>{{ if $zh }}{{ .descZh }}{{ else }}{{ .desc }}{{ end }}</p>
               </div>
-            </figure>
-
-            {{- /* 字标归位于字母板下（PRD §3.1 / §6.1）。missing-i 的解释按用户指示不放 hero，
-                 只留 .wm-i 微交互；完整故事在 /about/ 长版 + 页脚一行提示 */}}
-            <div class="board-epigraph anim" style="--d:7">
-              <p class="board-wordmark"><b class="ini ini-p">P</b>ostgreSQL <b class="wm-i">i</b>n <b class="ini ini-g">G</b>reat <b class="ini ini-s">S</b><b class="ini ini-t">T</b><b class="ini ini-y">Y</b>le</p>
+              <div class="ondemand-price">{{ if $zh }}{{ .priceZh }}{{ else }}{{ .price }}{{ end }}</div>
             </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 三岔路口：一次点击各归其位（PRD §5.2） ============ -->
-    <section class="landing-section doors" id="start" aria-label="{{ if $zh }}三种来意，三个入口{{ else }}Pick your path{{ end }}">
-      <div class="landing-container">
-        <div class="doors-grid" data-reveal>
-          <a class="door-card" href="{{ $install }}" target="_blank" rel="noopener">
-            <span class="door-icon"><i class="fas fa-terminal" aria-hidden="true"></i></span>
-            <span class="door-copy">
-              <b>{{ if $zh }}我想先装起来试试{{ else }}Install it first{{ end }}</b>
-              <i>{{ if $zh }}五分钟跑起来。{{ else }}Up and running in five minutes.{{ end }}</i>
-            </span>
-            <span class="door-go" aria-hidden="true">↗</span>
-          </a>
-          <a class="door-card" href="{{ relLangURL "solutions/cloud-exit/" }}">
-            <span class="door-icon"><i class="fas fa-building" aria-hidden="true"></i></span>
-            <span class="door-copy">
-              <b>{{ if $zh }}我在为公司做选型{{ else }}Evaluate for production{{ end }}</b>
-              <i>{{ if $zh }}方案、价格、责任边界。{{ else }}Solutions, pricing, and what we stand behind.{{ end }}</i>
-            </span>
-            <span class="door-go" aria-hidden="true">→</span>
-          </a>
-          {{- /* Phase 2 起第三张卡改指 /stack/sovereignty/（PRD §4.2 降级路由） */}}
-          <a class="door-card" href="#yours">
-            <span class="door-icon"><i class="fas fa-scroll" aria-hidden="true"></i></span>
-            <span class="door-copy">
-              <b>{{ if $zh }}我想先弄清楚为什么{{ else }}Start with the why{{ end }}</b>
-              <i>{{ if $zh }}为什么数据库该归你自己。{{ else }}Our case for owning your database.{{ end }}</i>
-            </span>
-            <span class="door-go" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ KEY METRICS ============ -->
-    <section class="landing-section key-metrics" id="metrics" aria-labelledby="metrics-title">
-      <div class="landing-container">
-        <div class="section-head section-head--compact" data-reveal>
-          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}KEY METRICS · 关键指标{{ else }}KEY METRICS{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title section-title--sm" id="metrics-title">{{ if $zh }}公开构建，有目共睹{{ else }}Built in public, measured in public{{ end }}</h2>
-        </div>
-
-        {{- /* TODO(user)：若有可公开的生产侧数字（部署数 / 客户数 / 覆盖国家），
-             用它替换 Since 2018 这一格 —— 对企业买家最有说服力（PRD §6.3 / §12.6） */}}
-        <div class="stats-grid" data-reveal>
-          <a href="https://github.com/pgsty/pigsty" target="_blank" rel="noopener" class="stat-item">
-            <span class="stat-value" data-count="{{ $m.github_stars }}">{{ lang.FormatNumber 0 $m.github_stars }}</span>
-            <span class="stat-label">{{ if $zh }}GitHub 星标{{ else }}GitHub Stars{{ end }}</span>
-          </a>
-          <a href="https://pgext.cloud/" target="_blank" rel="noopener" class="stat-item">
-            <span class="stat-value" data-count="{{ $m.ext_packaged }}">{{ lang.FormatNumber 0 $m.ext_packaged }}</span>
-            <span class="stat-label">{{ if $zh }}打包分发的 PG 扩展{{ else }}Extensions Packaged{{ end }}</span>
-          </a>
-          <a href="{{ if $zh }}https://pigsty.cc/docs/pgsql/kernel/{{ else }}https://pigsty.io/docs/pgsql/kernel/{{ end }}" target="_blank" rel="noopener" class="stat-item">
-            <span class="stat-value" data-count="{{ $m.kernels }}">{{ $m.kernels }}</span>
-            <span class="stat-label">{{ if $zh }}可替换 PG 内核{{ else }}Swappable PG Kernels{{ end }}</span>
-          </a>
-          <a href="{{ relLangURL "about/" }}#timeline" class="stat-item">
-            <span class="stat-value">{{ $m.oss_since_year }}</span>
-            <span class="stat-label">{{ if $zh }}开源起步 · Since{{ else }}Open source since{{ end }}</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ P · POSTGRES：旗舰发行版 ============ -->
-    <section class="landing-section modules letter-section" id="postgres">
-      <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow letter-eyebrow">
-            <span class="lhx lhx--p" aria-hidden="true">P</span>
-            <span class="silkscreen">01 · POSTGRES {{ if $zh }}· 旗舰发行版{{ else }}· THE DISTRIBUTION{{ end }}</span>
-            <span class="eyebrow-trace" aria-hidden="true"></span>
-          </p>
-          <h2 class="section-title">{{ if $zh }}Pigsty —— 免费且更好的 RDS 替代{{ else }}Pigsty — a free & better RDS alternative{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}公司的旗舰：把顶尖 DBA 的判断力铸进开源软件，让企业级 PostgreSQL 自建不再是少数人的特权。{{ else }}Our flagship: top-tier DBA judgment cast into open-source software, so enterprise-grade self-hosted PostgreSQL is no longer a privilege of the few.{{ end }}</p>
-        </div>
-
-        <div class="module-row" data-reveal>
-          <div class="module-content">
-            <h3 class="module-title"><a href="{{ if $zh }}https://pigsty.cc/{{ else }}https://pigsty.io/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}自建企业级 PostgreSQL 所需的一切{{ else }}Everything you need to self-host PostgreSQL{{ end }}</a></h3>
-            <p class="module-motto"><span aria-hidden="true">◇</span> {{ if $zh }}从笔记本到数据中心，一条命令{{ else }}Laptop to datacenter, one command{{ end }}</p>
-            <ul class="module-list">
-              <li>{{ if $zh }}基于 Patroni / etcd 的自愈高可用，pgBackRest 时间点恢复{{ else }}Self-healing HA on Patroni / etcd, PITR with pgBackRest{{ end }}</li>
-              <li>{{ if $zh }}<a href="https://pgext.cloud/" target="_blank" rel="noopener">{{ $m.ext_packaged }} 个扩展</a>与 {{ $m.kernels }} 种内核：MSSQL / Oracle / MySQL / Mongo 兼容{{ else }}<a href="https://pgext.cloud/" target="_blank" rel="noopener">{{ $m.ext_packaged }} extensions</a> & {{ $m.kernels }} kernels: MSSQL / Oracle / MySQL / Mongo compatible{{ end }}</li>
-              <li>{{ if $zh }}Ansible 声明式 IaC：基础设施即代码，一切尽在掌控{{ else }}Declarative Ansible IaC — infrastructure as code, under your control{{ end }}</li>
-              <li>{{ if $zh }}Apache-2.0 完整开源，不限节点，无功能阉割{{ else }}Fully open source under Apache-2.0 — unlimited nodes, nothing held back{{ end }}</li>
-            </ul>
-            <p class="module-value">{{ if $zh }}让初级工程师拥有专业 DBA 70% 以上的能力{{ else }}Gives a junior engineer 70%+ of a professional DBA's capability{{ end }}</p>
-            <div class="section-links module-links">
-              <a href="{{ if $zh }}https://pigsty.cc/docs/setup/install/{{ else }}https://pigsty.io/docs/setup/install/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}快速上手{{ else }}Get Started{{ end }} →</a>
-              <a href="{{ if $zh }}https://pigsty.cc/docs/{{ else }}https://pigsty.io/docs/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}产品文档{{ else }}Documentation{{ end }} →</a>
-              <a href="https://github.com/pgsty/pigsty" target="_blank" rel="noopener">GitHub →</a>
-            </div>
-          </div>
-          <div class="module-visual">
-            <div class="code-plate flagship-plate">
-              <span class="code-plate-head"><span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="code-file">pigsty.yml</span></span>
-              <pre class="code-body"><span class="c"># {{ if $zh }}声明一个高可用 PG 集群{{ else }}declare an HA postgres cluster{{ end }}</span>
-<span class="k">pg-meta</span>:
-  <span class="k">hosts</span>:
-    <span class="s">10.10.10.10</span>: { <span class="k">pg_seq</span>: <span class="v">1</span>, <span class="k">pg_role</span>: <span class="s">primary</span> }
-    <span class="s">10.10.10.11</span>: { <span class="k">pg_seq</span>: <span class="v">2</span>, <span class="k">pg_role</span>: <span class="s">replica</span> }
-  <span class="k">vars</span>:
-    <span class="k">pg_cluster</span>: <span class="s">pg-meta</span>
-    <span class="k">pg_version</span>: <span class="v">18</span>
-
-<span class="c"># {{ if $zh }}然后交给 Pigsty{{ else }}then let pigsty do the rest{{ end }}</span>
-<span class="k">$</span> <span class="s">./install.yml</span></pre>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ I · INFRAS：生态基础设施 ============ -->
-    <section class="landing-section modules letter-section" id="infras">
-      <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow letter-eyebrow">
-            <span class="lhx lhx--i" aria-hidden="true">I</span>
-            <span class="silkscreen">02 · INFRAS {{ if $zh }}· 基础设施{{ else }}· INFRASTRUCTURE{{ end }}</span>
-            <span class="eyebrow-trace" aria-hidden="true"></span>
-          </p>
-          <h2 class="section-title">{{ if $zh }}撑起 PG 生态的公共基础设施{{ else }}Public infrastructure for the PostgreSQL ecosystem{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}软件仓库、扩展分发、对象存储 —— 我们长期运营整个生态赖以运转的地基，全球与中国大陆双线可达。{{ else }}Software repositories, extension delivery, object storage — we run the foundations the ecosystem stands on, reachable worldwide and inside mainland China alike.{{ end }}</p>
-          <p class="gift-note">{{ if $zh }}这一层，就是公司名里少掉的那个 i —— <a href="{{ relLangURL "about/" }}#missing-i">缘由见「关于」</a>。{{ else }}This layer is the missing i in the company's name — <a href="{{ relLangURL "about/" }}#missing-i">the story is on the About page</a>.{{ end }}</p>
-        </div>
-
-        <div class="module-row module-row--reverse" data-reveal>
-          <div class="module-content">
-            <h3 class="module-title"><a href="https://pgext.cloud/" target="_blank" rel="noopener">{{ if $zh }}地基由我们打理，你只管构建{{ else }}We maintain the ground you build on{{ end }}</a></h3>
-            <p class="module-motto"><span aria-hidden="true">▦</span> {{ if $zh }}断网、合规、国产化，都有答案{{ else }}Air-gapped, compliant, sovereign — all covered{{ end }}</p>
-            <ul class="module-list">
-              <li>{{ if $zh }}全球 CDN 软件仓库 repo.pigsty.io，中国大陆镜像 repo.pigsty.cc{{ else }}Global CDN repo at repo.pigsty.io, with mainland-China mirror repo.pigsty.cc{{ end }}</li>
-              <li>{{ if $zh }}PGEXT.CLOUD 扩展云：收录 {{ lang.FormatNumber 0 $m.ext_catalogued }} 个扩展，{{ $m.ext_packaged }} 个已打包即装{{ else }}PGEXT.CLOUD — {{ lang.FormatNumber 0 $m.ext_catalogued }} extensions catalogued, {{ $m.ext_packaged }} packaged & installable{{ end }}</li>
-              <li>{{ if $zh }}精确到操作系统小版本的离线安装包，断网环境照常交付{{ else }}Offline packages pinned to exact OS minor versions — deliverable air-gapped{{ end }}</li>
-              <li>{{ if $zh }}Silo：PIGSTY 维护的 MinIO 分支，S3 兼容对象存储，持续安全更新{{ else }}Silo — the PIGSTY-maintained MinIO fork: S3-compatible, with ongoing security updates{{ end }}</li>
-            </ul>
-            <p class="module-value">{{ if $zh }}生态的可持续，是一种基础设施{{ else }}Ecosystem continuity is itself infrastructure{{ end }}</p>
-            <div class="section-links module-links">
-              <a href="https://pgext.cloud/" target="_blank" rel="noopener">PGEXT.CLOUD →</a>
-              <a href="https://silo.pgsty.com{{ if $zh }}/zh/{{ end }}" target="_blank" rel="noopener">SILO →</a>
-              <a href="{{ if $zh }}https://pigsty.cc/docs/repo/{{ else }}https://pigsty.io/docs/repo/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}软件仓库{{ else }}Repositories{{ end }} →</a>
-            </div>
-          </div>
-          <div class="module-visual">
-            <div class="artifact-plate infra-plate">
-              <span class="artifact-plate-head"><b>PGSTY // INFRA ENDPOINTS</b><small>{{ if $zh }}全球 · 中国双线{{ else }}GLOBAL · CHINA{{ end }}</small></span>
-              <span class="artifact-grid">
-                <i><b>REPO</b><small>repo.pigsty.io</small></i>
-                <i><b>MIRROR</b><small>repo.pigsty.cc</small></i>
-                <i><b>EXT</b><small>pgext.cloud</small></i>
-                <i><b>S3</b><small>silo · object store</small></i>
-                <i><b>APT</b><small>deb packages</small></i>
-                <i><b>YUM</b><small>rpm packages</small></i>
-              </span>
-              <span class="artifact-plate-foot"><i></i> {{ if $zh }}长期在线 · 持续维护{{ else }}ALWAYS ON · MAINTAINED{{ end }} <b>→</b></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ G · GLASS：监控与可观测性（由 GRAPHICS 改名，#graphics 锚点保留为别名） ============ -->
-    <section class="landing-section modules letter-section" id="glass">
-      <div class="landing-container" id="graphics">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow letter-eyebrow">
-            <span class="lhx lhx--g" aria-hidden="true">G</span>
-            <span class="silkscreen">03 · GLASS {{ if $zh }}· 可观测性{{ else }}· OBSERVABILITY{{ end }}</span>
-            <span class="eyebrow-trace" aria-hidden="true"></span>
-          </p>
-          <h2 class="section-title">{{ if $zh }}把数据库的一切，画给你看{{ else }}See everything your database does{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}基于 Victoria 与 Grafana 的监控体系是我们的招牌手艺 —— 性能、故障与容量，一眼看穿。{{ else }}Our Victoria + Grafana observability stack is a house specialty — performance, faults, and capacity, visible at a glance.{{ end }}</p>
-        </div>
-
-        <div class="module-row" data-reveal>
-          <div class="module-content">
-            <h3 class="module-title"><a href="https://demo.pigsty.io/" target="_blank" rel="noopener">{{ if $zh }}监控不是插件，是第一公民{{ else }}Observability is a first-class citizen{{ end }}</a></h3>
-            <p class="module-motto"><span aria-hidden="true">◉</span> {{ if $zh }}先看见，再优化{{ else }}See it before you tune it{{ end }}</p>
-            <ul class="module-list">
-              <li>{{ if $zh }}pg_exporter：声明式配置的 PostgreSQL / PgBouncer 指标导出器{{ else }}pg_exporter — declarative metrics exporter for PostgreSQL & PgBouncer{{ end }}</li>
-              <li>{{ if $zh }}单实例 {{ $m.metrics_per_instance }}+ 指标、约 {{ lang.FormatNumber 0 $m.series_per_instance }} 条时间序列{{ else }}{{ $m.metrics_per_instance }}+ metrics and ~{{ lang.FormatNumber 0 $m.series_per_instance }} time series per instance{{ end }}</li>
-              <li>{{ if $zh }}覆盖数据库、连接池、节点与基础设施的全景大盘{{ else }}Panoramic dashboards across database, pooling, node, and infra{{ end }}</li>
-              <li>{{ if $zh }}demo.pigsty.io 常年在线 —— 真实集群，实时可看{{ else }}A living cluster at demo.pigsty.io — real, and always on{{ end }}</li>
-            </ul>
-            <p class="module-value">{{ if $zh }}用图表解读数据库，是我们的母语{{ else }}Reading databases through dashboards is our native tongue{{ end }}</p>
-            <div class="section-links module-links">
-              <a href="https://demo.pigsty.io/" target="_blank" rel="noopener">{{ if $zh }}在线演示{{ else }}Live Demo{{ end }} →</a>
-              <a href="{{ if $zh }}https://pigsty.cc/docs/pg_exporter/{{ else }}https://pigsty.io/docs/pg_exporter/{{ end }}" target="_blank" rel="noopener">pg_exporter →</a>
-              <a href="{{ if $zh }}https://pigsty.cc/docs/infra/{{ else }}https://pigsty.io/docs/infra/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}监控文档{{ else }}Monitoring Docs{{ end }} →</a>
-            </div>
-          </div>
-          <div class="module-visual">
-            {{ range where $projects "key" "pg_exporter" }}
-            <article class="repo-card">
-              <header class="repo-head">
-                <span class="repo-name"><i class="fas fa-cube" aria-hidden="true"></i>{{ .name }}</span>
-                <span class="repo-meta">
-                  <span class="repo-chip repo-chip--ver">{{ .version }}</span>
-                  <span class="repo-chip">{{ .license }}</span>
-                  <a class="repo-chip repo-chip--star" href="{{ .repo }}" target="_blank" rel="noopener" aria-label="GitHub stars"><i class="fas fa-star" aria-hidden="true"></i>{{ partial "compact-number.html" .stars }}</a>
-                </span>
-              </header>
-              <p class="repo-kind silkscreen">{{ if $zh }}{{ .kindZh }}{{ else }}{{ .kind }}{{ end }}</p>
-              <p class="repo-desc">{{ if $zh }}{{ .descZh }}{{ else }}{{ .desc }}{{ end }}</p>
-              <div class="repo-cmd">
-                <span class="command-prompt" aria-hidden="true">$</span>
-                <code class="repo-cmd-text">{{ if $zh }}{{ .installZh }}{{ else }}{{ .install }}{{ end }}</code>
-                <button type="button" class="command-copy" data-copy-text="{{ if $zh }}{{ .installZh }}{{ else }}{{ .install }}{{ end }}" aria-label="{{ if $zh }}复制命令{{ else }}Copy command{{ end }}"><i class="far fa-copy" aria-hidden="true"></i></button>
-              </div>
-              <footer class="repo-links">
-                <a href="{{ .repo }}" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> {{ if $zh }}源码{{ else }}Source{{ end }}</a>
-                <a href="{{ if $zh }}{{ .siteZh }}{{ else }}{{ .site }}{{ end }}" target="_blank" rel="noopener"><i class="fas fa-book-open" aria-hidden="true"></i> {{ if $zh }}文档{{ else }}Docs{{ end }}</a>
-              </footer>
-            </article>
             {{ end }}
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- ============ S · SERVICE：专业服务与订阅 ============ -->
-    <section class="landing-section services letter-section" id="service">
+    <!-- ============ 第二栏目：开源软件 (OPEN SOURCE / PROJECTS) ============ -->
+    <section class="corp-section corp-software" id="postgres">
       <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow letter-eyebrow">
-            <span class="lhx lhx--s" aria-hidden="true">S</span>
-            <span class="silkscreen">04 · SERVICE {{ if $zh }}· 专业服务{{ else }}· EXPERT SERVICES{{ end }}</span>
-            <span class="eyebrow-trace" aria-hidden="true"></span>
-          </p>
-          <h2 class="section-title">{{ if $zh }}关键时刻，专家兜底{{ else }}Expert help, when it matters{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}开源解决 90% 的问题，订阅与专家服务兜底最后 10% —— 服务直接来自写下这些代码的人。{{ else }}Open source solves 90% of the problem; subscriptions and experts cover the last 10% — served by the people who wrote the code.{{ end }}</p>
+        <div class="corp-section-heading">
+          <div>
+            <p class="corp-eyebrow">{{ if $zh }}开源基础设施软件{{ else }}OPEN SOURCE SOFTWARE{{ end }}</p>
+            <h2>{{ if $zh }}从核心数据库，到全套开源基础设施。{{ else }}Software for your modern data stack.{{ end }}</h2>
+          </div>
+          <p>{{ if $zh }}部署数据库、存储对象数据、管理扩展生态、搭建测试沙箱。每个项目专注于解决具体痛点，也能无缝协同运行。{{ else }}Deploy databases, store data, install extensions, and build test environments. Focused tools that work seamlessly together.{{ end }}</p>
         </div>
 
-        {{- /* TODO(user)：每卡补一行 "how to start"（如 Email → 24h reply）——
-             具体响应承诺待 §2 pricing.response_sla 确认后再上（PRD §6.7 / §12.4） */}}
-        <div class="svc-grid" data-reveal>
-          {{ range $services }}
-          <article class="svc-card">
-            <span class="svc-icon"><i class="fas {{ .icon }}" aria-hidden="true"></i></span>
-            <h3 class="svc-name">{{ if $zh }}{{ .nameZh }}{{ else }}{{ .name }}{{ end }}</h3>
-            <p class="svc-desc">{{ if $zh }}{{ .descZh }}{{ else }}{{ .desc }}{{ end }}</p>
-            <p class="svc-price">{{ if $zh }}{{ .priceZh }}{{ else }}{{ .price }}{{ end }}</p>
-          </article>
+        <!-- 旗舰主力卡片 -->
+        <div class="corp-products-featured">
+          {{ range slice "pigsty" "silo" }}
+          {{ $p := index (where hugo.Data.portal.projects "key" .) 0 }}
+          {{ partial "portal/project-card.html" (dict "page" $ "project" $p "featured" true) }}
           {{ end }}
         </div>
 
-        <div class="scenario-band" data-reveal>
-          <p class="scenario-title silkscreen">{{ if $zh }}什么时候找我们{{ else }}WHEN TO CALL US{{ end }}</p>
-          <ul class="scenario-list">
-            <li>{{ if $zh }}关键场景运行数据库，需要严格 SLA 兜底{{ else }}Mission-critical databases that need a strict SLA{{ end }}</li>
-            <li>{{ if $zh }}PostgreSQL 疑难杂症：性能瓶颈与故障根因分析{{ else }}Hard PostgreSQL problems: bottlenecks & root-cause analysis{{ end }}</li>
-            <li>{{ if $zh }}架构规划：安全、容灾、合规要求的数据库设计{{ else }}Architecture design for security, DR, and compliance{{ end }}</li>
-            <li>{{ if $zh }}下云与去 O：迁移到开源 PostgreSQL{{ else }}Cloud exit & Oracle migration to open-source PostgreSQL{{ end }}</li>
-            <li>{{ if $zh }}信创国产化：国产操作系统与 ARM 架构支持{{ else }}Sovereign stacks: local OS & ARM architecture support{{ end }}</li>
-            <li>{{ if $zh }}把 Pigsty 作为 DBaaS / RDS 对外经营{{ else }}Running Pigsty as your own DBaaS / RDS offering{{ end }}</li>
-          </ul>
+        <!-- 核心工具箱 (全部严格统一 2 行) -->
+        <div class="corp-product-tools" id="toolbox">
+          {{ range slice "pig" "barn" "sow" "pg_exporter" }}
+          {{ $p := index (where hugo.Data.portal.projects "key" .) 0 }}
+          {{ partial "portal/project-card.html" (dict "page" $ "project" $p) }}
+          {{ end }}
         </div>
 
-        <div class="price-teaser" data-reveal>
-          <div class="price-teaser-info">
-            <p class="scenario-title silkscreen">{{ if $zh }}SUBSCRIPTION · 订阅定价{{ else }}SUBSCRIPTION PRICING{{ end }}</p>
-            <p class="price-teaser-line">
-              {{ range $i, $t := $pricing.tiers }}{{ if $i }}<span class="pt-sep" aria-hidden="true">·</span>{{ end }}<span class="pt-item"><i>{{ if $zh }}{{ $t.tierZh }}{{ else }}{{ $t.name }}{{ end }}</i><b>{{ if $zh }}{{ $t.priceZh }}{{ else }}{{ $t.price }}{{ end }}</b></span>{{ end }}
-              <span class="pt-unit">{{ if $zh }}/ 年 · 按节点计费{{ else }}/ year · billed per node{{ end }}</span>
-            </p>
+        <!-- 软件区底部行动 -->
+        <div class="corp-software-footer">
+          <a class="corp-link" href="{{ relLangURL "projects/" }}">{{ if $zh }}了解所有开源项目{{ else }}Explore all open source projects{{ end }} <span aria-hidden="true">→</span></a>
+          <div id="glass">
+            <span id="graphics"></span>
+            <a class="corp-demo-link" href="https://demo.pigsty.io/">
+              <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+              {{ if $zh }}体验 Pigsty 在线监控演示{{ else }}Try the Pigsty monitoring demo{{ end }} <span aria-hidden="true">↗</span>
+            </a>
           </div>
-          <a href="{{ relLangURL "price/" }}" class="btn btn-primary price-teaser-cta">{{ if $zh }}查看价格详情{{ else }}See Full Pricing{{ end }} →</a>
         </div>
       </div>
     </section>
 
-    <!-- ============ T · TOOLBOX：命令行工具箱 ============ -->
-    <section class="landing-section oss-registry letter-section" id="toolbox">
-      <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow letter-eyebrow">
-            <span class="lhx lhx--t" aria-hidden="true">T</span>
-            <span class="silkscreen">05 · TOOLBOX {{ if $zh }}· 工具箱{{ else }}· THE TOOLBOX{{ end }}</span>
-            <span class="eyebrow-trace" aria-hidden="true"></span>
-          </p>
-          <h2 class="section-title">{{ if $zh }}顺手的兵器，全部开源{{ else }}Sharp tools, all open source{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}围绕发行版的成套兵器 —— 对象存储、包管理器、指标导出器与仓库管理器；结构化输出、Agent 友好，人和 AI 都用得顺手。{{ else }}The toolbox around the distribution — object storage, package manager, metrics exporter, and repo manager; structured output, agent-friendly, comfortable for humans and AIs alike.{{ end }}</p>
+    <!-- ============ 第三栏目：公共社区资源 (RESOURCES) ============ -->
+    <section class="corp-section corp-resources" id="infras">
+      <div class="landing-container corp-resource-layout">
+        <div class="corp-resource-intro">
+          <p class="corp-eyebrow">{{ if $zh }}公共社区资源{{ else }}RESOURCES WE MAINTAIN{{ end }}</p>
+          <h2>
+            <span class="corp-title-line">{{ if $zh }}软件之外，{{ else }}Open software and {{ end }}</span>
+            <span class="corp-title-line">{{ if $zh }}更有开放知识生态。{{ else }}shared knowledge.{{ end }}</span>
+          </h2>
+          <p class="corp-lead">{{ if $zh }}软件仓库、中文文档、英文知识库与知识图谱。持续投入基础工作，帮助每个人更好地获取软件、解答疑问与掌握 PostgreSQL。{{ else }}Package repositories, translated manuals, and connected reference material. We maintain the foundations that help everyone find, understand, and use PostgreSQL.{{ end }}</p>
+          <a class="corp-link" href="{{ relLangURL "resources/" }}">{{ if $zh }}浏览所有公共资源{{ else }}Explore our resources{{ end }} <span aria-hidden="true">→</span></a>
         </div>
+        {{ partial "portal/resource-list.html" . }}
+      </div>
+    </section>
 
-        <div class="repo-grid" data-reveal>
-          {{- /* 顺序固定：两项基础设施在上，两项配套工具在下 */}}
-          {{ range $k := slice "silo" "pig" "pg_exporter" "sow" }}{{ range where $projects "key" $k }}
-          <article class="repo-card">
-            <header class="repo-head">
-              <a class="repo-name" href="{{ if $zh }}{{ .siteZh }}{{ else }}{{ .site }}{{ end }}" target="_blank" rel="noopener"><i class="fas fa-cube" aria-hidden="true"></i>{{ .name }}</a>
-              <span class="repo-meta">
-                <span class="repo-chip repo-chip--ver">{{ .version }}</span>
-                <span class="repo-chip">{{ .license }}</span>
-                <a class="repo-chip repo-chip--star" href="{{ .repo }}" target="_blank" rel="noopener" aria-label="GitHub stars"><i class="fas fa-star" aria-hidden="true"></i>{{ partial "compact-number.html" .stars }}</a>
-              </span>
-            </header>
-            <p class="repo-kind silkscreen">{{ if $zh }}{{ .kindZh }}{{ else }}{{ .kind }}{{ end }}</p>
-            <p class="repo-desc">{{ if $zh }}{{ .descZh }}{{ else }}{{ .desc }}{{ end }}</p>
-            <div class="repo-cmd">
-              <span class="command-prompt" aria-hidden="true">$</span>
-              <code class="repo-cmd-text">{{ if $zh }}{{ .installZh }}{{ else }}{{ .install }}{{ end }}</code>
-              <button type="button" class="command-copy" data-copy-text="{{ if $zh }}{{ .installZh }}{{ else }}{{ .install }}{{ end }}" aria-label="{{ if $zh }}复制命令{{ else }}Copy command{{ end }}"><i class="far fa-copy" aria-hidden="true"></i></button>
+    <!-- ============ 第四栏目：合作原则与数据主权 (PRINCIPLES) ============ -->
+    <section class="corp-section" id="yours">
+      <div class="landing-container corp-principles">
+        <div>
+          <p class="corp-eyebrow">{{ if $zh }}合作原则与主权{{ else }}HOW WE WORK{{ end }}</p>
+          <h2>{{ if $zh }}生产级自建，产权归你。{{ else }}Production-grade self-hosting. Truly yours.{{ end }}</h2>
+          <p class="corp-lead">{{ if $zh }}彻底摆脱云厂商专有锁定与高昂溢价，代码透明、责任清晰、商业约定边界明确。{{ else }}A clear distinction between the software you use and the professional services you purchase. Freedom from vendor lock-in.{{ end }}</p>
+          <a class="corp-link" href="{{ relLangURL "about/" }}">{{ if $zh }}了解 PGSTY 背景与原则{{ else }}About our principles{{ end }} <span aria-hidden="true">→</span></a>
+        </div>
+        <!-- 4 合作原则 (全部收缩至单行精炼呈现) -->
+        <div class="corp-principle-list">
+          <article>
+            <span>01</span>
+            <div>
+              <h3>{{ if $zh }}代码公开可查，拒绝锁定{{ else }}Work you can inspect{{ end }}</h3>
+              <p>{{ if $zh }}代码仓库、文档与许可完全公开，遵循主流开源协议，杜绝黑盒专有锁定。{{ else }}Public code, documentation, and open-source licenses — free from vendor lock-in.{{ end }}</p>
             </div>
-            <footer class="repo-links">
-              <a href="{{ .repo }}" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> {{ if $zh }}源码{{ else }}Source{{ end }}</a>
-              <a href="{{ if $zh }}{{ .siteZh }}{{ else }}{{ .site }}{{ end }}" target="_blank" rel="noopener"><i class="fas fa-book-open" aria-hidden="true"></i> {{ if $zh }}文档{{ else }}Docs{{ end }}</a>
-            </footer>
           </article>
-          {{ end }}{{ end }}
-
-          {{- /* piglet（piglet.run）按用户 2026-08 指示暂不露出；上线后以完整项目卡回归 */}}
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ Y · YOURS：数据主权与理念 ============ -->
-    <section class="landing-section modules letter-section" id="yours">
-      <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow letter-eyebrow">
-            <span class="lhx lhx--y" aria-hidden="true">Y</span>
-            <span class="silkscreen">06 · YOURS {{ if $zh }}· 自主可控{{ else }}· SOVEREIGNTY{{ end }}</span>
-            <span class="eyebrow-trace" aria-hidden="true"></span>
-          </p>
-          <h2 class="section-title">{{ if $zh }}数据主权，归你所有{{ else }}Your data. Your database. Yours.{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}我们相信下云自建是这个时代的降本增效之道 —— 开源、本地优先、云中立，把数据库的控制权还给你。{{ else }}We believe cloud exit and self-hosting is how this era cuts cost — open source, local-first, cloud-neutral, putting the database back under your control.{{ end }}</p>
-        </div>
-
-        <div class="module-row module-row--reverse" data-reveal>
-          <div class="module-content">
-            <h3 class="module-title"><a href="{{ $essays }}" target="_blank" rel="noopener">{{ if $zh }}我们所相信的{{ else }}What we stand for{{ end }}</a></h3>
-            <p class="module-motto"><span aria-hidden="true">✊</span> {{ if $zh }}自由不是功能，是承诺{{ else }}Freedom isn't a feature — it's a commitment{{ end }}</p>
-            <ul class="module-list">
-              <li>{{ if $zh }}完整功能开源：Apache-2.0，不限节点，无阉割无暗门{{ else }}Fully-featured open source: Apache-2.0, unlimited nodes, nothing held back{{ end }}</li>
-              <li>{{ if $zh }}本地优先：软件跑在你的机器上，不依赖任何一朵云{{ else }}Local-first: runs on your metal, beholden to no cloud{{ end }}</li>
-              <li>{{ if $zh }}云中立：上云、下云、混合皆可，拒绝供应商锁定{{ else }}Cloud-neutral: on-prem, cloud, or hybrid — no vendor lock-in{{ end }}</li>
-              <li>{{ if $zh }}回馈社区：PostgreSQL 中文文档翻译，与 pg.center 中文 PostgreSQL 网{{ else }}Giving back: Chinese PostgreSQL documentation and the pg.center community portal{{ end }}</li>
-            </ul>
-            <p class="module-value">{{ if $zh }}选对数据库，也把它运行好{{ else }}Run a good database — and run it well{{ end }}</p>
-            <div class="section-links module-links">
-              <a href="{{ $essays }}" target="_blank" rel="noopener">{{ if $zh }}下云专栏{{ else }}Cloud-Exit Essays{{ end }} →</a>
-              <a href="https://pg.center/" target="_blank" rel="noopener">PG.CENTER →</a>
-              {{ if $zh }}<a href="https://pg.center/docs/" target="_blank" rel="noopener">PostgreSQL 中文文档 →</a>
-              {{ else }}<a href="https://pg.center/docs/" target="_blank" rel="noopener">Translated Docs →</a>{{ end }}
+          <article>
+            <span>02</span>
+            <div>
+              <h3>{{ if $zh }}明确的交付约定与 SLA{{ else }}A defined engagement{{ end }}</h3>
+              <p>{{ if $zh }}签约前明确约定工作范围、交付物、费用与 SLA，严格按商业合同验收。{{ else }}Clear scope, deliverables, fees, and SLA agreed before work begins.{{ end }}</p>
             </div>
-          </div>
-          <div class="module-visual">
-            <div class="code-plate values-plate">
-              <span class="code-plate-head"><span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="code-file">values.yml</span></span>
-              <pre class="code-body"><span class="c"># {{ if $zh }}PGSTY 核心价值观{{ else }}pgsty core values{{ end }}</span>
-<span class="k">license</span>:   <span class="s">Apache-2.0</span>
-<span class="k">data</span>:      <span class="s">yours</span>
-<span class="k">runs_on</span>:   <span class="s">your metal</span>
-<span class="k">lock_in</span>:   <span class="v">none</span>
-<span class="k">cloud</span>:     <span class="v">optional</span>
-<span class="k">community</span>: <span class="s">first</span></pre>
+          </article>
+          <article>
+            <span>03</span>
+            <div>
+              <h3>{{ if $zh }}一线资深工程师直通交付{{ else }}Direct engineering contact{{ end }}</h3>
+              <p>{{ if $zh }}从前期评估到生产交接，全程直接对接资深 PostgreSQL 内核与运维专家。{{ else }}Direct collaboration with senior engineers who understand production internals.{{ end }}</p>
             </div>
-          </div>
-        </div>
-
-        {{- /* Phase 2 起改指 /stack/sovereignty/（PRD §6.9） */}}
-        <div class="yours-cta" data-reveal>
-          <a href="{{ $essays }}" target="_blank" rel="noopener" class="btn btn-ghost">{{ if $zh }}读完整立论{{ else }}Read the full argument{{ end }} →</a>
-        </div>
-      </div>
-    </section>
-
-    {{- /* OINK 0.5.0 可组合首页区块：内容与顺序由 data/home/<lang>.yaml 驱动。 */ -}}
-    {{- $homeData := partial "landing/home-data.html" . -}}
-    {{- with $homeData.sections }}
-    <div class="portal-oink">
-      {{- partial "landing/render.html" (dict "page" $ "data" $homeData) -}}
-    </div>
-    {{- end }}
-
-    <!-- ============ ABOUT TEASER：三行文案 + 创始人卡，长内容归 /about/（PRD §6.10） ============ -->
-    <section class="landing-section about" id="about">
-      <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}ABOUT · 关于我们{{ else }}ABOUT US{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title">{{ if $zh }}我们是谁{{ else }}Who we are{{ end }}</h2>
-        </div>
-
-        <div class="about-teaser" data-reveal>
-          <div class="about-teaser-copy">
-            <p class="teaser-mission">{{ if $zh }}我们的使命，是帮助这个世界用好 PostgreSQL。{{ else }}Our mission is to help the world make the most of PostgreSQL.{{ end }}</p>
-            <p>{{ if $zh }}始于 2018 年一位 DBA 的工具箱，如今长成一套完整的开源 PostgreSQL 生态：发行版 <a href="https://pigsty.cc" target="_blank" rel="noopener">Pigsty</a>、PIGSTY 维护的 MinIO 分支 <a href="https://silo.pgsty.com/zh/" target="_blank" rel="noopener">Silo</a>（持续安全更新，{{ partial "compact-number.html" $silo.stars }} 星标），还有 <a href="https://pgext.cloud" target="_blank" rel="noopener">pgext.cloud</a> 扩展目录。PGSTY 是 GitHub 上 <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> 组织背后的公司，也是奇绩创坛 S22 校友项目。{{ else }}What began in 2018 as one DBA's toolbox is now a complete open-source PostgreSQL ecosystem: the <a href="https://pigsty.io" target="_blank" rel="noopener">Pigsty</a> distribution, <a href="https://silo.pgsty.com" target="_blank" rel="noopener">Silo</a> — the PIGSTY-maintained MinIO fork with ongoing security updates ({{ partial "compact-number.html" $silo.stars }} stars) — and the <a href="https://pgext.cloud" target="_blank" rel="noopener">pgext.cloud</a> extension catalog. PGSTY is the company behind the <a href="https://github.com/pgsty" target="_blank" rel="noopener">pgsty</a> organization on GitHub, and a MiraclePlus S22 alumnus.{{ end }}</p>
-            <p>{{ if $zh }}我们刻意把公司保持得很小：支持不设工单分层，接电话的就是写代码的那个人。{{ else }}And we keep the company deliberately small: no support tiers — when you call, you reach the person who wrote the code.{{ end }}</p>
-            <a href="{{ relLangURL "about/" }}" class="btn btn-primary">{{ if $zh }}关于 PGSTY{{ else }}About PGSTY{{ end }} →</a>
-          </div>
-          <article class="entity-card">
-            <p class="entity-kind silkscreen">{{ if $zh }}创始人{{ else }}THE FOUNDER{{ end }}</p>
-            <h3 class="entity-name">{{ if $zh }}冯若航（Vonng）{{ else }}Ruohang Feng (Vonng){{ end }}</h3>
-            <p class="entity-loc"><i class="fab fa-github" aria-hidden="true"></i> <a href="https://github.com/Vonng" target="_blank" rel="noopener">@Vonng</a> · <a href="{{ if $zh }}https://vonng.com{{ else }}https://vonng.com/en/{{ end }}" target="_blank" rel="noopener">vonng.com</a></p>
-            <p class="entity-desc">{{ if $zh }}PostgreSQL 布道者，Pigsty 作者，PostgreSQL 中文文档译者。{{ else }}PostgreSQL evangelist, author of Pigsty, translator of the Chinese PostgreSQL documentation.{{ end }}</p>
+          </article>
+          <article>
+            <span>04</span>
+            <div>
+              <h3>{{ if $zh }}掌控数据主权，大幅降本{{ else }}Data sovereignty and savings{{ end }}</h3>
+              <p>{{ if $zh }}数据库部署在企业自有基础设施，掌控数据主权，下云节省 50%~80% 成本。{{ else }}Retain complete data sovereignty on your own infrastructure and save 50%–80%.{{ end }}</p>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
+    <!-- ============ 第五栏目：常见问题 (FAQ) ============ -->
+    <section class="corp-section">
+      <div class="landing-container corp-faq-wrap">
+        <div>
+          <p class="corp-eyebrow">{{ if $zh }}常见问题{{ else }}BEFORE WE BEGIN{{ end }}</p>
+          <h2>{{ if $zh }}常见问题，答疑解惑。{{ else }}Frequently asked questions.{{ end }}</h2>
+        </div>
+        <div class="corp-faq">
+          {{ $faq := index hugo.Data.home .Site.Language.Lang }}
+          {{ range $faq.buyer_faq.items }}
+          <details>
+            <summary>{{ .question }}<span aria-hidden="true">+</span></summary>
+            <div>{{ $.RenderString .answer }}</div>
+          </details>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 行动号召横幅 ============ -->
     {{ partial "portal/contact-band.html" (dict "page" .) }}
-
   </main>
-
   {{ partial "portal/footer.html" . }}
-
   {{ partial "portal/foot-scripts.html" . }}
 </body>
 </html>

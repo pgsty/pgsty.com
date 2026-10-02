@@ -8,7 +8,7 @@
   {{ partial "portal/head-meta.html" . }}
   {{ partial "portal/head-assets.html" . }}
 </head>
-<body class="landing-page portal-page price-page">
+<body class="landing-page portal-page corporate-page price-page">
   <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
 
   {{ partial "portal/nav.html" (dict "page" . "active" "price") }}
@@ -16,19 +16,23 @@
   <main id="main">
 
     <!-- ============ 价格 HERO ============ -->
-    <section class="hero price-hero">
-      <div class="hero-bg" aria-hidden="true"></div>
+    <section class="corp-page-hero price-hero">
       <div class="landing-container">
         <div class="section-head section-head--center" data-reveal>
           <p class="section-eyebrow section-eyebrow--center anim" style="--d:0"><span class="silkscreen">{{ if $zh }}PRICING · 服务定价{{ else }}PRICING{{ end }}</span></p>
-          <h1 class="section-title anim" style="--d:1">{{ if $zh }}简单透明的价格{{ else }}Simple, transparent pricing{{ end }}</h1>
-          <p class="section-subtitle anim" style="--d:2">{{ if $zh }}按节点计费而非 vCPU —— 从免费开源到企业级 SLA，丰俭由人。{{ else }}Billed per node, not per vCPU — from free open source to an enterprise SLA.{{ end }}</p>
+          <h1 class="section-title anim" style="--d:1">{{ if $zh }}订阅与专业服务定价{{ else }}Subscriptions & Professional Services{{ end }}</h1>
+          <p class="section-subtitle anim" style="--d:2">
+            <span class="corp-title-line">{{ if $zh }}从开源评估到生产技术支持，按实际需求选择服务范围。{{ else }}From open-source evaluation to production support.{{ end }}</span>
+            <span class="corp-title-line">{{ if $zh }}以下为参考方案；最终费用与承诺由书面报价及协议确定。{{ else }}Plans below serve as a reference; final fees and scope are agreed in writing.{{ end }}</span>
+          </p>
         </div>
+
+        <p class="corp-pricing-currency">{{ if $zh }}本页参考价格以人民币（CNY）表示。税费、付款安排与最终结算币种在报价中确认。{{ else }}Reference prices on this page are in US dollars (USD). Taxes, payment terms, and the final billing currency are confirmed in your quotation.{{ end }}</p>
 
         <div class="tier-grid price-hero-grid anim" style="--d:3">
           {{ range $pricing.tiers }}
           <article class="tier-card{{ if .featured }} tier-card--featured{{ end }}">
-            {{ if .featured }}<span class="tier-badge">{{ if $zh }}推荐{{ else }}POPULAR{{ end }}</span>{{ end }}
+
             <header class="tier-head">
               <p class="tier-tier silkscreen">{{ if $zh }}{{ .tierZh }}{{ else }}{{ .tier }}{{ end }}</p>
               <p class="tier-tagline">{{ if $zh }}{{ .taglineZh }}{{ else }}{{ .tagline }}{{ end }}</p>
@@ -45,7 +49,7 @@
 
         <p class="pricing-note" data-reveal>
           {{ if $zh }}{{ $pricing.noteZh }}{{ else }}{{ $pricing.note }}{{ end }}
-          <a href="{{ if $zh }}https://pigsty.cc/docs/about/service/{{ else }}https://pigsty.io/docs/about/service/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}阅读订阅说明 →{{ else }}Read the service terms →{{ end }}</a>
+          <a href="{{ if $zh }}https://pigsty.cc/docs/about/service/{{ else }}https://pigsty.io/docs/about/service/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}阅读产品订阅说明 →{{ else }}Read the product service description →{{ end }}</a>
         </p>
       </div>
     </section>
@@ -55,8 +59,8 @@
       <div class="landing-container">
         <div class="section-head" data-reveal>
           <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}DATASHEET · 规格对照{{ else }}DATASHEET{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title">{{ if $zh }}功能对比{{ else }}Feature comparison{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}详细了解各方案的功能差异。{{ else }}A detailed look at what each plan includes.{{ end }}</p>
+          <h2 class="section-title">{{ if $zh }}方案范围对比{{ else }}Compare plan scope{{ end }}</h2>
+          <p class="section-subtitle">{{ if $zh }}比较软件包范围与服务配置；响应目标、可用时间与适用条件以签署的协议为准。{{ else }}Compare package coverage and service options. Response targets, availability and conditions are governed by the signed agreement.{{ end }}</p>
         </div>
 
         <div class="cmp-wrap" data-reveal>
@@ -97,8 +101,8 @@
       <div class="landing-container">
         <div class="section-head" data-reveal>
           <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}ON DEMAND · 按需服务{{ else }}ON-DEMAND SERVICES{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title">{{ if $zh }}专家服务，按需采购{{ else }}Expert services, pay as you go{{ end }}</h2>
-          <p class="section-subtitle">{{ if $zh }}不订阅也能找到我们 —— 业界顶级数据库专家坐堂问诊。{{ else }}No subscription required — industry-leading database experts, on call.{{ end }}</p>
+          <h2 class="section-title">{{ if $zh }}按需专业服务{{ else }}Professional services, scoped to your needs{{ end }}</h2>
+          <p class="section-subtitle">{{ if $zh }}可独立采购咨询与工程服务。以下费用供初步参考，工作范围与可用时间需提前确认。{{ else }}Consulting and engineering can be purchased separately. Fees below are a starting point; confirm scope and availability before work begins.{{ end }}</p>
         </div>
 
         <div class="svc-grid" data-reveal>
@@ -111,6 +115,15 @@
           </article>
           {{ end }}
         </div>
+      </div>
+    </section>
+
+    <section class="corp-section">
+      <div class="landing-container corp-prose">
+        <h2>{{ if $zh }}报价、交付与许可{{ else }}Quotations, delivery and licensing{{ end }}</h2>
+        <p>{{ if $zh }}本网站服务由新加坡 PGSTY PTE. LTD. 提供。采购前，我们会书面确认项目范围、交付物、结算币种、适用税费、付款安排和验收方式。咨询请求本身不构成订单，页面价格不代表已接受的报价。{{ else }}Services on this website are offered by PGSTY PTE. LTD., Singapore. Before an order, we confirm the scope, deliverables, billing currency, applicable taxes, payment schedule and acceptance process in writing. An enquiry is not an order, and listed pricing is not an accepted quotation.{{ end }}</p>
+        <p>{{ if $zh }}开源版许可证信息适用于 Pigsty 项目本身。PostgreSQL、Silo 与其他组件分别适用各自许可证；商业订阅不会替代第三方开源许可。{{ else }}The open-source licence shown above applies to the Pigsty project itself. PostgreSQL, Silo and other components have their own licences; a commercial subscription does not replace third-party open-source terms.{{ end }}</p>
+        <p><a class="corp-link" href="{{ relLangURL "services/" }}">{{ if $zh }}了解服务交付流程{{ else }}Explore service delivery{{ end }} →</a></p>
       </div>
     </section>
 
@@ -133,24 +146,7 @@
       </div>
     </section>
 
-    <!-- ============ CTA ============ -->
-    <section class="landing-section contact-band">
-      <div class="landing-container">
-        <div class="contact-inner" data-reveal>
-          <h2 class="contact-title">{{ if $zh }}还有疑问？欢迎咨询{{ else }}Have questions? Let's talk{{ end }}</h2>
-          <p class="contact-desc">{{ if $zh }}我们随时为您解答疑问，帮助您选择最适合的方案。{{ else }}We're happy to help you pick the plan that fits.{{ end }}</p>
-          <div class="contact-ctas">
-            <a href="mailto:rh@vonng.com" class="btn btn-primary"><i class="fas fa-envelope" aria-hidden="true"></i> rh@vonng.com</a>
-            {{ if $zh }}
-            <a href="https://pigsty.cc/docs/about/community/" target="_blank" rel="noopener" class="btn btn-ghost"><i class="fab fa-weixin" aria-hidden="true"></i> 微信：RuohangFeng</a>
-            {{ else }}
-            <a href="https://discord.gg/j5pG8qfKxU" target="_blank" rel="noopener" class="btn btn-ghost"><i class="fab fa-discord" aria-hidden="true"></i> Discord</a>
-            {{ end }}
-            <a href="{{ if $zh }}https://pigsty.cc/docs/about/service/{{ else }}https://pigsty.io/docs/about/service/{{ end }}" target="_blank" rel="noopener" class="btn btn-line"><i class="fas fa-book" aria-hidden="true"></i> {{ if $zh }}订阅说明{{ else }}Service Terms{{ end }}</a>
-          </div>
-        </div>
-      </div>
-    </section>
+    {{ partial "portal/contact-band.html" (dict "page" . "title" (cond $zh "获取适合您项目的报价" "Request a quotation for your project") "desc" (cond $zh "说明环境、节点规模、目标与时间要求，我们会与您确认服务方案。" "Share your environment, node count, goals and timeline so we can confirm a suitable scope.")) }}
 
   </main>
 

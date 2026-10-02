@@ -1,20 +1,17 @@
 ---
 title: "Solutions"
-description: "PGSTY solutions organized by what you're trying to do — starting with cloud exit: leave RDS without leaving the guarantees."
+description: "PostgreSQL infrastructure and migration solutions from PGSTY: assess costs, operational responsibilities and implementation requirements."
 translationKey: "solutions"
-search_keywords: [solutions, migration, cloud exit, self-hosting, data ownership]
+search_keywords: [solutions, migration, cloud exit, self-hosting, infrastructure]
 search_boost: 1.2
 ---
 
-PGSTY solutions are organized around the operational outcome you need, not a
-catalog of proprietary products. Each solution combines the open-source stack,
-a reproducible implementation path, and optional expert assurance.
+PGSTY solutions combine open-source software, engineering and an agreed support scope. We evaluate cost, reliability, migration complexity and your team's operational capacity together.
 
-## Cloud exit
+## Cloud exit and migration
 
-[Cloud Exit](/solutions/cloud-exit/) is the first complete solution: compare
-the three-year cost, identify the guarantees your managed database currently
-provides, and migrate those guarantees to infrastructure you control.
+The [cloud-exit assessment](/solutions/cloud-exit/) presents a historical cost model, published sources and a migration process. Compare managed PostgreSQL, cloud virtual machines and your own infrastructure before choosing a deployment model.
 
-It includes a cost model, a four-step migration road, evidence and source
-links, and the PGSTY services available at each stage.
+## Production PostgreSQL
+
+[Professional services](/services/) can cover architecture, deployment, high availability, backup and recovery, observability, performance and operational handover. Contact us to define a scope for your environment.

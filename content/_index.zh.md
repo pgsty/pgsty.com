@@ -1,24 +1,35 @@
 ---
-title: "PGSTY — 生产级自建 PostgreSQL"
-description: "Pigsty 背后的公司：开源 PostgreSQL 发行版、生态基础设施与专家服务。"
-url: "/"
+title: "开源数据基础设施，为真实生产而构建"
+description: "PGSTY PTE. LTD. 是一家新加坡公司，研发开源 PostgreSQL 与数据基础设施软件，提供部署、迁移与专业支持。"
 type: home
 ---
 
-PGSTY 构建并维护开源、本地优先的 PostgreSQL 发行版
-[Pigsty](https://pigsty.cc/)，以及将它用于生产环境所需的公共基础设施与专家服务。
+提供以 PostgreSQL 为核心的数据基础设施软件。
+提供专业咨询与支持服务，让企业掌握自己的数据库。
 
-## 我们维护什么
+[了解专业服务](/zh/services/) · [开源软件](/zh/projects/)
 
-- **Pigsty** 将 PostgreSQL、高可用、备份、可观测性与扩展管理组织成可复现的部署。
-- **PIG** 面向受支持的 Linux 发行版与架构管理 PostgreSQL 及其扩展包。
-- **PG Exporter** 为 Prometheus 提供声明式的 PostgreSQL 与 PgBouncer 指标采集。
-- **Silo** 是 PIGSTY 持续维护的 S3 兼容对象存储分支，提供安全更新与完整发行制品。
+## 我们构建的软件
 
-PGSTY 还运营扩展目录、软件仓库、PostgreSQL 中文文档与在线演示等公共服务。
+- **[Pigsty](https://pigsty.cc/)** — 整合 PostgreSQL、高可用、备份恢复、监控与扩展的开源发行版。
+- **[Silo](https://silo.pgsty.com/zh/)** — 持续维护的 MinIO 分支，提供兼容 S3 的对象存储、客户端与管理控制台。
+- **[PIG](https://pig.pgsty.com/zh/)** — 通过命令行安装与管理 PostgreSQL 及其扩展软件包。
+- **[Barn](https://barn.pgsty.com/zh/)** — 用于开发测试、数据库实验与环境搭建的本地虚拟机工具。
+- **[SOW](https://sow.pgsty.com/zh/)** — 创建、管理与发布 APT / YUM 软件仓库。
+- **[PG Exporter](https://exp.pgsty.com/zh/)** — 为 Prometheus 采集 PostgreSQL 与 PgBouncer 运行指标。
+
+## 我们维护的公共资源
+
+- **[PGSTY 软件仓库](https://pigsty.cc/docs/repo/)** — PostgreSQL、扩展与配套基础软件的 Linux 软件包及安装指南。
+- **[PostgreSQL 中文文档](https://pgsql.cc/docs/)** — 多个版本的中文手册、全文检索与配套生态文档。
+- **[PG.CENTER](https://pg.center/)** — PostgreSQL 英文手册、版本对比与生态资料。
+- **[PostgreSQL 知识图谱](https://pgsql.cc/wiki/)** — 关联 SQL、参数、函数与系统目录，追溯出处与版本变化。
+- **[PGEXT.CLOUD](https://pgext.cloud/)** — PostgreSQL 扩展目录、版本兼容性与软件包信息。
+
+[浏览社区资源](/zh/resources/)，或[体验 Pigsty 监控演示](https://demo.pigsty.io/)。
 
 ## 与我们合作
 
-开源软件可以免费使用；需要确定性保障时，可购买[订阅](/zh/price/)；架构设计、
-迁移实施、故障救援等工作则可按需邀请专家参与。可以从[解决方案](/zh/solutions/)
-开始，或进一步[了解 PGSTY](/zh/about/)。
+从首次部署到日常运维，与熟悉这些软件的工程师直接合作。
+我们提供架构与部署、迁移与现代化、支持与性能优化等[专业服务](/zh/services/)。
+查看[服务价格](/zh/price/)，或[联系我们](/zh/contact/)讨论具体需求。

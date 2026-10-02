@@ -1,0 +1,17 @@
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+<div class="corp-resource-list">
+  {{ range hugo.Data.portal.resources }}
+  <a class="corp-resource" href="{{ if and $zh .urlZh }}{{ .urlZh }}{{ else }}{{ .url }}{{ end }}">
+    <span class="corp-resource-icon" aria-hidden="true"><i class="{{ .icon }}"></i></span>
+    <div class="corp-resource-copy">
+      <div class="corp-resource-head">
+        <h3 class="corp-resource-title">{{ if $zh }}{{ .nameZh }}{{ else }}{{ .name }}{{ end }}</h3>
+        <span class="corp-resource-badge">{{ if $zh }}{{ .labelZh }}{{ else }}{{ .label }}{{ end }}</span>
+      </div>
+      <p>{{ if $zh }}{{ .descZh }}{{ else }}{{ .desc }}{{ end }}</p>
+      <span class="corp-resource-action">{{ if $zh }}{{ .actionZh }}{{ else }}{{ .action }}{{ end }} <span aria-hidden="true">→</span></span>
+    </div>
+    <span class="corp-resource-arrow" aria-hidden="true">↗</span>
+  </a>
+  {{ end }}
+</div>

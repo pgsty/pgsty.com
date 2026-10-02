@@ -53,26 +53,16 @@
           <kbd class="td-nav-search-box__kbd" aria-hidden="true">/</kbd>
         </button>
 
+        <a class="corp-nav-contact" href="{{ relLangURL "contact/" }}">{{ if eq $page.Site.Language.Lang "zh" }}联系我们{{ else }}Get in touch{{ end }} <span aria-hidden="true">↗</span></a>
         <div class="portal-nav-utils">
           {{- with $next }}
           {{- $code := index (split .code "-") 0 }}
-          <div class="td-nav-hover-menu portal-lang" data-td-nav-hover>
-            <a class="td-nav-util portal-lang__trigger" href="{{ .url }}"
-              data-td-nav-hover-trigger lang="{{ .code }}" hreflang="{{ .code }}" dir="{{ .direction }}"
-              title="{{ T "ui_language_switch" }}: {{ .label }}"
-              aria-label="{{ T "ui_language_switch" }}: {{ .label }}" aria-expanded="false">
-              <span class="portal-lang__code">{{ index $short $code | default (upper $code) }}</span>
-            </a>
-            <div class="td-nav-hover-menu__pop" role="group" aria-label="{{ T "ui_language_select" }}">
-              {{- range $targets }}
-              {{- if .active }}
-              <span class="td-nav-hover-menu__option td-is-active" lang="{{ .code }}" dir="{{ .direction }}" aria-current="page">{{ .label }}</span>
-              {{- else }}
-              <a class="td-nav-hover-menu__option" href="{{ .url }}" lang="{{ .code }}" hreflang="{{ .code }}" dir="{{ .direction }}">{{ .label }}</a>
-              {{- end }}
-              {{- end }}
-            </div>
-          </div>
+          <a class="td-nav-util portal-lang__trigger" href="{{ .url }}"
+            lang="{{ .code }}" hreflang="{{ .code }}" dir="{{ .direction }}"
+            title="{{ T "ui_language_switch" }}: {{ .label }}"
+            aria-label="{{ T "ui_language_switch" }}: {{ .label }}">
+            <span class="portal-lang__code">{{ index $short $code | default (upper $code) }}</span>
+          </a>
           {{- end }}
 
           {{- /* 点击直切亮/暗，悬停展开三档选择；两者都走 PGSTYPortalTheme。 */ -}}

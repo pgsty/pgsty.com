@@ -1,31 +1,36 @@
 ---
-title: "PGSTY — Production-Grade Self-Hosted PostgreSQL"
-description: "The company behind Pigsty: the open-source PostgreSQL distribution, ecosystem infrastructure, and expert services — from Singapore."
+title: "Open Data Infrastructure, Built for Real Production"
+description: "PGSTY PTE. LTD. is a Singapore company building open-source PostgreSQL and data infrastructure software, with deployment, migration, and professional support services."
 url: "/"
 type: home
 ---
 
-PGSTY builds and maintains [Pigsty](https://pigsty.io/), an open-source,
-local-first PostgreSQL distribution, together with the infrastructure and
-expert services needed to run it in production.
+Open-source data infrastructure built around PostgreSQL.
+Expert consulting and support, so you stay in control of your databases.
 
-## What we maintain
+[Explore Our Services](/services/) · [Open Source Software](/projects/)
 
-- **Pigsty** turns PostgreSQL, high availability, backup, observability, and
-  extension management into a reproducible deployment.
-- **PIG** manages PostgreSQL and extension packages across supported Linux
-  distributions and architectures.
-- **PG Exporter** provides declarative PostgreSQL and PgBouncer metrics for
-  Prometheus.
-- **Silo** is the PIGSTY-maintained, S3-compatible object-storage fork with
-  continued security updates and complete release artifacts.
+## The software we build
 
-PGSTY also operates public ecosystem services including the extension catalog,
-package repositories, Chinese PostgreSQL documentation, and live demos.
+- **[Pigsty](https://pigsty.io/)** — A PostgreSQL distribution with high availability, backup and recovery, monitoring, and extensions.
+- **[Silo](https://silo.pgsty.com/)** — A maintained MinIO fork for S3-compatible object storage, with a client and management console.
+- **[PIG](https://pig.pgsty.com/)** — A CLI for installing and managing PostgreSQL and extension packages.
+- **[Barn](https://barn.pgsty.com/)** — Local virtual machines for development, database labs, and repeatable testing.
+- **[SOW](https://sow.pgsty.com/)** — Tools to build, organize, and publish APT and YUM package repositories.
+- **[PG Exporter](https://exp.pgsty.com/)** — PostgreSQL and PgBouncer metrics for Prometheus monitoring.
+
+## Resources we maintain
+
+- **[PGSTY Repository](https://pigsty.io/docs/repo/)** — PostgreSQL, extensions, and infrastructure packages for Linux, with installation guides.
+- **[PostgreSQL in Chinese](https://pgsql.cc/docs/)** — Translated manuals across versions, full-text search, and ecosystem documentation.
+- **[PG.CENTER](https://pg.center/)** — English PostgreSQL manuals, version comparisons, and ecosystem information.
+- **[PostgreSQL Knowledge Graph](https://pg.center/wiki/)** — Connected references for SQL, parameters, functions, and system catalogs, with sources and version context.
+- **[PGEXT.CLOUD](https://pgext.cloud/)** — Extension discovery, version compatibility, and package availability.
+
+[Explore our resources](/resources/) or [try the Pigsty monitoring demo](https://demo.pigsty.io/).
 
 ## Work with us
 
-Use the open-source stack for free, add a [subscription](/price/) when you need
-assurance, or engage PGSTY for architecture, migration, incident response, and
-other expert work. Start with our [solutions](/solutions/) or learn more
-[about the company](/about/).
+Work directly with the people who build and maintain the software, from your first deployment to everyday operations.
+Our [professional services](/services/) cover architecture and deployment, migration and modernization, support, and performance optimization.
+See [plans and pricing](/price/) or [contact us](/contact/) to discuss your environment.

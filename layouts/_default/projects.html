@@ -1,0 +1,40 @@
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
+<!DOCTYPE html>
+<html lang="{{ $locale }}" class="no-js">
+<head>
+  {{ partial "portal/head-meta.html" . }}
+  {{ partial "portal/head-assets.html" . }}
+</head>
+<body class="landing-page portal-page corporate-page projects-page">
+  <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
+  {{ partial "portal/nav.html" (dict "page" . "active" "projects") }}
+  <main id="main">
+    <section class="corp-page-hero">
+      <div class="landing-container">
+        <p class="corp-eyebrow">{{ if $zh }}软件与开源项目{{ else }}Software & open source{{ end }}</p>
+        <h1 class="corp-title">{{ if $zh }}构建您自己的数据基础设施{{ else }}Build your own data infrastructure{{ end }}</h1>
+        <p class="corp-lead">{{ if $zh }}从数据库与对象存储，到包管理、监控和开发环境。了解每个项目的用途，选择适合您的工具。{{ else }}From databases and object storage to packages, monitoring, and development environments. Find the right tools for the way you work.{{ end }}</p>
+        <div class="contact-ctas"><a class="corp-link" href="{{ relLangURL "resources/" }}">{{ if $zh }}查找文档、软件仓库与知识库{{ else }}Find manuals, packages, and knowledge resources{{ end }} <span aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
+    <section class="corp-section">
+      <div class="landing-container">
+        <div class="corp-grid-2">
+          {{ range $key := slice "pigsty" "silo" "pig" "barn" "sow" "pg_exporter" }}
+          {{ range where hugo.Data.portal.projects "key" $key }}
+          {{ partial "portal/project-card.html" (dict "page" $ "project" . "details" true) }}
+          {{ end }}
+          {{ end }}
+        </div>
+      </div>
+    </section>
+    <section class="corp-section">
+      <div class="landing-container corp-prose">{{ .Content }}</div>
+    </section>
+    {{ partial "portal/contact-band.html" (dict "page" . "title" (cond $zh "需要实施或支持服务？" "Need implementation or support?") "desc" (cond $zh "说明您正在评估的项目与使用场景，我们可以一起确认后续工作。" "Tell us which project you are evaluating and how you plan to use it.") "pricing" true) }}
+  </main>
+  {{ partial "portal/footer.html" . }}
+  {{ partial "portal/foot-scripts.html" . }}
+</body>
+</html>

@@ -1,5 +1,3 @@
-{{- /* /solutions/ — 极简索引页（PRD §4.2）：一段导语 + 卡片列表。
-     Phase 1 只有 cloud-exit 上线；后续方案以文字预告，不放假链接。 */ -}}
 {{- $zh := eq .Site.Language.Lang "zh" -}}
 {{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
 <!DOCTYPE html>
@@ -8,39 +6,38 @@
   {{ partial "portal/head-meta.html" . }}
   {{ partial "portal/head-assets.html" . }}
 </head>
-<body class="landing-page portal-page solutions-page">
+<body class="landing-page portal-page corporate-page solutions-page">
   <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
-
   {{ partial "portal/nav.html" (dict "page" . "active" "solutions") }}
-
   <main id="main">
-    <section class="hero page-hero">
-      <div class="hero-bg" aria-hidden="true"></div>
+    <section class="corp-page-hero">
       <div class="landing-container">
-        <div class="section-head section-head--center" data-reveal>
-          <p class="section-eyebrow section-eyebrow--center anim" style="--d:0"><span class="silkscreen">{{ if $zh }}SOLUTIONS · 解决方案{{ else }}SOLUTIONS{{ end }}</span></p>
-          <h1 class="section-title anim" style="--d:1">{{ if $zh }}你要干什么，从这里进{{ else }}Start from what you're trying to do{{ end }}</h1>
-          <p class="section-subtitle anim" style="--d:2">{{ if $zh }}六字母讲的是我们有什么；这里按你的目标组织 —— 每个方案都对齐到技术栈、服务档位和一笔算得清的账。{{ else }}The six letters say what we have; this page is organized by your goal — each solution maps to the stack, the service tiers, and math you can check.{{ end }}</p>
-        </div>
-
-        <div class="sol-grid anim" style="--d:3">
-          <a class="sol-card" href="{{ relLangURL "solutions/cloud-exit/" }}">
-            <p class="sol-kind silkscreen">{{ if $zh }}CLOUD EXIT · 下云{{ else }}CLOUD EXIT{{ end }}</p>
-            <h2 class="sol-name">{{ if $zh }}下云，把数据库拿回来{{ else }}Stop renting your database{{ end }}</h2>
-            <p class="sol-desc">{{ if $zh }}RDS 的能力，硬件的价格：三年 TCO 对照、四步迁移路线，以及每一步接得住你的服务档位。{{ else }}RDS guarantees at hardware prices: a three-year TCO comparison, a four-step migration road, and a service tier to catch you at every step.{{ end }}</p>
-            <span class="sol-go" aria-hidden="true">→</span>
-          </a>
-        </div>
-
-        <p class="sol-coming" data-reveal>{{ if $zh }}在路上：去 O 迁移 · 把 Pigsty 运营成你自己的 RDS · 信创与气隙主权栈 · 容灾与合规。{{ else }}In the works: Oracle migration · running Pigsty as your own RDS · sovereign & air-gapped stacks · compliance and DR.{{ end }}</p>
+        <p class="corp-eyebrow">{{ if $zh }}解决方案{{ else }}Solutions{{ end }}</p>
+        <h1 class="corp-title">{{ if $zh }}基于业务场景，规划数据库基础设施{{ else }}Plan database infrastructure around your requirements{{ end }}</h1>
+        <p class="corp-lead">{{ if $zh }}把成本、可靠性、迁移复杂度和团队运维能力放在一起评估。我们的方案结合开源软件、工程实施与明确约定的技术支持。{{ else }}Evaluate cost, reliability, migration complexity and your team's operational capacity together. Our approach combines open-source software, engineering and an agreed support scope.{{ end }}</p>
       </div>
     </section>
-
-    {{ partial "portal/contact-band.html" (dict "page" .) }}
+    <section class="corp-section">
+      <div class="landing-container corp-grid-2">
+        <article class="corp-card">
+          <p class="corp-eyebrow">{{ if $zh }}下云与数据库迁移{{ else }}Cloud exit & database migration{{ end }}</p>
+          <h2>{{ if $zh }}评估适合您的部署方式{{ else }}Assess the right deployment model{{ end }}</h2>
+          <p>{{ if $zh }}比较托管数据库、云上自建和自有基础设施，梳理当前服务的职责边界，再制定可演练、可验证的迁移计划。{{ else }}Compare managed databases, cloud virtual machines and your own infrastructure. Identify operational responsibilities and develop a migration plan that can be rehearsed and validated.{{ end }}</p>
+          <p>{{ if $zh }}方案页提供历史成本模型、公开来源与阶段说明，可作为评估起点。{{ else }}The solution page includes historical cost models and migration stages to support an initial assessment.{{ end }}</p>
+          <a class="corp-link" href="{{ relLangURL "solutions/cloud-exit/" }}">{{ if $zh }}查看下云方案{{ else }}Explore cloud exit{{ end }} →</a>
+        </article>
+        <article class="corp-card">
+          <p class="corp-eyebrow">{{ if $zh }}生产 PostgreSQL{{ else }}Production PostgreSQL{{ end }}</p>
+          <h2>{{ if $zh }}规划与构建生产数据库平台{{ else }}Build an operable database platform{{ end }}</h2>
+          <p>{{ if $zh }}围绕高可用、备份恢复、可观测性和日常变更流程，规划符合团队能力与业务要求的 PostgreSQL 环境。{{ else }}Plan a PostgreSQL environment around high availability, backup and recovery, observability and routine changes, aligned with your team and workload requirements.{{ end }}</p>
+          <p>{{ if $zh }}通过架构评审、实施部署与性能验证，交付生产就绪的数据库环境。{{ else }}Translate the plan into an architecture review, deployment, performance assessment and knowledge transfer.{{ end }}</p>
+          <a class="corp-link" href="{{ relLangURL "services/" }}">{{ if $zh }}了解专业服务{{ else }}Explore professional services{{ end }} →</a>
+        </article>
+      </div>
+    </section>
+    {{ partial "portal/contact-band.html" (dict "page" . "title" (cond $zh "从现有环境开始讨论" "Start with your current environment") "desc" (cond $zh "说明您的数据库、部署方式与目标，我们会与您确认评估范围。" "Tell us about your databases, deployment model and goals so we can define an assessment.")) }}
   </main>
-
   {{ partial "portal/footer.html" . }}
-
   {{ partial "portal/foot-scripts.html" . }}
 </body>
 </html>

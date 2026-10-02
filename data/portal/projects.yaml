@@ -3,7 +3,14 @@
 # 星数等远程计数用 bin/metrics.py 或手工更新（2026-08-10 校准）
 # ============================================================
 - key: pigsty
-  name: PIGSTY
+  use: Deploying and operating PostgreSQL on your own servers or cloud virtual machines.
+  useZh: 在自有服务器或云虚拟机上部署与运维 PostgreSQL。
+  name: Pigsty
+  icon: fa-solid fa-database
+  summary: A complete PostgreSQL deployment, with high availability, backup and recovery, monitoring, and extensions. Run it on infrastructure you control.
+  summaryZh: 将 PostgreSQL、高可用、备份恢复、监控与扩展整合为完整的部署方案，运行在您自主掌控的基础设施上。
+  features: [High availability, Backup & recovery, Monitoring]
+  featuresZh: [高可用, 备份恢复, 监控告警]
   flagship: true
   repo: https://github.com/pgsty/pigsty
   site: https://pigsty.io/
@@ -14,13 +21,18 @@
   lang: Ansible
   kind: PG DISTRIBUTION
   kindZh: PG 发行版
-  desc: Battery-included, local-first PostgreSQL distribution — a free & better RDS alternative. Self-healing HA, PITR, SOTA monitoring, and 572 ready-to-install extensions.
-  descZh: 开箱即用、本地优先的 PostgreSQL 发行版 —— 免费且更好的 RDS 替代。自愈高可用、时间点恢复、顶级监控与 572 个即装即用的扩展。
+  desc: A complete PostgreSQL distribution with automated deployment, high availability, monitoring, and extensions.
+  descZh: 整合自动化部署、高可用、监控与扩展的 PG 发行版。
   install: "curl -fsSL https://repo.pigsty.io/get | bash"
   installZh: "curl -fsSL https://repo.pigsty.cc/get | bash"
 
 - key: pig
+  use: Preparing PostgreSQL environments and managing database extension packages.
+  useZh: 准备 PostgreSQL 环境，管理数据库扩展软件包。
   name: PIG
+  icon: fa-solid fa-terminal
+  summary: Install PostgreSQL and extensions via system package managers.
+  summaryZh: 通过命令行安装 PG 及其扩展，对接系统原生包管理器。
   repo: https://github.com/pgsty/pig
   site: https://pig.pgsty.com/
   siteZh: https://pig.pgsty.com/zh/
@@ -30,13 +42,18 @@
   lang: Go
   kind: PACKAGE MANAGER
   kindZh: 包管理器
-  desc: PostgreSQL & extension package manager — PG 14–18 with 572 extensions on EL / Debian / Ubuntu, amd64 & arm64, agent-friendly structured output.
-  descZh: PostgreSQL 与扩展包管理器 —— PG 14–18 × 572 个扩展，覆盖 EL / Debian / Ubuntu 与双架构，Agent 友好的结构化输出。
+  desc: A command-line package manager for installing PostgreSQL and its extensions across supported Linux distributions.
+  descZh: 面向 PostgreSQL 及其扩展的命令行软件包管理器。
   install: "curl -fsSL https://repo.pigsty.io/pig | bash"
   installZh: "curl -fsSL https://repo.pigsty.cc/pig | bash"
 
 - key: pg_exporter
-  name: PG_EXPORTER
+  use: Collecting database metrics for Prometheus monitoring and Grafana dashboards.
+  useZh: 采集数据库指标，用于 Prometheus 监控与仪表盘。
+  name: PG Exporter
+  icon: fa-solid fa-chart-line
+  summary: Collect metrics from PostgreSQL and PgBouncer for Prometheus.
+  summaryZh: 采集 PG 与连接池运行指标，为监控大盘提供详实数据。
   repo: https://github.com/pgsty/pg_exporter
   site: https://exp.pgsty.com/
   siteZh: https://exp.pgsty.com/zh/
@@ -46,14 +63,21 @@
   lang: Go
   kind: METRICS EXPORTER
   kindZh: 指标导出器
-  desc: Advanced PostgreSQL & PgBouncer metrics exporter for Prometheus — 600+ metrics with declarative config and dynamic collector planning.
-  descZh: 为 Prometheus 打造的 PostgreSQL / PgBouncer 指标导出器 —— 600+ 指标，声明式配置与动态采集规划。
+  desc: A Prometheus metrics exporter for PostgreSQL and PgBouncer, with declarative collector configuration.
+  descZh: PostgreSQL 与 PgBouncer 生产指标导出器。
   install: "docker pull pgsty/pg_exporter"
   installZh: "docker pull pgsty/pg_exporter"
 
 - key: silo
-  name: SILO
-  repo: https://github.com/pgsty/minio
+  use: Providing an S3-compatible storage endpoint on infrastructure you manage.
+  useZh: 在自主管理的基础设施上提供兼容 S3 的存储接口。
+  name: Silo
+  icon: fa-solid fa-layer-group
+  summary: S3-compatible object storage, maintained as a fork of MinIO. Store and manage your data with an open-source server, client, and console.
+  summaryZh: 持续维护的 MinIO 分支，提供兼容 S3 的对象存储，以及配套的客户端与管理控制台，让存储同样掌握在自己手中。
+  features: [S3 compatible, Management console, Self-hosted]
+  featuresZh: [S3 兼容, 管理控制台, 自建部署]
+  repo: https://github.com/pgsty/silo
   site: https://silo.pgsty.com/
   siteZh: https://silo.pgsty.com/zh/
   version: RELEASE.2026-08-06
@@ -62,13 +86,18 @@
   lang: Go
   kind: OBJECT STORAGE
   kindZh: 对象存储
-  desc: The MinIO fork maintained by PIGSTY — S3-compatible object storage with continued security updates, a restored console, and full release artifacts.
-  descZh: PIGSTY 维护的 MinIO 分支 —— S3 兼容对象存储，持续安全更新、恢复的管理控制台与完整发行制品。
-  install: "docker pull pgsty/minio"
-  installZh: "docker pull pgsty/minio"
+  desc: An S3-compatible object storage server maintained as a MinIO fork, with a console and release packages.
+  descZh: 持续维护的 MinIO 分支，兼容 S3 的对象存储服务。
+  install: "docker pull pgsty/silo"
+  installZh: "docker pull pgsty/silo"
 
 - key: sow
+  use: Publishing and maintaining Linux package repositories.
+  useZh: 发布与维护 Linux 软件包仓库，实现自动化分发。
   name: SOW
+  icon: fa-solid fa-box-archive
+  summary: Publish private APT and YUM repository.
+  summaryZh: 构建与发布私有 APT/YUM 软件仓库，实现软件包自动化分发。
   repo: https://github.com/pgsty/sow
   site: https://sow.pgsty.com/
   siteZh: https://sow.pgsty.com/zh/
@@ -78,11 +107,30 @@
   lang: Go
   kind: REPO MANAGER
   kindZh: 仓库管理器
-  desc: Self-contained RPM / YUM and DEB / APT repository manager — one-command indexing, managed workspaces, immutable generations, and incremental publishing.
-  descZh: 自包含的 RPM / YUM 与 DEB / APT 仓库管理器 —— 一条命令完成索引，并支持托管工作区、不可变代际与增量发布。
+  desc: A repository manager for RPM and DEB packages, featuring repository indexing and incremental publishing.
+  descZh: 面向 RPM 与 DEB 软件包的私有仓库管理器。
   install: "sow create ./packages"
   installZh: "sow create ./packages"
 
 # piglet：原条目的 repo / 文档链接与安装命令均指向主项目，疑为占位（PRD §10.2）。
 # 等真实 repo / docs 链接与版本号到位后再恢复条目（PRD §6.8 / §12.3）；
 # 眼下 T 板块不露出。
+
+- key: barn
+  name: Barn
+  icon: fa-solid fa-server
+  summary: Create local lightweight VMs for development and database testing.
+  summaryZh: 面向本地轻量虚拟机集群，用于开发测试与数据库实验。
+  repo: https://github.com/pgsty/barn
+  site: https://barn.pgsty.com/
+  siteZh: https://barn.pgsty.com/zh/
+  license: Apache-2.0
+  lang: Go
+  kind: VIRTUAL MACHINES
+  kindZh: 虚拟机工具
+  desc: A local lightweight VM tool for macOS and Linux, building reproducible multi-node lab environments.
+  descZh: 本地轻量虚拟机工具，快速拉起多节点测试集群。
+  use: Spin up local lightweight VMs to test multi-node database clusters.
+  useZh: 快速搭建本地轻量虚拟机，验证多节点数据库集群。
+  install: "brew install pgsty/infra/barn"
+  installZh: "brew install pgsty/infra/barn"

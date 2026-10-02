@@ -1,5 +1,8 @@
 # pgsty.com 公司官网 PRD v3 —— 以 Percona 为范本的公司站信息架构
 
+> 历史设计稿（2026-08-18）。其中的字母板、按语言拆分公司主体、页面清单与分期计划已被后续公司站改版取代。
+> 当前维护以 [AGENTS.md](../AGENTS.md) 和实际代码为准；本文保留为设计记录，不作为新增需求或发布授权。
+
 | 项目 | 内容 |
 |---|---|
 | 版本 | v3.1（2026-08-18；v3.0 同日初稿，v3.1 并入 Percona 30 页抓取、生态站点普查与本站素材清单三份研究） |
@@ -627,7 +630,7 @@ resource-type 子图（清单见附录 B）。`/contact-us/` 与 `/webinars/` �
 | **P2 资源与方案（约 3 周）** | `/resources/` `/news/`(+RSS) `/customers/`(授权后) `/talks/` `/compare/` `/community/`；`/services/health-check/`（有价后）`/services/dbaas/`；`/solutions/reliability/ migration/ dbaas/`；`/legal/lifecycle/ trademark/`；`/brand/`；价格页节点速算；首页 proof / resources 段 | ≈ +16 | 资源卡片墙筛选可用；customers 全部 authorized；compare 每行有 ref |
 | **P3 补全（按需）** | `/solutions/ai/`（Q19 后）；`/customers/<slug>/`；`/partners/`；`/newsletter/`；资源分面升级 | ≈ +6 | 同上 |
 
-每期结束：`make c` 全绿 → 双链部署 → 公开域名抽查（EN/ZH 各 3 页）→ 记录到 CLAUDE.md。
+以上为历史分期计划；现行检查与交付流程见 [AGENTS.md](../AGENTS.md)，不由此推导自动部署要求。
 
 ---
 

@@ -1,0 +1,63 @@
+# Public resources maintained by the team. No volatile counts or release claims.
+# Links lead to usable documentation and knowledge pages, not storage bucket roots.
+- key: repository
+  icon: fa-solid fa-boxes-stacked
+  name: PGSTY Repository
+  nameZh: PGSTY 软件仓库
+  label: Packages
+  labelZh: 软件包仓库
+  desc: PostgreSQL and extension Linux packages with APT and YUM repos.
+  descZh: 为 PostgreSQL 及其扩展分发 Linux 软件包与安装指南。
+  url: https://pigsty.io/docs/repo/
+  urlZh: https://pigsty.cc/docs/repo/
+  action: Explore the repository
+  actionZh: 了解软件仓库
+
+- key: pgdoc
+  icon: fa-solid fa-book-open
+  name: PostgreSQL in Chinese
+  nameZh: PostgreSQL 中文文档
+  label: Documentation
+  labelZh: 中文手册
+  desc: Full-text searchable Chinese PostgreSQL manuals across versions.
+  descZh: 持续翻译维护 PostgreSQL 中文手册，支持全文检索。
+  url: https://pgsql.cc/docs/
+  action: Read the Chinese manuals
+  actionZh: 阅读中文手册
+
+- key: pgcenter
+  icon: fa-solid fa-compass
+  name: PG.CENTER
+  nameZh: PG.CENTER
+  label: Knowledge Base
+  labelZh: 英文知识库
+  desc: English PostgreSQL manuals, version comparisons, and references.
+  descZh: 汇集 PostgreSQL 英文手册、版本对比与生态参考入口。
+  url: https://pg.center/
+  action: Visit PG.CENTER
+  actionZh: 访问英文知识库
+
+- key: knowledge
+  icon: fa-solid fa-diagram-project
+  name: PostgreSQL Knowledge Graph
+  nameZh: PostgreSQL 知识图谱
+  label: Knowledge Graph
+  labelZh: 关联图谱
+  desc: Connected references for SQL, parameters, functions, and catalogs.
+  descZh: 关联 SQL、参数、函数与系统目录，构建知识图谱体系。
+  url: https://pg.center/wiki/
+  urlZh: https://pgsql.cc/wiki/
+  action: Explore the knowledge graph
+  actionZh: 探索知识图谱
+
+- key: pgext
+  icon: fa-solid fa-puzzle-piece
+  name: PGEXT.CLOUD
+  nameZh: PGEXT.CLOUD
+  label: Extension Catalog
+  labelZh: 扩展目录
+  desc: Extension catalog with compatibility checks and package availability.
+  descZh: 按场景检索 PG 扩展，查阅版本兼容性与安装包信息。
+  url: https://pgext.cloud/
+  action: Find an extension
+  actionZh: 查找扩展

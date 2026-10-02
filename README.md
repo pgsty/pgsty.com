@@ -5,22 +5,39 @@
 [![Hugo](https://img.shields.io/badge/Hugo-extended%200.164.0-FF4088?logo=hugo)](https://gohugo.io/)
 
 The bilingual PGSTY corporate portal pins
-[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v0.6.0` as its Hugo
-theme. The site keeps bespoke home, about, pricing, and solutions layouts while
-OINK supplies the reusable content system, shortcodes, icon set, favicon
-conventions, and Markdown/LLMS output formats. The bespoke homepage also
-dispatches its extensible content band from `data/home/<language>.yaml` through
-OINK's composable section API, so generic sections can evolve without copying
-theme templates into this repository.
+[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v1.1.0` as its Hugo
+theme. The English and Chinese sites both present PGSTY PTE. LTD., Singapore.
+The corporate pages cover the company, software projects, professional services,
+pricing, solutions, contact, privacy, and service terms. OINK supplies navigation,
+search, icons, favicons, and Markdown/LLMS output formats.
 
-Site navigation is OINK 0.6's own navbar: a centered menu tree with one-column
-icon dropdown panels, a boxed search trigger, and a phone drawer carrying the
+`data/company.yaml` is the canonical company identity, with registration details
+verified against ACRA public data. The corporate design layer is
+`static/css/corporate.css`; the existing component styles remain underneath it.
+The homepage FAQ lives in `data/home/<language>.yaml`. Project descriptions and
+individual licenses live in `data/portal/projects.yaml`. Public repositories,
+manuals, knowledge resources, and the extension catalog live in
+`data/portal/resources.yaml`, shared by the homepage and `/resources/`.
+
+The homepage introduces the software we build, the public resources we maintain,
+and our professional services, in that order. Its two-line hero is localized in
+`layouts/index.html`; the matching Markdown and search content lives in
+`content/_index.md` and `content/_index.zh.md`. Reusable project cards and resource
+links are in `layouts/_partials/portal/`.
+
+Read [AGENTS.md](AGENTS.md) for the current architecture, content sources, and
+maintenance checks. The [corporate review notes](docs/CORPORATE-REVIEW.md) retain
+official sources, the validation performed at the time, and outstanding business
+details; they are not evidence of the current deployment state.
+
+Site navigation is OINK's own navbar: a centered menu tree with one-column
+dropdown panels, an icon search trigger, and a phone drawer carrying the
 full labelled tree. Entries come from `menu.main` in `hugo.yaml` — one tree per
 language — and `layouts/_partials/portal/nav.html` only bridges them to the
 theme's `navbar-item` / `navbar-entry-link` / `navbar-group-items` partials.
-The portal carries no GitHub badge in its chrome; language and theme share one
-segmented control matching the search box, where the language trigger shows the
-target language's own short label. The chrome stylesheet is compiled from the
+The portal carries no GitHub badge in its chrome. The language link shows the
+target language's own short label; theme controls move into the drawer on narrow
+screens. The chrome stylesheet is compiled from the
 pinned module in `assets/scss/portal-oink.scss`; `static/css/portal-v1.css` maps
 the Landing v3 palette onto the `--bs-*` / `--td-*` tokens it reads.
 
@@ -35,25 +52,31 @@ deliberately not loaded, so there is never a second store.
 ## Run
 
 ```sh
-make d  # Debug with the sibling ../oink checkout
-make s  # Serve with the theme version pinned in go.mod
-make b  # Build with the pinned theme
-make c  # Run the complete site check
+make d            # Debug with the sibling ../oink checkout
+GOWORK=off make s  # Serve with the theme version pinned in go.mod
+GOWORK=off make b  # Build with the pinned theme
+GOWORK=off make c  # Run the complete site check with the pinned theme
 ```
 
 `make d` applies a one-command replacement for the sibling OINK checkout without
-pinning the preview port. The long targets are `debug`, `serve`, `build`, and
-`check`; `serve` retains the pinned-theme preview. `make c` validates rendered
+pinning the preview port; set `PORT` to select an available one. The long targets
+are `debug`, `serve`, `build`, and `check`. `make c` validates rendered
 HTML, Markdown, and `llms.txt` links, and
 rejects any false PGSTY/PIGSTY registered-trademark claim in source or output.
+The ignored local `go.work` points to the sibling OINK checkout. Set
+`GOWORK=off` when testing the pinned module. The build needs Hugo Extended, Go
+(see `go.mod`), and Python 3 for the check scripts; there is no npm build step.
 To update the pinned theme intentionally, run `make update-theme`, review
 `go.mod` and `go.sum`, then rerun the checks.
 
 ## Deploy
 
-Pushing `main` triggers two independent builds:
+The checked-in [GitHub Pages workflow](.github/workflows/pages.yml) builds and
+deploys on pushes to `main` or manual dispatch. It installs Hugo Extended 0.164.0
+and Go 1.26.6; `go.mod` currently declares Go 1.27.0. Check the actual toolchain
+and workflow result when validating a release.
 
-- GitHub Actions builds and deploys the GitHub Pages site.
-- Cloudflare Pages builds `main` with Hugo and serves `pgsty.com`.
-
-Both deployment paths use Hugo extended 0.164.0.
+The recorded Cloudflare Pages setup also builds `main` and serves `pgsty.com`
+using Hugo Extended 0.164.0. Those platform settings are not stored in this
+repository and need live verification for deployment work. A local build,
+commit, push, deployment, and public-site check are separate results.

@@ -2,7 +2,7 @@
 # Basics
 #=======================================#
 baseURL: https://pgsty.com/
-title: PGSTY — PostgreSQL in Great STYle
+title: PGSTY PTE. LTD. — Open-source Software & PostgreSQL Services
 defaultContentLanguage: en
 defaultContentLanguageInSubdir: false
 enableRobotsTXT: true
@@ -12,9 +12,9 @@ hasCJKLanguage: true
 #=======================================#
 # Services
 #=======================================#
-services:
+privacy:
   googleAnalytics:
-    id: G-JLB25NYKJX
+    disable: true
 
 #=======================================#
 # Hugo Module
@@ -38,7 +38,7 @@ languages:
     weight: 1
     title: PGSTY
     params:
-      description: The company behind Pigsty — open-source PostgreSQL distribution, tooling, and enterprise services.
+      description: PGSTY PTE. LTD. is a Singapore company building open-source PostgreSQL and data infrastructure software, with professional deployment, migration, and support services.
       time_format_blog: 'January 02, 2006'
       ui:
         command_palette:
@@ -51,8 +51,8 @@ languages:
               keywords: [docs, guide, install, operations]
             - id: contact_pgsty
               title: Contact PGSTY
-              description: Talk directly to the author and maintainer
-              url: /#contact
+              description: Professional services and business enquiries
+              url: /contact/
               icon: fa-solid fa-envelope
               keywords: [support, service, email, help]
     # 导航树是门户导航条的唯一来源（layouts/_partials/portal/nav.html 只做桥接）。
@@ -60,103 +60,67 @@ languages:
     # 补前缀；params.icon 决定下拉面板与抽屉里那一列图标。
     menu:
       main:
-        - identifier: product
-          name: Product
-          weight: 10
-          url: /#postgres
-          params: { icon: fa-solid fa-cube }
-        - identifier: product-pigsty
-          parent: product
-          name: Pigsty · Distribution
-          weight: 11
-          url: https://pigsty.io
-          params: { icon: fa-solid fa-database }
-        - identifier: product-silo
-          parent: product
-          name: Silo · Object Storage
-          weight: 12
-          url: https://silo.pgsty.com
-          params: { icon: fa-solid fa-box-archive }
-        - identifier: product-pgext
-          parent: product
-          name: PGEXT · Extension Cloud
-          weight: 13
-          url: https://pgext.cloud
-          params: { icon: fa-solid fa-puzzle-piece }
-        - identifier: product-infras
-          parent: product
-          name: Infrastructure
-          weight: 14
-          url: /#infras
-          params: { icon: fa-solid fa-server }
-        - identifier: product-glass
-          parent: product
-          name: Observability
-          weight: 15
-          url: /#glass
-          params: { icon: fa-solid fa-chart-area }
-        - identifier: product-toolbox
-          parent: product
-          name: Toolbox
-          weight: 16
-          url: /#toolbox
-          params: { icon: fa-solid fa-toolbox }
-        - identifier: solutions
-          name: Solutions
-          weight: 20
-          pageRef: /solutions
-          params: { icon: fa-solid fa-diagram-project }
-        - identifier: solutions-cloud-exit
-          parent: solutions
-          name: Cloud Exit
-          weight: 21
-          pageRef: /solutions/cloud-exit
-          params: { icon: fa-solid fa-cloud-arrow-down }
         - identifier: services
           name: Services
-          weight: 30
-          url: /#service
+          weight: 10
+          pageRef: /services
           params: { icon: fa-solid fa-headset }
+        - identifier: projects
+          name: Open Source
+          weight: 20
+          pageRef: /projects
+          params: { icon: fa-solid fa-cubes }
+        - identifier: solutions
+          name: Solutions
+          weight: 30
+          pageRef: /solutions
+          params: { icon: fa-solid fa-diagram-project }
+        - identifier: resources
+          name: Resources
+          weight: 40
+          pageRef: /resources
+          params: { icon: fa-solid fa-book-open }
         - identifier: pricing
           name: Pricing
-          weight: 40
+          weight: 50
           pageRef: /price
           params: { icon: fa-solid fa-tags }
         - identifier: company
           name: Company
-          weight: 50
+          weight: 60
           pageRef: /about
           params: { icon: fa-solid fa-building }
         - identifier: company-about
           parent: company
-          name: About
-          weight: 51
+          name: About PGSTY
+          weight: 61
           pageRef: /about
           params: { icon: fa-solid fa-circle-info }
-        - identifier: company-values
-          parent: company
-          name: Values
-          weight: 52
-          url: /#yours
-          params: { icon: fa-solid fa-flag }
         - identifier: company-contact
           parent: company
           name: Contact
-          weight: 53
-          url: /#contact
+          weight: 62
+          pageRef: /contact
           params: { icon: fa-solid fa-envelope }
-        - identifier: docs
-          name: Docs
-          weight: 60
-          url: https://pigsty.io/docs/
-          params: { icon: fa-solid fa-book }
+        - identifier: company-privacy
+          parent: company
+          name: Privacy notice
+          weight: 63
+          pageRef: /privacy
+          params: { icon: fa-solid fa-shield-halved }
+        - identifier: company-terms
+          parent: company
+          name: Terms & engagement
+          weight: 64
+          pageRef: /terms
+          params: { icon: fa-solid fa-file-lines }
   zh:
     label: 简体中文
     locale: zh-CN
     weight: 2
     title: PGSTY
     params:
-      description: Pigsty 背后的公司 —— 开源 PostgreSQL 发行版、工具链与企业级专业服务。
+      description: PGSTY PTE. LTD. 是一家新加坡软件公司，研发开源 PostgreSQL 与数据基础设施软件，提供部署、迁移与专业支持。
       time_format_blog: '2006年01月02日'
       ui:
         command_palette:
@@ -169,103 +133,67 @@ languages:
               keywords: [文档, 指南, 安装, 运维]
             - id: contact_pgsty
               title: 联系 PGSTY
-              description: 直接联系作者与维护者
-              url: /#contact
+              description: 专业服务与商务咨询
+              url: /contact/
               icon: fa-solid fa-envelope
               keywords: [支持, 服务, 邮件, 咨询]
     # 中文站是本地化不是翻译：条目结构与英文站一致，落点换成中国大陆可达的镜像。
     menu:
       main:
-        - identifier: product
-          name: 产品
-          weight: 10
-          url: /#postgres
-          params: { icon: fa-solid fa-cube }
-        - identifier: product-pigsty
-          parent: product
-          name: Pigsty · 发行版
-          weight: 11
-          url: https://pigsty.cc
-          params: { icon: fa-solid fa-database }
-        - identifier: product-silo
-          parent: product
-          name: Silo · 对象存储
-          weight: 12
-          url: https://silo.pgsty.com/zh/
-          params: { icon: fa-solid fa-box-archive }
-        - identifier: product-pgext
-          parent: product
-          name: PGEXT · 扩展云
-          weight: 13
-          url: https://pgext.cloud
-          params: { icon: fa-solid fa-puzzle-piece }
-        - identifier: product-infras
-          parent: product
-          name: 生态基础设施
-          weight: 14
-          url: /#infras
-          params: { icon: fa-solid fa-server }
-        - identifier: product-glass
-          parent: product
-          name: 可观测性
-          weight: 15
-          url: /#glass
-          params: { icon: fa-solid fa-chart-area }
-        - identifier: product-toolbox
-          parent: product
-          name: 工具箱
-          weight: 16
-          url: /#toolbox
-          params: { icon: fa-solid fa-toolbox }
-        - identifier: solutions
-          name: 解决方案
-          weight: 20
-          pageRef: /solutions
-          params: { icon: fa-solid fa-diagram-project }
-        - identifier: solutions-cloud-exit
-          parent: solutions
-          name: 下云
-          weight: 21
-          pageRef: /solutions/cloud-exit
-          params: { icon: fa-solid fa-cloud-arrow-down }
         - identifier: services
           name: 专业服务
-          weight: 30
-          url: /#service
+          weight: 10
+          pageRef: /services
           params: { icon: fa-solid fa-headset }
-        - identifier: pricing
-          name: 价格
+        - identifier: projects
+          name: 开源项目
+          weight: 20
+          pageRef: /projects
+          params: { icon: fa-solid fa-cubes }
+        - identifier: solutions
+          name: 解决方案
+          weight: 30
+          pageRef: /solutions
+          params: { icon: fa-solid fa-diagram-project }
+        - identifier: resources
+          name: 社区资源
           weight: 40
+          pageRef: /resources
+          params: { icon: fa-solid fa-book-open }
+        - identifier: pricing
+          name: 服务价格
+          weight: 50
           pageRef: /price
           params: { icon: fa-solid fa-tags }
         - identifier: company
-          name: 公司
-          weight: 50
+          name: 关于公司
+          weight: 60
           pageRef: /about
           params: { icon: fa-solid fa-building }
         - identifier: company-about
           parent: company
-          name: 关于我们
-          weight: 51
+          name: 关于 PGSTY
+          weight: 61
           pageRef: /about
           params: { icon: fa-solid fa-circle-info }
-        - identifier: company-values
-          parent: company
-          name: 理念
-          weight: 52
-          url: /#yours
-          params: { icon: fa-solid fa-flag }
         - identifier: company-contact
           parent: company
-          name: 联系
-          weight: 53
-          url: /#contact
+          name: 联系我们
+          weight: 62
+          pageRef: /contact
           params: { icon: fa-solid fa-envelope }
-        - identifier: docs
-          name: 文档
-          weight: 60
-          url: https://pigsty.cc/docs/
-          params: { icon: fa-solid fa-book }
+        - identifier: company-privacy
+          parent: company
+          name: 隐私声明
+          weight: 63
+          pageRef: /privacy
+          params: { icon: fa-solid fa-shield-halved }
+        - identifier: company-terms
+          parent: company
+          name: 服务条款
+          weight: 64
+          pageRef: /terms
+          params: { icon: fa-solid fa-file-lines }
 
 #=======================================#
 # Taxonomies and blog URLs
@@ -315,12 +243,11 @@ outputs:
 # Site parameters
 #=======================================#
 params:
-  description: The company behind Pigsty — open-source PostgreSQL distribution, tooling, and enterprise services.
+  description: PGSTY PTE. LTD. is a Singapore company building open-source PostgreSQL and data infrastructure software, with professional deployment, migration, and support services.
   images:
     - img/pgsty-social-card.png
   copyright:
     authors: PGSTY PTE. LTD.
-    from_year: 2018
     url: https://pgsty.com
 
   # 正文列宽模式：normal（1050px，默认）| wide（1300px）| full（占满可用宽）。
@@ -348,7 +275,7 @@ params:
     sidebar_root_enabled: true
     sidebar_expand_levels: 2
     dark_mode: true
-    quick_links: [solutions, pricing, about]
+    quick_links: [projects, resources, services, pricing, company]
     page_context_menu:
       assistant_links: false
     scroll_spy: false

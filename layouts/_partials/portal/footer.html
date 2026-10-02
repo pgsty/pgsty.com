@@ -1,86 +1,42 @@
-{{- /* 门户页脚。入参：页面上下文 `.`；实体按语言拆分（英文=新加坡，中文=海口） */ -}}
 {{- $zh := eq .Site.Language.Lang "zh" -}}
-{{- $brand := hugo.Data.brand -}}
-{{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
-{{- $home := relLangURL "" -}}
-<footer class="landing-footer">
+{{- $c := hugo.Data.company -}}
+<footer class="corp-footer">
   <div class="landing-container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="{{ $home }}" class="footer-logo">
-          <img src="{{ "img/logo/logo.svg" | relURL }}" alt="">
-          <span>PGSTY</span>
-        </a>
-        <p class="footer-tagline">
-          <b class="ini ini-p">P</b>ostgreSQL <b class="ini ini-i">I</b>n <b class="ini ini-g">G</b>reat <b class="ini ini-s">S</b><b class="ini ini-t">T</b><b class="ini ini-y">Y</b>le<br>
-          {{ if $zh }}{{ $brand.tagline_zh }}{{ else }}{{ $brand.tagline }}{{ end }}
-        </p>
-        {{- /* §3.3 克制条款：missing-i 梗页脚只此一行 */}}
-        <p class="footer-missing-i">{{ if $zh }}少了一个 i？<a href="{{ relLangURL "about/" }}">见「关于」</a>。{{ else }}The missing i? <a href="{{ relLangURL "about/" }}">See About</a>.{{ end }}</p>
-        <p class="footer-slogan">{{ if $zh }}助您用<span class="hl-good">好数据库</span>，<span class="hl-use">用好</span>数据库{{ else }}Run a good database — and run it well.{{ end }}</p>
-      </div>
-
-      <div class="footer-column">
-        <h4 class="footer-column-title silkscreen">{{ if $zh }}开源项目{{ else }}Projects{{ end }}</h4>
-        <ul class="footer-links">
-          <li><a href="https://github.com/pgsty/pigsty" target="_blank" rel="noopener">Pigsty</a></li>
-          <li><a href="https://github.com/pgsty/pig" target="_blank" rel="noopener">PIG</a></li>
-          <li><a href="https://github.com/pgsty/pg_exporter" target="_blank" rel="noopener">PG Exporter</a></li>
-          <li><a href="https://github.com/pgsty/minio" target="_blank" rel="noopener">Silo</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h4 class="footer-column-title silkscreen">{{ if $zh }}站点{{ else }}Sites{{ end }}</h4>
-        <ul class="footer-links">
-          <li><a href="https://pgext.cloud" target="_blank" rel="noopener">PGEXT.CLOUD</a></li>
-          <li><a href="https://pg.center" target="_blank" rel="noopener">PG.CENTER</a></li>
-          <li><a href="https://demo.pigsty.io" target="_blank" rel="noopener">{{ if $zh }}在线演示{{ else }}Live Demo{{ end }}</a></li>
-          <li><a href="{{ if $zh }}https://pigsty.cc/docs/{{ else }}https://pigsty.io/docs/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}产品文档{{ else }}Documentation{{ end }}</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h4 class="footer-column-title silkscreen">{{ if $zh }}服务{{ else }}Services{{ end }}</h4>
-        <ul class="footer-links">
-          <li><a href="{{ relLangURL "solutions/cloud-exit/" }}">{{ if $zh }}下云方案{{ else }}Cloud Exit{{ end }}</a></li>
-          <li><a href="{{ $home }}#service">{{ if $zh }}专家服务{{ else }}Expert Services{{ end }}</a></li>
-          <li><a href="{{ relLangURL "price/" }}">{{ if $zh }}订阅定价{{ else }}Pricing{{ end }}</a></li>
-          <li><a href="{{ if $zh }}https://pigsty.cc/docs/about/service/{{ else }}https://pigsty.io/docs/about/service/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}订阅说明{{ else }}Service Terms{{ end }}</a></li>
-        </ul>
-      </div>
-
-      {{- /* 页脚原本没有任何「公司」入口 —— 导航栏有 Company，页脚却到不了 /about/。 */}}
-      <div class="footer-column">
-        <h4 class="footer-column-title silkscreen">{{ if $zh }}公司{{ else }}Company{{ end }}</h4>
-        <ul class="footer-links">
-          <li><a href="{{ relLangURL "about/" }}">{{ if $zh }}关于我们{{ else }}About{{ end }}</a></li>
-          <li><a href="{{ $home }}#yours">{{ if $zh }}我们的理念{{ else }}Values{{ end }}</a></li>
-          <li><a href="mailto:rh@vonng.com">{{ if $zh }}商务咨询{{ else }}Contact Sales{{ end }}</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h4 class="footer-column-title silkscreen">{{ if $zh }}社区{{ else }}Community{{ end }}</h4>
-        <ul class="footer-links">
-          <li><a href="https://github.com/orgs/pgsty/discussions" target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href="https://discord.gg/j5pG8qfKxU" target="_blank" rel="noopener">Discord</a></li>
-          <li><a href="https://t.me/joinchat/gV9zfZraNPM3YjFh" target="_blank" rel="noopener">Telegram</a></li>
-          {{ if $zh }}<li><a href="https://pigsty.cc/docs/about/community/" target="_blank" rel="noopener">微信群组</a></li>
-          {{ else }}<li><a href="https://vonng.com/en/" target="_blank" rel="noopener">Blog</a></li>{{ end }}
-        </ul>
-      </div>
+    <div class="corp-footer-grid">
+      <div class="corp-footer-brand"><a class="corp-footer-logo" href="{{ relLangURL "" }}"><img src="{{ "img/logo/logo.svg" | relURL }}" alt="" width="32" height="32"><span>PGSTY</span></a><p class="corp-footer-entity">{{ $c.legal_name }}</p><p>{{ if $zh }}新加坡 · 面向全球的开源软件与数据基础设施服务。{{ else }}Singapore · Open-source software and data infrastructure services for teams worldwide.{{ end }}</p>{{ with $c.uen }}<p>UEN {{ . }}</p>{{ end }}{{ with $c.registered_address }}<address><span class="corp-address-label">{{ if $zh }}注册地址：{{ else }}Registered office: {{ end }}</span><span class="corp-address-val">{{ . }}</span></address>{{ end }}<a href="mailto:{{ $c.email }}">{{ $c.email }}</a></div>
+      <div><h2>{{ if $zh }}服务{{ else }}Services{{ end }}</h2><ul>
+        <li><a href="{{ relLangURL "services/" }}">{{ if $zh }}专业服务{{ else }}Professional services{{ end }}</a></li>
+        <li><a href="{{ relLangURL "solutions/" }}">{{ if $zh }}解决方案{{ else }}Solutions{{ end }}</a></li>
+        <li><a href="{{ relLangURL "solutions/cloud-exit/" }}">{{ if $zh }}下云与迁移{{ else }}Cloud exit & migration{{ end }}</a></li>
+        <li><a href="{{ relLangURL "price/" }}">{{ if $zh }}服务与价格{{ else }}Plans & pricing{{ end }}</a></li>
+        <li><a href="{{ relLangURL "contact/" }}">{{ if $zh }}商务咨询{{ else }}Business enquiries{{ end }}</a></li>
+      </ul></div>
+      <div><h2>{{ if $zh }}软件与项目{{ else }}Software{{ end }}</h2><ul>
+        <li><a href="{{ if $zh }}https://pigsty.cc/{{ else }}https://pigsty.io/{{ end }}">Pigsty</a></li>
+        <li><a href="{{ if $zh }}https://silo.pgsty.com/zh/{{ else }}https://silo.pgsty.com/{{ end }}">Silo</a></li>
+        <li><a href="{{ if $zh }}https://pig.pgsty.com/zh/{{ else }}https://pig.pgsty.com/{{ end }}">PIG</a></li>
+        <li><a href="{{ if $zh }}https://exp.pgsty.com/zh/{{ else }}https://exp.pgsty.com/{{ end }}">PG Exporter</a></li>
+        <li><a href="{{ if $zh }}https://sow.pgsty.com/zh/{{ else }}https://sow.pgsty.com/{{ end }}">SOW</a></li>
+        <li><a href="{{ if $zh }}https://barn.pgsty.com/zh/{{ else }}https://barn.pgsty.com/{{ end }}">Barn</a></li>
+      </ul></div>
+      <div><h2>{{ if $zh }}资源{{ else }}Resources{{ end }}</h2><ul>
+        <li><a href="{{ relLangURL "resources/" }}">{{ if $zh }}社区资源总览{{ else }}All resources{{ end }}</a></li>
+        <li><a href="{{ if $zh }}https://pigsty.cc/docs/repo/{{ else }}https://pigsty.io/docs/repo/{{ end }}">{{ if $zh }}软件仓库{{ else }}Package repository{{ end }}</a></li>
+        <li><a href="https://pgsql.cc/docs/">{{ if $zh }}PG 中文文档{{ else }}Chinese PG manuals{{ end }}</a></li>
+        <li><a href="https://pg.center/">PG.CENTER</a></li>
+        <li><a href="{{ if $zh }}https://pgsql.cc/wiki/{{ else }}https://pg.center/wiki/{{ end }}">{{ if $zh }}知识图谱{{ else }}Knowledge graph{{ end }}</a></li>
+        <li><a href="https://pgext.cloud/">PGEXT.CLOUD</a></li>
+        <li><a href="{{ if $zh }}https://oink.pgsty.com/zh/{{ else }}https://oink.pgsty.com/{{ end }}">OINK</a></li>
+        <li><a href="https://github.com/pgsty">GitHub <span aria-hidden="true">↗</span></a></li>
+      </ul></div>
+      <div><h2>{{ if $zh }}公司{{ else }}Company{{ end }}</h2><ul>
+        <li><a href="{{ relLangURL "about/" }}">{{ if $zh }}关于 PGSTY{{ else }}About PGSTY{{ end }}</a></li>
+        <li><a href="{{ relLangURL "projects/" }}">{{ if $zh }}项目与产品{{ else }}Projects & products{{ end }}</a></li>
+        <li><a href="{{ relLangURL "contact/" }}">{{ if $zh }}联系我们{{ else }}Contact{{ end }}</a></li>
+        <li><a href="{{ relLangURL "privacy/" }}">{{ if $zh }}隐私声明{{ else }}Privacy notice{{ end }}</a></li>
+        <li><a href="{{ relLangURL "terms/" }}">{{ if $zh }}服务条款{{ else }}Terms & engagement{{ end }}</a></li>
+      </ul></div>
     </div>
-
-    <div class="footer-bottom">
-      <div class="footer-copyright">
-        &copy; 2018-{{ now.Year }} <a href="{{ if $zh }}https://vonng.com{{ else }}https://vonng.com/en/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}冯若航{{ else }}Ruohang Feng{{ end }}</a> @ <a href="https://github.com/pgsty" target="_blank" rel="noopener">{{ $entity }}</a>
-      </div>
-      <div class="footer-lang-switch">
-        {{- range .Translations -}}
-        <a href="{{ .RelPermalink }}" lang="{{ .Language.Locale }}">{{ .Language.Label }}</a>
-        {{- end -}}
-      </div>
-    </div>
+    <div class="corp-footer-bottom"><span>© {{ now.Year }} {{ $c.legal_name }}</span><span>PostgreSQL In Great STYle</span><div>{{ range .Translations }}<a href="{{ .RelPermalink }}" lang="{{ .Language.Locale }}" hreflang="{{ .Language.Locale }}">{{ .Language.Label }}</a>{{ end }}</div></div>
   </div>
 </footer>

@@ -13,20 +13,20 @@
 - key: pgcenter
   name: PG.CENTER
   url: https://pg.center/
-  glyph: 中文
-  kind: Chinese PG Portal
-  kindZh: 中文 PostgreSQL 网
-  desc: The Chinese PostgreSQL portal — full translation of postgresql.org with docs for PG 14–19.
-  descZh: 中文 PostgreSQL 门户 —— postgresql.org 全站翻译，覆盖 PG 14–19 中文文档。
+  glyph: KNOW
+  kind: PostgreSQL Knowledge
+  kindZh: PostgreSQL 知识库
+  desc: PostgreSQL manuals, reference, and ecosystem knowledge, connected across versions.
+  descZh: 连接 PostgreSQL 手册、参数、SQL 与扩展生态的英文知识库，支持跨版本查阅。
 
 - key: pgdoc
-  name: PG DOCS 中文
-  url: https://pg.center/docs/
+  name: PGSQL.CC
+  url: https://pgsql.cc/
   glyph: DOC
-  kind: Translated Manuals
-  kindZh: 中文手册翻译
-  desc: Chinese translations of the PostgreSQL manual, plus Patroni, PgBouncer, and pgBackRest docs.
-  descZh: PostgreSQL 手册中文翻译，以及 Patroni / PgBouncer / pgBackRest 中文文档。
+  kind: PostgreSQL in Chinese
+  kindZh: PostgreSQL 中文文档
+  desc: PostgreSQL documentation and technical resources in Chinese, maintained by the Pigsty team.
+  descZh: Pigsty 团队维护的 PostgreSQL 中文文档与技术资料。
 
 - key: demo
   name: DEMO.PIGSTY.IO

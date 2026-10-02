@@ -1,17 +1,17 @@
 # ============================================================
-# 品牌事实与易变数字唯一来源（PRD §2 / §9）
-# 模板一律经 hugo.Data.brand.* 引用；content/ 或 layouts/ 里
-# 硬编码这些数字视为 bug（验收 grep 见 CLAUDE.md）。
+# 品牌字段与指标快照；数字经 hugo.Data.brand.* 引用，展示前核对时效。
+# 公司身份事实 → data/company.yaml；当前首页口号 → layouts/index.html。
+# 维护与检查说明见 AGENTS.md；历史 PRD 中的首页设计不再是当前要求。
 # 相邻数据：订阅档位 → data/portal/pricing.yaml
 #          按需服务 → data/portal/services.yaml
 #          项目版本与星数 → data/portal/projects.yaml
 # 星数刷新：bin/metrics.py update
 # ============================================================
 
-# 字标（wordmark）：解释缩写来历，只出现在字母板与页脚，不做 hero 标题
+# 字标（wordmark）：解释缩写来历，不做当前 hero 标题
 wordmark: PostgreSQL In Great STYle
 
-# 价值主张（tagline）：hero / OG / 页脚用
+# 历史价值主张（tagline）：保留字段，不作为当前 hero / OG / 页脚的默认来源
 tagline: Production Grade. Self-hosted. Truly Yours.
 tagline_zh: 生产级自建，产权归你          # 官网 / 合同 / 标书默认
 tagline_zh_community: 生产级自建，谁也拿不走   # 社区 / 周边物料
@@ -24,5 +24,5 @@ metrics:
   kernels: 12               # 可替换 PG 内核数 —— pigsty.io 首页口径「12 PG kernel forks」（2026-08-06 核对）
   metrics_per_instance: 600 # pg_exporter 单实例指标数（600+）
   series_per_instance: 3000 # 单实例时间序列（约 3,000 条）
-  since_year: 2018          # 公司 / 项目起始年份（EST. / 版权行用）
+  since_year: 2018          # Pigsty 项目起始年份；公司成立日期见 company.yaml
   oss_since_year: 2020      # 开源起步年份（指标带「Open source since」用）

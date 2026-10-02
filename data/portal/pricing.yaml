@@ -7,19 +7,21 @@ tiers:
     name: OSS
     tier: Open Source
     tierZh: 开源版
-    tagline: Self-sufficient OSS guru
-    taglineZh: 自给自足的开源老司机
+    tagline: Self-managed deployments
+    taglineZh: 自行部署与维护
     price: Free
     priceZh: 免费
     period: forever
     periodZh: 永久
     features:
       - Apache-2.0 license
-      - Unlimited nodes, full features
+      - Unlimited database nodes
+      - Full features, no restrictions
       - Community forum support
     featuresZh:
       - Apache-2.0 开源许可证
-      - 不限节点数量，完整功能
+      - 不限制节点数量
+      - 完整功能，无功能限制
       - 社区论坛支持
     cta: Download
     ctaZh: 立即下载
@@ -30,19 +32,21 @@ tiers:
     name: Standard
     tier: Standard
     tierZh: 标准版
-    tagline: SMBs, startups, freelancers
-    taglineZh: 中小企业的理想之选
+    tagline: Small production environments
+    taglineZh: 小型生产环境
     price: $8K
     priceZh: ¥5 万
     period: /year
     periodZh: /年
     features:
-      - Commercial license, ≤5 nodes
+      - Commercial license
+      - Up to 5 database nodes
       - PostgreSQL 16–18
       - Weekday email support
-      - Annual health check report
+      - Annual health-check report
     featuresZh:
-      - 商业许可，≤5 节点
+      - 商业授权许可证
+      - 不超过 5 个数据库节点
       - PostgreSQL 16–18
       - 工作日邮件支持
       - 年度健康检查报告
@@ -56,26 +60,30 @@ tiers:
     tier: Professional
     tierZh: 专业版
     featured: true
-    tagline: Suitable for most users
-    taglineZh: 专业团队的最佳伙伴
+    tagline: Teams with ongoing support
+    taglineZh: 需要持续支持的团队
     price: $24K
     priceZh: ¥15 万
     period: /year
     periodZh: /年
     features:
-      - Commercial license, ≤15 nodes
-      - PostgreSQL 14–18 · offline packages
-      - 5 DBA hours / month
-      - Response within 4 hours
-      - Quarterly health check report
+      - Commercial license
+      - Up to 15 database nodes
+      - PostgreSQL 14–18
+      - Offline package support
+      - 5 DBA hours per month
+      - 4-hour response target
+      - Quarterly health-check report
     featuresZh:
-      - 商业许可，≤15 节点
-      - PostgreSQL 14–18 · 离线软件包
-      - 每月 5 个 DBA 专家工时
+      - 商业授权许可证
+      - 不超过 15 个数据库节点
+      - PostgreSQL 14–18
+      - 离线软件包支持
+      - 每月 5 小时 DBA 工时
       - 4 小时内响应
       - 季度健康检查报告
-    cta: Subscribe
-    ctaZh: 立即订阅
+    cta: Request a quote
+    ctaZh: 获取报价
     url: "mailto:rh@vonng.com?subject=Pigsty Professional"
     urlZh: "mailto:rh@vonng.com?subject=Pigsty Professional"
 
@@ -83,31 +91,37 @@ tiers:
     name: Enterprise
     tier: Enterprise
     tierZh: 企业版
-    tagline: Best for Fortune 500
-    taglineZh: 大型企业的坚实后盾
+    tagline: Large or custom deployments
+    taglineZh: 规模化或定制部署
     price: $60K
     priceZh: ¥40 万
     period: /year
     periodZh: /年
     features:
-      - Commercial license, reference: 50 nodes
-      - PostgreSQL 13–18 · custom packages
-      - 10 DBA hours / month · RDS OEM
-      - 7×24 SLA · 30-minute response
-      - Monthly health check report
+      - Commercial license
+      - Reference scale 50 nodes
+      - PostgreSQL 13–18
+      - Custom package support
+      - 10 DBA hours per month
+      - RDS / DBaaS OEM
+      - 7×24 SLA, 30-min response
+      - Monthly health-check report
     featuresZh:
-      - 商业许可，参考规模 50 节点
-      - PostgreSQL 13–18 · 定制软件包
-      - 每月 10 个 DBA 工时 · RDS OEM
-      - 7×24 SLA · 30 分钟内响应
+      - 商业授权许可证
+      - 参考规模 50 个数据库节点
+      - PostgreSQL 13–18
+      - 定制离线软件包
+      - 每月 10 小时 DBA 工时
+      - RDS / DBaaS OEM
+      - 7×24 SLA 与 30 分钟响应
       - 月度健康检查报告
     cta: Talk to us
     ctaZh: 商务洽谈
     url: "mailto:rh@vonng.com?subject=Pigsty Enterprise"
     urlZh: "mailto:rh@vonng.com?subject=Pigsty Enterprise"
 
-note: Commercial support is currently available in Asia; subscriptions are billed annually.
-noteZh: 订阅按年计费；超出节点可按需加购，支持 30 天企业评估试用。
+note: Subscriptions are billed annually. Listed response targets and support hours apply only when included in the signed service agreement. Confirm availability, currency, taxes and the final scope in your quotation.
+noteZh: 订阅按年计费。页面列出的响应目标与支持时间，仅在签署的服务协议明确纳入时适用。服务可用性、结算币种、税费与最终范围以书面报价为准。
 detail_url: https://pigsty.io/price/
 detail_url_zh: https://pigsty.cc/price/
 
@@ -149,8 +163,8 @@ matrix:
         nameZh: 支持渠道
         cells: ["Community forum", "Email", "Email / Slack", "Dedicated channel"]
         cellsZh: ["社区论坛", "邮件", "邮件 / 微信", "专属通道"]
-      - name: Response time
-        nameZh: 响应时间
+      - name: Response target
+        nameZh: 响应目标
         cells: ["-", "Within a business day", "< 4 hours", "< 30 minutes"]
         cellsZh: ["-", "工作日内", "< 4 小时", "< 30 分钟"]
       - name: Service hours
@@ -195,25 +209,25 @@ matrix:
 faq:
   - q: What does the commercial version offer?
     qZh: 商业版提供哪些服务？
-    a: Commercial subscriptions include a commercial license, warranty and bug-fix guarantees, custom offline packages, exclusive support from industry-leading experts for hard problems, response-time SLAs, and broader Linux / PostgreSQL version coverage.
-    aZh: 商业版提供商业许可、质保与缺陷修复承诺、定制离线软件包、业界顶尖专家的疑难杂症兜底、响应时间 SLA，以及更宽广的 Linux 与 PostgreSQL 版本支持范围。
+    a: Subscriptions combine the package, platform coverage and technical support described in each plan. The signed agreement defines the licensed deliverables, support scope, response targets and any warranty or service-level commitments. Third-party software retains its own licence terms.
+    aZh: 订阅包含各档位列出的软件包、平台覆盖与技术支持。具体许可交付物、支持范围、响应目标，以及任何质保或服务等级承诺，均由签署的协议确定。第三方软件仍适用自身许可证。
   - q: How are nodes counted?
     qZh: 节点数量是如何计算的？
     a: Node count refers to the number of distinct IP addresses managed by Pigsty.
     aZh: 节点数量指 Pigsty 纳入管理的独立 IP 地址数量。
   - q: Can I try before I buy?
     qZh: 可以先试用再购买吗？
-    a: Absolutely — the open-source version is fully functional and identical in core capability, so evaluate as long as you like. We also offer a 30-day enterprise trial.
-    aZh: 当然可以！开源版功能完整，与商业版核心能力一致，您可以充分评估后再决定。我们也提供 30 天企业评估试用。
+    a: You can evaluate Pigsty using the open-source project and documentation. Contact us if you need an enterprise evaluation package; eligibility, duration and support scope will be confirmed in writing.
+    aZh: 您可以通过开源项目与文档评估 Pigsty。如果需要企业评估软件包，请联系我们确认适用条件、期限与支持范围。
   - q: How do I get invoices and contracts?
     qZh: 如何获取发票和合同？
-    a: We provide standard invoices and business contracts. Contact rh@vonng.com for commercial details.
-    aZh: 我们提供普通发票 / 增值税发票和标准商务合同，商务细节请联系 rh@vonng.com。
+    a: PGSTY PTE. LTD., Singapore, provides a written quotation and agreement for the engagement. Confirm your legal entity name, billing details, currency and any applicable tax requirements before ordering.
+    aZh: 本网站服务由新加坡 PGSTY PTE. LTD. 提供书面报价与服务协议。采购前请确认客户主体名称、账单信息、结算币种与适用税费要求。
   - q: What payment methods are supported?
     qZh: 支持哪些支付方式？
-    a: We accept wire transfer, PayPal, and major credit cards.
-    aZh: 订阅服务支持对公转账；专家号与咨询支持支付宝、微信等多种支付方式。
+    a: The quotation or invoice specifies the available payment method, beneficiary, currency and due date. Please use the payment instructions issued for your engagement.
+    aZh: 可用付款方式、收款方、币种与付款期限会在报价或账单中明确，请以对应项目提供的付款指引为准。
   - q: What if I need more nodes?
     qZh: 需要更多节点怎么办？
-    a: Additional nodes beyond your plan can be purchased separately, and Enterprise plans support custom configurations for your actual needs.
-    aZh: 超出方案的节点可按需加购，企业版还支持根据实际需求定制方案，详情请联系商务。
+    a: Additional nodes and custom configurations can be discussed in your quotation. Contact us to confirm the revised scope and fee before expanding a subscription.
+    aZh: 可以在报价时讨论额外节点与定制配置。扩展订阅前，请联系确认调整后的服务范围与费用。

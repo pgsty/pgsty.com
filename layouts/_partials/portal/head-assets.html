@@ -4,7 +4,7 @@
     var theme = null;
     try { theme = window.localStorage.getItem('pgsty-landing-theme'); } catch (error) {}
     if (theme !== 'light' && theme !== 'dark' && theme !== 'auto') {
-      theme = 'auto';
+      theme = 'light';
     }
     if (theme === 'auto') {
       theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
@@ -31,6 +31,5 @@
 {{- $oinkChrome := resources.Get "scss/portal-oink.scss" | toCSS | minify | fingerprint -}}
 <link rel="stylesheet" href="{{ $oinkChrome.RelPermalink }}" integrity="{{ $oinkChrome.Data.Integrity }}" crossorigin="anonymous">
 
-{{ if hugo.IsProduction -}}
-{{ partial "google_analytics.html" . -}}
-{{ end -}}
+{{- /* The corporate website uses no analytics or advertising scripts. */ -}}
+<link rel="stylesheet" href="{{ "css/corporate.css" | relURL }}?v={{ substr (md5 (readFile "static/css/corporate.css")) 0 8 }}">

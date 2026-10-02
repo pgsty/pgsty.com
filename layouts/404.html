@@ -1,41 +1,25 @@
 {{- $zh := eq .Site.Language.Lang "zh" -}}
 <!DOCTYPE html>
-<html lang="{{ default .Site.Language.Lang .Site.Language.Locale }}" class="no-js">
+<html lang="{{ .Site.Language.Locale | default .Site.Language.Lang }}" class="no-js">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 — PGSTY</title>
   <meta name="robots" content="noindex, follow">
   {{ partialCached "favicons.html" . }}
-  <script>
-    (function () {
-      var theme = null;
-      try { theme = window.localStorage.getItem('pgsty-landing-theme'); } catch (error) {}
-      if (theme !== 'light' && theme !== 'dark') {
-        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-      }
-      document.documentElement.setAttribute('data-theme', theme);
-    })();
-  </script>
-  <link rel="stylesheet" href="{{ "fonts/fonts.css" | relURL }}">
-  {{- range slice "css/landing-v3.css" "css/portal-v1.css" }}
-  <link rel="stylesheet" href="{{ . | relURL }}?v={{ substr (md5 (readFile (path.Join "static" .))) 0 8 }}">
-  {{- end }}
-  <style>
-    .nf-wrap { min-height: 100svh; display: grid; place-items: center; padding: 24px; text-align: center; }
-    .nf-code { font-family: var(--font-display); font-weight: 700; font-size: clamp(4rem, 12vw, 7rem); line-height: 1; }
-    .nf-msg { margin: 14px 0 26px; color: var(--ink-soft); }
-  </style>
-  {{ if hugo.IsProduction }}{{ partial "google_analytics.html" . }}{{ end }}
+  {{ partial "portal/head-assets.html" . }}
 </head>
-<body class="landing-page">
-  <main class="nf-wrap">
-    <div>
-      <p class="nf-code"><b class="ini ini-t">4</b><b class="ini ini-s">0</b><b class="ini ini-y">4</b></p>
-      <p class="silkscreen">PAGE NOT FOUND</p>
-      <p class="nf-msg">{{ if $zh }}您要找的页面不存在或已被移动。{{ else }}The page you are looking for does not exist or has moved.{{ end }}</p>
-      <a href="{{ relLangURL "" }}" class="btn btn-primary">{{ if $zh }}返回首页{{ else }}Back to Home{{ end }}</a>
+<body class="landing-page portal-page corporate-page">
+  {{ partial "portal/nav.html" (dict "page" .) }}
+  <main id="main" class="corp-page-hero">
+    <div class="landing-container">
+      <p class="corp-eyebrow">404 / {{ if $zh }}页面未找到{{ else }}PAGE NOT FOUND{{ end }}</p>
+      <h1>{{ if $zh }}此页面不存在。{{ else }}We couldn't find that page.{{ end }}</h1>
+      <p class="corp-lead">{{ if $zh }}页面可能已移动。您可以返回首页，或联系我们获取帮助。{{ else }}The page may have moved. Visit our home page or contact us for help.{{ end }}</p>
+      <div class="corp-actions"><a href="{{ relLangURL "" }}" class="btn btn-primary">{{ if $zh }}返回首页{{ else }}Back to home{{ end }}</a><a href="{{ relLangURL "contact/" }}" class="btn btn-ghost">{{ if $zh }}联系我们{{ else }}Contact us{{ end }}</a></div>
     </div>
   </main>
+  {{ partial "portal/footer.html" . }}
+  {{ partial "portal/foot-scripts.html" . }}
 </body>
 </html>

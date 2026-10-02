@@ -1,0 +1,63 @@
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
+<!DOCTYPE html>
+<html lang="{{ $locale }}" class="no-js">
+<head>
+  {{ partial "portal/head-meta.html" . }}
+  {{ partial "portal/head-assets.html" . }}
+</head>
+<body class="landing-page portal-page corporate-page services-page">
+  <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
+  {{ partial "portal/nav.html" (dict "page" . "active" "services") }}
+  <main id="main">
+    <section class="corp-page-hero">
+      <div class="landing-container">
+        <p class="corp-eyebrow">{{ .Params.eyebrow }}</p>
+        <h1 class="corp-title">{{ if $zh }}让数据库项目稳步落地{{ else }}Database expertise, from plan to production{{ end }}</h1>
+        <p class="corp-lead">{{ .Params.intro }}</p>
+        <div class="contact-ctas">
+          <a class="btn btn-primary" href="{{ relLangURL "contact/" }}">{{ if $zh }}沟通项目需求{{ else }}Discuss your project{{ end }}</a>
+          <a class="btn btn-line" href="{{ relLangURL "price/" }}">{{ if $zh }}查看服务定价{{ else }}View pricing{{ end }}</a>
+        </div>
+      </div>
+    </section>
+    <section class="corp-section" id="deployment">
+      <div class="landing-container">
+        <p class="corp-eyebrow">{{ if $zh }}服务范围{{ else }}Our services{{ end }}</p>
+        <h2 class="corp-title">{{ if $zh }}明确的工作，具体的交付{{ else }}Defined work. Practical deliverables.{{ end }}</h2>
+        <p class="corp-lead">{{ if $zh }}以下为典型服务内容，具体交付范围由项目方案确定。{{ else }}Typical engagements are outlined below. Your proposal defines the specific deliverables.{{ end }}</p>
+        <div class="corp-grid-3">
+          {{ range .Params.services }}
+          <article class="corp-card">
+            <h3>{{ .title }}</h3>
+            <p>{{ .desc }}</p>
+            <p><strong>{{ if $zh }}典型交付：{{ else }}Typical deliverables: {{ end }}</strong>{{ .deliverables }}</p>
+          </article>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+    <section class="corp-section">
+      <div class="landing-container">
+        <p class="corp-eyebrow">{{ if $zh }}合作流程{{ else }}How we work{{ end }}</p>
+        <h2 class="corp-title">{{ if $zh }}从需求沟通到项目交接{{ else }}From the first conversation to handover{{ end }}</h2>
+        <div class="corp-grid-2">
+          {{ range $i, $step := .Params.steps }}
+          <article class="corp-card">
+            <p class="corp-eyebrow">{{ printf "%02d" (add $i 1) }}</p>
+            <h3>{{ $step.title }}</h3>
+            <p>{{ $step.desc }}</p>
+          </article>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+    <section class="corp-section">
+      <div class="landing-container corp-prose">{{ .Content }}</div>
+    </section>
+    {{ partial "portal/contact-band.html" (dict "page" . "title" (cond $zh "讨论您的数据库项目" "Tell us about your database project") "desc" (cond $zh "从环境、目标与时间安排开始，我们会与您确认适合的服务范围。" "Start with your environment, goals and timeline. We will review the scope with you.") "pricing" true) }}
+  </main>
+  {{ partial "portal/footer.html" . }}
+  {{ partial "portal/foot-scripts.html" . }}
+</body>
+</html>

@@ -6,7 +6,10 @@
 <div class="portal-palette">
   {{ partial "shell/search-dialog.html" .Site.Home }}
 </div>
-<script type="application/json" id="td-action-manifest">{{ partial "actions/manifest.html" . | jsonify | safeJS }}</script>
+{{- $manifest := partial "actions/manifest.html" . -}}
+{{- /* Corporate visitors need navigation and preferences, not documentation editing actions. */ -}}
+{{- $manifest = merge $manifest (dict "actions" (where $manifest.actions "id" "in" (slice "copy_link" "switch_language" "switch_theme"))) -}}
+<script type="application/json" id="td-action-manifest">{{ $manifest | jsonify | safeJS }}</script>
 {{- $paletteJS := slice
   (resources.Get "js/third_party/lunr.min.js")
   (resources.Get "js/surface-coordinator.js")

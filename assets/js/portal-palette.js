@@ -19,9 +19,9 @@
   function storedPreference() {
     try {
       var value = global.localStorage.getItem(THEME_KEY);
-      return value === 'light' || value === 'dark' || value === 'auto' ? value : 'auto';
+      return value === 'light' || value === 'dark' || value === 'auto' ? value : 'light';
     } catch (error) {
-      return 'auto';
+      return 'light';
     }
   }
 

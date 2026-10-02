@@ -38,7 +38,8 @@ def repository_files() -> list[Path]:
 
 
 def read_text(path: Path) -> str | None:
-    if path.resolve() == SELF:
+    # git ls-files --cached also lists tracked files deleted from the working tree.
+    if path.resolve() == SELF or not path.is_file():
         return None
     data = path.read_bytes()
     if b"\0" in data[:4096]:

@@ -1,30 +1,58 @@
 ---
-title: "About"
-description: "PGSTY is the company behind Pigsty — the story of the missing i, a deliberately small team, and the infrastructure we give away."
+title: "About PGSTY"
+description: "PGSTY PTE. LTD. is a Singapore company building open-source infrastructure and providing PostgreSQL consulting, implementation, and technical support."
 layout: "about"
 translationKey: "about"
 aliases: ["/company/about/"]
-search_keywords: [company, founder, team, entity, history, PGSTY]
+search_keywords: [company, founder, Singapore, PGSTY, PostgreSQL, consulting]
 search_boost: 1.15
 ---
 
-PGSTY PTE. LTD. is the company behind Pigsty. It maintains the open-source
-distribution, its package and observability tooling, and public PostgreSQL
-infrastructure while providing subscriptions and expert services worldwide.
+## The company
 
-## Deliberately small
+PGSTY PTE. LTD. is a Singapore company working on open-source databases,
+supporting software, and enterprise data infrastructure. We develop and
+maintain software and provide subscription support and project-based
+professional services.
 
-PGSTY is a one-engineer company by design. Product decisions, implementation,
-and support remain under one pair of eyes, so customers reach the person who
-writes and operates the software instead of moving through support tiers.
+Our services cover PostgreSQL architecture reviews, deployment, migration
+planning, performance diagnosis, and observability for customer-operated
+environments. A quotation and scope of work define deliverables, fees,
+schedule, and responsibilities before implementation begins.
 
-## Public infrastructure
+## Founder
 
-The company keeps its package repositories, extension catalog, documentation,
-translations, and live demos openly available. Commercial work pays for the
-assurance and expertise around the same open stack; it does not place the core
-software behind a proprietary gate.
+Ruohang Feng (Vonng), the author of Pigsty, leads product development and
+customer engineering. He is a translator of the Chinese PostgreSQL
+documentation and *Designing Data-Intensive Applications*, with previous
+engineering experience at Alibaba, Tantan, and Apple.
 
-The name expands to **PostgreSQL In Great STYle**. The missing lowercase *i* is
-intentional: the infrastructure is given away, while customers pay for the
-people and guarantees around it.
+Explore his [public contributions](https://github.com/Vonng) and
+[technical writing](https://vonng.com/en/).
+
+## Open-source work
+
+Our projects include the Pigsty PostgreSQL distribution, PIG package manager,
+pg_exporter metrics exporter, Silo object storage, and SOW repository manager.
+We also contribute to PostgreSQL package repositories, extension resources,
+and Chinese documentation. Code, documentation, and release histories are
+publicly available through the [PGSTY repositories](https://github.com/pgsty).
+
+Pigsty originated as a personal PostgreSQL operations toolbox and later became
+an open-source distribution, providing the technical foundation for our
+commercial work today.
+
+## Working with PGSTY
+
+PGSTY is a founder-led engineering business. Engagements start with your
+environment and requirements. Scope, support coverage, and acceptance criteria
+are agreed in writing. Open-source software remains subject to each project's
+license; commercial services follow the applicable agreement.
+
+See [services and pricing](/price/) or [contact us](/contact/) to discuss a project.
+
+## The name
+
+Pigsty takes its name from PostgreSQL In Great STYle. PGSTY is the company's
+brand, with the omitted i referring to the project's investment in shared
+infrastructure.

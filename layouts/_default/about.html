@@ -1,233 +1,96 @@
-{{- /* /about/ — 企业买家读得最认真的一页（PRD §7.1）。
-     结构：开场（mission + 缘起）→ missing-i 长版 → 时间轴 →
-     Deliberately small → 实体与法务 → 创始人全履历 → 联系 CTA */ -}}
 {{- $zh := eq .Site.Language.Lang "zh" -}}
 {{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
-{{- $brand := hugo.Data.brand -}}
-{{- $m := $brand.metrics -}}
-{{- $silo := index (where hugo.Data.portal.projects "key" "silo") 0 -}}
-{{- $entity := cond $zh "海口龙华辟技数据中心" "PGSTY PTE. LTD." -}}
+{{- $company := hugo.Data.company -}}
+{{- $m := hugo.Data.brand.metrics -}}
+{{- $name := $company.legal_name | default "PGSTY PTE. LTD." -}}
+{{- $email := $company.email | default "rh@vonng.com" -}}
 <!DOCTYPE html>
 <html lang="{{ $locale }}" class="no-js">
 <head>
   {{ partial "portal/head-meta.html" . }}
-  <script type="application/ld+json">
-  {{ dict
-    "@context" "https://schema.org"
-    "@type" "AboutPage"
-    "name" (printf "%s — PGSTY" .Title)
-    "url" .Permalink
-    "mainEntity" (dict
-      "@type" "Organization"
-      "name" $entity
-      "alternateName" (slice "PGSTY" "Pigsty")
-      "url" .Site.BaseURL
-      "foundingDate" (printf "%v" $m.since_year)
-      "email" "rh@vonng.com"
-      "founder" (dict
-        "@type" "Person"
-        "name" (cond $zh "冯若航" "Ruohang Feng")
-        "alternateName" (cond $zh "Ruohang Feng" "冯若航")
-        "url" "https://vonng.com"
-      )
-      "sameAs" (slice "https://github.com/pgsty" "https://pigsty.io" "https://pigsty.cc" "https://pgext.cloud" "https://pg.center")
-    )
-  | jsonify (dict "indent" "  ") | safeJS }}
-  </script>
   {{ partial "portal/head-assets.html" . }}
 </head>
-<body class="landing-page portal-page about-page">
+<body class="landing-page portal-page corporate-page about-page">
   <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
-
   {{ partial "portal/nav.html" (dict "page" . "active" "about") }}
-
   <main id="main">
-
-    <!-- ============ 开场：mission + 缘起 ============ -->
-    <section class="hero page-hero">
-      <div class="hero-bg" aria-hidden="true"></div>
+    <section class="corp-page-hero">
       <div class="landing-container">
-        <div class="section-head section-head--center" data-reveal>
-          <p class="section-eyebrow section-eyebrow--center anim" style="--d:0"><span class="silkscreen">{{ if $zh }}ABOUT · EST. {{ $m.since_year }}{{ else }}ABOUT · EST. {{ $m.since_year }}{{ end }}</span></p>
-          <h1 class="section-title anim" style="--d:1">{{ if $zh }}关于 PGSTY{{ else }}About PGSTY{{ end }}</h1>
-          <p class="section-subtitle anim" style="--d:2">{{ if $zh }}我们的使命，是帮助这个世界用好 PostgreSQL。{{ else }}Our mission is to help the world make the most of PostgreSQL.{{ end }}</p>
-        </div>
-        <div class="portal-prose portal-prose--center anim" style="--d:3">
-          {{ if $zh }}
-          <p>{{ $m.since_year }} 年，这一切从一位 DBA 的私人工具箱开始 —— 一堆把 PostgreSQL 跑好的脚本。{{ $m.oss_since_year }} 年它开源，长成了发行版 Pigsty，随后长出包管理器、指标导出器，以及整个生态共用的软件仓库与扩展目录。</p>
-          <p>半路上还多了第二面旗帜：<a href="https://silo.pgsty.com/zh/" target="_blank" rel="noopener">Silo</a> —— PIGSTY 维护的 MinIO 分支。S3 兼容对象存储，持续安全更新，管理控制台与完整发行制品都还在线，如今已有 {{ partial "compact-number.html" $silo.stars }} 星标。维护好一个被上游放下的项目，和写出一个新项目一样，是对生态实打实的贡献。工具箱变成了生态，作者身后有了一家公司：PGSTY。</p>
-          {{ else }}
-          <p>In {{ $m.since_year }} this was one DBA's private toolbox — a pile of scripts for running PostgreSQL properly. It went open source in {{ $m.oss_since_year }}, grew into the Pigsty distribution, then a package manager, a metrics exporter, and the public repositories and extension catalog the wider ecosystem runs on.</p>
-          <p>Along the way we raised a second flag: <a href="https://silo.pgsty.com" target="_blank" rel="noopener">Silo</a>, the PIGSTY-maintained fork of MinIO — S3-compatible object storage with ongoing security updates, a working console, and full release artifacts still shipping, now at {{ partial "compact-number.html" $silo.stars }} stars. Keeping alive a project its upstream set down is as real a contribution as writing a new one. The toolbox became an ecosystem, and behind its author now stands a company: PGSTY.</p>
-          {{ end }}
-        </div>
+        <p class="corp-eyebrow">{{ if $zh }}关于公司{{ else }}ABOUT THE COMPANY{{ end }}</p>
+        <h1 class="corp-title">{{ $name }}</h1>
+        <p class="corp-lead">{{ if $zh }}一家专注于 PostgreSQL 与开源基础设施的新加坡公司。我们开发软件，为企业提供数据库咨询、实施与技术支持。{{ else }}A Singapore company building open-source infrastructure and providing PostgreSQL consulting, implementation, and technical support.{{ end }}</p>
       </div>
     </section>
 
-    <!-- ============ 少掉的 i：长版叙事（全站两处之二，PRD §3.3） ============ -->
-    <section class="landing-section modules" id="missing-i">
-      <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}THE MISSING i · 少掉的 i{{ else }}THE MISSING i{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title">{{ if $zh }}少掉的那个 i{{ else }}The story of the missing i{{ end }}</h2>
-        </div>
-
-        <div class="module-row" data-reveal>
-          <div class="module-content portal-prose">
-            {{ if $zh }}
-            <p>Pigsty 这个名字本来是句缩写：<strong>PostgreSQL In Great STYle</strong> —— 六个字母，PIGSTY。轮到给公司注册名字时，我们却只写了五个：<strong>PGSTY</strong>。不是笔误，是故意少了一个。</p>
-            <p>少掉的 <strong>i</strong> 是 <strong>Infrastructure</strong>（基础设施）：repo.pigsty.io 全球软件仓库与 repo.pigsty.cc 大陆镜像、精确到操作系统小版本的离线安装包，还有 pgext.cloud 扩展目录 —— 收录 {{ lang.FormatNumber 0 $m.ext_catalogued }} 个扩展，{{ $m.ext_packaged }} 个打包即装。这些东西不用注册账号、不用授权码，也不用先聊一单生意。</p>
-            <p>我们把这一层当整个生态的公共设施来运营，而不只是自家用户的福利 —— 因为生态的可持续，本身就是一种基础设施。数据库比厂商活得久，靠软件包吃饭的社区，值得一个不断供的仓库。</p>
-            <p>所以公司名字讲的就是这么一件事：产品留着六个字母，公司用五个干活。那个 i 是我们送出去的 —— 向所有人免费，永远免费。</p>
-            {{ else }}
-            <p>Pigsty started as an acronym: <strong>PostgreSQL In Great STYle</strong> — six letters, PIGSTY. When the time came to register a company, we wrote down five: <strong>PGSTY</strong>. Not a typo. We took one letter out on purpose.</p>
-            <p>The missing <strong>i</strong> is <strong>Infrastructure</strong>: the global package repository at repo.pigsty.io and its mainland-China mirror repo.pigsty.cc, offline packages pinned to exact OS minor versions, and the extension catalog at pgext.cloud — {{ lang.FormatNumber 0 $m.ext_catalogued }} extensions catalogued, {{ $m.ext_packaged }} packaged and ready to install. None of it asks for an account, a license key, or a sales call.</p>
-            <p>We run this layer as a public utility for the whole ecosystem, not as a perk for our customers — because ecosystem continuity is itself infrastructure. Databases outlive vendors, and a community that lives on packages deserves repositories that stay up.</p>
-            <p>So that is the story the name tells: the product keeps its six letters, the company works with five. The i is the letter we gave away — free for everyone, forever.</p>
-            {{ end }}
-          </div>
-          <div class="module-visual">
-            <div class="code-plate">
-              <span class="code-plate-head"><span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="code-file">name.yml</span></span>
-              <pre class="code-body"><span class="c"># {{ if $zh }}这个名字，拆开看{{ else }}the name, explained{{ end }}</span>
-<span class="k">PIGSTY</span>:  <span class="s">PostgreSQL In Great STYle</span>
-<span class="k">PGSTY</span>:   <span class="s">PIGSTY − i</span>
-
-<span class="k">i</span>:        <span class="s">Infrastructure</span>
-<span class="k">price(i)</span>: <span class="v">$0</span>  <span class="c"># {{ if $zh }}向所有人，永远{{ else }}for everyone, forever{{ end }}</span></pre>
-            </div>
-          </div>
-        </div>
+    <section class="corp-section" id="company">
+      <div class="landing-container corp-grid-2">
+        <article class="corp-card">
+          <p class="corp-eyebrow">{{ if $zh }}公司信息{{ else }}COMPANY INFORMATION{{ end }}</p>
+          <h2>{{ if $zh }}服务企业，建设开源{{ else }}Open-source engineering. Commercial expertise.{{ end }}</h2>
+          <p>{{ if $zh }}PGSTY PTE. LTD. 是本网站介绍的业务主体。我们的工作围绕开源数据库、相关软件工具及企业数据基础设施展开，为客户提供订阅支持与按项目交付的专业服务。{{ else }}PGSTY PTE. LTD. is the business presented on this website. Our work covers open-source databases, supporting software, and enterprise data infrastructure, with subscription support and project-based professional services.{{ end }}</p>
+          <dl class="corp-facts">
+            <dt>{{ if $zh }}法定名称{{ else }}Legal name{{ end }}</dt><dd>{{ $name }}</dd>
+            <dt>{{ if $zh }}注册地{{ else }}Jurisdiction{{ end }}</dt><dd>{{ if $zh }}新加坡{{ else }}{{ $company.country | default "Singapore" }}{{ end }}</dd>
+            {{ with $company.uen }}<dt>UEN</dt><dd>{{ . }}</dd>{{ end }}
+            {{ with $company.incorporation_date }}<dt>{{ if $zh }}成立日期{{ else }}Incorporated{{ end }}</dt><dd><time datetime="{{ . }}">{{ if $zh }}{{ time.Format "2006年1月2日" . }}{{ else }}{{ time.Format "2 January 2006" . }}{{ end }}</time></dd>{{ end }}
+            {{ with $company.registered_address }}<dt>{{ if $zh }}注册地址{{ else }}Registered office{{ end }}</dt><dd>{{ . }}</dd>{{ end }}
+            <dt>{{ if $zh }}商务联系{{ else }}Business contact{{ end }}</dt><dd><a href="mailto:{{ $email }}">{{ $email }}</a></dd>
+          </dl>
+          {{ with $company.registry_source }}<p class="corp-note"><a href="{{ . }}">{{ if $zh }}公司登记资料来源：ACRA 公开数据{{ else }}Company registration: ACRA public data{{ end }}</a></p>{{ end }}
+          <a class="corp-link" href="{{ "contact/" | relLangURL }}">{{ if $zh }}联系与采购流程{{ else }}Contact and procurement{{ end }} <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="corp-card">
+          <p class="corp-eyebrow">{{ if $zh }}创始人{{ else }}FOUNDER{{ end }}</p>
+          <h2>{{ if $zh }}冯若航{{ else }}Ruohang Feng{{ end }} <span class="corp-founder-handle">(Vonng)</span></h2>
+          <p>{{ if $zh }}Pigsty 作者、PostgreSQL 工程师与技术译者，负责公司的产品方向、开源项目开发与客户技术工作。{{ else }}Author of Pigsty, PostgreSQL engineer, and technical translator, responsible for product direction, open-source development, and customer engineering.{{ end }}</p>
+          <ul>
+            <li>{{ if $zh }}PostgreSQL 中文文档翻译者{{ else }}Translator of the Chinese PostgreSQL documentation{{ end }} · <a href="https://pgsql.cc/">PGSQL.CC</a></li>
+            <li>{{ if $zh }}《设计数据密集型应用》（DDIA）中文译者{{ else }}Chinese translator of Designing Data-Intensive Applications (DDIA){{ end }}</li>
+            <li>{{ if $zh }}曾任职于阿里巴巴、探探与 Apple{{ else }}Previous engineering experience at Alibaba, Tantan, and Apple{{ end }}</li>
+          </ul>
+          <p><a class="corp-link" href="https://github.com/Vonng">{{ if $zh }}公开代码贡献{{ else }}Public code contributions{{ end }}</a> · <a class="corp-link" href="{{ if $zh }}https://vonng.com/{{ else }}https://vonng.com/en/{{ end }}">{{ if $zh }}技术文章与个人介绍{{ else }}Writing and background{{ end }}</a></p>
+        </article>
       </div>
     </section>
 
-    <!-- ============ 时间轴 ============ -->
-    <section class="landing-section" id="timeline">
+    <section class="corp-section" id="small">
       <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}TIMELINE · 航迹{{ else }}TIMELINE{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title">{{ if $zh }}一路走来{{ else }}Milestones{{ end }}</h2>
+        <p class="corp-eyebrow">{{ if $zh }}合作方式{{ else }}HOW WE WORK{{ end }}</p>
+        <h2 class="corp-title">{{ if $zh }}直接的技术沟通，明确的交付范围{{ else }}Direct engineering engagement, defined deliverables{{ end }}</h2>
+        <p class="corp-lead">{{ if $zh }}PGSTY 由创始人主导技术工作。我们从具体环境与业务需求出发，在开始实施之前确认范围、责任与验收方式。{{ else }}PGSTY is a founder-led engineering business. Engagements start with your environment and requirements, with scope, responsibilities, and acceptance criteria agreed before implementation.{{ end }}</p>
+        <div class="corp-grid-3">
+          <article class="corp-card"><h3>{{ if $zh }}数据库工程{{ else }}Database engineering{{ end }}</h3><p>{{ if $zh }}PostgreSQL 架构评估、部署实施、迁移规划、性能诊断与可观测性建设，围绕客户实际运行环境开展。{{ else }}PostgreSQL architecture reviews, deployment, migration planning, performance diagnosis, and observability for customer environments.{{ end }}</p></article>
+          <article class="corp-card"><h3>{{ if $zh }}订阅与技术支持{{ else }}Subscriptions and support{{ end }}</h3><p>{{ if $zh }}为使用 Pigsty 及相关技术栈的企业提供持续技术协助。支持渠道、服务时段与响应目标由所选方案和书面协议明确。{{ else }}Ongoing technical assistance for businesses using Pigsty and related stack. Support channels and response targets are set by agreement.{{ end }}</p></article>
+          <article class="corp-card"><h3>{{ if $zh }}有边界的项目交付{{ else }}Defined project delivery{{ end }}</h3><p>{{ if $zh }}报价方案与工作说明明确具体交付内容、实施周期、费用与协作条件。超出约定范围的额外工作另行确认。{{ else }}A formal quotation and scope of work define deliverables, schedule, fees, and prerequisites. Scope adjustments are agreed separately.{{ end }}</p></article>
         </div>
-
-        <ol class="timeline" data-reveal>
-          <li>
-            <span class="tl-mark">{{ $m.since_year }}</span>
-            <div class="tl-body">
-              <b>{{ if $zh }}起点{{ else }}The toolbox{{ end }}</b>
-              <p>{{ if $zh }}Pigsty 从一位 DBA 的私人工具箱起步 —— 把 PostgreSQL 跑好的那些脚本。{{ else }}Pigsty begins as one DBA's personal toolbox — the scripts for running PostgreSQL properly.{{ end }}</p>
-            </div>
-          </li>
-          <li>
-            <span class="tl-mark">{{ $m.oss_since_year }}</span>
-            <div class="tl-body">
-              <b>{{ if $zh }}开源{{ else }}Open source{{ end }}</b>
-              <p>{{ if $zh }}Pigsty 开源发布 —— 私人工具箱变成公共项目。{{ else }}Pigsty goes open source — the private toolbox becomes a public project.{{ end }}</p>
-            </div>
-          </li>
-          <li>
-            <span class="tl-mark">S22</span>
-            <div class="tl-body">
-              <b>{{ if $zh }}奇绩创坛{{ else }}MiraclePlus{{ end }}</b>
-              <p>{{ if $zh }}入选奇绩创坛 S22，项目长成公司。{{ else }}Selected for the MiraclePlus S22 batch — the project becomes a company.{{ end }}</p>
-            </div>
-          </li>
-          <li>
-            <span class="tl-mark">2026-07</span>
-            <div class="tl-body">
-              <b>{{ if $zh }}PGDG 官方仓库支持龙芯{{ else }}LoongArch lands in PGDG{{ end }}</b>
-              <p>{{ if $zh }}我们推动的 LoongArch（loong64）支持在 PGDG 官方仓库上线 —— apt.postgresql.org 开始为国产龙芯架构分发 PostgreSQL 官方软件包。{{ else }}LoongArch (loong64) support we drove lands in the official PGDG repositories, live on apt.postgresql.org.{{ end }}</p>
-            </div>
-          </li>
-          <li>
-            <span class="tl-mark">{{ if $zh }}现在{{ else }}NOW{{ end }}</span>
-            <div class="tl-body">
-              <b>{{ if $zh }}进行时{{ else }}Ongoing{{ end }}</b>
-              <p>{{ if $zh }}海口龙华辟技数据中心承接中国大陆业务，新加坡 PGSTY PTE. LTD. 面向全球 —— 公共基础设施继续免费开放。{{ else }}PGSTY PTE. LTD. serves subscriptions and expert services worldwide — and the public infrastructure stays free.{{ end }}</p>
-            </div>
-          </li>
-        </ol>
+        <p><a class="corp-link" href="{{ "price/" | relLangURL }}">{{ if $zh }}查看服务与价格{{ else }}Explore services and pricing{{ end }} <span aria-hidden="true">→</span></a></p>
       </div>
     </section>
 
-    <!-- ============ Deliberately small（PRD §7.1.4 原文） ============ -->
-    <section class="landing-section" id="small">
+    <section class="corp-section" id="timeline">
       <div class="landing-container">
-        <div class="fieldreport small-manifesto" data-reveal>
-          <p class="manifesto-eyebrow silkscreen">{{ if $zh }}ONE-ENGINEER COMPANY · 一个人的公司{{ else }}ONE-ENGINEER COMPANY{{ end }}</p>
-          <h2 class="manifesto-title">{{ if $zh }}刻意保持的小{{ else }}Deliberately small{{ end }}</h2>
-          {{ if $zh }}
-          <p class="manifesto-line">PGSTY 是一家一个人的公司 —— 这是设计，不是现状。</p>
-          <p class="manifesto-line">十一年 PostgreSQL，整个技术栈在同一双眼睛之下；</p>
-          <p class="manifesto-line">你买到的支持没有工单分层，接电话的就是写代码的那个人。</p>
-          <p class="manifesto-line manifesto-line--punch">「小」不是我们的短板，它就是服务本身。</p>
-          {{ else }}
-          <p class="manifesto-line">PGSTY is a one-engineer company — by design, not by circumstance.</p>
-          <p class="manifesto-line">Eleven years of PostgreSQL, every layer of the stack under one pair of eyes,</p>
-          <p class="manifesto-line">and no support tiers between you and the author.</p>
-          <p class="manifesto-line">When you call, you reach the person who wrote the code.</p>
-          <p class="manifesto-line manifesto-line--punch">Small isn't our limitation. It's the service.</p>
-          {{ end }}
+        <p class="corp-eyebrow">{{ if $zh }}开源工作{{ else }}OUR OPEN-SOURCE WORK{{ end }}</p>
+        <h2 class="corp-title">{{ if $zh }}源于工程实践，成果公开可查{{ else }}Built through practice, available to inspect{{ end }}</h2>
+        <p class="corp-lead">{{ if $zh }}公司的技术工作建立在长期维护的开源项目上。代码、文档与发布记录为客户了解我们的工程能力提供了直接依据。{{ else }}Our engineering work is grounded in maintained open-source projects. Public source code, documentation, and release histories let customers evaluate the work directly.{{ end }}</p>
+        <div class="corp-grid-3">
+          <article class="corp-card"><p class="corp-eyebrow">{{ $m.since_year }}</p><h3>{{ if $zh }}Pigsty 工具箱起步{{ else }}The Pigsty toolbox{{ end }}</h3><p>{{ if $zh }}Pigsty 起源于一套用于 PostgreSQL 运维的私人工具与自动化脚本，逐步积累了后续发行版的技术基础。{{ else }}Pigsty began as a personal collection of PostgreSQL operations tools and automation scripts, building the foundation for the distribution.{{ end }}</p></article>
+          <article class="corp-card"><p class="corp-eyebrow">{{ $m.oss_since_year }}</p><h3>{{ if $zh }}Pigsty 开源发布{{ else }}Pigsty becomes open source{{ end }}</h3><p>{{ if $zh }}工具箱以开源项目的形式发布，逐步发展为涵盖部署、可观测性、高可用与备份恢复的 PostgreSQL 发行版。{{ else }}The toolbox was released as open source and developed into a PostgreSQL distribution covering deployment, observability, high availability, and backup and recovery.{{ end }}</p></article>
+          <article class="corp-card"><p class="corp-eyebrow">{{ if $zh }}持续维护{{ else }}ONGOING DEVELOPMENT{{ end }}</p><h3>{{ if $zh }}数据库与基础设施工具{{ else }}Database and infrastructure tooling{{ end }}</h3><p>{{ if $zh }}我们维护 Pigsty、PIG、pg_exporter、Silo 与 SOW，参与软件仓库、扩展目录与中文文档建设。{{ else }}We maintain Pigsty, PIG, pg_exporter, Silo, and SOW, and contribute to package repositories, extension catalogs, and documentation.{{ end }}</p></article>
         </div>
+        <p><a class="corp-link" href="https://github.com/pgsty">{{ if $zh }}查看 PGSTY 项目仓库{{ else }}View the PGSTY repositories{{ end }} <span aria-hidden="true">→</span></a></p>
       </div>
     </section>
 
-    <!-- ============ 实体 + 创始人 ============ -->
-    <section class="landing-section" id="company">
-      <div class="landing-container">
-        <div class="section-head" data-reveal>
-          <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}THE COMPANY · 公司与创始人{{ else }}THE COMPANY & THE FOUNDER{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title">{{ if $zh }}主体与履历{{ else }}Entity and track record{{ end }}</h2>
-        </div>
-
-        {{- /* TODO(user)：国内主体在英文站的展示口径待拍板（PRD §2 legal_entity_domestic / §12.1）；
-             本期沿用实体按语言拆分的既有约定：英文=新加坡，中文=海口 */}}
-        <div class="entity-grid" data-reveal>
-          <article class="entity-card">
-            <p class="entity-kind silkscreen">{{ if $zh }}公司主体{{ else }}THE COMPANY{{ end }}</p>
-            {{ if $zh }}
-            <h3 class="entity-name">海口龙华辟技数据中心</h3>
-            <p class="entity-loc"><i class="fas fa-location-dot" aria-hidden="true"></i> 中国 · 海口 · <code class="entity-code">92460000MAG0XJ569B</code></p>
-            <p class="entity-desc">承接中国大陆的订阅与专家服务，提供正式合同与增值税发票。全球业务由新加坡主体 PGSTY PTE. LTD. 承接。</p>
-            {{ else }}
-            <h3 class="entity-name">PGSTY PTE. LTD.</h3>
-            <p class="entity-loc"><i class="fas fa-location-dot" aria-hidden="true"></i> Singapore</p>
-            <p class="entity-desc">Serving global subscriptions, expert services, and partnerships.</p>
-            {{ end }}
-            <p class="entity-desc entity-founded-line">EST. {{ $m.since_year }}</p>
-          </article>
-
-          <article class="entity-card">
-            <p class="entity-kind silkscreen">{{ if $zh }}创始人{{ else }}THE FOUNDER{{ end }}</p>
-            <h3 class="entity-name">{{ if $zh }}冯若航（Vonng）{{ else }}Ruohang Feng (Vonng){{ end }}</h3>
-            <p class="entity-loc"><i class="fab fa-github" aria-hidden="true"></i> <a href="https://github.com/Vonng" target="_blank" rel="noopener">@Vonng</a> · <a href="{{ if $zh }}https://vonng.com{{ else }}https://vonng.com/en/{{ end }}" target="_blank" rel="noopener">vonng.com</a></p>
-            <ul class="creds-list">
-              {{ if $zh }}
-              <li>Pigsty 作者（{{ $m.since_year }} 至今）</li>
-              <li>PostgreSQL 从业 11 年（2015 至今）</li>
-              <li>PostgreSQL 中文文档翻译者（pg.center）</li>
-              <li>《设计数据密集型应用》（DDIA）中文译者</li>
-              <li>曾任职于阿里巴巴、探探与 Apple</li>
-              <li>推动 PGDG 官方仓库支持龙芯 loong64（2026-07 上线 apt.postgresql.org）</li>
-              {{ else }}
-              <li>Author of Pigsty ({{ $m.since_year }}–present)</li>
-              <li>11 years of PostgreSQL, practicing since 2015</li>
-              <li>Translator of the Chinese PostgreSQL documentation (pg.center)</li>
-              <li>Chinese translator of <i>Designing Data-Intensive Applications</i> (DDIA)</li>
-              <li>Previously at Alibaba, Tantan, and Apple</li>
-              <li>Drove LoongArch (loong64) support into the official PGDG repositories (live 2026-07)</li>
-              {{ end }}
-            </ul>
-          </article>
-        </div>
+    <section class="corp-section" id="missing-i">
+      <div class="landing-container corp-prose">
+        <p class="corp-eyebrow">{{ if $zh }}关于品牌{{ else }}ABOUT THE NAME{{ end }}</p>
+        <h2>PostgreSQL In Great STYle</h2>
+        <p>{{ if $zh }}Pigsty 的名称来自 PostgreSQL In Great STYle；PGSTY 是公司使用的品牌。品牌名中省去的 i，呼应了项目对公共基础设施的投入。开源软件按各项目的许可证提供，商业服务则按双方确认的范围与协议交付。{{ else }}Pigsty takes its name from PostgreSQL In Great STYle; PGSTY is the company's brand. The omitted i is a nod to the project's investment in shared infrastructure. Open-source software is provided under each project's license, while commercial services are delivered under an agreed scope and contract.{{ end }}</p>
+        <p><a class="corp-link" href="{{ "contact/" | relLangURL }}">{{ if $zh }}与我们讨论您的项目{{ else }}Discuss your project with us{{ end }} <span aria-hidden="true">→</span></a></p>
       </div>
     </section>
-
-    {{ partial "portal/contact-band.html" (dict "page" .) }}
-
   </main>
-
   {{ partial "portal/footer.html" . }}
-
   {{ partial "portal/foot-scripts.html" . }}
 </body>
 </html>

@@ -1,0 +1,6 @@
+{{- $c := hugo.Data.company -}}
+{{- $org := dict "@context" "https://schema.org" "@type" "Organization" "@id" (printf "%s#organization" .Site.BaseURL) "name" $c.legal_name "legalName" $c.legal_name "alternateName" "PGSTY" "url" .Site.BaseURL "logo" ("img/logo/logo.png" | absURL) "email" $c.email "sameAs" (slice $c.github "https://pigsty.io/") -}}
+{{- with $c.incorporation_date }}{{ $org = merge $org (dict "foundingDate" .) }}{{ end -}}
+{{- with $c.uen }}{{ $org = merge $org (dict "identifier" (dict "@type" "PropertyValue" "propertyID" "Singapore UEN" "value" .)) }}{{ end -}}
+{{- with $c.registered_address }}{{ $org = merge $org (dict "address" (dict "@type" "PostalAddress" "streetAddress" . "addressCountry" "SG")) }}{{ end -}}
+<script type="application/ld+json">{{ $org | jsonify | safeJS }}</script>

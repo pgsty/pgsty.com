@@ -1,0 +1,60 @@
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
+{{- $company := hugo.Data.company -}}
+{{- $name := $company.legal_name | default "PGSTY PTE. LTD." -}}
+{{- $email := $company.email | default "rh@vonng.com" -}}
+<!DOCTYPE html>
+<html lang="{{ $locale }}" class="no-js">
+<head>
+  {{ partial "portal/head-meta.html" . }}
+  {{ partial "portal/head-assets.html" . }}
+</head>
+<body class="landing-page portal-page corporate-page">
+  <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
+  {{ partial "portal/nav.html" (dict "page" .) }}
+  <main id="main">
+    <header class="corp-page-hero">
+      <div class="landing-container">
+        <p class="corp-eyebrow">{{ .Params.eyebrow | default $name }}</p>
+        <h1 class="corp-title">{{ .Title }}</h1>
+        <p class="corp-lead">{{ .Description }}</p>
+        {{ with .Params.last_reviewed }}<p class="corp-page-date">{{ if $zh }}更新日期：{{ else }}Last updated: {{ end }}<time datetime="{{ . }}">{{ . }}</time></p>{{ end }}
+      </div>
+    </header>
+    <section class="corp-section">
+      <div class="landing-container corp-page-grid">
+        <article class="corp-prose">{{ .Content }}</article>
+        <aside class="corp-sidebar" aria-label="{{ if $zh }}页面导航与联系方式{{ else }}Page navigation and contact{{ end }}">
+          {{ if gt (len .Fragments.Headings) 0 }}
+          <div class="corp-card">
+            <h2>{{ if $zh }}本页内容{{ else }}On this page{{ end }}</h2>
+            {{ .TableOfContents }}
+          </div>
+          {{ end }}
+          <div class="corp-card">
+            <p class="corp-eyebrow">{{ if $zh }}公司联系{{ else }}COMPANY CONTACT{{ end }}</p>
+            <h2>{{ $name }}</h2>
+            <dl class="corp-facts">
+              <dt>{{ if $zh }}注册地{{ else }}Jurisdiction{{ end }}</dt><dd>{{ if $zh }}新加坡{{ else }}{{ $company.country | default "Singapore" }}{{ end }}</dd>
+              {{ with $company.uen }}<dt>UEN</dt><dd>{{ . }}</dd>{{ end }}
+              {{ with $company.registered_address }}<dt>{{ if $zh }}注册地址{{ else }}Registered office{{ end }}</dt><dd>{{ . }}</dd>{{ end }}
+              <dt>{{ if $zh }}电子邮箱{{ else }}Email{{ end }}</dt><dd><a href="mailto:{{ $email }}">{{ $email }}</a></dd>
+            </dl>
+            <a class="corp-link" href="{{ "about/" | relLangURL }}">{{ if $zh }}了解公司{{ else }}About the company{{ end }} <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="corp-card">
+            <h2>{{ if $zh }}相关信息{{ else }}Related information{{ end }}</h2>
+            <ul>
+              <li><a href="{{ "contact/" | relLangURL }}">{{ if $zh }}联系我们{{ else }}Contact{{ end }}</a></li>
+              <li><a href="{{ "privacy/" | relLangURL }}">{{ if $zh }}隐私说明{{ else }}Privacy notice{{ end }}</a></li>
+              <li><a href="{{ "terms/" | relLangURL }}">{{ if $zh }}网站与服务条款{{ else }}Website and service terms{{ end }}</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+  {{ partial "portal/footer.html" . }}
+  {{ partial "portal/foot-scripts.html" . }}
+</body>
+</html>

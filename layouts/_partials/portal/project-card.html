@@ -1,0 +1,21 @@
+{{- $p := .project -}}
+{{- $zh := eq .page.Site.Language.Lang "zh" -}}
+<article class="corp-product{{ if .featured }} corp-product-featured{{ end }}{{ if .details }} corp-product-detail{{ end }}"{{ if .details }} id="{{ $p.key }}"{{ end }}>
+  <div class="corp-product-top">
+    <span class="corp-product-icon" aria-hidden="true">{{ if eq $p.key "pigsty" }}<img src="{{ "img/logo/logo.svg" | relURL }}" width="40" height="40" alt="">{{ else }}<i class="{{ $p.icon }}"></i>{{ end }}</span>
+    <p class="corp-eyebrow">{{ if $zh }}{{ $p.kindZh }}{{ else }}{{ $p.kind }}{{ end }}</p>
+  </div>
+  {{ if .details }}<h2>{{ $p.name }}</h2>{{ else }}<h3>{{ $p.name }}</h3>{{ end }}
+  <p class="corp-product-desc">{{ if .details }}{{ if $zh }}{{ $p.descZh }}{{ else }}{{ $p.desc }}{{ end }}{{ else }}{{ if $zh }}{{ $p.summaryZh }}{{ else }}{{ $p.summary }}{{ end }}{{ end }}</p>
+  {{ if .featured }}
+  <ul class="corp-product-features">{{ range (cond $zh $p.featuresZh $p.features) }}<li>{{ . }}</li>{{ end }}</ul>
+  {{ end }}
+  {{ if .details }}
+  <p class="corp-product-use"><strong>{{ if $zh }}适用场景：{{ else }}Use it for: {{ end }}</strong>{{ if $zh }}{{ $p.useZh }}{{ else }}{{ $p.use }}{{ end }}</p>
+  <p class="corp-product-license">{{ $p.license }} · {{ $p.lang }}</p>
+  {{ end }}
+  <div class="corp-product-links">
+    <a href="{{ if $zh }}{{ $p.siteZh }}{{ else }}{{ $p.site }}{{ end }}" aria-label="{{ $p.name }}{{ if $zh }} 官网与文档{{ else }} website and documentation{{ end }}">{{ if $zh }}官网与文档{{ else }}Explore {{ $p.name }}{{ end }} <span aria-hidden="true">↗</span></a>
+    <a href="{{ $p.repo }}" aria-label="{{ $p.name }}{{ if $zh }} 源代码{{ else }} source code on GitHub{{ end }}">{{ if $zh }}源码{{ else }}GitHub{{ end }} <span aria-hidden="true">↗</span></a>
+  </div>
+</article>

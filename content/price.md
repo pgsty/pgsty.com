@@ -1,28 +1,27 @@
 ---
 title: "Pricing"
-description: "PGSTY subscription plans and on-demand expert services — from free open source to a 7×24 enterprise SLA, billed per node."
+description: "Reference pricing for PostgreSQL subscriptions and professional services from PGSTY PTE. LTD., Singapore. Scope and commitments are agreed in writing."
 layout: "price"
 translationKey: "price"
-search_keywords: [pricing, subscription, support, SLA, service, plans]
+search_keywords: [pricing, subscription, support, service, plans, quote]
 search_boost: 1.25
 ---
 
-Pigsty and the rest of the open-source stack remain free to use. PGSTY charges
-for assurance, response, and expert work rather than for access to the core
-software.
+PGSTY PTE. LTD., Singapore, offers PostgreSQL subscriptions and scoped engineering services. Listed prices are a starting point; the written quotation and agreement define fees, deliverables, billing currency, taxes and any support commitments.
 
 ## Subscription plans
 
-- **Open Source** is the self-supported community option.
-- **Standard** adds business-hours guidance for production users.
-- **Professional** adds stronger response commitments and direct expert access.
-- **Enterprise** covers continuous, mission-critical operations with a 7×24
-  service commitment.
+- **Open Source** is the self-supported community option for Pigsty.
+- **Standard** covers small production environments.
+- **Professional** is intended for teams with ongoing support needs.
+- **Enterprise** supports larger or tailored deployments.
 
-Subscriptions are billed per managed node. The [interactive pricing
-page](/price/) contains the current prices, currencies, scope, and comparison.
+Subscriptions are billed annually. Node limits, response targets and service hours apply according to the signed agreement. See the [pricing comparison](/price/) for the reference plans.
 
-## On-demand expertise
+## Professional services
 
-Architecture review, migration, deployment, training, health checks, incident
-response, and custom engineering can also be purchased as discrete services.
+Architecture, migration, deployment, training, health checks, incident assistance and custom engineering can be scoped separately. Review [our services](/services/) or [request a quotation](/contact/).
+
+## Software licences
+
+Pigsty uses Apache-2.0. Other projects and dependencies, including PostgreSQL and Silo, retain their own licences. A support purchase does not replace those terms.
