@@ -25,6 +25,7 @@ type: home
 - **[PG.CENTER](https://pg.center/)** — PostgreSQL 英文手册、版本对比与生态资料。
 - **[PostgreSQL 知识图谱](https://pgsql.cc/wiki/)** — 关联 SQL、参数、函数与系统目录，追溯出处与版本变化。
 - **[PGEXT.CLOUD](https://pgext.cloud/)** — PostgreSQL 扩展目录、版本兼容性与软件包信息。
+- **[OINK](https://oink.pgsty.com/zh/)** — 纯 Hugo 实现的本地优先开源文档主题，驱动 PGSTY 全系技术站点。
 
 [浏览社区资源](/zh/resources/)，或[体验 Pigsty 监控演示](https://demo.pigsty.io/)。
 

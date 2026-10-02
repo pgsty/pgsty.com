@@ -26,6 +26,7 @@ Expert consulting and support, so you stay in control of your databases.
 - **[PG.CENTER](https://pg.center/)** — English PostgreSQL manuals, version comparisons, and ecosystem information.
 - **[PostgreSQL Knowledge Graph](https://pg.center/wiki/)** — Connected references for SQL, parameters, functions, and system catalogs, with sources and version context.
 - **[PGEXT.CLOUD](https://pgext.cloud/)** — Extension discovery, version compatibility, and package availability.
+- **[OINK](https://oink.pgsty.com/)** — A local-first, Hugo-only theme for technical documentation and developer sites.
 
 [Explore our resources](/resources/) or [try the Pigsty monitoring demo](https://demo.pigsty.io/).
 

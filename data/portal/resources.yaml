@@ -61,3 +61,16 @@
   url: https://pgext.cloud/
   action: Find an extension
   actionZh: 查找扩展
+
+- key: oink
+  icon: fa-solid fa-feather
+  name: OINK Documentation Theme
+  nameZh: OINK 文档主题
+  label: Hugo Theme
+  labelZh: 开源文档主题
+  desc: A local-first Hugo theme for technical documentation and developer sites.
+  descZh: 纯 Hugo 实现的本地优先文档主题，驱动 PGSTY 全系技术站点。
+  url: https://oink.pgsty.com/
+  urlZh: https://oink.pgsty.com/zh/
+  action: Explore the theme
+  actionZh: 探索 OINK 主题

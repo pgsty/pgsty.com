@@ -15,9 +15,9 @@
   repo: https://github.com/pgsty/pigsty
   site: https://pigsty.io/
   siteZh: https://pigsty.cc/
-  version: v4.4.0
+  version: v4.5.0
   license: Apache-2.0
-  stars: 5510
+  stars: 5660
   lang: Ansible
   kind: PG DISTRIBUTION
   kindZh: PG 发行版
@@ -80,9 +80,9 @@
   repo: https://github.com/pgsty/silo
   site: https://silo.pgsty.com/
   siteZh: https://silo.pgsty.com/zh/
-  version: RELEASE.2026-08-06
+  version: RELEASE.2026-09-16
   license: AGPL-3.0
-  stars: 2141
+  stars: 3565
   lang: Go
   kind: OBJECT STORAGE
   kindZh: 对象存储
@@ -124,6 +124,7 @@
   repo: https://github.com/pgsty/barn
   site: https://barn.pgsty.com/
   siteZh: https://barn.pgsty.com/zh/
+  version: v0.9.0
   license: Apache-2.0
   lang: Go
   kind: VIRTUAL MACHINES
