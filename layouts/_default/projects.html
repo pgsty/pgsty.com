@@ -1,5 +1,6 @@
 {{- $zh := eq .Site.Language.Lang "zh" -}}
 {{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
+{{- $m := hugo.Data.brand.metrics -}}
 <!DOCTYPE html>
 <html lang="{{ $locale }}" class="no-js">
 <head>
@@ -10,18 +11,32 @@
   <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
   {{ partial "portal/nav.html" (dict "page" . "active" "projects") }}
   <main id="main">
+    <!-- ============ HERO 区域 ============ -->
     <section class="corp-page-hero">
       <div class="landing-container">
-        <p class="corp-eyebrow">{{ if $zh }}软件与开源项目{{ else }}Software & open source{{ end }}</p>
-        <h1 class="corp-title">{{ if $zh }}构建您自己的数据基础设施{{ else }}Build your own data infrastructure{{ end }}</h1>
-        <p class="corp-lead">{{ if $zh }}从数据库与对象存储，到包管理、监控和开发环境。了解每个项目的用途，选择适合您的工具。{{ else }}From databases and object storage to packages, monitoring, and development environments. Find the right tools for the way you work.{{ end }}</p>
-        <div class="contact-ctas"><a class="corp-link" href="{{ relLangURL "resources/" }}">{{ if $zh }}查找文档、软件仓库与知识库{{ else }}Find manuals, packages, and knowledge resources{{ end }} <span aria-hidden="true">→</span></a></div>
+        <p class="corp-eyebrow">{{ if $zh }}开源数据基础设施 · 全栈独立可控{{ else }}OPEN SOURCE DATA INFRASTRUCTURE{{ end }}</p>
+        <h1 class="corp-title">{{ if $zh }}为真实生产而构建的开源软件栈{{ else }}Production-Grade Open Source Infrastructure{{ end }}</h1>
+        <p class="corp-lead">{{ if $zh }}从核心数据库发行版与高可用编排，到分布式对象存储、专用包管理、监控导出器与本地沙箱。PGSTY 打造开箱即用的开源全家桶，拒绝黑盒专有锁定，把数据基础设施真正交还给企业自己。{{ else }}From database distributions and high availability to S3-compatible object storage, package managers, monitoring, and local virtual machines. Practical, production-grade tools designed to work seamlessly together.{{ end }}</p>
+        <div class="hero-showcase-footer" style="justify-content: flex-start; margin-top: 24px; padding: 0; background: transparent; border: none;">
+          <span class="showcase-tag">★ {{ $m.github_stars }} GitHub Stars</span>
+          <span class="showcase-tag">📦 {{ $m.ext_packaged }}+ {{ if $zh }}打包扩展{{ else }}Packaged Exts{{ end }}</span>
+          <span class="showcase-tag">🛡️ {{ if $zh }}100% 自由开源{{ else }}100% Free & Open Source{{ end }}</span>
+          <span class="showcase-tag">⚖️ Apache-2.0 / AGPL-3.0</span>
+        </div>
       </div>
     </section>
 
-    <!-- 软件卡片列表 -->
+    <!-- ============ 第一部分：拳头核心开源项目 ============ -->
     <section class="corp-section">
       <div class="landing-container">
+        <div class="corp-section-heading">
+          <div>
+            <p class="corp-eyebrow">{{ if $zh }}核心开源项目{{ else }}FLAGSHIP PROJECTS{{ end }}</p>
+            <h2>{{ if $zh }}支撑生产运转的六大核心系统{{ else }}Six Core Pillars of Your Data Stack{{ end }}</h2>
+          </div>
+          <p>{{ if $zh }}覆盖数据库部署、存储、扩展包管理、指标采集与环境编排。每个项目专注解决核心痛点，也能无缝协同构筑生产闭环。{{ else }}Focused systems covering deployment, storage, extension packages, metrics, and virtualization. Usable independently or as a unified platform.{{ end }}</p>
+        </div>
+
         <div class="corp-grid-2">
           {{ range $key := slice "pigsty" "silo" "pig" "barn" "sow" "pg_exporter" }}
           {{ range where hugo.Data.portal.projects "key" $key }}
@@ -32,12 +47,12 @@
       </div>
     </section>
 
-    <!-- 全栈开源协同工作流 -->
+    <!-- ============ 第二部分：全栈开源协同工作流 ============ -->
     <section class="corp-section corp-section-tint" id="lifecycle">
       <div class="landing-container">
         <div class="corp-section-heading">
           <div>
-            <p class="corp-eyebrow">{{ if $zh }}工具协同{{ else }}STACK SYNERGY{{ end }}</p>
+            <p class="corp-eyebrow">{{ if $zh }}工具协同闭环{{ else }}STACK SYNERGY{{ end }}</p>
             <h2>{{ if $zh }}全栈开源协同，闭环数据基础设施{{ else }}A complete, closed-loop open-source stack{{ end }}</h2>
           </div>
           <p>{{ if $zh }}从本地沙箱验证、软件包构建，到生产集群高可用编排、S3 容灾归档与深度可观测性。各工具既能独立使用，又能无缝协同构筑生产闭环。{{ else }}From local sandboxing and package engineering to cluster HA orchestration, S3 disaster recovery, and real-time observability. Focused tools that form an end-to-end production architecture.{{ end }}</p>
@@ -97,10 +112,197 @@
       </div>
     </section>
 
-    <!-- 页面正文内容 -->
+    <!-- ============ 第三部分：自研特色扩展与生态工具 ============ -->
+    <section class="corp-section" id="extensions">
+      <div class="landing-container">
+        <div class="corp-section-heading">
+          <div>
+            <p class="corp-eyebrow">{{ if $zh }}自研扩展与生态工具{{ else }}SPECIALIZED EXTENSIONS & TOOLS{{ end }}</p>
+            <h2>{{ if $zh }}深耕内核生态，解决具体工程难题{{ else }}Tooling for Specialized Engineering Challenges{{ end }}</h2>
+          </div>
+          <p>{{ if $zh }}除核心软件外，我们围绕国标合规、对象存储访问、WebAssembly 运行环境与本地化翻译研发了多款自研扩展与工程利器。{{ else }}Specialized extensions and developer utilities addressing character set compliance, SQL-level S3 access, WebAssembly runtimes, and core localization.{{ end }}</p>
+        </div>
+
+        <div class="corp-workload-grid">
+          <!-- 1. gb18030_2022 -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-language"></i></span>
+              <h3>gb18030_2022</h3>
+            </div>
+            <span class="corp-tech-tags">C · Extension · GB 18030-2022</span>
+            <p>{{ if $zh }}为 PostgreSQL 提供国家强制标准字符集原生支持，满足金融政企冷僻字与人名地名合规存储。{{ else }}Native implementation of the mandatory Chinese national character set standard GB 18030-2022 for PostgreSQL.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="https://github.com/pgsty/gb18030_2022" target="_blank" rel="noopener">{{ if $zh }}查看代码仓库{{ else }}View repository{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 2. pgs3 -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-cloud-arrow-down"></i></span>
+              <h3>pgs3</h3>
+            </div>
+            <span class="corp-tech-tags">C · Extension · S3 API Client</span>
+            <p>{{ if $zh }}在 SQL 中以原生函数直接读写兼容 S3 的对象存储，支持流式上传、湖仓转储与冷热数据分层。{{ else }}Read and write S3-compatible buckets directly in SQL with native functions for backups and data tiering.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="https://github.com/pgsty/pgs3" target="_blank" rel="noopener">{{ if $zh }}查看代码仓库{{ else }}View repository{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 3. pgwasm -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-globe"></i></span>
+              <h3>pgwasm</h3>
+            </div>
+            <span class="corp-tech-tags">WebAssembly · Browser PG</span>
+            <p>{{ if $zh }}将完整 PostgreSQL 编译为 WebAssembly，在现代浏览器沙箱中零服务器直接运行标准 SQL。{{ else }}Full PostgreSQL kernel compiled to WebAssembly running directly inside modern browser sandboxes.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="https://github.com/pgsty/pgwasm" target="_blank" rel="noopener">{{ if $zh }}查看代码仓库{{ else }}View repository{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 4. pgnls -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-comments"></i></span>
+              <h3>pgnls</h3>
+            </div>
+            <span class="corp-tech-tags">Gettext · NLS · PG Core</span>
+            <p>{{ if $zh }}持续维护 PostgreSQL 内核服务端错误提示与命令行工具的官方简体中文本地化翻译工作。{{ else }}Official Native Language Support (NLS) Chinese message translations for the PostgreSQL core database server.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="https://github.com/pgsty/pgnls" target="_blank" rel="noopener">{{ if $zh }}查看代码仓库{{ else }}View repository{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 5. pgext -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span>
+              <h3>pgext</h3>
+            </div>
+            <span class="corp-tech-tags">Metadata · Catalog · 576+ Exts</span>
+            <p>{{ if $zh }}自动化跟踪与收录全网 576+ 款 PostgreSQL 扩展插件，提供场景分类与版本兼容性全景图谱。{{ else }}Automated registry and metadata pipeline tracking 576+ extensions with compatibility matrices.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="https://pgext.cloud/" target="_blank" rel="noopener">{{ if $zh }}访问 PGEXT.CLOUD{{ else }}Visit PGEXT.CLOUD{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 6. capslock -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-keyboard"></i></span>
+              <h3>capslock</h3>
+            </div>
+            <span class="corp-tech-tags">Swift · macOS Productivity</span>
+            <p>{{ if $zh }}面向程序员与终端重度用户的 macOS 键位增强神器，将 CapsLock 映射为高频切换与方向键层。{{ else }}Hyper-productive macOS keyboard enhancement utility mapping CapsLock into navigation layers for developers.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="https://github.com/pgsty/capslock" target="_blank" rel="noopener">{{ if $zh }}查看代码仓库{{ else }}View repository{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 第四部分：公共社区基础设施与知识生态 ============ -->
+    <section class="corp-section corp-section-tint" id="foundations">
+      <div class="landing-container">
+        <div class="corp-section-heading">
+          <div>
+            <p class="corp-eyebrow">{{ if $zh }}社区公共资源{{ else }}COMMUNITY FOUNDATIONS{{ end }}</p>
+            <h2>{{ if $zh }}持续投入公共基础设施，反哺开源社区{{ else }}Long-Term Investment in Shared Community Foundations{{ end }}</h2>
+          </div>
+          <p>{{ if $zh }}软件之外，我们维护全版本中文手册、全球英文知识检索库、知识图谱与 Linux 原生软件仓库，面向所有人免费开放。{{ else }}Beyond software, we maintain Chinese documentation, the global knowledge center, knowledge graphs, and package repositories.{{ end }}</p>
+        </div>
+
+        <div class="corp-workload-grid">
+          <!-- 1. PGSQL.CC -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-book"></i></span>
+              <h3>PGSQL.CC</h3>
+            </div>
+            <span class="corp-tech-tags">PostgreSQL 中文文档 · 全版本检索</span>
+            <p>{{ if $zh }}持续翻译维护 PostgreSQL 13 至 18 全大版本中文官方手册，支持毫秒级全文检索与版本对比。{{ else }}Full-text searchable Chinese PostgreSQL manuals across versions 13–18, translated and maintained for the community.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="https://pgsql.cc/docs/" target="_blank" rel="noopener">{{ if $zh }}阅读中文手册{{ else }}Read Chinese manuals{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 2. PG.CENTER -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-compass"></i></span>
+              <h3>PG.CENTER</h3>
+            </div>
+            <span class="corp-tech-tags">Global Knowledge Hub · GUC & SQL</span>
+            <p>{{ if $zh }}汇集 PostgreSQL 英文手册、版本演进差异、全部内核配置参数（GUC）与系统目录参考。{{ else }}English PostgreSQL documentation hub, version diffs, all GUC configuration parameters, and catalog references.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="https://pg.center/" target="_blank" rel="noopener">{{ if $zh }}访问英文知识库{{ else }}Visit PG.CENTER{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 3. Knowledge Graph -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span>
+              <h3>{{ if $zh }}PostgreSQL 知识图谱{{ else }}Knowledge Graph{{ end }}</h3>
+            </div>
+            <span class="corp-tech-tags">Graph · Parameters · Catalogs</span>
+            <p>{{ if $zh }}将 SQL 语法、配置参数、系统函数与数据字典以图拓扑相互关联，直观探索数据库机理。{{ else }}Connected knowledge graph visualizing the relationships between SQL commands, parameters, functions, and catalogs.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="{{ if $zh }}https://pgsql.cc/wiki/{{ else }}https://pg.center/wiki/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}探索知识图谱{{ else }}Explore knowledge graph{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 4. PGSTY Repo -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-boxes-stacked"></i></span>
+              <h3>{{ if $zh }}PGSTY 软件仓库{{ else }}Package Repository{{ end }}</h3>
+            </div>
+            <span class="corp-tech-tags">APT & YUM · EL 8–10 · Debian/Ubuntu</span>
+            <p>{{ if $zh }}为主流 Linux 发行版编译并分发 576 款原生扩展包，提供全球高速 CDN 与国内完整镜像。{{ else }}Native RPM and DEB package repository distributing 576 extensions with global CDN and Chinese mirrors.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="{{ if $zh }}https://pigsty.cc/docs/repo/{{ else }}https://pigsty.io/docs/repo/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}查看软件仓库{{ else }}Explore repository{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 5. OINK Theme -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-solid fa-feather"></i></span>
+              <h3>OINK</h3>
+            </div>
+            <span class="corp-tech-tags">Hugo Extended · Local-First Theme</span>
+            <p>{{ if $zh }}纯 Hugo 实现的本地优先开源技术文档主题，无 npm 依赖，驱动 PGSTY 全系技术站点。{{ else }}A local-first Hugo Extended documentation theme with zero npm dependencies, powering all PGSTY sites.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="{{ if $zh }}https://oink.pgsty.com/zh/{{ else }}https://oink.pgsty.com/{{ end }}" target="_blank" rel="noopener">{{ if $zh }}了解 OINK 主题{{ else }}Explore OINK theme{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <!-- 6. GitHub Org -->
+          <article class="corp-workload-card">
+            <div class="corp-workload-header">
+              <span class="corp-workload-icon" aria-hidden="true"><i class="fa-brands fa-github"></i></span>
+              <h3>PGSTY on GitHub</h3>
+            </div>
+            <span class="corp-tech-tags">Open Source · Public Repositories</span>
+            <p>{{ if $zh }}探索我们公开的全部代码仓库、发行版本与社区讨论，欢迎提交 issue、PR 与参与贡献。{{ else }}Explore all public repositories, release tags, and discussions. Issues, pull requests, and contributions welcome.{{ end }}</p>
+            <div style="margin-top: auto; padding-top: 16px;">
+              <a class="corp-link" href="https://github.com/pgsty" target="_blank" rel="noopener">{{ if $zh }}前往 GitHub 组织{{ else }}Visit GitHub organization{{ end }} <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 第五部分：许可与服务边界 ============ -->
     <section class="corp-section">
       <div class="landing-container corp-prose">{{ .Content }}</div>
     </section>
+
     {{ partial "portal/contact-band.html" (dict "page" . "title" (cond $zh "需要实施或支持服务？" "Need implementation or support?") "desc" (cond $zh "说明您正在评估的项目与使用场景，我们可以一起确认后续工作。" "Tell us which project you are evaluating and how you plan to use it.") "pricing" true) }}
   </main>
   {{ partial "portal/footer.html" . }}

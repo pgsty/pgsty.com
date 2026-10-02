@@ -16,7 +16,7 @@ data processing inside software that you deploy yourself, or replace any
 data handling terms agreed for a customer engagement.
 
 For privacy questions or requests, contact
-**[rh@vonng.com](mailto:rh@vonng.com)** with “Privacy” in the subject line.
+**[ron@pgsty.com](mailto:ron@pgsty.com)** with “Privacy” in the subject line.
 
 ## Information involved
 

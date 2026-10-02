@@ -65,53 +65,154 @@ languages:
           weight: 10
           pageRef: /services
           params: { icon: fa-solid fa-headset }
+        - identifier: services-overview
+          parent: services
+          name: Professional Services
+          weight: 11
+          pageRef: /services
+          params: { icon: fa-solid fa-headset }
+        - identifier: services-pricing
+          parent: services
+          name: Plans & Pricing
+          weight: 12
+          pageRef: /price
+          params: { icon: fa-solid fa-tags }
+
         - identifier: projects
           name: Open Source
           weight: 20
           pageRef: /projects
           params: { icon: fa-solid fa-cubes }
+        - identifier: projects-overview
+          parent: projects
+          name: All Open Source
+          weight: 21
+          pageRef: /projects
+          params: { icon: fa-solid fa-cubes }
+        - identifier: projects-pigsty
+          parent: projects
+          name: Pigsty (PG Distribution)
+          weight: 22
+          url: https://pigsty.io/
+          params: { icon: fa-solid fa-database }
+        - identifier: projects-silo
+          parent: projects
+          name: Silo (S3 Object Storage)
+          weight: 23
+          url: https://silo.pgsty.com/
+          params: { icon: fa-solid fa-layer-group }
+        - identifier: projects-pig
+          parent: projects
+          name: PIG (Package Manager)
+          weight: 24
+          url: https://pig.pgsty.com/
+          params: { icon: fa-solid fa-terminal }
+        - identifier: projects-exporter
+          parent: projects
+          name: PG Exporter (Metrics)
+          weight: 25
+          url: https://exp.pgsty.com/
+          params: { icon: fa-solid fa-chart-line }
+        - identifier: projects-sow
+          parent: projects
+          name: SOW (Repo Publisher)
+          weight: 26
+          url: https://sow.pgsty.com/
+          params: { icon: fa-solid fa-box-archive }
+        - identifier: projects-barn
+          parent: projects
+          name: Barn (VM Sandbox)
+          weight: 27
+          url: https://barn.pgsty.com/
+          params: { icon: fa-solid fa-server }
+
         - identifier: solutions
           name: Solutions
           weight: 30
           pageRef: /solutions
           params: { icon: fa-solid fa-diagram-project }
+        - identifier: solutions-overview
+          parent: solutions
+          name: Workload Solutions
+          weight: 31
+          pageRef: /solutions
+          params: { icon: fa-solid fa-diagram-project }
+        - identifier: solutions-exit
+          parent: solutions
+          name: Cloud Exit Assessment
+          weight: 32
+          pageRef: /solutions/cloud-exit
+          params: { icon: fa-solid fa-arrow-right-arrow-left }
+
         - identifier: resources
           name: Resources
           weight: 40
           pageRef: /resources
           params: { icon: fa-solid fa-book-open }
-        - identifier: pricing
-          name: Pricing
-          weight: 50
-          pageRef: /price
-          params: { icon: fa-solid fa-tags }
+        - identifier: resources-overview
+          parent: resources
+          name: All Resources
+          weight: 41
+          pageRef: /resources
+          params: { icon: fa-solid fa-book-open }
+        - identifier: resources-repo
+          parent: resources
+          name: Package Repository
+          weight: 42
+          url: https://pigsty.io/docs/repo/
+          params: { icon: fa-solid fa-boxes-stacked }
+        - identifier: resources-pgdoc
+          parent: resources
+          name: PostgreSQL in Chinese
+          weight: 43
+          url: https://pgsql.cc/docs/
+          params: { icon: fa-solid fa-book }
+        - identifier: resources-pgcenter
+          parent: resources
+          name: PG.CENTER
+          weight: 44
+          url: https://pg.center/
+          params: { icon: fa-solid fa-compass }
+        - identifier: resources-wiki
+          parent: resources
+          name: Knowledge Graph
+          weight: 45
+          url: https://pg.center/wiki/
+          params: { icon: fa-solid fa-diagram-project }
+        - identifier: resources-pgext
+          parent: resources
+          name: PGEXT.CLOUD
+          weight: 46
+          url: https://pgext.cloud/
+          params: { icon: fa-solid fa-puzzle-piece }
+
         - identifier: company
           name: Company
-          weight: 60
+          weight: 50
           pageRef: /about
           params: { icon: fa-solid fa-building }
         - identifier: company-about
           parent: company
           name: About PGSTY
-          weight: 61
+          weight: 51
           pageRef: /about
           params: { icon: fa-solid fa-circle-info }
         - identifier: company-contact
           parent: company
           name: Contact
-          weight: 62
+          weight: 52
           pageRef: /contact
           params: { icon: fa-solid fa-envelope }
         - identifier: company-privacy
           parent: company
           name: Privacy notice
-          weight: 63
+          weight: 53
           pageRef: /privacy
           params: { icon: fa-solid fa-shield-halved }
         - identifier: company-terms
           parent: company
           name: Terms & engagement
-          weight: 64
+          weight: 54
           pageRef: /terms
           params: { icon: fa-solid fa-file-lines }
   zh:
@@ -145,53 +246,154 @@ languages:
           weight: 10
           pageRef: /services
           params: { icon: fa-solid fa-headset }
+        - identifier: services-overview
+          parent: services
+          name: 服务总览
+          weight: 11
+          pageRef: /services
+          params: { icon: fa-solid fa-headset }
+        - identifier: services-pricing
+          parent: services
+          name: 服务定价
+          weight: 12
+          pageRef: /price
+          params: { icon: fa-solid fa-tags }
+
         - identifier: projects
           name: 开源项目
           weight: 20
           pageRef: /projects
           params: { icon: fa-solid fa-cubes }
+        - identifier: projects-overview
+          parent: projects
+          name: 开源体系总览
+          weight: 21
+          pageRef: /projects
+          params: { icon: fa-solid fa-cubes }
+        - identifier: projects-pigsty
+          parent: projects
+          name: Pigsty (PG 发行版)
+          weight: 22
+          url: https://pigsty.cc/
+          params: { icon: fa-solid fa-database }
+        - identifier: projects-silo
+          parent: projects
+          name: Silo (S3 对象存储)
+          weight: 23
+          url: https://silo.pgsty.com/zh/
+          params: { icon: fa-solid fa-layer-group }
+        - identifier: projects-pig
+          parent: projects
+          name: PIG (扩展包管理器)
+          weight: 24
+          url: https://pig.pgsty.com/zh/
+          params: { icon: fa-solid fa-terminal }
+        - identifier: projects-exporter
+          parent: projects
+          name: PG Exporter (监控导出器)
+          weight: 25
+          url: https://exp.pgsty.com/zh/
+          params: { icon: fa-solid fa-chart-line }
+        - identifier: projects-sow
+          parent: projects
+          name: SOW (仓库管理器)
+          weight: 26
+          url: https://sow.pgsty.com/zh/
+          params: { icon: fa-solid fa-box-archive }
+        - identifier: projects-barn
+          parent: projects
+          name: Barn (本地虚拟机)
+          weight: 27
+          url: https://barn.pgsty.com/zh/
+          params: { icon: fa-solid fa-server }
+
         - identifier: solutions
           name: 解决方案
           weight: 30
           pageRef: /solutions
           params: { icon: fa-solid fa-diagram-project }
+        - identifier: solutions-overview
+          parent: solutions
+          name: 业务场景方案
+          weight: 31
+          pageRef: /solutions
+          params: { icon: fa-solid fa-diagram-project }
+        - identifier: solutions-exit
+          parent: solutions
+          name: 下云与迁移评估
+          weight: 32
+          pageRef: /solutions/cloud-exit
+          params: { icon: fa-solid fa-arrow-right-arrow-left }
+
         - identifier: resources
           name: 社区资源
           weight: 40
           pageRef: /resources
           params: { icon: fa-solid fa-book-open }
-        - identifier: pricing
-          name: 服务价格
-          weight: 50
-          pageRef: /price
-          params: { icon: fa-solid fa-tags }
+        - identifier: resources-overview
+          parent: resources
+          name: 社区资源总览
+          weight: 41
+          pageRef: /resources
+          params: { icon: fa-solid fa-book-open }
+        - identifier: resources-repo
+          parent: resources
+          name: 软件包仓库
+          weight: 42
+          url: https://pigsty.cc/docs/repo/
+          params: { icon: fa-solid fa-boxes-stacked }
+        - identifier: resources-pgdoc
+          parent: resources
+          name: PG 中文文档
+          weight: 43
+          url: https://pgsql.cc/docs/
+          params: { icon: fa-solid fa-book }
+        - identifier: resources-pgcenter
+          parent: resources
+          name: PG.CENTER
+          weight: 44
+          url: https://pg.center/
+          params: { icon: fa-solid fa-compass }
+        - identifier: resources-wiki
+          parent: resources
+          name: 知识图谱
+          weight: 45
+          url: https://pgsql.cc/wiki/
+          params: { icon: fa-solid fa-diagram-project }
+        - identifier: resources-pgext
+          parent: resources
+          name: PGEXT.CLOUD
+          weight: 46
+          url: https://pgext.cloud/
+          params: { icon: fa-solid fa-puzzle-piece }
+
         - identifier: company
           name: 关于公司
-          weight: 60
+          weight: 50
           pageRef: /about
           params: { icon: fa-solid fa-building }
         - identifier: company-about
           parent: company
           name: 关于 PGSTY
-          weight: 61
+          weight: 51
           pageRef: /about
           params: { icon: fa-solid fa-circle-info }
         - identifier: company-contact
           parent: company
           name: 联系我们
-          weight: 62
+          weight: 52
           pageRef: /contact
           params: { icon: fa-solid fa-envelope }
         - identifier: company-privacy
           parent: company
           name: 隐私声明
-          weight: 63
+          weight: 53
           pageRef: /privacy
           params: { icon: fa-solid fa-shield-halved }
         - identifier: company-terms
           parent: company
           name: 服务条款
-          weight: 64
+          weight: 54
           pageRef: /terms
           params: { icon: fa-solid fa-file-lines }
 

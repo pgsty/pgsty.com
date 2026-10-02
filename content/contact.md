@@ -10,7 +10,7 @@ search_boost: 1.2
 
 ## Business enquiries
 
-Email **[rh@vonng.com](mailto:rh@vonng.com)** for service enquiries, quotations,
+Email **[ron@pgsty.com](mailto:ron@pgsty.com)** for service enquiries, quotations,
 partnerships, and procurement information. PGSTY PTE. LTD. is a Singapore
 company providing software engineering and professional services for
 PostgreSQL and open-source infrastructure.
@@ -53,7 +53,7 @@ before work starts.
 ## Existing customers and project users
 
 Customers should use the support channel agreed for their engagement.
-For account or contract questions, email [rh@vonng.com](mailto:rh@vonng.com)
+For account or contract questions, email [ron@pgsty.com](mailto:ron@pgsty.com)
 with your company name and the relevant quotation or invoice reference.
 
 For public, non-confidential software questions and bug reports, use the

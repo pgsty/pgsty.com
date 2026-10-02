@@ -52,8 +52,8 @@ tiers:
       - 年度健康检查报告
     cta: Contact
     ctaZh: 联系咨询
-    url: "mailto:rh@vonng.com?subject=Pigsty Standard"
-    urlZh: "mailto:rh@vonng.com?subject=Pigsty Standard"
+    url: "mailto:ron@pgsty.com?subject=Pigsty Standard"
+    urlZh: "mailto:ron@pgsty.com?subject=Pigsty Standard"
 
   - key: pro
     name: Professional
@@ -84,8 +84,8 @@ tiers:
       - 季度健康检查报告
     cta: Request a quote
     ctaZh: 获取报价
-    url: "mailto:rh@vonng.com?subject=Pigsty Professional"
-    urlZh: "mailto:rh@vonng.com?subject=Pigsty Professional"
+    url: "mailto:ron@pgsty.com?subject=Pigsty Professional"
+    urlZh: "mailto:ron@pgsty.com?subject=Pigsty Professional"
 
   - key: enterprise
     name: Enterprise
@@ -117,8 +117,8 @@ tiers:
       - 月度健康检查报告
     cta: Talk to us
     ctaZh: 商务洽谈
-    url: "mailto:rh@vonng.com?subject=Pigsty Enterprise"
-    urlZh: "mailto:rh@vonng.com?subject=Pigsty Enterprise"
+    url: "mailto:ron@pgsty.com?subject=Pigsty Enterprise"
+    urlZh: "mailto:ron@pgsty.com?subject=Pigsty Enterprise"
 
 note: Subscriptions are billed annually. Listed response targets and support hours apply only when included in the signed service agreement. Confirm availability, currency, taxes and the final scope in your quotation.
 noteZh: 订阅按年计费。页面列出的响应目标与支持时间，仅在签署的服务协议明确纳入时适用。服务可用性、结算币种、税费与最终范围以书面报价为准。

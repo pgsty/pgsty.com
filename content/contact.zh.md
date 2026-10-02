@@ -10,7 +10,7 @@ search_boost: 1.2
 
 ## 商务咨询
 
-服务咨询、项目报价、合作及采购信息，请发送邮件至 **[rh@vonng.com](mailto:rh@vonng.com)**。PGSTY PTE. LTD. 是一家新加坡公司，提供 PostgreSQL 与开源基础设施相关的软件工程及专业服务。
+服务咨询、项目报价、合作及采购信息，请发送邮件至 **[ron@pgsty.com](mailto:ron@pgsty.com)**。PGSTY PTE. LTD. 是一家新加坡公司，提供 PostgreSQL 与开源基础设施相关的软件工程及专业服务。
 
 我们可以协助您开展：
 
@@ -36,7 +36,7 @@ search_boost: 1.2
 
 ## 现有客户与开源用户
 
-已签约客户请使用协议约定的支持渠道。账户或合同问题可发送至 [rh@vonng.com](mailto:rh@vonng.com)，并注明公司名称和相关报价或账单编号。
+已签约客户请使用协议约定的支持渠道。账户或合同问题可发送至 [ron@pgsty.com](mailto:ron@pgsty.com)，并注明公司名称和相关报价或账单编号。
 
 非保密的软件问题与缺陷报告，可提交至 [PGSTY GitHub 组织](https://github.com/pgsty)下的相应项目仓库。社区问题跟踪系统内容公开，不能替代合同约定的支持渠道。对于可能涉及安全漏洞的敏感问题，请先通过邮件联系，再讨论技术细节的披露方式。
 

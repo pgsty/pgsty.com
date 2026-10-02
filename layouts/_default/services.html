@@ -52,6 +52,38 @@
         </div>
       </div>
     </section>
+    <section class="corp-section corp-section-tint" id="plans">
+      <div class="landing-container">
+        <div class="corp-section-heading">
+          <div>
+            <p class="corp-eyebrow">{{ if $zh }}服务方案与定价{{ else }}PLANS & PRICING{{ end }}</p>
+            <h2>{{ if $zh }}订阅支持与按需工程{{ else }}Subscription support and on-demand engineering{{ end }}</h2>
+          </div>
+          <p>{{ if $zh }}按业务规模选择持续商业订阅，或按具体工程目标选择按需咨询。透明价格，明确承诺，严格按书面协议交付。{{ else }}Choose continuous annual support for production peace of mind, or targeted on-demand engineering for migrations and emergencies.{{ end }}</p>
+        </div>
+
+        <div class="tier-grid">
+          {{ range hugo.Data.portal.pricing.tiers }}
+          <article class="tier-card{{ if .featured }} tier-card--featured{{ end }}">
+            <header class="tier-head">
+              <p class="tier-tier silkscreen">{{ if $zh }}{{ .tierZh }}{{ else }}{{ .tier }}{{ end }}</p>
+              <p class="tier-tagline">{{ if $zh }}{{ .taglineZh }}{{ else }}{{ .tagline }}{{ end }}</p>
+            </header>
+            <p class="tier-price"><b>{{ if $zh }}{{ .priceZh }}{{ else }}{{ .price }}{{ end }}</b><span>{{ if $zh }}{{ .periodZh }}{{ else }}{{ .period }}{{ end }}</span></p>
+            <ul class="tier-features">
+              {{ $feats := cond $zh .featuresZh .features }}
+              {{ range $feats }}<li><i class="fas fa-check" aria-hidden="true"></i>{{ . }}</li>{{ end }}
+            </ul>
+            <a href="{{ relLangURL "price/" }}" class="btn {{ if .featured }}btn-primary{{ else }}btn-line{{ end }} tier-cta">{{ if $zh }}查看方案详情{{ else }}View plan details{{ end }}</a>
+          </article>
+          {{ end }}
+        </div>
+
+        <div style="text-align: center; margin-top: 36px;">
+          <a class="btn btn-primary" href="{{ relLangURL "price/" }}">{{ if $zh }}查看完整方案规格对比表（Datasheet）{{ else }}Compare Full Plan Datasheet{{ end }} <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
     <section class="corp-section">
       <div class="landing-container corp-prose">{{ .Content }}</div>
     </section>

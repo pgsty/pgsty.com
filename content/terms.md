@@ -12,7 +12,7 @@ search_keywords: [terms, contract, delivery, cancellation, refund, payment]
 
 This website presents the software projects and professional services of
 **PGSTY PTE. LTD.**, a Singapore company. Contact us at
-[rh@vonng.com](mailto:rh@vonng.com) about these terms or a proposed engagement.
+[ron@pgsty.com](mailto:ron@pgsty.com) about these terms or a proposed engagement.
 
 This page explains the website and our procurement process. The quotation,
 order, scope of work, or service agreement accepted for a specific engagement
@@ -67,7 +67,7 @@ release information provided with each project.
 ## Cancellation and refunds
 
 To request cancellation, rescheduling, or a refund, email
-[rh@vonng.com](mailto:rh@vonng.com) with your company name, quotation or invoice
+[ron@pgsty.com](mailto:ron@pgsty.com) with your company name, quotation or invoice
 reference, the service concerned, and the reason for the request.
 
 Cancellation and refund eligibility depend on the accepted quotation or
@@ -108,4 +108,4 @@ written proposal.
 
 Information handling on this website and in business enquiries is described
 in the [privacy notice](/privacy/). Questions and concerns can be sent to
-[rh@vonng.com](mailto:rh@vonng.com).
+[ron@pgsty.com](mailto:ron@pgsty.com).

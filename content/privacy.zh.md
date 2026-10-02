@@ -12,7 +12,7 @@ search_keywords: [隐私, 个人信息, Cookie, 本地存储, 联系]
 
 本说明适用于 pgsty.com 公司网站，以及您向 PGSTY PTE. LTD. 发送的商务咨询信息。它不描述您自行部署的软件内部的数据处理行为，也不替代具体客户项目中约定的数据处理条件。
 
-如有隐私问题或相关请求，请发送邮件至 **[rh@vonng.com](mailto:rh@vonng.com)**，并在主题中注明“隐私”。
+如有隐私问题或相关请求，请发送邮件至 **[ron@pgsty.com](mailto:ron@pgsty.com)**，并在主题中注明“隐私”。
 
 ## 涉及哪些信息
 
