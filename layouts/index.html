@@ -45,21 +45,41 @@
               <div class="showcase-icon"><i class="fa-solid fa-database"></i></div>
               <h4>PostgreSQL</h4>
               <p>{{ if $zh }}14–18 完整内核，Patroni 自动故障切换与多级高可用。{{ else }}Full PG 14–18 kernel with Patroni and etcd automated HA failover.{{ end }}</p>
+              <div class="showcase-chips">
+                <span class="showcase-chip">PG 14–18</span>
+                <span class="showcase-chip">Patroni</span>
+                <span class="showcase-chip">HA</span>
+              </div>
             </div>
             <div class="showcase-col">
               <div class="showcase-icon"><i class="fa-solid fa-layer-group"></i></div>
               <h4>Silo & Storage</h4>
               <p>{{ if $zh }}S3 兼容分布式对象存储，冷热分层与秒级 PITR 恢复。{{ else }}S3-compatible object storage with pgBackRest PITR point-in-time recovery.{{ end }}</p>
+              <div class="showcase-chips">
+                <span class="showcase-chip">S3 API</span>
+                <span class="showcase-chip">pgBackRest</span>
+                <span class="showcase-chip">PITR</span>
+              </div>
             </div>
             <div class="showcase-col">
               <div class="showcase-icon"><i class="fa-solid fa-chart-line"></i></div>
               <h4>Observability</h4>
               <p>{{ if $zh }}Prometheus 与 Grafana，600+ 生产指标开箱即用。{{ else }}Prometheus and Grafana with 600+ instant production metric dashboards.{{ end }}</p>
+              <div class="showcase-chips">
+                <span class="showcase-chip">Prometheus</span>
+                <span class="showcase-chip">Grafana</span>
+                <span class="showcase-chip">600+</span>
+              </div>
             </div>
             <div class="showcase-col">
               <div class="showcase-icon"><i class="fa-solid fa-cubes"></i></div>
               <h4>Extension Matrix</h4>
               <p>{{ if $zh }}PIG 专用包管理器，576 款生产级扩展插件开箱即用。{{ else }}PIG package manager with 576 ready-to-use production extensions.{{ end }}</p>
+              <div class="showcase-chips">
+                <span class="showcase-chip">PIG</span>
+                <span class="showcase-chip">576+ Exts</span>
+                <span class="showcase-chip">RPM/DEB</span>
+              </div>
             </div>
           </div>
           <div class="hero-showcase-footer">

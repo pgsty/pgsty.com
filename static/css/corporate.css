@@ -7,7 +7,7 @@
    -------------------------------------------------------------------------- */
 :root {
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  --font-mono: ui-monospace, "SF Mono", "Fira Code", Menlo, Monaco, Consolas, monospace;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", "Fira Code", Menlo, Monaco, Consolas, monospace;
   --font-display: var(--font-sans);
   --font-head: var(--font-sans);
   --font-body: var(--font-sans);
@@ -437,6 +437,32 @@ body.landing-page::before {
 .td-site-header .td-nav-search-box__hint,
 .td-site-header .td-nav-search-box__kbd {
   display: none;
+}
+
+@media (min-width: 1080px) {
+  .td-site-header .td-nav-search-box {
+    width: auto !important;
+    height: 38px !important;
+    padding: 0 14px 0 12px !important;
+    gap: 10px !important;
+    border-radius: var(--radius-full) !important;
+  }
+  .td-site-header .td-nav-search-box__hint {
+    display: inline-block !important;
+    font-size: 0.82rem !important;
+    color: var(--ink-mute) !important;
+  }
+  .td-site-header .td-nav-search-box__kbd {
+    display: inline-block !important;
+    font-family: var(--font-mono) !important;
+    font-size: 0.72rem !important;
+    line-height: 1 !important;
+    padding: 3px 6px !important;
+    border-radius: var(--radius-xs) !important;
+    background: var(--bg-soft) !important;
+    border: 1px solid var(--line) !important;
+    color: var(--ink-mute) !important;
+  }
 }
 
 .corp-nav-contact {
@@ -3568,3 +3594,659 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
     white-space: normal;
   }
 }
+
+/* ==========================================================================
+   Typography & Card Height Polish — Phase 2 (2026-10)
+   ========================================================================== */
+
+/* Ensure heading balance propagates to deeper card titles */
+.corp-workload-card h3,
+.corp-pipeline-card h3,
+.corp-faq summary,
+.tier-tier,
+.svc-name,
+.ondemand-info h5 {
+  text-wrap: balance;
+}
+
+/* Card title height symmetry baselines */
+.corp-workload-card h3 {
+  min-height: calc(1.35em * 2);
+  line-height: 1.35;
+}
+
+.corp-pipeline-card h3 {
+  min-height: calc(1.35em * 2);
+  line-height: 1.35;
+}
+
+/* Ensure description text uses pretty wrapping to avoid CJK orphans */
+.corp-workload-card p,
+.corp-pipeline-card p,
+.svc-desc,
+.tier-tagline,
+.faq-a,
+.case-body {
+  text-wrap: pretty;
+}
+
+/* Footer columns: enforce equal vertical cadence */
+.corp-footer-grid > div:not(.corp-footer-brand) {
+  min-height: 0;
+}
+
+.corp-footer-grid > div:not(.corp-footer-brand) ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.corp-footer li {
+  margin: 0 0 11px;
+  line-height: 1.5;
+}
+
+/* Ensure hero showcase footer tags don't orphan on narrow viewports */
+.hero-showcase-footer {
+  text-wrap: balance;
+}
+
+/* ==========================================================================
+   Modern Tailwind & Linear Visual Polish — Elite Tier (2026-10)
+   ========================================================================== */
+
+/* 1. Pulse animations for live status beacons */
+@keyframes ping-dot {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.corp-eyebrow::before,
+.status-pulse {
+  animation: ping-dot 2.2s infinite cubic-bezier(0.4, 0, 0.6, 1) !important;
+}
+
+/* 2. Architecture Showcase Console Polish */
+.hero-showcase {
+  border-radius: var(--radius-2xl) !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px var(--card-border) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+html[data-theme='dark'] .hero-showcase {
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.hero-showcase:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 32px 64px -16px rgba(15, 23, 42, 0.16), 0 0 0 1px var(--pg-border), 0 0 30px -4px var(--pg-glow) !important;
+}
+
+.hero-showcase-header {
+  padding: 13px 20px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line);
+}
+
+.showcase-dots .dot {
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.showcase-col {
+  padding: 26px 22px !important;
+  transition: background var(--duration-fast) ease;
+}
+
+.showcase-col:hover {
+  background: var(--bg-elev-2);
+}
+
+.showcase-col .showcase-icon {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: var(--radius-md) !important;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(56, 189, 248, 0.08)) !important;
+  border: 1px solid var(--pg-border) !important;
+  color: var(--pg) !important;
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem !important;
+  margin-bottom: 16px !important;
+  transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) ease !important;
+}
+
+.showcase-col:hover .showcase-icon {
+  transform: scale(1.12);
+  box-shadow: 0 4px 14px var(--pg-glow);
+}
+
+.showcase-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.showcase-chip {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 550;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+  transition: all var(--duration-fast) ease;
+}
+
+.showcase-col:hover .showcase-chip {
+  border-color: var(--pg-border);
+  color: var(--pg);
+  background: var(--bg-elev);
+}
+
+.showcase-tag {
+  box-shadow: var(--shadow-xs);
+  transition: all var(--duration-fast) var(--ease-spring) !important;
+}
+
+.showcase-tag:hover {
+  transform: translateY(-2px) !important;
+  border-color: var(--pg-border) !important;
+  box-shadow: 0 4px 12px var(--pg-glow) !important;
+  color: var(--pg) !important;
+}
+
+/* 3. Button Micro-Interactions */
+.landing-page .btn-primary {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 14px var(--pg-glow) !important;
+  transition: all var(--duration-fast) var(--ease-spring) !important;
+}
+
+.landing-page .btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 8px rgba(0, 0, 0, 0.1), 0 8px 20px var(--pg-glow) !important;
+}
+
+.landing-page .btn span[aria-hidden="true"] {
+  display: inline-block;
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.landing-page .btn:hover span[aria-hidden="true"] {
+  transform: translateX(4px);
+}
+
+.landing-page .btn-ghost,
+.landing-page .btn-line {
+  transition: all var(--duration-fast) var(--ease-spring) !important;
+}
+
+.landing-page .btn-ghost:hover,
+.landing-page .btn-line:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* 4. Service Pillar Cards */
+.corp-service {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  padding: 30px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--duration-normal) var(--ease-spring),
+              box-shadow var(--duration-normal) var(--ease-spring),
+              border-color var(--duration-normal) ease;
+}
+
+.corp-service::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--pg), transparent);
+  opacity: 0;
+  transition: opacity var(--duration-normal) ease;
+}
+
+.corp-service:hover {
+  transform: translateY(-4px) !important;
+  border-color: var(--card-border-hover) !important;
+  box-shadow: var(--shadow-xl) !important;
+}
+
+.corp-service:hover::before {
+  opacity: 1;
+}
+
+.corp-service-icon {
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: var(--radius-md) !important;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(56, 189, 248, 0.08)) !important;
+  border: 1px solid var(--pg-border) !important;
+  color: var(--pg) !important;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem !important;
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) ease !important;
+}
+
+.corp-service:hover .corp-service-icon {
+  transform: scale(1.1);
+  box-shadow: 0 4px 14px var(--pg-glow);
+}
+
+/* 5. Open-Source Cards & Terminal Commands */
+.corp-product-featured {
+  border-radius: var(--radius-2xl) !important;
+  box-shadow: var(--shadow-md) !important;
+  padding: 36px !important;
+}
+
+.corp-product-featured:hover {
+  transform: translateY(-4px) !important;
+  border-color: var(--card-border-hover) !important;
+  box-shadow: var(--shadow-xl), 0 0 0 1px var(--card-border-hover), 0 20px 40px -10px var(--pg-glow) !important;
+}
+
+.corp-product-cmd {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 10px 14px !important;
+  background: #090d16 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: var(--radius-md) !important;
+  margin-bottom: 22px !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease !important;
+}
+
+html[data-theme='light'] .corp-product-cmd {
+  background: #0f172a !important;
+  border-color: #1e293b !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.corp-product:hover .corp-product-cmd {
+  border-color: var(--pg) !important;
+  box-shadow: 0 0 0 1px var(--pg-border), inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.corp-product-cmd code {
+  font-family: var(--font-mono) !important;
+  font-size: 0.82rem !important;
+  color: #e2e8f0 !important;
+  white-space: nowrap !important;
+  overflow-x: auto !important;
+  flex: 1;
+  letter-spacing: -0.01em;
+}
+
+.corp-product-cmd code::before {
+  content: "$ " !important;
+  color: #38bdf8 !important;
+  font-weight: 700;
+}
+
+.corp-cmd-copy {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: var(--radius-sm) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94a3b8 !important;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--duration-fast) ease !important;
+  font-size: 0.85rem !important;
+}
+
+.corp-cmd-copy:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.corp-cmd-copy.copied {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #10b981 !important;
+  border-color: #10b981 !important;
+}
+
+.corp-product-stars {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  color: var(--ink-heading);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-weight: 600;
+}
+
+.corp-product-stars i {
+  color: #f59e0b;
+}
+
+/* 6. Pricing Tier Polish */
+.tier-card {
+  border-radius: var(--radius-2xl) !important;
+  padding: 36px 30px !important;
+}
+
+.tier-card--featured {
+  border-color: var(--pg) !important;
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--pg-border) !important;
+}
+
+.tier-card--featured::before {
+  content: "★ RECOMMENDED";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #1d4ed8, #0ea5e9);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 14px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  white-space: nowrap;
+}
+
+:lang(zh) .tier-card--featured::before {
+  content: "★ 推荐方案";
+}
+
+.tier-features li i {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: rgba(16, 185, 129, 0.14);
+  color: #10b981;
+  font-size: 0.68rem;
+  flex-shrink: 0;
+}
+
+/* 7. Comparison Table */
+.cmp-wrap {
+  border-radius: var(--radius-2xl) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.cmp-table th {
+  background: var(--bg-soft);
+  backdrop-filter: blur(8px);
+}
+
+.cmp-yes {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: rgba(16, 185, 129, 0.16);
+  color: #10b981;
+  font-size: 0.75rem;
+}
+
+.cmp-no {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: var(--bg-soft);
+  color: var(--ink-mute);
+  font-size: 0.75rem;
+}
+
+/* 8. Workload Scenario Cards */
+.corp-workload-card {
+  border-radius: var(--radius-xl) !important;
+  padding: 28px !important;
+  transition: transform var(--duration-normal) var(--ease-spring),
+              box-shadow var(--duration-normal) var(--ease-spring),
+              border-color var(--duration-normal) ease;
+}
+
+.corp-workload-card:hover {
+  transform: translateY(-3px) !important;
+  border-color: var(--card-border-hover) !important;
+  box-shadow: var(--shadow-xl) !important;
+}
+
+.corp-workload-icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: var(--radius-md) !important;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(56, 189, 248, 0.08)) !important;
+  border: 1px solid var(--pg-border) !important;
+  color: var(--pg) !important;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem !important;
+  transition: transform var(--duration-fast) var(--ease-spring) !important;
+}
+
+.corp-workload-card:hover .corp-workload-icon {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px var(--pg-glow);
+}
+
+.corp-tech-tags {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--pg);
+  background: var(--pg-soft);
+  border: 1px solid var(--pg-border);
+  border-radius: var(--radius-sm);
+  padding: 3px 9px;
+  margin-bottom: 14px;
+}
+
+/* 9. Pipeline Synergy Lifecycle Cards */
+.corp-pipeline-card {
+  border-radius: var(--radius-xl) !important;
+  padding: 26px !important;
+  transition: transform var(--duration-normal) var(--ease-spring),
+              box-shadow var(--duration-normal) var(--ease-spring),
+              border-color var(--duration-normal) ease;
+}
+
+.corp-pipeline-card:hover {
+  transform: translateY(-3px) !important;
+  border-color: var(--card-border-hover) !important;
+  box-shadow: var(--shadow-xl) !important;
+}
+
+.corp-pipeline-num {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 750;
+  color: var(--pg);
+}
+
+.corp-pipeline-tool {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  background: var(--pg-soft);
+  border: 1px solid var(--pg-border);
+  color: var(--pg);
+}
+
+/* 10. Custom Modern Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-mute);
+}
+
+/* 11. Focus Visibility Ring */
+:focus-visible {
+  outline: 2px solid var(--pg);
+  outline-offset: 3px;
+}
+
+/* 12. Floating Dropdown Panels */
+.td-site-header .td-nav-menu__panel {
+  border-radius: var(--radius-xl) !important;
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--line) !important;
+  padding: 8px !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.td-site-header .td-nav-menu__item-link {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 10px 14px !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--ink-soft) !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  transition: all var(--duration-fast) ease !important;
+  text-decoration: none !important;
+}
+
+.td-site-header .td-nav-menu__item-link:hover {
+  background: var(--bg-soft) !important;
+  color: var(--pg) !important;
+  transform: translateX(3px);
+}
+
+.td-site-header .td-nav-menu__item-link i {
+  color: var(--pg) !important;
+  font-size: 0.95rem !important;
+  width: 20px !important;
+  text-align: center !important;
+}
+
+/* 13. Spotlight / Raycast Command Palette */
+.td-shell-search__backdrop {
+  background: rgba(9, 13, 22, 0.65) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+}
+
+.td-shell-search__panel {
+  max-width: 620px !important;
+  border-radius: 18px !important;
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border-hover) !important;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5), 0 0 40px -10px var(--pg-glow) !important;
+  overflow: hidden !important;
+}
+
+.td-shell-search__head {
+  padding: 14px 18px !important;
+  border-bottom: 1px solid var(--line) !important;
+  background: var(--bg-soft) !important;
+}
+
+.td-shell-search__input {
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  color: var(--ink-heading) !important;
+}
+
+.td-shell-search__input::placeholder {
+  color: var(--ink-mute) !important;
+}
+
+.td-shell-search__item {
+  border-radius: 10px !important;
+  margin: 2px 0 !important;
+  padding: 10px 14px !important;
+  transition: all var(--duration-fast) ease !important;
+}
+
+.td-shell-search__item:hover,
+.td-shell-search__item[aria-selected='true'] {
+  background: var(--pg-soft) !important;
+  color: var(--pg) !important;
+}
+
+.td-shell-search__item:hover .td-shell-search__item-title,
+.td-shell-search__item[aria-selected='true'] .td-shell-search__item-title {
+  color: var(--pg) !important;
+}
+
+.td-shell-search__item-title {
+  font-weight: 600 !important;
+  color: var(--ink-heading) !important;
+}
+
+.td-shell-search__group-label {
+  font-family: var(--font-mono) !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-mute) !important;
+  padding: 8px 12px 4px !important;
+}
+
+.td-shell-search__foot {
+  padding: 10px 18px !important;
+  background: var(--bg-soft) !important;
+  border-top: 1px solid var(--line) !important;
+  font-size: 0.76rem !important;
+  color: var(--ink-mute) !important;
+}
+
+.td-shell-search__foot kbd {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius-xs) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.7rem !important;
+  padding: 2px 5px !important;
+}
+

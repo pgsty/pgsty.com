@@ -13,8 +13,10 @@
   {{ if .featured }}
   <ul class="corp-product-features">{{ range (cond $zh $p.featuresZh $p.features) }}<li>{{ . }}</li>{{ end }}</ul>
   {{ end }}
+  {{ if or .details .featured }}
   {{ if .details }}
   <p class="corp-product-use"><strong>{{ if $zh }}适用场景：{{ else }}Use it for: {{ end }}</strong>{{ if $zh }}{{ $p.useZh }}{{ else }}{{ $p.use }}{{ end }}</p>
+  {{ end }}
   <div class="corp-product-meta-bar">
     <span class="corp-product-license">{{ $p.license }} · {{ $p.lang }}</span>
     {{ with $p.stars }}<span class="corp-product-stars"><i class="fa-solid fa-star" aria-hidden="true"></i> {{ . }}</span>{{ end }}
