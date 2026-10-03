@@ -97,8 +97,8 @@ html[data-bs-theme='dark'] {
   --ink: #f8fafc;
   --ink-heading: #ffffff;
   --ink-soft: #94a3b8;
-  --ink-mute: #64748b;
-  --ink-faint: #475569;
+  --ink-mute: #8c9cb4;
+  --ink-faint: #64748b;
 
   --pg: #60a5fa;
   --pg-strong: #93c5fd;
@@ -168,7 +168,7 @@ body.landing-page {
   color: var(--ink);
   background-color: var(--bg);
   letter-spacing: -0.01em;
-  overflow-x: clip;
+  overflow-x: visible;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -266,7 +266,10 @@ body.landing-page::before {
   justify-content: center;
   gap: 10px;
   cursor: pointer;
-  white-space: nowrap;
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.45;
   transition: all var(--duration-fast) var(--ease-spring);
   text-decoration: none !important;
 }
@@ -368,6 +371,7 @@ body.landing-page::before {
 }
 
 .td-site-header .td-nav-title {
+  display: inline;
   font-family: var(--font-head);
   font-size: 1.35rem;
   font-weight: 800;
@@ -592,8 +596,8 @@ body.landing-page::before {
   width: 6px;
   height: 6px;
   border-radius: var(--radius-full);
-  background-color: #10b981; /* Healthy tech emerald dot */
-  box-shadow: 0 0 8px #10b981;
+  background-color: var(--pg);
+  flex: 0 0 6px;
 }
 
 /* Hero Typography */
@@ -674,15 +678,15 @@ html[data-theme='dark'] .corp-hero-centered .corp-hero-line:last-child {
 }
 
 .corp-section-heading {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
   gap: 40px;
-  justify-content: space-between;
-  align-items: flex-end;
+  align-items: end;
   margin-bottom: 48px;
 }
 
 .corp-section-heading > div {
-  max-width: 680px;
+  min-width: 0;
 }
 
 .corp-section-heading h2 {
@@ -693,7 +697,7 @@ html[data-theme='dark'] .corp-hero-centered .corp-hero-line:last-child {
 }
 
 .corp-section-heading > p {
-  max-width: 460px;
+  min-width: 0;
   margin: 0;
   color: var(--ink-soft);
   font-size: 0.95rem;
@@ -792,10 +796,13 @@ html[data-theme='dark'] .corp-hero-centered .corp-hero-line:last-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-bottom: 24px;
 }
 
 .corp-product-icon {
+  flex: 0 0 auto;
   display: grid;
   place-items: center;
   width: 44px;
@@ -948,7 +955,7 @@ html[data-theme='dark'] .corp-hero-centered .corp-hero-line:last-child {
 
 .corp-resource-layout {
   display: grid;
-  grid-template-columns: 310px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.35fr);
   gap: 48px;
   align-items: start;
 }
@@ -1052,7 +1059,8 @@ html[data-theme='dark'] .corp-hero-centered .corp-hero-line:last-child {
   background: var(--bg-soft);
   border: 1px solid var(--line);
   letter-spacing: 0.01em;
-  white-space: nowrap;
+  max-width: 100%;
+  white-space: normal;
   transition: all var(--duration-fast) ease;
 }
 
@@ -1118,11 +1126,11 @@ html[data-theme='dark'] .corp-hero-centered .corp-hero-line:last-child {
 
 .corp-service-header {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
   margin-bottom: 16px;
   width: 100%;
-  min-height: 48px;
 }
 
 .corp-service-icon {
@@ -1144,20 +1152,13 @@ html[data-theme='dark'] .corp-hero-centered .corp-hero-line:last-child {
 }
 
 .corp-service-header h3 {
+  min-width: 0;
   margin: 0;
   font-weight: 700;
   color: var(--ink-heading);
   font-size: 1.12rem;
   line-height: 1.28;
   letter-spacing: -0.01em;
-}
-
-:lang(en) .corp-service-header h3,
-body:not(:lang(zh)) .corp-service-header h3 {
-  font-size: 0.98rem;
-  line-height: 1.22;
-  font-weight: 650;
-  letter-spacing: -0.015em;
 }
 
 .corp-service p {
@@ -1177,7 +1178,7 @@ body:not(:lang(zh)) .corp-service-header h3 {
    -------------------------------------------------------------------------- */
 .corp-principles {
   display: grid;
-  grid-template-columns: 310px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.35fr);
   gap: 48px;
   align-items: start;
 }
@@ -1533,6 +1534,15 @@ body:not(:lang(zh)) .corp-service-header h3 {
   margin-bottom: 0;
 }
 
+.corp-page-hero .contact-ctas {
+  justify-content: flex-start;
+}
+
+.corp-lead + .corp-grid-2,
+.corp-lead + .corp-grid-3 {
+  margin-top: 32px;
+}
+
 .contact-ctas {
   display: flex;
   flex-wrap: wrap;
@@ -1556,7 +1566,7 @@ body:not(:lang(zh)) .corp-service-header h3 {
 /* Pricing Page Overhauls (Tailwind SaaS Tier Cards) */
 .price-hero .section-title {
   font-size: clamp(1.85rem, 3.2vw, 2.45rem);
-  white-space: nowrap;
+  text-wrap: balance;
 }
 
 .price-page .landing-container {
@@ -1633,6 +1643,7 @@ body:not(:lang(zh)) .corp-service-header h3 {
 }
 
 .tier-price {
+  flex-wrap: wrap;
   font-size: 2.2rem;
   font-weight: 800;
   color: var(--ink-heading);
@@ -1661,10 +1672,10 @@ body:not(:lang(zh)) .corp-service-header h3 {
 
 .tier-features li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  line-height: 1.45;
-  white-space: nowrap;
+  line-height: 1.55;
+  white-space: normal;
 }
 
 .tier-features li i {
@@ -1721,11 +1732,11 @@ body:not(:lang(zh)) .corp-service-header h3 {
 }
 
 .cmp-table tbody tr:not(.cmp-group):hover td {
-  background: var(--bg-hover);
+  background: var(--bg-elev-2);
 }
 
 .cmp-table tbody tr:not(.cmp-group):hover td.cmp-hl {
-  background: color-mix(in srgb, var(--pg-soft) 80%, var(--bg-hover));
+  background: color-mix(in srgb, var(--pg-soft) 80%, var(--bg-elev-2));
 }
 
 .cmp-group td {
@@ -1775,6 +1786,10 @@ body:not(:lang(zh)) .corp-service-header h3 {
   margin-bottom: 32px;
 }
 
+.calc-field {
+  min-width: 0;
+}
+
 .calc-field-label {
   display: block;
   font-size: 0.76rem;
@@ -1806,6 +1821,8 @@ body:not(:lang(zh)) .corp-service-header h3 {
 
 .calc-seg {
   display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
   background: var(--bg-soft);
   padding: 3px;
   border-radius: var(--radius-md);
@@ -1904,7 +1921,13 @@ body:not(:lang(zh)) .corp-service-header h3 {
 /* Prose & Documentation typography */
 .corp-prose {
   color: var(--ink-soft);
+  min-width: 0;
   max-width: 820px;
+}
+
+.corp-prose a,
+.tco-method a {
+  overflow-wrap: anywhere;
 }
 
 .corp-prose h2 {
@@ -1948,6 +1971,8 @@ body:not(:lang(zh)) .corp-service-header h3 {
 }
 
 .corp-facts dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
   margin: 0;
   color: var(--ink-heading);
   font-weight: 500;
@@ -1964,8 +1989,8 @@ body:not(:lang(zh)) .corp-service-header h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .corp-resource-layout {
-    gap: 40px;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
+    gap: 32px;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.35fr);
   }
   .price-hero-grid,
   .tier-grid {
@@ -1974,6 +1999,35 @@ body:not(:lang(zh)) .corp-service-header h3 {
   .corp-footer-grid {
     grid-template-columns: 1.5fr repeat(4, 1fr);
     gap: 24px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .corp-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .corp-grid-2,
+  .corp-grid-3,
+  .corp-product-tools {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .corp-resource {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 14px;
+    padding: 20px;
+  }
+
+  .corp-resource-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .corp-resource-arrow {
+    display: none;
   }
 }
 
@@ -1992,15 +2046,11 @@ body:not(:lang(zh)) .corp-service-header h3 {
     padding: 68px 0;
   }
   .corp-section-heading {
-    flex-direction: column;
-    align-items: flex-start;
+    grid-template-columns: minmax(0, 1fr);
     gap: 16px;
     margin-bottom: 36px;
   }
   .corp-products-featured {
-    grid-template-columns: 1fr;
-  }
-  .corp-product-tools {
     grid-template-columns: 1fr;
   }
   .corp-service-grid {
@@ -2042,15 +2092,44 @@ body:not(:lang(zh)) .corp-service-header h3 {
   .corp-footer-brand {
     grid-column: 1 / -1;
   }
-  .td-site-header .td-nav-menu-zone {
-    display: none;
-  }
   .corp-nav-contact {
     display: none;
   }
 }
 
+/* The theme hides desktop labels below 992px; use the labelled drawer there. */
+@media (max-width: 991.98px) {
+  .td-site-header .td-nav-menu-zone,
+  .td-site-header .corp-nav-contact {
+    display: none;
+  }
+  .td-site-header .td-site-drawer-toggle {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .td-site-header .portal-nav-utils {
+    display: none;
+  }
+}
+
+.td-site-drawer {
+  inset-block-start: 72px;
+  max-height: calc(100dvh - 72px);
+}
+
 @media (max-width: 540px) {
+  .corp-facts {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 6px;
+  }
+  .corp-facts dt:not(:first-child) {
+    margin-top: 10px;
+  }
+  .calc-card {
+    padding: 24px 20px;
+  }
   .corp-hero-centered h1 {
     font-size: 2.2rem;
   }
@@ -2064,12 +2143,10 @@ body:not(:lang(zh)) .corp-service-header h3 {
   .corp-actions .btn {
     width: 100%;
   }
-  .corp-grid-2,
-  .corp-grid-3,
   .price-hero-grid,
   .tier-grid,
   .calc-controls {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .corp-footer-grid {
     grid-template-columns: 1fr;
@@ -2078,74 +2155,6 @@ body:not(:lang(zh)) .corp-service-header h3 {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
-  }
-}
-
-/* Public impact: four quiet, full-width charts within the corporate palette. */
-.impact-home { background: var(--bg-page); border-block: 1px solid var(--line); }
-.impact-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 32px 0 0; border-block: 1px solid var(--line); }
-.impact-metric { display: flex; flex-direction: column; min-width: 0; padding: 28px 24px; }
-.impact-metric dt { order: 2; margin-top: 12px; font-size: 0.86rem; font-weight: 500; }
-.impact-metric dt a { color: var(--ink-soft); text-decoration: none; }
-.impact-metric dt a:hover { color: var(--pg); }
-.impact-metric dd { margin-left: 0; }
-.impact-metric-value { display: flex; align-items: baseline; gap: 0.08em; margin-block: 0; font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.1rem); font-weight: 500; font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.045em; line-height: 1.1; color: var(--ink-heading); }
-.impact-metric-unit { font-size: 0.54em; font-weight: 450; letter-spacing: 0; color: var(--ink-soft); }
-.impact-home-foot { display: flex; justify-content: flex-end; margin-top: 24px; }
-.impact-page .corp-lead p { margin: 0; }
-.impact-section-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 24px; margin-top: 24px; }
-.impact-section-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--pg); font-size: 0.91rem; }
-.impact-section-nav .impact-data-download { margin-left: auto; justify-content: center; width: 44px; color: var(--ink-soft); }
-.impact-data-download svg { width: 19px; height: 19px; }
-.impact-page section[id] { scroll-margin-top: 100px; }
-.impact-panels { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
-.impact-panel { position: relative; min-width: 0; padding: 30px 32px; border: 1px solid var(--line); border-radius: var(--radius-xl); background: var(--bg-elev); }
-.impact-panel-head { padding: 0 104px 24px 0; }
-.impact-panel h2 { font-size: 1.55rem; line-height: 1.3; margin: 0 0 8px; text-wrap: balance; }
-.impact-panel-head p { margin: 0; color: var(--ink-soft); font-size: 0.82rem; line-height: 1.7; }
-.impact-chart-actions { position: absolute; top: 24px; right: 24px; display: flex; gap: 4px; }
-.impact-chart .impact-chart-icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border: 1px solid transparent; border-radius: var(--radius-sm); background: transparent; color: var(--ink-soft); cursor: pointer; }
-.impact-chart-icon svg { width: 18px; height: 18px; }
-.impact-chart .impact-chart-icon:hover { color: var(--pg); background: var(--bg-page); border-color: var(--line); }
-.impact-chart-icon:focus-visible, .impact-data-download:focus-visible { outline: 2px solid var(--pg); outline-offset: 3px; }
-.impact-chart-canvas { width: 100%; height: 390px; }
-.impact-chart-canvas--downloads { height: 280px; }
-.impact-table-details { border-top: 1px solid var(--line); margin-top: 16px; }
-.impact-table-details summary { cursor: pointer; padding: 16px 0 4px; min-height: 44px; color: var(--ink-soft); font-size: 0.86rem; }
-.impact-table-details summary span { margin-left: 8px; font-size: 0.78rem; opacity: 0.75; }
-.impact-table-scroll { overflow: auto; max-height: 360px; margin-top: 12px; }
-.impact-table { width: 100%; border-collapse: collapse; font-size: 0.81rem; line-height: 1.5; font-variant-numeric: tabular-nums; }
-.impact-table th, .impact-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; text-align: right; }
-.impact-table th:first-child { text-align: left; position: sticky; left: 0; background: var(--bg-elev); }
-.impact-table thead th { color: var(--ink-soft); background: var(--bg-page); position: sticky; top: 0; z-index: 1; }
-.impact-table thead th:first-child { z-index: 2; background: var(--bg-page); }
-.impact-table a { color: var(--pg); }
-.impact-page [hidden] { display: none !important; }
-@media (max-width: 960px) {
-  .impact-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .impact-metric:nth-child(n + 3) { border-top: 1px solid var(--line); }
-}
-@media (max-width: 620px) {
-  .impact-metric { padding: 24px 12px; }
-  .impact-metric-value { font-size: 2.3rem; }
-  .impact-metric dt { font-size: 0.81rem; }
-  .impact-panel { padding: 24px 16px; }
-  .impact-panels { gap: 24px; }
-  .impact-panel h2 { font-size: 1.3rem; }
-  .impact-panel-head { padding-right: 94px; }
-  .impact-panel-head p { font-size: 0.75rem; }
-  .impact-chart-actions { top: 18px; right: 12px; gap: 0; }
-  .impact-chart .impact-chart-icon { width: 44px; height: 44px; }
-  .impact-chart-canvas { height: 350px; }
-  .impact-chart-canvas--downloads { height: 280px; }
-  .impact-section-nav { gap: 4px 16px; }
-  .impact-section-nav a { font-size: 0.81rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    transition: none !important;
-    animation: none !important;
   }
 }
 
@@ -2174,7 +2183,7 @@ body:not(:lang(zh)) .corp-service-header h3 {
 }
 
 .pricing-note a {
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .section-eyebrow {
@@ -2692,11 +2701,21 @@ body:not(:lang(zh)) .corp-service-header h3 {
 }
 
 .corp-sidebar {
+  min-width: 0;
   position: sticky;
   top: 96px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.corp-sidebar .corp-facts {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 6px;
+}
+
+.corp-sidebar .corp-facts dt:not(:first-child) {
+  margin-top: 10px;
 }
 
 .corp-sidebar .corp-card {
@@ -2739,7 +2758,7 @@ body:not(:lang(zh)) .corp-service-header h3 {
     grid-template-columns: 1fr;
   }
   .corp-page-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .corp-sidebar {
     position: static;
@@ -2766,9 +2785,14 @@ html {
 }
 
 .corp-product-badges {
+  flex: 1 1 120px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 8px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .corp-product-version {
@@ -3002,47 +3026,15 @@ html {
   color: var(--ink-mute);
 }
 
-.showcase-dots {
-  display: flex;
-  gap: 7px;
-  align-items: center;
-}
-
-.dot {
-  width: 11px;
-  height: 11px;
-  border-radius: var(--radius-full);
-}
-
-.dot--red { background-color: #ef4444; }
-.dot--yellow { background-color: #f59e0b; }
-.dot--green { background-color: #10b981; }
-
-.showcase-title {
-  letter-spacing: 0.05em;
+.hero-showcase-header .showcase-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
   font-weight: 650;
-}
-
-.showcase-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #10b981;
-  font-weight: 600;
-}
-
-@keyframes pulse-glow {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-}
-
-.status-pulse {
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-full);
-  background-color: #10b981;
-  animation: pulse-glow 2.4s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--ink-heading);
+  text-wrap: balance;
 }
 
 .hero-showcase-grid {
@@ -3077,7 +3069,7 @@ html {
   background: color-mix(in srgb, var(--pg) 18%, transparent);
 }
 
-.showcase-col h4 {
+.showcase-col h3 {
   margin: 0 0 8px;
   font-size: 1.05rem;
   font-weight: 700;
@@ -3085,6 +3077,7 @@ html {
 }
 
 .showcase-col p {
+  text-wrap: balance;
   margin: 0;
   font-size: 0.82rem;
   line-height: 1.65;
@@ -3134,12 +3127,14 @@ html {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-2xl);
-  padding: 32px;
+  padding: clamp(20px, 2.7vw, 32px);
   box-shadow: var(--shadow-sm);
 }
 
 .ondemand-header {
   display: flex;
+  flex-wrap: wrap;
+  gap: 14px 24px;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
@@ -3147,7 +3142,7 @@ html {
   border-bottom: 1px solid var(--line);
 }
 
-.ondemand-header h4 {
+.ondemand-header h3 {
   margin: 0;
   font-size: 1.2rem;
   font-weight: 700;
@@ -3190,7 +3185,11 @@ html {
   margin-bottom: 12px;
 }
 
-.ondemand-info h5 {
+.ondemand-info {
+  flex: 1;
+}
+
+.ondemand-info h4 {
   margin: 0 0 6px;
   font-size: 0.98rem;
   font-weight: 650;
@@ -3214,7 +3213,7 @@ html {
   border-top: 1px dashed var(--line-strong);
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1024px) {
   .hero-showcase-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3230,9 +3229,6 @@ html {
   .hero-showcase-grid {
     grid-template-columns: 1fr;
   }
-  .showcase-title {
-    display: none;
-  }
   .corp-service-grid--4 {
     grid-template-columns: 1fr;
   }
@@ -3242,102 +3238,59 @@ html {
 }
 
 /* ==========================================================================
-   Typographic Harmonization & Natural Card Height Baselines
+   Natural Text Flow & Card Alignment
    ========================================================================== */
 
-/* Title line split helper for natural semantic breaking */
+/* Only the homepage slogan has fixed line groups. Other copy wraps as a unit. */
 .corp-title-line {
-  display: block;
+  display: inline;
 }
 
-/* 1. Architecture Showcase Console: 2-line baseline */
-.showcase-col p {
-  min-height: calc(1.65em * 2);
-  line-height: 1.65;
+.corp-card > .corp-link:last-child {
+  margin-top: auto;
 }
 
-/* 2. Main Professional Services (4 Pillars): 3-line baseline */
-.corp-service-grid--4 .corp-service p {
-  min-height: calc(1.65em * 3);
-  line-height: 1.65;
-  margin-bottom: 24px;
-}
-
-/* 3. On-Demand Engineering Services: 2-line baseline (Home & Price) */
 .ondemand-info p,
 .svc-card .svc-desc {
-  min-height: calc(1.6em * 2);
   line-height: 1.6;
   margin: 0 0 16px;
 }
 
-/* 4. Open Source Toolbox (4 Tools): 2-line baseline (zh) / 3-line baseline (en) */
 .corp-product-tools .corp-product-desc {
-  min-height: calc(1.65em * 2);
   line-height: 1.65;
   margin-bottom: 20px;
 }
 
-:lang(en) .corp-product-tools .corp-product-desc,
-body:not(:lang(zh)) .corp-product-tools .corp-product-desc {
-  min-height: calc(1.65em * 3);
-  line-height: 1.65;
-}
-
-/* 5. Public Resources List: Clean 1-line display with generous width */
 .corp-resource p:not(.corp-eyebrow) {
   line-height: 1.6;
   font-size: 0.88rem;
 }
 
-/* 6. Principles List: Clean 1-line display with generous width */
 .corp-principle-list p {
   line-height: 1.6;
   font-size: 0.9rem;
 }
 
-/* 7. Services Page (/services/): 2-line baselines */
 .services-page .corp-grid-3 .corp-card p:first-of-type {
-  min-height: calc(1.65em * 2);
   line-height: 1.65;
   margin-bottom: 14px;
 }
 
 .services-page .corp-grid-3 .corp-card p:last-of-type {
-  min-height: calc(1.65em * 2);
   line-height: 1.65;
   margin-bottom: 0;
 }
 
-.services-page .corp-grid-2 .corp-card p:not(.corp-eyebrow) {
-  min-height: calc(1.65em * 2);
-  line-height: 1.65;
-}
-
-/* 8. Projects Page (/projects/): 1-line baseline (zh) / 2-line baseline (en) */
 .projects-page .corp-grid-2 .corp-product-desc {
-  min-height: 1.65em;
   line-height: 1.65;
   margin-bottom: 18px;
-}
-
-:lang(en) .projects-page .corp-grid-2 .corp-product-desc,
-body:not(:lang(zh)) .projects-page .corp-grid-2 .corp-product-desc {
-  min-height: calc(1.65em * 2);
-  line-height: 1.65;
 }
 
 .corp-product-use {
   font-size: 0.88rem;
   line-height: 1.6;
-  min-height: 1.6em;
   color: var(--ink-soft);
   margin: 0 0 14px;
-}
-
-:lang(en) .corp-product-use,
-body:not(:lang(zh)) .corp-product-use {
-  min-height: calc(1.6em * 2);
 }
 
 .corp-product-use strong {
@@ -3345,36 +3298,12 @@ body:not(:lang(zh)) .corp-product-use {
   margin-right: 4px;
 }
 
-/* 9. About Page (/about/): 3-line baselines (zh) / 4-line baselines (en) */
-.about-page #small .corp-grid-3 .corp-card p {
-  min-height: calc(1.65em * 3);
-  line-height: 1.65;
-}
-
-:lang(en) .about-page #small .corp-grid-3 .corp-card p,
-body:not(:lang(zh)) .about-page #small .corp-grid-3 .corp-card p {
-  min-height: calc(1.65em * 4);
-}
-
-.about-page #timeline .corp-grid-3 .corp-card p:not(.corp-eyebrow) {
-  min-height: calc(1.65em * 3);
-  line-height: 1.65;
-}
-
-:lang(en) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-eyebrow),
-body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-eyebrow) {
-  min-height: calc(1.65em * 4);
-}
-
-/* 10. Solutions Page (/solutions/): 2-line baselines */
 .solutions-page .corp-grid-2 .corp-card p:first-of-type {
-  min-height: calc(1.65em * 2);
   line-height: 1.65;
   margin-bottom: 12px;
 }
 
 .solutions-page .corp-grid-2 .corp-card p:nth-of-type(2) {
-  min-height: calc(1.65em * 2);
   line-height: 1.65;
   margin-bottom: 24px;
 }
@@ -3397,15 +3326,6 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
   .corp-principles {
     grid-template-columns: 1fr;
     gap: 36px;
-  }
-  .corp-title-line {
-    display: inline;
-  }
-}
-
-@media (max-width: 680px) {
-  .price-hero .section-title {
-    white-space: normal;
   }
 }
 
@@ -3484,10 +3404,10 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
   border: 1px solid var(--line);
   margin-bottom: 14px;
   align-self: flex-start;
-  white-space: nowrap;
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
 }
 
 .corp-workload-card p {
@@ -3495,7 +3415,6 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
   font-size: 0.92rem;
   line-height: 1.65;
   margin: 0;
-  min-height: calc(1.65em * 2);
   text-wrap: pretty;
 }
 
@@ -3540,7 +3459,7 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
 
 .solutions-cmp-table td.cell-pgsty {
   background: color-mix(in srgb, var(--pg-soft) 50%, var(--card-bg));
-  color: var(--ink-body);
+  color: var(--ink);
   font-weight: 500;
   border-inline: 1px solid var(--pg-border);
 }
@@ -3557,11 +3476,11 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
 }
 
 .solutions-cmp-table tbody tr:hover td {
-  background: var(--bg-hover);
+  background: var(--bg-elev-2);
 }
 
 .solutions-cmp-table tbody tr:hover td.cell-pgsty {
-  background: color-mix(in srgb, var(--pg-soft) 75%, var(--bg-hover));
+  background: color-mix(in srgb, var(--pg-soft) 75%, var(--bg-elev-2));
 }
 
 /* --------------------------------------------------------------------------
@@ -3599,6 +3518,8 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .corp-pipeline-num {
@@ -3632,7 +3553,6 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
   font-size: 0.85rem;
   line-height: 1.6;
   margin: 0;
-  min-height: calc(1.6em * 2);
   text-wrap: pretty;
 }
 
@@ -3657,7 +3577,7 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
 }
 
 /* ==========================================================================
-   Typography & Card Height Polish — Phase 2 (2026-10)
+   Shared Heading and Description Wrapping
    ========================================================================== */
 
 /* Ensure heading balance propagates to deeper card titles */
@@ -3666,19 +3586,8 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
 .corp-faq summary,
 .tier-tier,
 .svc-name,
-.ondemand-info h5 {
+.ondemand-info h4 {
   text-wrap: balance;
-}
-
-/* Card title height symmetry baselines */
-.corp-workload-card h3 {
-  min-height: calc(1.35em * 2);
-  line-height: 1.35;
-}
-
-.corp-pipeline-card h3 {
-  min-height: calc(1.35em * 2);
-  line-height: 1.35;
 }
 
 /* Ensure description text uses pretty wrapping to avoid CJK orphans */
@@ -3716,24 +3625,6 @@ body:not(:lang(zh)) .about-page #timeline .corp-grid-3 .corp-card p:not(.corp-ey
    Modern Tailwind & Linear Visual Polish — Elite Tier (2026-10)
    ========================================================================== */
 
-/* 1. Pulse animations for live status beacons */
-@keyframes ping-dot {
-  0% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-  }
-}
-
-.corp-eyebrow::before,
-.status-pulse {
-  animation: ping-dot 2.2s infinite cubic-bezier(0.4, 0, 0.6, 1) !important;
-}
-
 /* 2. Architecture Showcase Console Polish */
 .hero-showcase {
   border-radius: var(--radius-2xl) !important;
@@ -3757,10 +3648,6 @@ html[data-theme='dark'] .hero-showcase {
   border-bottom: 1px solid var(--line);
 }
 
-.showcase-dots .dot {
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), inset 0 -1px 1px rgba(0, 0, 0, 0.2);
-}
-
 .showcase-col {
   padding: 26px 22px !important;
   transition: background var(--duration-fast) ease;
@@ -3781,7 +3668,7 @@ html[data-theme='dark'] .hero-showcase {
   place-items: center;
   font-size: 1.2rem !important;
   margin-bottom: 16px !important;
-  transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) ease !important;
+  transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) ease;
 }
 
 .showcase-col:hover .showcase-icon {
@@ -3793,7 +3680,8 @@ html[data-theme='dark'] .hero-showcase {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 14px;
+  margin-top: auto;
+  padding-top: 14px;
 }
 
 .showcase-chip {
@@ -3817,7 +3705,7 @@ html[data-theme='dark'] .hero-showcase {
 
 .showcase-tag {
   box-shadow: var(--shadow-xs);
-  transition: all var(--duration-fast) var(--ease-spring) !important;
+  transition: all var(--duration-fast) var(--ease-spring);
 }
 
 .showcase-tag:hover {
@@ -3830,7 +3718,7 @@ html[data-theme='dark'] .hero-showcase {
 /* 3. Button Micro-Interactions */
 .landing-page .btn-primary {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 14px var(--pg-glow) !important;
-  transition: all var(--duration-fast) var(--ease-spring) !important;
+  transition: all var(--duration-fast) var(--ease-spring);
 }
 
 .landing-page .btn-primary:hover {
@@ -3849,7 +3737,7 @@ html[data-theme='dark'] .hero-showcase {
 
 .landing-page .btn-ghost,
 .landing-page .btn-line {
-  transition: all var(--duration-fast) var(--ease-spring) !important;
+  transition: all var(--duration-fast) var(--ease-spring);
 }
 
 .landing-page .btn-ghost:hover,
@@ -3863,7 +3751,8 @@ html[data-theme='dark'] .hero-showcase {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-xl);
-  padding: 30px;
+  padding: clamp(24px, 2.5vw, 30px);
+  min-width: 0;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   box-shadow: var(--shadow-sm);
@@ -3907,7 +3796,7 @@ html[data-theme='dark'] .hero-showcase {
   place-items: center;
   font-size: 1.25rem !important;
   flex-shrink: 0;
-  transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) ease !important;
+  transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) ease;
 }
 
 .corp-service:hover .corp-service-icon {
@@ -3919,7 +3808,7 @@ html[data-theme='dark'] .hero-showcase {
 .corp-product-featured {
   border-radius: var(--radius-2xl) !important;
   box-shadow: var(--shadow-md) !important;
-  padding: 36px !important;
+  padding: clamp(24px, 3vw, 36px);
 }
 
 .corp-product-featured:hover {
@@ -3939,7 +3828,7 @@ html[data-theme='dark'] .hero-showcase {
   border-radius: var(--radius-md) !important;
   margin-bottom: 22px !important;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4) !important;
-  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease !important;
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
 }
 
 html[data-theme='light'] .corp-product-cmd {
@@ -3980,7 +3869,7 @@ html[data-theme='light'] .corp-product-cmd {
   color: #94a3b8 !important;
   cursor: pointer;
   flex-shrink: 0;
-  transition: all var(--duration-fast) ease !important;
+  transition: all var(--duration-fast) ease;
   font-size: 0.85rem !important;
 }
 
@@ -4012,7 +3901,8 @@ html[data-theme='light'] .corp-product-cmd {
 /* 6. Pricing Tier Polish */
 .tier-card {
   border-radius: var(--radius-2xl) !important;
-  padding: 36px 30px !important;
+  padding: 32px clamp(22px, 2.4vw, 30px);
+  min-width: 0;
 }
 
 .tier-card--featured {
@@ -4090,7 +3980,8 @@ html[data-theme='light'] .corp-product-cmd {
 /* 8. Workload Scenario Cards */
 .corp-workload-card {
   border-radius: var(--radius-xl) !important;
-  padding: 28px !important;
+  padding: clamp(20px, 2.4vw, 28px);
+  min-width: 0;
   transition: transform var(--duration-normal) var(--ease-spring),
               box-shadow var(--duration-normal) var(--ease-spring),
               border-color var(--duration-normal) ease;
@@ -4112,7 +4003,7 @@ html[data-theme='light'] .corp-product-cmd {
   display: grid;
   place-items: center;
   font-size: 1.25rem !important;
-  transition: transform var(--duration-fast) var(--ease-spring) !important;
+  transition: transform var(--duration-fast) var(--ease-spring);
 }
 
 .corp-workload-card:hover .corp-workload-icon {
@@ -4136,7 +4027,8 @@ html[data-theme='light'] .corp-product-cmd {
 /* 9. Pipeline Synergy Lifecycle Cards */
 .corp-pipeline-card {
   border-radius: var(--radius-xl) !important;
-  padding: 26px !important;
+  padding: 24px 20px;
+  min-width: 0;
   transition: transform var(--duration-normal) var(--ease-spring),
               box-shadow var(--duration-normal) var(--ease-spring),
               border-color var(--duration-normal) ease;
@@ -4212,7 +4104,7 @@ html[data-theme='light'] .corp-product-cmd {
   color: var(--ink-soft) !important;
   font-size: 0.88rem !important;
   font-weight: 500 !important;
-  transition: all var(--duration-fast) ease !important;
+  transition: all var(--duration-fast) ease;
   text-decoration: none !important;
 }
 
@@ -4265,7 +4157,7 @@ html[data-theme='light'] .corp-product-cmd {
   border-radius: 10px !important;
   margin: 2px 0 !important;
   padding: 10px 14px !important;
-  transition: all var(--duration-fast) ease !important;
+  transition: all var(--duration-fast) ease;
 }
 
 .td-shell-search__item:hover,
@@ -4311,3 +4203,75 @@ html[data-theme='light'] .corp-product-cmd {
   padding: 2px 5px !important;
 }
 
+
+/* Public impact: four quiet, full-width charts within the corporate palette. */
+.impact-home { background: var(--bg-page); border-block: 1px solid var(--line); }
+.impact-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 32px 0 0; border-block: 1px solid var(--line); }
+.impact-metric { display: flex; flex-direction: column; min-width: 0; padding: 28px 24px; }
+.impact-metric dt { order: 2; margin-top: 12px; font-size: 0.86rem; font-weight: 500; }
+.impact-metric dt a { color: var(--ink-soft); text-decoration: none; }
+.impact-metric dt a:hover { color: var(--pg); }
+.impact-metric dd { margin-left: 0; }
+.impact-metric-value { display: flex; align-items: baseline; gap: 0.08em; margin-block: 0; font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.1rem); font-weight: 500; font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.045em; line-height: 1.1; color: var(--ink-heading); }
+.impact-metric-unit { font-size: 0.54em; font-weight: 450; letter-spacing: 0; color: var(--ink-soft); }
+.impact-home-foot { display: flex; justify-content: flex-end; margin-top: 24px; }
+.impact-page .corp-lead p { margin: 0; }
+.impact-section-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 24px; margin-top: 24px; }
+.impact-section-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--pg); font-size: 0.91rem; }
+.impact-section-nav .impact-data-download { margin-left: auto; justify-content: center; width: 44px; color: var(--ink-soft); }
+.impact-data-download svg { width: 19px; height: 19px; }
+.impact-page section[id] { scroll-margin-top: 100px; }
+.impact-panels { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
+.impact-panel { position: relative; min-width: 0; padding: 30px 32px; border: 1px solid var(--line); border-radius: var(--radius-xl); background: var(--bg-elev); }
+.impact-panel-head { padding: 0 104px 24px 0; }
+.impact-panel h2 { font-size: 1.55rem; line-height: 1.3; margin: 0 0 8px; text-wrap: balance; }
+.impact-panel-head p { margin: 0; color: var(--ink-soft); font-size: 0.82rem; line-height: 1.7; }
+.impact-chart-actions { position: absolute; top: 24px; right: 24px; display: flex; gap: 4px; }
+.impact-chart .impact-chart-icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border: 1px solid transparent; border-radius: var(--radius-sm); background: transparent; color: var(--ink-soft); cursor: pointer; }
+.impact-chart-icon svg { width: 18px; height: 18px; }
+.impact-chart .impact-chart-icon:hover { color: var(--pg); background: var(--bg-page); border-color: var(--line); }
+.impact-chart-icon:focus-visible, .impact-data-download:focus-visible { outline: 2px solid var(--pg); outline-offset: 3px; }
+.impact-chart-canvas { width: 100%; height: 390px; }
+.impact-chart-canvas--downloads { height: 280px; }
+.impact-table-details { border-top: 1px solid var(--line); margin-top: 16px; }
+.impact-table-details summary { cursor: pointer; padding: 16px 0 4px; min-height: 44px; color: var(--ink-soft); font-size: 0.86rem; }
+.impact-table-details summary span { margin-left: 8px; font-size: 0.78rem; opacity: 0.75; }
+.impact-table-scroll { overflow: auto; max-height: 360px; margin-top: 12px; }
+.impact-table { width: 100%; border-collapse: collapse; font-size: 0.81rem; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.impact-table th, .impact-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; text-align: right; }
+.impact-table th:first-child { text-align: left; position: sticky; left: 0; background: var(--bg-elev); }
+.impact-table thead th { color: var(--ink-soft); background: var(--bg-page); position: sticky; top: 0; z-index: 1; }
+.impact-table thead th:first-child { z-index: 2; background: var(--bg-page); }
+.impact-table a { color: var(--pg); }
+.impact-page [hidden] { display: none !important; }
+@media (max-width: 960px) {
+  .impact-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .impact-metric:nth-child(n + 3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 620px) {
+  .impact-metric { padding: 24px 12px; }
+  .impact-metric-value { font-size: 2.3rem; }
+  .impact-metric dt { font-size: 0.81rem; }
+  .impact-panel { padding: 24px 16px; }
+  .impact-panels { gap: 24px; }
+  .impact-panel h2 { font-size: 1.3rem; }
+  .impact-panel-head { padding-right: 94px; }
+  .impact-panel-head p { font-size: 0.75rem; }
+  .impact-chart-actions { top: 18px; right: 12px; gap: 0; }
+  .impact-chart .impact-chart-icon { width: 44px; height: 44px; }
+  .impact-chart-canvas { height: 350px; }
+  .impact-chart-canvas--downloads { height: 280px; }
+  .impact-section-nav { gap: 4px 16px; }
+  .impact-section-nav a { font-size: 0.81rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

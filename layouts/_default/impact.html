@@ -55,7 +55,7 @@
       </div>
     </section>
   </main>
-  {{ partial "portal/footer.html" (dict "page" .) }}
+  {{ partial "portal/footer.html" . }}
   {{ partial "portal/foot-scripts.html" . }}
   {{ $echarts := resources.Get "third_party/echarts/echarts.min.js" | fingerprint "sha384" }}
   {{ $charts := resources.Get "js/impact-charts.js" | minify | fingerprint "sha384" }}

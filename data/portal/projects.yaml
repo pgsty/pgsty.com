@@ -96,7 +96,7 @@
   useZh: 发布与维护 Linux 软件包仓库，实现自动化分发。
   name: SOW
   icon: fa-solid fa-box-archive
-  summary: Publish private APT and YUM repository.
+  summary: Build and publish private APT and YUM repositories.
   summaryZh: 构建与发布私有 APT/YUM 软件仓库，实现软件包自动化分发。
   repo: https://github.com/pgsty/sow
   site: https://sow.pgsty.com/

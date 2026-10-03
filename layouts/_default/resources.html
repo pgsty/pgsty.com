@@ -20,10 +20,7 @@
       <div class="landing-container corp-resource-layout">
         <div class="corp-resource-intro">
           <p class="corp-eyebrow">{{ if $zh }}长期维护，公开使用{{ else }}MAINTAINED IN THE OPEN{{ end }}</p>
-          <h2>
-            <span class="corp-title-line">{{ if $zh }}支撑日常运维，{{ else }}For your next install {{ end }}</span>
-            <span class="corp-title-line">{{ if $zh }}解答技术疑问。{{ else }}and your next question.{{ end }}</span>
-          </h2>
+          <h2>{{ if $zh }}获取软件，解答疑问。{{ else }}For your next install or question.{{ end }}</h2>
           <p class="corp-lead">{{ if $zh }}从选择扩展、安装软件包，到查阅手册、对比版本、追溯技术细节。每个入口都有明确的用途，帮助您走到下一步。{{ else }}Choose an extension, install a package, read a manual, or trace a technical detail across versions. Each resource helps you take the next step.{{ end }}</p>
           <a class="corp-link" href="{{ relLangURL "projects/" }}">{{ if $zh }}查看我们的开源软件{{ else }}See our open-source software{{ end }} <span aria-hidden="true">→</span></a>
         </div>

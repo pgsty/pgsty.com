@@ -79,8 +79,9 @@
           {{ end }}
         </div>
 
+        <p class="pricing-note">{{ if $zh }}{{ hugo.Data.portal.pricing.noteZh }}{{ else }}{{ hugo.Data.portal.pricing.note }}{{ end }}</p>
         <div style="text-align: center; margin-top: 36px;">
-          <a class="btn btn-primary" href="{{ relLangURL "price/" }}">{{ if $zh }}查看完整方案规格对比表（Datasheet）{{ else }}Compare Full Plan Datasheet{{ end }} <span aria-hidden="true">→</span></a>
+          <a class="btn btn-primary" href="{{ relLangURL "price/" }}">{{ if $zh }}比较服务方案{{ else }}Compare support plans{{ end }} <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>

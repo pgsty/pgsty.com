@@ -5,28 +5,33 @@ translationKey: "solutions"
 search_keywords: [solutions, migration, cloud exit, self-hosting, infrastructure, pgvector, PostGIS, TimescaleDB, Patroni]
 search_boost: 1.2
 ---
+PGSTY solutions combine open-source software, engineering, and an agreed support scope. Evaluate cost, reliability, migration complexity, and your team's operational capacity together.
 
-PGSTY solutions combine open-source software, engineering and an agreed support scope. We evaluate cost, reliability, migration complexity and your team's operational capacity together to build production-grade data infrastructure.
+## Deployment and migration
 
-## Strategic Deployment Pathways
+- **[Cloud exit and database migration](/solutions/cloud-exit/)** — Compare managed databases, cloud virtual machines, and your own infrastructure. The historical cost model and staged migration process provide a starting point for an assessment, not a savings guarantee.
+- **[Production PostgreSQL platform](/services/)** — Plan high availability, backup and recovery, observability, and routine changes around your workload, then validate the environment and hand over operations.
 
-- **[Cloud Exit & Database Migration](/solutions/cloud-exit/)**: Evaluate self-hosted PostgreSQL versus managed cloud databases. Compare historical hardware economics, inspect migration runbooks, and use our interactive cost model to plan a smooth transition that saves 50%–80% in infrastructure spend.
-- **[Production PostgreSQL Platform](/services/)**: Deploy an operable, resilient PostgreSQL environment tailored to your workload with high availability, continuous S3 backups, Prometheus observability, and expert engineering handover.
+## Workload scenarios
 
-## Workload Scenarios & Blueprints
+These scenarios are starting points for architecture discussions. Evaluate extension compatibility, capacity, and recovery objectives against your workload, then validate the design.
 
-1. **AI & Vector Retrieval (`pgvector` · `pgvectorscale` · `pg_search`)**: Execute dense vector embeddings (HNSW/IVFFlat) and sparse lexical BM25 search in a single SQL query with full ACID transactions, eliminating separate vector database operational overhead.
-2. **Geospatial Intelligence (`PostGIS` · `pgRouting` · `h3`)**: The de facto spatial standard powering GIS, location-based services, and logistics with native geometric operators and Uber H3 hexagonal spatial indexing.
-3. **IoT & High-Throughput Time-Series (`TimescaleDB` · `pg_timeseries`)**: Automatic hypertable time partitioning, 90%+ columnar compression, continuous aggregates, and tiered data lifecycles for high-frequency telemetry.
-4. **Mission-Critical High Availability (`Patroni` · `etcd` · `PgBouncer`)**: Quorum synchronous replication ensuring zero data loss (RPO=0), sub-second automated failover, and connection pooling for 10,000+ client connections.
-5. **Lightweight HTAP & Analytics (`DuckDB FDW` · `Citus` · `Columnar`)**: Query Parquet and Iceberg lakehouses directly in SQL via DuckDB FDW or horizontally scale out with Citus, avoiding fragile ETL pipelines.
-6. **Private Cloud & Air-Gapped Deployments (`Silo` · `PIG` · `SOW`)**: Complete offline installation bundles, local S3 storage, and private repository mirrors for banking, government, and strictly isolated networks.
+1. **AI and vector retrieval (`pgvector` · `pgvectorscale` · `pg_search`)** — Combine vector and full-text extensions in PostgreSQL, choosing indexes around your data and queries.
+2. **Geospatial data (`PostGIS` · `pgRouting` · `h3`)** — Model maps and location services with spatial types, routing, and hexagonal indexes.
+3. **IoT and time series (`TimescaleDB` · `pg_timeseries`)** — Evaluate partitioning, compression, and rollups against ingestion, retention, and query needs. Features vary by extension and version.
+4. **Availability and recovery (`Patroni` · `etcd` · `PgBouncer`)** — Design failover and connection pooling. Validate RPO and RTO for the chosen replication mode and failure scenarios.
+5. **Analytics and integration (`DuckDB FDW` · `Citus` · columnar storage)** — Evaluate data access, columnar execution, or sharding and test query performance with representative data.
+6. **Private and offline deployments (`Silo` · `PIG` · `SOW`)** — Prepare private repositories, local S3 storage, and offline packages, with a defined platform and update process.
 
-## Decision Matrix: Self-Hosted Production Stack vs Cloud RDS
+## Self-hosted or managed?
 
-- **Extensions**: 576 packaged extensions in the Pigsty repository versus ~30–40 on cloud RDS.
-- **Kernels**: 12 kernel choices (Standard PG, Citus, TimescaleDB, IvorySQL, etc.) versus 1 locked engine.
-- **TCO**: 50%–80% cost reduction running on bare metal or cloud VMs with zero hardware markup or egress traps.
-- **Observability**: 600+ Prometheus metrics, 30+ Grafana dashboards, and query flamegraphs versus black-box charts.
-- **Sovereignty**: Complete control on bare metal, VMware, or any cloud IaaS with 100% data sovereignty and no vendor lock-in.
-- **Upgrades**: In-place zero-downtime upgrades on your schedule, free from forced cloud maintenance windows.
+Compare control, operational responsibility, and total cost. The right choice depends on the service, your team, and your business requirements.
+
+| Dimension | Self-hosted with PGSTY | Managed cloud database |
+| --- | --- | --- |
+| Extensions | Choose compatible packages from public repositories; validate each version and platform. | Check available extensions and permissions for the service, version, and region. |
+| Distributions | Select PostgreSQL or a compatible distribution and validate workload compatibility. | Choose from the provider's supported engines, versions, and configurations. |
+| Total cost | Budget for hardware or VMs, staffing, support, backup, and migration. | Review service fees, storage, I/O, networking, and committed-use discounts. |
+| Observability | Configure metrics and logs, with access to host-level diagnostics. | Use provider diagnostic interfaces; check access and retention. |
+| Control and portability | Control deployment, access, and backup policies; own security and operations. | Work within the shared responsibility model; assess export and migration paths. |
+| Upgrades | Rehearse upgrades, extension compatibility, downtime, and rollback. | Review maintenance options, version lifecycle, and upgrade policy. |

@@ -111,8 +111,10 @@
     {{- end }}
     <button type="button" class="td-site-nav__menu-link td-site-nav__menu-link--button" data-td-shell-search-open data-td-landing-menu-dismiss
       aria-haspopup="dialog" aria-expanded="false">{{ partialCached "shell/icon.html" "search" "search" }}<span>{{ T "ui_search" }}</span></button>
-    {{- range $page.Translations }}
-    <a class="td-site-nav__menu-link" href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}">{{ partialCached "shell/icon.html" "languages" "languages" }}<span>{{ .Language.Label }}</span></a>
+    {{- range $targets }}
+    {{- if not .active }}
+    <a class="td-site-nav__menu-link" href="{{ .url }}" lang="{{ .code }}" hreflang="{{ .code }}">{{ partialCached "shell/icon.html" "languages" "languages" }}<span>{{ .label }}</span></a>
+    {{- end }}
     {{- end }}
     <button type="button" class="td-site-nav__menu-link td-site-nav__menu-link--button" data-td-theme-toggle>
       {{- partialCached "shell/icon.html" "moon" "moon" -}}

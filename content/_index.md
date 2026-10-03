@@ -5,8 +5,8 @@ url: "/"
 type: home
 ---
 
-Open-source data infrastructure built around PostgreSQL.
-Expert consulting and support, so you stay in control of your databases.
+Open-source software built around PostgreSQL, with consulting and support from its maintainers.
+Keep control of your databases and infrastructure.
 
 [Explore Our Services](/services/) · [Open Source Software](/projects/)
 

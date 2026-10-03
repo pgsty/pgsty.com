@@ -4,8 +4,8 @@ description: "PGSTY PTE. LTD. 是一家新加坡公司，研发开源 PostgreSQL
 type: home
 ---
 
-提供以 PostgreSQL 为核心的数据基础设施软件。
-提供专业咨询与支持服务，让企业掌握自己的数据库。
+以 PostgreSQL 为核心的开源软件，结合维护者的专业咨询与支持。
+让您掌控自己的数据库与基础设施。
 
 [了解专业服务](/zh/services/) · [开源软件](/zh/projects/)
 

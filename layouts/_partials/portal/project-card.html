@@ -4,7 +4,6 @@
   <div class="corp-product-top">
     <span class="corp-product-icon" aria-hidden="true">{{ if eq $p.key "pigsty" }}<img src="{{ "img/logo/logo.svg" | relURL }}" width="40" height="40" alt="">{{ else }}<i class="{{ $p.icon }}"></i>{{ end }}</span>
     <div class="corp-product-badges">
-      {{ with $p.version }}<span class="corp-product-version">{{ . }}</span>{{ end }}
       <p class="corp-eyebrow">{{ if $zh }}{{ $p.kindZh }}{{ else }}{{ $p.kind }}{{ end }}</p>
     </div>
   </div>
@@ -19,7 +18,6 @@
   {{ end }}
   <div class="corp-product-meta-bar">
     <span class="corp-product-license">{{ $p.license }} · {{ $p.lang }}</span>
-    {{ with $p.stars }}<span class="corp-product-stars"><i class="fa-solid fa-star" aria-hidden="true"></i> {{ . }}</span>{{ end }}
   </div>
   {{ $cmd := cond $zh $p.installZh $p.install }}
   {{ with $cmd }}
@@ -32,7 +30,7 @@
   {{ end }}
   {{ end }}
   <div class="corp-product-links">
-    <a href="{{ if $zh }}{{ $p.siteZh }}{{ else }}{{ $p.site }}{{ end }}" aria-label="{{ $p.name }}{{ if $zh }} 官网与文档{{ else }} website and documentation{{ end }}">{{ if $zh }}官网与文档{{ else }}Explore {{ $p.name }}{{ end }} <span aria-hidden="true">↗</span></a>
+    <a href="{{ if $zh }}{{ $p.siteZh }}{{ else }}{{ $p.site }}{{ end }}" aria-label="{{ $p.name }}{{ if $zh }} 官网与文档{{ else }} website and documentation{{ end }}">{{ if $zh }}官网与文档{{ else }}Website & docs{{ end }} <span aria-hidden="true">↗</span></a>
     <a href="{{ $p.repo }}" aria-label="{{ $p.name }}{{ if $zh }} 源代码{{ else }} source code on GitHub{{ end }}">{{ if $zh }}源码{{ else }}GitHub{{ end }} <span aria-hidden="true">↗</span></a>
   </div>
 </article>

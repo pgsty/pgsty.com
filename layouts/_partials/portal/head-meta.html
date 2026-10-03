@@ -1,10 +1,13 @@
-{{- /* 门户子页公共 <head> 元信息：标题（<页名> — PGSTY）/ 描述 / canonical /
-     hreflang / OG / Twitter。入参：页面上下文 `.`。
-     首页 head 定制较多（Organization JSON-LD 等），不走此 partial。 */ -}}
+{{- /* 首页与门户子页公共 <head> 元信息：标题 / 描述 / canonical /
+     hreflang / OG / Twitter。入参：页面上下文 `.`。 */ -}}
 {{- $zh := eq .Site.Language.Lang "zh" -}}
 {{- $description := .Description | default .Site.Params.description -}}
 {{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
-{{- $socialImage := "img/pgsty-social-card.png" | absURL -}}
+{{- $socialImagePath := index .Site.Params.images 0 -}}
+{{- $socialImageFile := path.Join "static" $socialImagePath -}}
+{{- $socialImage := printf "%s?v=%s" ($socialImagePath | absURL) (substr (md5 (readFile $socialImageFile)) 0 8) -}}
+{{- $socialImageSize := images.Config $socialImageFile -}}
+{{- $socialImageAlt := cond $zh "PGSTY PTE. LTD. — 开源数据基础设施，为真实生产而构建。" "PGSTY PTE. LTD. — Open Data Infrastructure. Built for Real Production." -}}
 {{- $entity := hugo.Data.company.legal_name -}}
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,8 +44,13 @@
 <meta property="og:locale:alternate" content="{{ replace (.Language.Locale | default .Language.Lang) "-" "_" }}">
 {{ end -}}
 <meta property="og:image" content="{{ $socialImage }}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="{{ $socialImageSize.Width }}">
+<meta property="og:image:height" content="{{ $socialImageSize.Height }}">
+<meta property="og:image:alt" content="{{ $socialImageAlt }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ .Title }} — PGSTY">
 <meta name="twitter:description" content="{{ $description }}">
 <meta name="twitter:image" content="{{ $socialImage }}">
+<meta name="twitter:image:alt" content="{{ $socialImageAlt }}">
 {{ partial "portal/organization.html" . }}

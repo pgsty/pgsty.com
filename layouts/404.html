@@ -10,6 +10,7 @@
   {{ partial "portal/head-assets.html" . }}
 </head>
 <body class="landing-page portal-page corporate-page page-404">
+  <a class="skip-link" href="#main">{{ if $zh }}跳到正文{{ else }}Skip to content{{ end }}</a>
   {{ partial "portal/nav.html" (dict "page" .) }}
   <main id="main" class="corp-page-hero">
     <div class="landing-container">
