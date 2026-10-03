@@ -30,6 +30,8 @@ Expert consulting and support, so you stay in control of your databases.
 
 [Explore our resources](/resources/) or [try the Pigsty monitoring demo](https://demo.pigsty.io/).
 
+[Explore community impact](/impact/): dated GitHub Stars, product and documentation views, repository requests, and Release file downloads, with trends and source definitions.
+
 ## Work with us
 
 Work directly with the people who build and maintain the software, from your first deployment to everyday operations.

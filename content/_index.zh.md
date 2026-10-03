@@ -29,6 +29,8 @@ type: home
 
 [浏览社区资源](/zh/resources/)，或[体验 Pigsty 监控演示](https://demo.pigsty.io/)。
 
+[查看社区与影响力](/zh/impact/)：带日期的 GitHub Star、产品与文档浏览、仓库请求与 Release 文件下载，附趋势图与统计口径。
+
 ## 与我们合作
 
 从首次部署到日常运维，与熟悉这些软件的工程师直接合作。

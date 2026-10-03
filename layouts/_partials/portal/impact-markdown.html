@@ -1,0 +1,41 @@
+{{- $page := .page -}}
+{{- $lang := $page.Site.Language.Lang -}}
+{{- $zh := eq $lang "zh" -}}
+{{- $d := hugo.Data.impact.data -}}
+{{- $data := resources.FromString "impact/data.yaml" (readFile "data/impact/data.yaml") -}}
+## {{ cond $zh "社区与影响力" "Community & impact" }}
+
+| {{ cond $zh "指标" "Metric" }} | {{ cond $zh "数值" "Value" }} |
+| --- | ---: |
+{{ range $d.summary -}}
+| {{ index .label $lang }} | {{ partial "portal/impact-number.html" .value }} |
+{{ end }}
+[{{ cond $zh "查看趋势" "Explore the trends" }}]({{ relLangURL "impact/" }}) · [{{ cond $zh "下载数据" "Download data" }}]({{ $data.RelPermalink }})
+
+{{ if not .compact -}}
+### {{ cond $zh "开源关注" "Open-source attention" }}
+
+GitHub · {{ index $d.community.months 0 }}–{{ $d.sources.github.as_of }} · {{ $d.community.stars }} Stars
+
+| {{ cond $zh "仓库" "Repository" }} | Star | Fork |
+| --- | ---: | ---: |
+{{ range $d.community.repositories -}}
+| [{{ .name }}]({{ .url }}) | {{ .stars }} | {{ .forks }} |
+{{ end }}
+### {{ cond $zh "知识开放" "Open knowledge" }}
+
+Google Analytics · {{ $d.sources.ga4.start }}–{{ $d.sources.ga4.end }} · {{ $d.audience.views }} PV
+
+### {{ cond $zh "公共设施" "Public infrastructure" }}
+
+Cloudflare · {{ $d.sources.cloudflare.start }}–{{ $d.sources.cloudflare.end }} · {{ $d.distribution.cloudflare_requests }} {{ cond $zh "次请求" "requests" }}
+
+### {{ cond $zh "下载与拉取" "Downloads & pulls" }}
+
+{{ cond $zh "累计" "Cumulative" }} · {{ $d.sources.github.as_of }}
+
+| {{ cond $zh "渠道" "Channel" }} | {{ cond $zh "计数" "Counter" }} |
+| --- | ---: |
+| Docker Hub | {{ $d.downloads.docker_pulls }} |
+| GitHub Release | {{ $d.downloads.github_assets }} |
+{{ end -}}

@@ -1,0 +1,45 @@
+{
+  "analytics": {
+    "extracted_at_utc": "2026-10-03T04:03:27+00:00",
+    "ga": {
+      "tables": [
+        "ga.site",
+        "ga.metric_day"
+      ],
+      "overlap_rule": "maximum PV per hostname and day; never sum overlapping streams",
+      "overlaps": [
+        {
+          "day": "2026-09-09",
+          "site": "pgsql.cc",
+          "streams": 2,
+          "excluded_views": 27
+        }
+      ],
+      "metric": "screenPageViews",
+      "monthly_aggregation": "sum of hostname-filtered daily page views"
+    },
+    "cloudflare": {
+      "table": "cdnlog.cf_metrics",
+      "core_profile": "pigsty_account_day_core",
+      "host_profile": "pigsty_http_day_host",
+      "bucket_timezone": "UTC",
+      "chart_metric": "requests",
+      "summary_metric": "requests",
+      "last_collected_at": "2026-08-27 12:10:45.383156+08"
+    }
+  },
+  "github": {
+    "captured_at_utc": "2026-10-03T03:22:46+00:00",
+    "finished_at_utc": "2026-10-03T03:24:01+00:00",
+    "organization_created_at": "2024-01-21T09:39:29Z",
+    "repositories": 62,
+    "metadata_stars": 11150,
+    "retained_stars": 11150,
+    "collection_drift": 0,
+    "url": "https://github.com/pgsty"
+  },
+  "dockerhub": {
+    "captured_at_utc": "2026-10-03T03:24:01+00:00",
+    "url": "https://hub.docker.com/u/pgsty"
+  }
+}

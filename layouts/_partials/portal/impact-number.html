@@ -1,0 +1,18 @@
+{{- $styled := false -}}
+{{- $raw := . -}}
+{{- if reflect.IsMap . -}}
+  {{- $raw = .value -}}
+  {{- $styled = .styled -}}
+{{- end -}}
+{{- $value := float $raw -}}
+{{- $unit := "" -}}
+{{- if ge $value 1000000000 -}}{{- $value = div $value 1000000000 -}}{{- $unit = "B" -}}
+{{- else if ge $value 1000000 -}}{{- $value = div $value 1000000 -}}{{- $unit = "M" -}}
+{{- else if ge $value 1000 -}}{{- $value = div $value 1000 -}}{{- $unit = "K" -}}{{- end -}}
+{{- $precision := 0 -}}
+{{- if and $unit (lt $value 10) -}}{{- $precision = 1 -}}{{- end -}}
+{{- if $styled -}}
+  <span class="impact-metric-number">{{ printf "%.*f" $precision $value }}</span>{{- with $unit -}}<span class="impact-metric-unit">{{ . }}</span>{{- end -}}
+{{- else -}}
+  {{- printf "%.*f%s" $precision $value $unit -}}
+{{- end -}}

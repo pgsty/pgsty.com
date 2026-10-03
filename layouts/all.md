@@ -10,11 +10,17 @@
 {{ cond $zh "LLMS 索引" "LLMS index" }}: [llms.txt]({{ .RelPermalink }})
 
 {{ end -}}
+{{ if eq .Params.layout "impact" -}}
+{{ partial "portal/impact-markdown.html" (dict "page" . "compact" false) }}
+{{ end -}}
 {{ with .RenderShortcodes | strings.TrimSpace -}}
 ---
 
 {{ . }}
 
+{{ end -}}
+{{ if .IsHome -}}
+{{ partial "portal/impact-markdown.html" (dict "page" . "compact" true) }}
 {{ end -}}
 {{ with .Pages -}}
 ---

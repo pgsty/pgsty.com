@@ -1,0 +1,6 @@
+name,pulls,url
+pgsty/minio,1198736,https://hub.docker.com/r/pgsty/minio
+pgsty/silo,705999,https://hub.docker.com/r/pgsty/silo
+pgsty/mc,309564,https://hub.docker.com/r/pgsty/mc
+pgsty/pg_exporter,40683,https://hub.docker.com/r/pgsty/pg_exporter
+pgsty/pigsty,9133,https://hub.docker.com/r/pgsty/pigsty

@@ -1,0 +1,11 @@
+{{- $zh := eq .page.Site.Language.Lang "zh" -}}
+<details class="impact-table-details">
+  <summary>{{ .title }}</summary>
+  <div class="impact-table-scroll" tabindex="0" role="region" aria-label="{{ .title }}">
+    <table class="impact-table">
+      <caption>{{ .caption }}</caption>
+      <thead><tr><th scope="col">{{ cond $zh "月份" "Month" }}</th>{{ range .series }}<th scope="col">{{ .name }}</th>{{ end }}</tr></thead>
+      <tbody>{{ range $i, $month := .months }}<tr><th scope="row">{{ $month }}</th>{{ range $.series }}{{ $value := index .values $i }}<td>{{ if ne $value nil }}{{ lang.FormatNumber 0 $value }}{{ else }}—{{ end }}</td>{{ end }}</tr>{{ end }}</tbody>
+    </table>
+  </div>
+</details>

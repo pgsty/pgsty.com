@@ -2081,6 +2081,67 @@ body:not(:lang(zh)) .corp-service-header h3 {
   }
 }
 
+/* Public impact: four quiet, full-width charts within the corporate palette. */
+.impact-home { background: var(--bg-page); border-block: 1px solid var(--line); }
+.impact-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 32px 0 0; border-block: 1px solid var(--line); }
+.impact-metric { display: flex; flex-direction: column; min-width: 0; padding: 28px 24px; }
+.impact-metric dt { order: 2; margin-top: 12px; font-size: 0.86rem; font-weight: 500; }
+.impact-metric dt a { color: var(--ink-soft); text-decoration: none; }
+.impact-metric dt a:hover { color: var(--pg); }
+.impact-metric dd { margin-left: 0; }
+.impact-metric-value { display: flex; align-items: baseline; gap: 0.08em; margin-block: 0; font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.1rem); font-weight: 500; font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.045em; line-height: 1.1; color: var(--ink-heading); }
+.impact-metric-unit { font-size: 0.54em; font-weight: 450; letter-spacing: 0; color: var(--ink-soft); }
+.impact-home-foot { display: flex; justify-content: flex-end; margin-top: 24px; }
+.impact-page .corp-lead p { margin: 0; }
+.impact-section-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 24px; margin-top: 24px; }
+.impact-section-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--pg); font-size: 0.91rem; }
+.impact-section-nav .impact-data-download { margin-left: auto; justify-content: center; width: 44px; color: var(--ink-soft); }
+.impact-data-download svg { width: 19px; height: 19px; }
+.impact-page section[id] { scroll-margin-top: 100px; }
+.impact-panels { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
+.impact-panel { position: relative; min-width: 0; padding: 30px 32px; border: 1px solid var(--line); border-radius: var(--radius-xl); background: var(--bg-elev); }
+.impact-panel-head { padding: 0 104px 24px 0; }
+.impact-panel h2 { font-size: 1.55rem; line-height: 1.3; margin: 0 0 8px; text-wrap: balance; }
+.impact-panel-head p { margin: 0; color: var(--ink-soft); font-size: 0.82rem; line-height: 1.7; }
+.impact-chart-actions { position: absolute; top: 24px; right: 24px; display: flex; gap: 4px; }
+.impact-chart .impact-chart-icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border: 1px solid transparent; border-radius: var(--radius-sm); background: transparent; color: var(--ink-soft); cursor: pointer; }
+.impact-chart-icon svg { width: 18px; height: 18px; }
+.impact-chart .impact-chart-icon:hover { color: var(--pg); background: var(--bg-page); border-color: var(--line); }
+.impact-chart-icon:focus-visible, .impact-data-download:focus-visible { outline: 2px solid var(--pg); outline-offset: 3px; }
+.impact-chart-canvas { width: 100%; height: 390px; }
+.impact-chart-canvas--downloads { height: 280px; }
+.impact-table-details { border-top: 1px solid var(--line); margin-top: 16px; }
+.impact-table-details summary { cursor: pointer; padding: 16px 0 4px; min-height: 44px; color: var(--ink-soft); font-size: 0.86rem; }
+.impact-table-details summary span { margin-left: 8px; font-size: 0.78rem; opacity: 0.75; }
+.impact-table-scroll { overflow: auto; max-height: 360px; margin-top: 12px; }
+.impact-table { width: 100%; border-collapse: collapse; font-size: 0.81rem; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.impact-table th, .impact-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; text-align: right; }
+.impact-table th:first-child { text-align: left; position: sticky; left: 0; background: var(--bg-elev); }
+.impact-table thead th { color: var(--ink-soft); background: var(--bg-page); position: sticky; top: 0; z-index: 1; }
+.impact-table thead th:first-child { z-index: 2; background: var(--bg-page); }
+.impact-table a { color: var(--pg); }
+.impact-page [hidden] { display: none !important; }
+@media (max-width: 960px) {
+  .impact-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .impact-metric:nth-child(n + 3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 620px) {
+  .impact-metric { padding: 24px 12px; }
+  .impact-metric-value { font-size: 2.3rem; }
+  .impact-metric dt { font-size: 0.81rem; }
+  .impact-panel { padding: 24px 16px; }
+  .impact-panels { gap: 24px; }
+  .impact-panel h2 { font-size: 1.3rem; }
+  .impact-panel-head { padding-right: 94px; }
+  .impact-panel-head p { font-size: 0.75rem; }
+  .impact-chart-actions { top: 18px; right: 12px; gap: 0; }
+  .impact-chart .impact-chart-icon { width: 44px; height: 44px; }
+  .impact-chart-canvas { height: 350px; }
+  .impact-chart-canvas--downloads { height: 280px; }
+  .impact-section-nav { gap: 4px 16px; }
+  .impact-section-nav a { font-size: 0.81rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition: none !important;

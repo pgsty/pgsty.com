@@ -1,0 +1,10 @@
+{{- $zh := eq .page.Site.Language.Lang "zh" -}}
+{{- $id := .id -}}
+<div class="impact-chart" data-impact-chart="{{ $id }}" data-lang="{{ .page.Site.Language.Lang }}" data-default-mode="{{ .mode }}">
+  <div class="impact-chart-actions" hidden>
+    {{ if ne $id "downloads" }}<button type="button" class="impact-chart-icon" data-chart-reset aria-label="{{ cond $zh "重置图表" "Reset chart" }}" title="{{ cond $zh "重置图表" "Reset chart" }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10a9 9 0 1 1 2.6 8.4"/><path d="M3 4v6h6"/></svg></button>{{ end }}
+    <button type="button" class="impact-chart-icon" data-chart-export aria-label="{{ cond $zh "下载图表图片" "Download chart image" }}" title="{{ cond $zh "下载图表图片" "Download chart image" }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg></button>
+  </div>
+  <div class="impact-chart-canvas{{ if eq $id "downloads" }} impact-chart-canvas--downloads{{ end }}" data-impact-canvas role="img" aria-label="{{ .title }}"></div>
+  <script type="application/json" data-impact-data>{{ .dataset | jsonify | safeJS }}</script>
+</div>

@@ -1,0 +1,9 @@
+{{- $lang := .page.Site.Language.Lang -}}
+<dl class="impact-metrics">
+  {{- range hugo.Data.impact.data.summary }}
+  <div class="impact-metric">
+    <dt><a href="{{ relLangURL "impact/" }}#{{ .anchor }}">{{ index .label $lang }}</a></dt>
+    <dd class="impact-metric-value" title="{{ lang.FormatNumber 0 .value }}" aria-label="{{ lang.FormatNumber 0 .value }}">{{ partial "portal/impact-number.html" (dict "value" .value "styled" true) }}</dd>
+  </div>
+  {{- end }}
+</dl>

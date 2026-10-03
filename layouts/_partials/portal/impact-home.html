@@ -1,0 +1,16 @@
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+<section class="corp-section impact-home" id="impact" aria-labelledby="impact-home-title">
+  <div class="landing-container">
+    <div class="corp-section-heading">
+      <div>
+        <p class="corp-eyebrow">{{ if $zh }}社区与影响力{{ else }}Community & impact{{ end }}</p>
+        <h2 id="impact-home-title">{{ if $zh }}开放的成果，看得见。{{ else }}Open work. Measurable reach.{{ end }}</h2>
+      </div>
+      <p>{{ if $zh }}我们维护的开源项目、知识站点与公共设施。{{ else }}The open-source projects, knowledge sites and public infrastructure we maintain.{{ end }}</p>
+    </div>
+    {{ partial "portal/impact-summary.html" (dict "page" .) }}
+    <div class="impact-home-foot">
+      <a class="corp-link" href="{{ relLangURL "impact/" }}">{{ if $zh }}查看趋势{{ else }}Explore the trends{{ end }} <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>

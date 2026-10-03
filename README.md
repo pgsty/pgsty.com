@@ -30,6 +30,18 @@ maintenance checks. The [corporate review notes](docs/CORPORATE-REVIEW.md) retai
 official sources, the validation performed at the time, and outstanding business
 details; they are not evidence of the current deployment state.
 
+The homepage's public impact summary and bilingual `/impact/` pages share
+[`data/impact/data.yaml`](data/impact/data.yaml). The dataset contains dated
+GitHub/Docker Hub snapshots and complete available GA4/Cloudflare history.
+Four full-width panels use ECharts bundled with OINK, fixed chart styles,
+compact K/M/B summaries shared with the homepage, a repository list and a public data download.
+Downloads and pulls combine Docker Hub and GitHub Release in the summary,
+with Docker repositories stacked in one horizontal bar and GitHub Release
+shown as one total. The Cloudflare headline and chart both count HTTP requests.
+No analytics scripts are added.
+See [the impact data notes](docs/IMPACT-DATA.md) for definitions and reproducible
+import instructions. These are historical snapshots, not live counters.
+
 Site navigation is OINK's own navbar: a centered menu tree with one-column
 dropdown panels, an icon search trigger, and a phone drawer carrying the
 full labelled tree. Entries come from `menu.main` in `hugo.yaml` — one tree per

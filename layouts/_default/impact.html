@@ -1,0 +1,65 @@
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $d := hugo.Data.impact.data -}}
+{{- $publicData := resources.FromString "impact/data.yaml" (readFile "data/impact/data.yaml") -}}
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale | default .Site.Language.Lang }}" class="no-js">
+<head>
+  {{ partial "portal/head-meta.html" . }}
+  {{ partial "portal/head-assets.html" . }}
+</head>
+<body class="landing-page portal-page corporate-page impact-page">
+  <a class="skip-link" href="#main">{{ cond $zh "跳到正文" "Skip to content" }}</a>
+  {{ partial "portal/nav.html" (dict "page" .) }}
+  <main id="main">
+    <section class="corp-page-hero">
+      <div class="landing-container">
+        <p class="corp-eyebrow">{{ cond $zh "社区与影响力" "Community & impact" }}</p>
+        <h1 class="corp-title">{{ cond $zh "开源的影响，留下数据。" "Open source, in numbers." }}</h1>
+        <div class="corp-lead">{{ .Content }}</div>
+        <nav class="impact-section-nav" aria-label="{{ cond $zh "本页栏目" "On this page" }}">
+          <a href="#community">{{ cond $zh "开源关注" "Open source" }}</a>
+          <a href="#audience">{{ cond $zh "知识开放" "Knowledge" }}</a>
+          <a href="#distribution">{{ cond $zh "公共设施" "Infrastructure" }}</a>
+          <a href="#downloads">{{ cond $zh "下载与拉取" "Downloads & pulls" }}</a>
+          <a class="impact-data-download" href="{{ $publicData.RelPermalink }}" download="pgsty-impact.yaml" aria-label="{{ cond $zh "下载数据" "Download data" }}" title="{{ cond $zh "下载数据" "Download data" }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg></a>
+        </nav>
+        {{ partial "portal/impact-summary.html" (dict "page" .) }}
+      </div>
+    </section>
+    <section class="corp-section impact-body">
+      <div class="landing-container impact-panels">
+        <section class="impact-panel" id="community" aria-labelledby="community-heading">
+          <header class="impact-panel-head"><div><h2 id="community-heading">{{ cond $zh "开源关注" "Open-source attention" }}</h2><p>GitHub · {{ substr (index $d.community.months 0) 0 4 }}–{{ substr $d.sources.github.as_of 0 4 }}</p></div></header>
+          {{ partial "portal/impact-chart.html" (dict "page" . "id" "stars" "mode" "area" "dataset" (merge $d.community (dict "source" $d.sources.github)) "title" (cond $zh "全部公开仓库的累计 Star 堆叠面积图" "Stacked area of cumulative Stars across all public repositories")) }}
+          <details class="impact-table-details">
+            <summary>{{ cond $zh "仓库清单" "Repositories" }} <span>{{ $d.community.public_repositories }}</span></summary>
+            <div class="impact-table-scroll" tabindex="0" role="region" aria-label="{{ cond $zh "公开仓库清单" "Public repository registry" }}">
+              <table class="impact-table"><thead><tr><th>{{ cond $zh "仓库" "Repository" }}</th><th>Star</th><th>Fork</th></tr></thead><tbody>
+                {{ range $d.community.repositories }}<tr><th scope="row"><a href="{{ .url }}">{{ .name }}</a></th><td>{{ lang.FormatNumber 0 .stars }}</td><td>{{ .forks }}</td></tr>{{ end }}
+              </tbody></table>
+            </div>
+          </details>
+        </section>
+        <section class="impact-panel" id="audience" aria-labelledby="audience-heading">
+          <header class="impact-panel-head"><div><h2 id="audience-heading">{{ cond $zh "知识开放" "Open knowledge" }}</h2><p>Google Analytics · {{ substr $d.sources.ga4.start 0 4 }}–{{ substr $d.sources.ga4.end 0 4 }}</p></div></header>
+          {{ partial "portal/impact-chart.html" (dict "page" . "id" "views" "mode" "stacked-bar" "dataset" (merge $d.audience (dict "source" $d.sources.ga4)) "title" (cond $zh "全部生态站点的月度 PV 堆叠柱状图，纵轴展示上限 180K，提示保留完整数值" "Monthly stacked page views across all ecosystem sites; the axis is capped at 180K and tooltips retain complete values")) }}
+        </section>
+        <section class="impact-panel" id="distribution" aria-labelledby="distribution-heading">
+          <header class="impact-panel-head"><div><h2 id="distribution-heading">{{ cond $zh "公共设施" "Public infrastructure" }}</h2><p>Cloudflare · {{ cond $zh "请求量" "Requests" }} · {{ $d.sources.cloudflare.start }}–{{ $d.sources.cloudflare.end }}</p></div></header>
+          {{ partial "portal/impact-chart.html" (dict "page" . "id" "requests" "mode" "bar" "dataset" (merge $d.distribution (dict "source" $d.sources.cloudflare)) "title" (cond $zh "Cloudflare 全站月度请求量" "Monthly Cloudflare HTTP requests across all sites")) }}
+        </section>
+        <section class="impact-panel" id="downloads" aria-labelledby="downloads-heading">
+          <header class="impact-panel-head"><div><h2 id="downloads-heading">{{ cond $zh "下载与拉取" "Downloads & pulls" }}</h2><p>{{ cond $zh "累计" "Cumulative" }} · {{ $d.sources.github.as_of }}</p></div></header>
+          {{ partial "portal/impact-chart.html" (dict "page" . "id" "downloads" "mode" "stacked-horizontal-bar" "dataset" (merge $d.downloads (dict "source" $d.sources.github "docker_source" $d.sources.dockerhub)) "title" (cond $zh "Docker Hub 按仓库堆叠的拉取量与 GitHub Release 总下载量" "Docker Hub pulls stacked by repository and total GitHub Release downloads")) }}
+        </section>
+      </div>
+    </section>
+  </main>
+  {{ partial "portal/footer.html" (dict "page" .) }}
+  {{ partial "portal/foot-scripts.html" . }}
+  {{ $echarts := resources.Get "third_party/echarts/echarts.min.js" | fingerprint "sha384" }}
+  {{ $charts := resources.Get "js/impact-charts.js" | minify | fingerprint "sha384" }}
+  <script src="{{ $echarts.RelPermalink }}" integrity="{{ $echarts.Data.Integrity }}" crossorigin="anonymous" defer></script>
+  <script src="{{ $charts.RelPermalink }}" integrity="{{ $charts.Data.Integrity }}" crossorigin="anonymous" defer></script>
+</body>
+</html>
