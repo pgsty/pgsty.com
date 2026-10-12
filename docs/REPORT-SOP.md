@@ -3,6 +3,17 @@
 英文 `/report/`，中文 `/zh/report/`；通过公司菜单进入。两页共用一份公开静态快照，
 语言入口保留报告和筛选。采集、指标口径与报告代码由 `~/pgsty/repoort` 维护。
 
+用户要求修改时先完成本地构建、导出、双语预览和验收；只有明确要求“正式发布”时，
+才创建新的固定公开数据归档、更新 `data/report_publication.json`、推送并部署。
+正式发布必须更新 PGSTY 报告源码与数据包，不能只更新本地 HTML 或只推前端沿用旧快照。
+
+GA 默认“全部”，相加全部公开站点 / Property 的同日 / 同月指标；整月活跃用户只相加
+各站直接整月查询值，注明跨站未去重。保留单站下钻；平均会话时长按会话数加权，缺口不补零。
+
+年度受众使用直接 GA year 查询，不相加月活；完整年同比比较全年，当前年同比另取去年
+同一截至日期窗口。发布前执行 `./report update ga-yearly` 刷新年度数据及独立采集日期。
+导航入口为“关于公司 → 数据报告”，英文为“Company → Data Reports”。
+
 完整更新、归档、部署、验收与回退步骤保存在
 [Repoort 官网发布 SOP](/Users/vonng/pgsty/repoort/docs/PUBLISH_PGSTY.md)。
 
@@ -22,6 +33,7 @@
 ```sh
 cd ~/pgsty/repoort
 ./report daily
+./report update ga-yearly
 ./report check
 python3 -m unittest discover -s tests -v
 ./report export --site ~/pgsty/pgsty.com

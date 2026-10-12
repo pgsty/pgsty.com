@@ -35,7 +35,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   const SOURCE_METHODS = {
     github: "公开仓库与版本资产计数。Stars 表示仓库关注，资产下载包含重复下载；辅助文件单列。历史点为真实快照。",
     dockerhub: "公开镜像的累计 pull_count。CI、重复拉取与多架构请求会影响计数，不能解释为安装数或人数。",
-    ga: "按 Property 与精确 hostname 查询。活跃用户是 GA 可观测受众；月活直接查询整月，各站点 / Property 不跨域去重。",
+    ga: "按 Property 与精确 hostname 查询。默认合计全部公开 GA 站点；月活相加各站整月查询值，跨站未去重，不累加日活。",
     cloudflare: "账号边缘请求与独立 IP，含静态资源及自动化请求。core 与 overview 单独采集；日独立 IP 不能累加为月用户。",
     cdn: "COS 小时日志增量汇总。软件下载按成功 GET、200/206 与包路径识别；整月独立 IP 在原日志中去重。",
     nginx: "按站点日志流汇总请求、字节与 IP。月独立 IP 直接去重；覆盖窗口依日志流而定，不代表可识别访客人数。",
@@ -57,7 +57,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   /* Retired ids (former audience-specific pages) resolve to the single public report. */
   const RETIRED = {investor: "operations", "ga-investor-traffic": "ga", "extension-package-dashboard":"extension-downloads", "extension-package-dimensions":"extension-package-rankings"};
   const defaultPeriod = (id) => id === "cloudflare-ytd" ? "year" : ["repo-monthly-uv", "extension-monthly"].includes(id) ? "all" : OVERVIEW_REPORTS.includes(id) ? "1y" : "90d";
-  const GA_DEFAULT = list(payload("ga").sites).find((x) => x.hostname === "pigsty.cc" && x.has_observed_metrics) || list(payload("ga").sites)[0] || {};
+  const GA_DEFAULT = {site_id: "all", site_name: "全部 GA 站点", timezone: "各站点原时区", ...payload("ga").aggregate?.profile};
   const NGINX_DEFAULT = list(payload("nginx").daily).find((x) => x.site === "pg.center")?.site || list(payload("nginx").daily)[0]?.site || "";
   const requestedReport = RETIRED[document.body.dataset.report] || document.body.dataset.report;
   const initialReport = CATALOG.some((r) => r.id === requestedReport) ? requestedReport : "operations";
@@ -100,9 +100,14 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   const deltaHTML = (d) => d ? `<div class="metric-delta"><span class="delta ${esc(d.dir || "")}">${esc(d.text)}</span>${d.ref ? `<span>${esc(d.ref)}</span>` : ""}</div>` : "";
   const metricStrip = (items, extra = "") => `<div class="metric-strip ${items.length === 2 ? "two" : items.length === 3 ? "three" : items.length === 6 ? "six" : ""} ${extra}">${items.map((x) => `<div class="metric ${x.warning ? "warning" : ""}"><div class="metric-label">${esc(x.label)}</div><div class="metric-value">${esc(x.formatted ?? count(x.value))}${x.unit ? `<span class="metric-unit">${esc(x.unit)}</span>` : ""}</div>${deltaHTML(x.delta)}<div class="metric-context">${esc(x.context || "")}</div></div>`).join("")}</div>`;
   const selectedSite = () => list(payload("ga").sites).find((s) => String(s.site_id) === state.gaSite) || GA_DEFAULT;
+  const allGASites = () => selectedSite().site_id === "all";
+  const gaName = (site = selectedSite()) => site.hostname || site.site_name || "站点";
+  const gaMonthlyLabel = (metric) => `${allGASites() ? "全部站点" : "单站"}整月${metric}`;
+  const gaScope = () => allGASites() ? `${count(GA_DEFAULT.public_bindings)} 个站点绑定 · 跨站未去重` : `${gaName()} · 直接整月查询`;
   const observedRange = (rows, key = "date") => {
     const dates = rows.map((r) => r[key]).filter(Boolean).sort();
     if (!dates.length) return "该窗口暂无记录";
+    if (key === "year") return `${String(dates[0]).slice(0,4)} — ${String(dates[dates.length-1]).slice(0,4)}（年）`;
     if (key === "month") return `${String(dates[0]).slice(0,7)} — ${String(dates[dates.length-1]).slice(0,7)}（月）`;
     return `${date(dates[0])} — ${date(dates[dates.length - 1])}`;
   };
@@ -149,7 +154,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     if (trafficIds.includes(id)) fields.push(periodField());
     if (["ga", "cdn-traffic", "nginx-sites"].includes(id)) fields.push(segmented("grain", "时间粒度", [["auto", "自动"], ["daily", "每日"], ["monthly", "整月"]]));
     if (["operations", "pigsty-growth", "ga", "traffic-observation"].includes(id)) {
-      fields.push(field("gaSite", "GA 站点 / Property", list(payload("ga").sites).map((s) => [String(s.site_id), `${s.hostname || s.site_name} · ${s.property_id}${s.has_observed_metrics ? "" : "（暂无数据）"}`]), true));
+      fields.push(field("gaSite", "GA 站点 / Property", [["all", "全部"], ...list(payload("ga").sites).map((s) => [String(s.site_id), `${s.hostname || s.site_name} · ${s.property_id}${s.has_observed_metrics ? "" : "（暂无数据）"}`])], true));
     }
     if (id === "ga") fields.push(segmented("gaMetric", "趋势指标", [["pv", "PV"], ["uv", "活跃用户"], ["sessions", "会话"], ["new_users", "新用户"]]));
     if (id.startsWith("cloudflare")) fields.push(field("cfMetric", "趋势指标", [["page_views", "core · HTML 页面浏览"], ["requests", "core · 边缘请求"], ["bytes", "core · 传输字节"], ["uniques", "core · 日独立 IP"], ["visits_recent", "overview · Visits"], ["status_4xx_ratio_recent", "overview · 4xx 比例"]]), segmented("scale", "纵轴", [["linear", "线性"], ["log", "对数"]]));
@@ -205,11 +210,11 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   /* Line chart: full-resolution raw values, an optional trailing moving average for long daily windows,
      hollow amber points for partial windows, gaps kept as gaps, and a hover read-out. */
   function lineFigure(title, rows, metric, opts = {}) {
-    const key = opts.key || "date", monthly = key === "month", data = sorted(rows, key), compact = !!opts.compact;
+    const key = opts.key || "date", monthly = key === "month", yearly = key === "year", data = sorted(rows, key), compact = !!opts.compact;
     const valid = data.filter((r) => number(r[metric]) !== null && Number.isFinite(dayTime(r[key])));
     const fmt = opts.format === "bytes" ? bytes : opts.format === "percent" ? percent : short;
     const useLog = !!opts.log;
-    const isPartial = (r) => !!(r.is_partial_day || r.is_partial_month || (metric.includes("recent") && r.overview_is_partial_day));
+    const isPartial = (r) => !!(r.is_partial_day || r.is_partial_month || r.is_partial_year || r.has_coverage_gap || (metric.includes("recent") && r.overview_is_partial_day));
     const caption = `${esc(opts.caption || "")}${useLog ? " 纵轴为 log10(1+x)，保留原始数值与峰值；表格仍是原计数。" : ""}`;
     const windowText = esc(opts.window || observedRange(rows, key));
     const cls = `figure${compact ? " compact" : ""}`;
@@ -233,7 +238,8 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     let svg = `<defs><linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="grad-top"/><stop offset="1" class="grad-bottom"/></linearGradient></defs>`;
     yTicks.forEach((v, i) => { const yy = (top + ph - v / ymax * ph).toFixed(1); svg += `<line class="grid-line${i === 0 ? " base" : ""}" x1="${left}" y1="${yy}" x2="${w - right}" y2="${yy}"/><text class="axis-text" x="${left - 8}" y="${Number(yy) + 3.5}" text-anchor="end">${esc(yLabels[i])}</text>`; });
     let lastX = -Infinity;
-    for (const tick of timeTicks(tickMin, tickMax, monthly, pw)) {
+    const xTicks = yearly ? data.map(r=>({t:dayTime(r.year),label:String(r.year).slice(0,4)})) : timeTicks(tickMin, tickMax, monthly, pw);
+    for (const tick of xTicks) {
       const xx = X(tick.t), tw = textWidth(tick.label);
       if (xx < left - 2 || xx > w - right + 2 || xx - lastX < tw + 14) continue;
       const anchor = xx - tw / 2 < 0 ? "start" : xx + tw / 2 > w ? "end" : "middle";
@@ -253,7 +259,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     };
     const pathOf = (seg) => seg.map(([px, py], i) => `${i ? "L" : "M"}${px.toFixed(1)},${py.toFixed(1)}`).join("");
     const spanAll = (tickMax - tickMin) / DAY;
-    const maN = !opts.snapshots && !monthly && !opts.continuous && opts.smooth !== false && valid.length > 45 ? (spanAll > 400 ? 28 : 7) : 0;
+    const maN = !opts.snapshots && !monthly && !yearly && !opts.continuous && opts.smooth !== false && valid.length > 45 ? (spanAll > 400 ? 28 : 7) : 0;
     const ma = new Map();
     if (maN) {
       const base = valid.filter((r) => !isPartial(r)); let j = 0, sum = 0, n = 0;
@@ -263,7 +269,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
         if (n >= Math.ceil(maN / 2)) ma.set(base[i], sum / n);
       }
     }
-    const maxGap = opts.snapshots || opts.continuous ? Infinity : monthly ? 45 * DAY : 36 * 3600000;
+    const maxGap = opts.snapshots || opts.continuous ? Infinity : yearly ? 370 * DAY : monthly ? 45 * DAY : 36 * 3600000;
     const rawSegs = segmentsOf(data, (r) => number(r[metric]), maxGap);
     const mainSegs = maN ? segmentsOf(data.filter((r) => ma.has(r)), (r) => ma.get(r), maN * DAY) : rawSegs;
     if (!opts.snapshots) for (const seg of mainSegs) if (seg.length > 1) svg += `<path d="${pathOf(seg)}L${seg[seg.length-1][0].toFixed(1)},${top+ph}L${seg[0][0].toFixed(1)},${top+ph}Z" fill="url(#${id}g)"/>`;
@@ -279,9 +285,9 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     });
     svg += `<line class="hover-line" x1="0" y1="${top}" x2="0" y2="${top + ph}"/><circle class="hover-dot" r="4.5" cx="0" cy="0"/>`;
     const label = opts.seriesLabel || title.split(" · ").pop();
-    charts.set(id, {w, h, label, maLabel: maN ? `${maN} 日均线` : "", pts: valid.map((r) => ({x: X(dayTime(r[key])), y: Y(Number(r[metric])), d: monthly ? String(r[key]).slice(0, 7) : date(r[key]), v: fmt(r[metric]), m: ma.has(r) ? fmt(ma.get(r)) : "", p: isPartial(r)}))});
+    charts.set(id, {w, h, label, maLabel: maN ? `${maN} 日均线` : "", pts: valid.map((r) => ({x: X(dayTime(r[key])), y: Y(Number(r[metric])), d: yearly ? String(r[key]).slice(0, 4) : monthly ? String(r[key]).slice(0, 7) : date(r[key]), v: fmt(r[metric]), m: ma.has(r) ? fmt(ma.get(r)) : "", p: isPartial(r)}))});
     const lastComplete = [...valid].reverse().find((r) => !isPartial(r)) || valid[valid.length - 1];
-    const latest = opts.hideLatest ? "" : `<div class="figure-latest"><b>${esc(fmt(lastComplete[metric]))}</b><span>${esc(monthly ? String(lastComplete[key]).slice(0, 7) : date(lastComplete[key]))}${isPartial(lastComplete) ? " · 部分" : ""}</span></div>`;
+    const latest = opts.hideLatest ? "" : `<div class="figure-latest"><b>${esc(fmt(lastComplete[metric]))}</b><span>${esc(yearly ? String(lastComplete[key]).slice(0, 4) : monthly ? String(lastComplete[key]).slice(0, 7) : date(lastComplete[key]))}${isPartial(lastComplete) ? " · 部分" : ""}</span></div>`;
     const legendItems = [maN ? `<span class="lg raw">日值</span><span class="lg">${maN} 日均线（剔除部分日）</span>` : "", opts.snapshots ? `<span class="lg snap">真实快照之间的连线</span>` : "", valid.some(isPartial) ? `<span class="lg partial">部分窗口</span>` : ""].join("");
     const aria = `${title}。${observedRange(rows, key)}。${useLog ? "对数纵轴。" : ""}${maN ? `含 ${maN} 日均线。` : ""}数值见后续可下载表格。`;
     return `<figure class="${cls}"><div class="figure-head"><div class="figure-heading"><div class="figure-title">${esc(title)}</div><div class="figure-window">${windowText}</div></div>${latest}</div><div class="chart" data-chart="${id}"><svg viewBox="0 0 ${w} ${h}" data-x-start="${new Date(tickMin).toISOString().slice(0,10)}" data-x-end="${new Date(tickMax).toISOString().slice(0,10)}" role="img" aria-label="${esc(aria)}">${svg}</svg><div class="chart-tip" hidden></div></div>${legendItems ? `<div class="legend">${legendItems}</div>` : ""}${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`;
@@ -493,7 +499,8 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   }
   function gaRows(grain = state.grain) {
     const s = selectedSite();
-    return list(payload("ga")[grain]).filter((r)=>String(r.site_id)===String(s.site_id)).map((r)=>grain==="monthly"?{...r,is_partial_month: monthIsPartial(r.month,s)}:r);
+    if(allGASites())return list(payload("ga").aggregate?.[grain]);
+    return list(payload("ga")[grain]).filter((r)=>String(r.site_id)===String(s.site_id)).map((r)=>grain==="monthly"?{...r,is_partial_month: typeof r.is_partial_month === "boolean" ? r.is_partial_month : monthIsPartial(r.month,s)}:r);
   }
   function monthIsPartial(month,site) {
     if(!month)return true; const end = new Date(Date.UTC(Number(String(month).slice(0,4)),Number(String(month).slice(5,7)),0)).toISOString().slice(0,10);
@@ -513,16 +520,32 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     return {row, month, prev, prevMonth, change: prev && number(prev[metric]) ? Number(row[metric]) / Number(prev[metric]) - 1 : null};
   }
   const yoyDelta = (info) => !info.row ? null : info.change === null ? {text: "同比 —", ref: `${info.prevMonth} 无完整月`, dir: ""} : {text: `${info.change >= 0 ? "↑" : "↓"} ${count(Math.abs(info.change) * 100)}%`, ref: `同比 ${info.prevMonth}`, dir: info.change >= 0 ? "up" : "down"};
+  function gaAnnualSection() {
+    const d=payload("ga"), meta=d.yearly_meta||{}, s=selectedSite();
+    const rows=sorted(allGASites()?list(d.aggregate?.yearly):list(d.yearly).filter(r=>String(r.site_id)===String(s.site_id)),"year");
+    const complete=[...rows].reverse().find(r=>!r.is_partial_year&&!r.has_coverage_gap&&number(r.uv)!==null);
+    const current=rows.find(r=>String(r.year).slice(0,4)===String(meta.as_of||"").slice(0,4));
+    const annualDelta=row=>number(row?.yoy_uv)===null?null:{text:`${row.yoy_uv>=0?"↑":"↓"} ${count(Math.abs(row.yoy_uv)*100)}%`,ref:`同比 ${row.comparison_year}${row.comparison_kind==="matched_ytd"?" 同期":" 全年"}`,dir:row.yoy_uv>=0?"up":"down"};
+    const scope=allGASites()?"各站点年活相加，跨站未去重。":"单站 / Property 内按年去重。";
+    let body=metricStrip([{label:"最近完整年活跃用户",value:complete?.uv,context:complete?`${String(complete.year).slice(0,4)} · 完整年 · ${gaName(s)}`:"暂无完整年记录",delta:annualDelta(complete)},{label:"本年累计活跃用户",value:current?.uv,context:current?`${date(current.window_start)} — ${date(current.window_end)} · ${current.is_partial_year?"年内累计":"完整年"}`:"暂无本年记录",delta:current?.is_partial_year?annualDelta(current):null},{label:"去年同期活跃用户",value:current?.is_partial_year?current?.comparison_uv:null,context:current?.is_partial_year?`${current.comparison_year}-01-01 — ${current.comparison_year}${String(current.window_end||"").slice(4)} · 同期直接查询`:"同期比较仅用于未结束年份"}]);
+    body+=lineFigure(`${gaName(s)} · 年度活跃用户`,rows,"uv",{key:"year",seriesLabel:"年度活跃用户",window:`${observedRange(rows,"year")} · 年度采集 ${stamp(meta.captured_at)} · ${s.timezone||"原时区"}`,caption:`按自然年直接查询 GA 活跃用户，不累加月活或日活。${scope}空心点为年内累计，未结束年份只与去年同一日期范围比较；不与去年全年比较。`});
+    if(!meta.captured_at)body+=notice("年度数据尚未获取，缺失值保持为空。","warning");
+    else if(meta.captured_at&&Date.now()-new Date(meta.captured_at).getTime()>7*DAY)body+=notice("年度数据较旧，请以年度采集日期和截至日期为准。","warning");
+    if(list(meta.bindings).some(r=>r.quality?.subject_to_thresholding||r.quality?.data_loss_from_other_row))body+=notice("GA 年度查询存在阈值或汇总行限制，数值可能不完整。","warning");
+    body+=table("ga-yearly",rows,[col("year","年份","text",r=>esc(String(r.year).slice(0,4)),r=>String(r.year).slice(0,4)),col("uv","年度活跃用户","number"),col("total_users","年度总访客","number"),col("new_users","年度新用户","number"),col("pv","年度页面浏览","number"),col("sessions","年度会话","number"),dateColumn("window_end","截至日期"),col("comparison_uv","同比基期活跃用户","number"),col("comparison_kind","同比口径","text",r=>esc(r.comparison_kind==="matched_ytd"?"去年同期":"去年全年"),r=>r.comparison_kind),col("yoy_uv","活跃用户同比","percent"),col("is_partial_year","年度窗口","text",r=>esc(r.is_partial_year?"年内累计":"完整年"),r=>r.is_partial_year?"year_to_date":"full_year"),...(allGASites()?[col("observed_bindings","有记录绑定","number",r=>count(r.coverage?.observed_bindings),r=>r.coverage?.observed_bindings),col("missing_bindings","缺口绑定","number",r=>count(r.coverage?.missing_bindings),r=>r.coverage?.missing_bindings)]:[])],{title:"年度受众与同比",note:"完整年同比比较两个自然年；当前年同比比较两年同一截至日期。年度活跃用户、总访客和新用户来自各自的 GA 指标，不能互相替代。历史站点与追踪范围会变化。"});
+    return section("年度网站受众",`Google Analytics · ${gaName(s)} · 按自然年直接统计，不受月度观察窗口裁切。${scope}`,body);
+  }
   function gaSection(full = false) {
     const d = payload("ga"), s = selectedSite(), grain = resolveGrain(filterPeriod(gaRows("daily")), full), key = grain==="monthly"?"month":"date", rows=filterPeriod(gaRows(grain),key), metric=full?state.gaMetric:"pv", monthly=gaPeriodMetric().row;
     const labels={pv:"页面浏览 PV",uv:"活跃用户 UV",sessions:"会话",new_users:"新用户"};
     const yoy = latestComplete(gaRows("monthly"), "uv");
-    let body=metricStrip([{label:"单站整月活跃用户",value:monthly?.uv,context:monthly?`${String(monthly.month).slice(0,7)} · ${monthly.is_partial_month?"当前不完整月":"完整月"} · 直接整月查询`:"所选 Property 尚无完整月记录",delta:!/^\d{4}-\d{2}$/.test(state.period)?yoyDelta(yoy):null},{label:"单站整月页面浏览",value:monthly?.pv,context:`${s.hostname||"未绑定"} · Property ${s.property_id||"—"}`},{label:"所选窗口页面浏览",value:total(rows,"pv"),context:`${observedRange(rows,key)} · ${grain==="monthly"?"源月表":"源日表"}`},{label:"所选窗口会话",value:total(rows,"sessions"),context:"不将日 UV 或月 UV 累加为期间独立用户"}]);
-    body+=lineFigure(`${s.hostname||s.site_name||"站点"} · ${grain==="monthly"?"整月":"每日"}${labels[metric]}`,rows,metric,{key,seriesLabel:labels[metric],window:`${observedRange(rows,key)} · ${s.timezone||"原时区"} · 绑定最近观测 ${date(s.last_day)} · 绑定采集 ${stamp(s.captured_at)}`,caption:`精确 hostname=${s.hostname||"未注明"}，Property=${s.property_id||"未注明"}。${grain==="monthly"?"与所选日期区间重叠的整月使用直接查询值，不裁切月独立用户；当前月按截至日期显示部分值。":"日活在每天独立去重，不相加为月活；均线仅作平滑阅读。"} GA 只能观察到执行标签的访问。`});
+    const scope = allGASites() ? "按全部公开站点 / Property 绑定相加，跨站未去重。" : `精确 hostname=${s.hostname||"未注明"}，Property=${s.property_id||"未注明"}。`;
+    let body=metricStrip([{label:gaMonthlyLabel("活跃用户"),value:monthly?.uv,context:monthly?`${String(monthly.month).slice(0,7)} · ${monthly.is_partial_month?"不完整月":"完整月"} · ${gaScope()}`:"所选范围尚无完整月记录",delta:!/^\d{4}-\d{2}$/.test(state.period)?yoyDelta(yoy):null},{label:gaMonthlyLabel("页面浏览"),value:monthly?.pv,context:allGASites()?gaScope():`${gaName(s)} · Property ${s.property_id||"—"}`},{label:"所选窗口页面浏览",value:total(rows,"pv"),context:`${observedRange(rows,key)} · ${grain==="monthly"?"源月表":"源日表"}`},{label:"所选窗口会话",value:total(rows,"sessions"),context:"不将日 UV 或月 UV 累加为期间独立用户"}]);
+    body+=lineFigure(`${gaName(s)} · ${grain==="monthly"?"整月":"每日"}${labels[metric]}`,rows,metric,{key,seriesLabel:labels[metric],window:`${observedRange(rows,key)} · ${s.timezone||"原时区"} · 绑定最近观测 ${date(s.last_day)} · 绑定采集 ${stamp(s.captured_at)}`,caption:`${scope}${grain==="monthly"?"与所选日期区间重叠的整月使用直接查询值，不裁切月独立用户；当前月按截至日期显示部分值。":"日活在每天独立去重，不相加为月活；均线仅作平滑阅读。"} GA 只能观察到执行标签的访问。`});
     if(!s.has_observed_metrics)body+=notice("该站点绑定暂无观测指标。没有将未采集记录解释为零。","warning");
-    body+=table("ga-series",rows,[dateColumn(key,grain==="monthly"?"月份":"日期"),col("pv","PV","number"),col("uv","活跃用户","number"),col("total_users","总用户","number"),col("new_users","新用户","number"),col("sessions","会话","number"),col("engaged_sessions","参与会话","number"),col("event_count","事件","number"),col("key_events","关键事件","number"),col("engagement_seconds","参与时长（秒）","number"),col("avg_session_seconds","平均会话时长（秒）","number"),...(grain==="monthly"?[partialColumn("is_partial_month")]:[])],{title:"所选站点 GA 指标",note:`数据从 ${date(s.first_day)} 至 ${date(s.last_day)}，站点时区 ${s.timezone||"未注明"}。不同 Property / hostname 可能重叠，本页不生成跨站受众总计。`});
-    if(full)body+=`<h3>公开 GA 绑定</h3>`+table("ga-sites",list(d.sites),[col("hostname","精确 hostname","name"),col("site_name","绑定名称","name"),col("property_id","Property"),col("timezone","原时区"),dateColumn("first_day","最早观测"),dateColumn("last_day","最近观测"),col("captured_at","绑定入库时间","text",r=>stamp(r.captured_at)),col("completed_start","最近成功窗口起","text",r=>esc(date(r.completed_window?.start)),r=>r.completed_window?.start||""),col("completed_end","最近成功窗口止","text",r=>esc(date(r.completed_window?.end)),r=>r.completed_window?.end||""),col("has_observed_metrics","观测状态","text",r=>r.has_observed_metrics?"有观测记录":r.completed_window?.end?"已查询 · 无观测":"尚无观测",r=>r.has_observed_metrics?"observed":r.completed_window?.end?"checked_no_observations":"missing")],{title:"公开 GA 绑定",note:"同一 hostname 可能绑定多个 Property，必须单独选择。成功查询窗口与实际有访问的最后一天分别保存；无观测的绑定仍保留成功窗口。"});
-    return section("网站受众",`Google Analytics · ${s.hostname||s.site_name||"未选择站点"} · Property ${s.property_id||"—"} · ${s.timezone||"原 Property 时区"}。`,body,full?"":reportLink("ga","受众与站点明细"));
+    body+=table("ga-series",rows,[dateColumn(key,grain==="monthly"?"月份":"日期"),col("pv","PV","number"),col("uv","活跃用户","number"),col("total_users","总用户","number"),col("new_users","新用户","number"),col("sessions","会话","number"),col("engaged_sessions","参与会话","number"),col("event_count","事件","number"),col("key_events","关键事件","number"),col("engagement_seconds","参与时长（秒）","number"),col("avg_session_seconds","平均会话时长（秒）","number"),...(allGASites()?[col("observed_bindings","有记录绑定","number",r=>count(r.coverage?.observed_bindings),r=>r.coverage?.observed_bindings),col("checked_no_rows","已查询无记录","number",r=>count(r.coverage?.checked_no_rows),r=>r.coverage?.checked_no_rows),col("missing_bindings","缺口绑定","number",r=>count(r.coverage?.missing_bindings),r=>r.coverage?.missing_bindings)]:[]),...(grain==="monthly"?[partialColumn("is_partial_month")]:[])],{title:allGASites()?"全部站点 GA 指标":"所选站点 GA 指标",note:`数据从 ${date(s.first_day)} 至 ${date(s.last_day)}，站点时区 ${s.timezone||"未注明"}。${allGASites()?"各站点同日 / 同月指标相加；平均会话时长按会话数加权。历史绑定范围会变化，缺口保持为空。":"单站指标可独立查看。"}跨站受众未去重，不代表去重总人数。`});
+    if(full)body+=`<h3>公开 GA 绑定</h3>`+table("ga-sites",list(d.sites),[col("hostname","精确 hostname","name"),col("site_name","绑定名称","name"),col("property_id","Property"),col("timezone","原时区"),dateColumn("first_day","最早观测"),dateColumn("last_day","最近观测"),col("captured_at","绑定入库时间","text",r=>stamp(r.captured_at)),col("completed_start","最近成功窗口起","text",r=>esc(date(r.completed_window?.start)),r=>r.completed_window?.start||""),col("completed_end","最近成功窗口止","text",r=>esc(date(r.completed_window?.end)),r=>r.completed_window?.end||""),col("has_observed_metrics","观测状态","text",r=>r.has_observed_metrics?"有观测记录":r.completed_window?.end?"已查询 · 无观测":"尚无观测",r=>r.has_observed_metrics?"observed":r.completed_window?.end?"checked_no_observations":"missing")],{title:"公开 GA 绑定",note:"默认合计全部公开绑定，也可单独选择 hostname / Property。成功查询窗口与实际有访问的最后一天分别保存；无观测的绑定仍保留成功窗口。"});
+    return section("网站受众",`Google Analytics · ${gaName(s)} · ${allGASites()?`${count(s.public_bindings)} 个站点绑定 · ${count(s.public_properties)} 个 Property`:`Property ${s.property_id||"—"}`} · ${s.timezone||"原 Property 时区"}。`,body,full?"":reportLink("ga","受众与站点明细"))+gaAnnualSection();
   }
   function cfSection(full = false) {
     const d=payload("cloudflare"), rows=filterPeriod(list(d.daily)), complete=rows.filter(r=>r.is_partial_day===false), metric=full?state.cfMetric:"requests", overview=metric.includes("recent"), labels={page_views:"core · HTML 页面浏览",requests:"core · 边缘请求",bytes:"core · 传输字节",uniques:"core · 日独立 IP",visits_recent:"overview · Visits",status_4xx_ratio_recent:"overview · 4xx 响应比例"};
@@ -678,7 +701,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     const ga=latestComplete(gaRows("monthly"),"uv"), ip=latestComplete(cdnRows("monthly"),"unique_ips"), pkg=latestComplete(cdnRows("monthly"),"package_downloads");
     const mapped=list(cdn.dimensions).filter(r=>r.dimension==="package"&&r.mapping_status==="mapped");
     const items=[
-      {label:"单站整月活跃用户",value:ga.row?.uv,delta:yoyDelta(ga),context:`GA · ${s.hostname||"未绑定"} · ${ga.month||"暂无完整月"} · 直接整月查询`},
+      {label:gaMonthlyLabel("活跃用户"),value:ga.row?.uv,delta:yoyDelta(ga),context:`GA · ${ga.month||"暂无完整月"} · ${gaScope()}`},
       {label:"软件仓库整月独立 IP",value:ip.row?.unique_ips,delta:yoyDelta(ip),context:`CDN 两区域 · ${ip.month||"暂无完整月"} · 原日志整月去重`},
       {label:"整月软件包成功 GET",value:pkg.row?.package_downloads,delta:yoyDelta(pkg),context:`CDN · ${pkg.month||"暂无完整月"} · RPM / DEB · 200/206`},
       {label:"公开组织 Stars",value:gh.totals?.stars,delta:snapDelta(gh.delta?.same_repository_stars,gh.delta?.baseline_captured_at,gh.as_of,"同仓库"),context:`GitHub · ${date(gh.as_of)} · ${count(gh.totals?.repositories)} 个公开仓库`},
@@ -692,7 +715,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     const ext=extensionMonthlyRows(list(payload("cdn").extension_monthly));
     const base={key:"month",compact:true,cols};
     const figs=[
-      lineFigure(`${s.hostname||"站点"} · 整月活跃用户`,gaM,"uv",{...base,seriesLabel:"整月活跃用户",window:`GA · ${observedRange(gaM,"month")}`,caption:"每月直接查询整月活跃用户，不由日活累加；单站口径。"}),
+      lineFigure(`${gaName(s)} · 整月活跃用户`,gaM,"uv",{...base,seriesLabel:"整月活跃用户",window:`GA · ${observedRange(gaM,"month")}`,caption:allGASites()?"各站点整月活跃用户相加，跨站未去重；不由日活累加。历史站点范围随观测覆盖变化。":"每月直接查询整月活跃用户，不由日活累加；单站口径。"}),
       lineFigure("软件仓库 · 整月独立 IP",cdnM,"unique_ips",{...base,seriesLabel:"整月独立 IP",window:`CDN · ${observedRange(cdnM,"month")}`,caption:"两区域原日志整月去重；IP 不等于用户或企业。"}),
       lineFigure("软件包 · 整月成功 GET",cdnM,"package_downloads",{...base,seriesLabel:"软件包成功 GET",window:`CDN · ${observedRange(cdnM,"month")}`,caption:"RPM / DEB 成功 GET，含重试与重复分发，非安装量。"}),
       ext.rows.length?lineFigure("扩展映射包 · 整月成功 GET",ext.rows,ext.countKey,{...base,seriesLabel:"扩展映射包 GET",window:`CDN · ${observedRange(ext.rows,"month")}`,caption:"仅统计明确映射到扩展的包；小时覆盖未确认的月份标为部分。"}):"",
@@ -737,13 +760,13 @@ Promise.resolve(window.REPOORT_READY).then(() => {
       github:"公开仓库、关注、复用与版本资产的可追溯快照。累计计数与同一仓库 / 资产的变化分别呈现，保留范围扩大与仓库迁移的影响。",
       dockerhub:"公开镜像与标签的分发计数。累计拉取与历史快照并列，按镜像阅读具体产品的分发范围。",
       "open-source":"在明确的公开项目样本中观察 Pigsty 的开源关注。同行仓库按原样本与当前 canonical 名称对应，镜像分发单列。",
-      ga:"按站点、Property 与原时区呈现可测受众与访问趋势。整月活跃用户为整月直接查询值，各站点独立统计、不相加。",
+      ga:"默认合计全部 GA 站点，也可切换单站 / Property。整月活跃用户相加各站整月查询值，跨站未去重；不累加日活。",
       "cloudflare-ytd":"观察账号在年内的边缘请求、HTML 浏览与日独立 IP。完整日与部分日分开，原始峰值及 overview 缺口保留。",
       "repo-monthly-uv":"在完整月份范围直接去重源日志中的 IP，观察软件仓库的覆盖变化。月独立 IP 与每日、区域计数分开。",
       "extension-monthly":"按月观察明确映射到扩展的软件包成功分发。映射范围、小时覆盖与当月未完成状态直接标明。",
       "repo-system-distribution":"在近期日志窗口观察软件仓库的操作系统、架构、请求客户端与分发类型。未识别的特征保留 unknown。",
       distribution:"分别观察 GitHub 发行资产、Docker 镜像、CDN 软件包与 Cloudflare 边缘请求。来源有各自的时间范围，不合并为一个安装或用户数。",
-      "traffic-observation":"将单站 GA 受众、Cloudflare 账号边缘请求与单条 Nginx 日志流并列阅读。差异来自覆盖与机制，不能相减推算访客构成。",
+      "traffic-observation":"将全部站点 GA 受众合计、Cloudflare 账号边缘请求与单条 Nginx 日志流并列阅读。差异来自覆盖与机制，不能相减推算访客构成。",
       "pigsty-growth":"从社区关注、网站传播与软件分发观察产品增长。快照变化与访问时间窗口分别呈现，各来源保留原单位。"
     };
     const lede=descriptions[id]|| (def.kind==="archive"?"从原始报告与 CSV 重建这一专题的历史证据。原观察窗口、估算标签与制品哈希保留，方便后续复核和独立更新。":id.startsWith("extension-")?"观察扩展映射的软件包分发、排名与维度。未映射包另列，映射到一个软件包不等于一个独立使用者。":id.startsWith("cloudflare")?"连续观察账号级边缘请求与页面响应，保留 core / overview 的独立覆盖、部分日和异常峰值。":"保留来源、时间窗口与数据口径的公开聚合观察。趋势与完整表格使用同一份数据。");

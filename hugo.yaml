@@ -217,7 +217,7 @@ languages:
           params: { icon: fa-solid fa-chart-line }
         - identifier: company-report
           parent: company
-          name: Public Metrics
+          name: Data Reports
           weight: 52
           pageRef: /report
           params: { icon: fa-solid fa-chart-column }
@@ -416,7 +416,7 @@ languages:
           params: { icon: fa-solid fa-chart-line }
         - identifier: company-report
           parent: company
-          name: 公开指标报告
+          name: 数据报告
           weight: 52
           pageRef: /report
           params: { icon: fa-solid fa-chart-column }
