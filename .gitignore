@@ -1,4 +1,5 @@
 public/
+static/report/
 resources/_gen/
 tmp/
 .hugo_build.lock

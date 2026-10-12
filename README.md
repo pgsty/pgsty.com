@@ -92,3 +92,8 @@ The recorded Cloudflare Pages setup also builds `main` and serves `pgsty.com`
 using Hugo Extended 0.164.0. Those platform settings are not stored in this
 repository and need live verification for deployment work. A local build,
 commit, push, deployment, and public-site check are separate results.
+
+## Public metrics report
+
+English: `/report/`; 中文：`/zh/report/`。同一份公开静态数据，语言切换保留报告与筛选。
+维护与发布见 [REPORT-SOP](docs/REPORT-SOP.md)，采集和图表源码在 `~/pgsty/repoort`。

@@ -1,0 +1,357 @@
+/* Scoped from Repoort web/dashboard.css; refresh with ./report export. */
+.repoort-app{
+  --brand-50:#f1f6fb;--brand-100:#e1ecf6;--brand-200:#c3d8ec;--brand-300:#94b9dc;--brand-400:#5e93c3;--brand-500:#3f78aa;--brand-600:#336791;--brand-700:#2a5577;--brand-800:#234662;--brand-900:#1c3850;
+  --slate-25:#fcfdfe;--slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--slate-300:#cbd5e1;--slate-400:#94a3b8;--slate-500:#64748b;--slate-600:#475569;--slate-700:#334155;--slate-800:#1e293b;--slate-900:#0f172a;
+  --amber-50:#fffbeb;--amber-100:#fef3c7;--amber-200:#fde68a;--amber-500:#f59e0b;--amber-600:#d97706;--amber-700:#b45309;--amber-800:#92400e;
+  --emerald-50:#ecfdf5;--emerald-100:#d1fae5;--emerald-500:#10b981;--emerald-600:#059669;--emerald-700:#047857;
+  --rose-50:#fff1f2;--rose-100:#ffe4e6;--rose-500:#f43f5e;--rose-600:#e11d48;--rose-700:#be123c;
+  --chart-line:var(--brand-600);--chart-raw:#a9bfd3;--chart-grid:#eef2f6;
+  --ring:0 0 0 1px rgb(15 23 42 / .07);
+  --shadow-xs:0 1px 2px rgb(15 23 42 / .04);
+  --shadow-sm:0 0 0 1px rgb(15 23 42 / .06),0 1px 2px rgb(15 23 42 / .04),0 2px 6px -2px rgb(15 23 42 / .05);
+  --shadow-lg:0 0 0 1px rgb(15 23 42 / .06),0 12px 28px -8px rgb(15 23 42 / .18),0 4px 10px -4px rgb(15 23 42 / .08);
+  --radius-sm:6px;--radius:10px;--radius-lg:14px;--radius-xl:18px;
+  --header-h:60px;
+  --font-sans:"Inter var","Inter",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Roboto,"Helvetica Neue",sans-serif;
+  --font-mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+}
+.repoort-app *,.repoort-app *::before,.repoort-app *::after{box-sizing:border-box}
+.repoort-app{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.repoort-app{margin:0;color:var(--slate-700);font:14.5px/1.65 var(--font-sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:"cv11","ss01";
+  background:radial-gradient(1100px 420px at 78% -160px,rgb(51 103 145 / .10),transparent 70%),radial-gradient(900px 380px at -10% -120px,rgb(14 165 233 / .06),transparent 70%),var(--slate-50);background-repeat:no-repeat;min-height:100vh}
+.repoort-app a{color:var(--brand-700);text-decoration:none;text-underline-offset:3px;text-decoration-thickness:1px}
+.repoort-app a:hover{color:var(--brand-600);text-decoration:underline}
+.repoort-app button,.repoort-app input,.repoort-app select{font:inherit;color:var(--slate-700)}
+.repoort-app button,.repoort-app select{cursor:pointer}
+.repoort-app button{background:var(--report-surface);border:0;border-radius:var(--radius-sm);padding:6px 12px;line-height:1.4;box-shadow:var(--shadow-sm);transition:background-color .15s,box-shadow .15s,color .15s}
+.repoort-app button:hover{background:var(--slate-50)}
+.repoort-app button:disabled{opacity:.45;cursor:default}
+.repoort-app input,.repoort-app select{min-height:36px;border:0;border-radius:var(--radius-sm);background:var(--report-surface);padding:6px 10px;max-width:100%;box-shadow:inset 0 0 0 1px var(--slate-300),var(--shadow-xs);transition:box-shadow .15s}
+.repoort-app select{appearance:none;-webkit-appearance:none;padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2364748b'%3E%3Cpath fill-rule='evenodd' d='M5.2 7.7a.75.75 0 0 1 1.06.02L10 11.6l3.74-3.88a.75.75 0 1 1 1.08 1.04l-4.28 4.44a.75.75 0 0 1-1.08 0L5.18 8.76a.75.75 0 0 1 .02-1.06Z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;background-size:16px}
+.repoort-app input:hover,.repoort-app select:hover{box-shadow:inset 0 0 0 1px var(--slate-400),var(--shadow-xs)}
+.repoort-app input:focus,.repoort-app select:focus{outline:none;box-shadow:inset 0 0 0 1px var(--brand-500),0 0 0 3px rgb(63 120 170 / .18)}
+.repoort-app input::placeholder{color:var(--slate-400)}
+.repoort-app :focus-visible{outline:2px solid var(--brand-500);outline-offset:2px}
+.repoort-app h1,.repoort-app h2,.repoort-app h3,.repoort-app p{margin-top:0}
+.repoort-app h1,.repoort-app h2,.repoort-app h3{color:var(--slate-900);font-weight:650;letter-spacing:-.01em}
+.repoort-app h1{font-size:clamp(28px,2.6vw,38px);line-height:1.2;letter-spacing:-.025em;margin:14px 0 12px;font-weight:700}
+.repoort-app h2{font-size:19px;line-height:1.4;margin:0}
+.repoort-app h3{font-size:15px;line-height:1.45;margin:0}
+.repoort-app small{font-size:12px}
+.repoort-app svg{display:block;width:100%;height:auto}
+.repoort-app strong{font-weight:600;color:var(--slate-800)}
+.repoort-app .num{font-variant-numeric:tabular-nums}
+.repoort-app .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.repoort-app .skip-link{position:fixed;top:-60px;left:20px;background:var(--brand-600);color:#fff;padding:10px 18px;border-radius:var(--radius);z-index:99}
+.repoort-app .skip-link:focus{top:10px;color:#fff}
+.repoort-app .quiet{color:var(--slate-500)}
+.repoort-app .masthead{position:sticky;top:0;z-index:40;height:var(--header-h);background:rgb(255 255 255 / .78);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid rgb(15 23 42 / .07)}
+.repoort-app .masthead-inner{max-width:1720px;height:100%;margin:auto;padding:0 28px;display:flex;align-items:center;gap:24px}
+.repoort-app .brand{display:flex;align-items:center;gap:11px;color:var(--slate-900);min-width:0}
+.repoort-app .brand:hover{text-decoration:none;color:var(--slate-900)}
+.repoort-app .brand-mark{width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:9px;color:#fff;background:linear-gradient(135deg,var(--brand-500),var(--brand-800));box-shadow:inset 0 1px 0 rgb(255 255 255 / .25),0 1px 2px rgb(15 23 42 / .2)}
+.repoort-app .brand-mark svg{width:22px}
+.repoort-app .brand-text{display:flex;flex-direction:column;line-height:1.2;min-width:0}
+.repoort-app .brand-text strong{font-size:15px;font-weight:650;letter-spacing:-.01em;color:var(--slate-900);white-space:nowrap}
+.repoort-app .brand-text small{font-size:11px;color:var(--slate-500);margin-top:2px;white-space:nowrap}
+.repoort-app .masthead-actions{display:flex;align-items:center;gap:16px;margin-left:auto}
+.repoort-app .edition{font-size:12px;color:var(--slate-500);white-space:nowrap;font-variant-numeric:tabular-nums}
+.repoort-app .data-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:#fff;background:var(--slate-900);padding:7px 13px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 2px rgb(15 23 42 / .2)}
+.repoort-app .data-link svg{width:15px}
+.repoort-app .data-link:hover{background:var(--slate-700);color:#fff;text-decoration:none}
+.repoort-app .workspace{max-width:1720px;margin:auto;display:grid;grid-template-columns:248px minmax(0,1fr);padding:0 28px;gap:44px}
+.repoort-app .report-index{position:sticky;top:var(--header-h);align-self:start;max-height:calc(100vh - var(--header-h));overflow:auto;padding:28px 6px 28px 0;scrollbar-width:thin;scrollbar-color:var(--slate-300) transparent}
+.repoort-app .index-heading{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:var(--slate-900);margin:0 0 18px 10px}
+.repoort-app .count-pill{font-size:11px;font-weight:500;color:var(--slate-500);background:var(--report-surface);border-radius:999px;padding:1px 8px;box-shadow:var(--shadow-sm)}
+.repoort-app .nav-group{margin-bottom:20px}
+.repoort-app .nav-group h3{font-size:11px;font-weight:600;color:var(--slate-400);letter-spacing:.06em;margin:0 0 6px 10px}
+.repoort-app .nav-group a{display:flex;gap:8px;align-items:center;font-size:13px;padding:6px 10px;color:var(--slate-600);border-radius:8px;line-height:1.45;transition:background-color .12s,color .12s}
+.repoort-app .nav-group a:hover{background:rgb(15 23 42 / .04);color:var(--slate-900);text-decoration:none}
+.repoort-app .nav-group a[aria-current="page"]{background:var(--report-surface);color:var(--brand-700);font-weight:600;box-shadow:var(--shadow-sm)}
+.repoort-app .nav-group a[aria-current="page"]::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand-500);flex:none;margin-left:-2px}
+.repoort-app .nav-kind{font-size:10px;color:var(--slate-400);margin-left:auto;white-space:nowrap;font-weight:500;background:var(--slate-100);padding:0 6px;border-radius:999px}
+.repoort-app .index-note{font-size:11.5px;line-height:1.8;color:var(--slate-400);padding:16px 10px 0;border-top:1px solid var(--slate-200)}
+.repoort-app main{min-width:0;padding:32px 0 28px}
+.repoort-app .reading-bar{display:none;align-items:center;gap:10px;margin-bottom:18px}
+.repoort-app .report-select-label{font-size:12px;color:var(--slate-500)}
+.repoort-app #report-select{flex:1;font-size:14px}
+.repoort-app #report-content{max-width:1320px}
+.repoort-app .hero{position:relative;padding:4px 0 26px}
+.repoort-app .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--brand-700);background:var(--brand-50);padding:3px 11px 3px 9px;border-radius:999px;box-shadow:inset 0 0 0 1px rgb(51 103 145 / .16)}
+.repoort-app .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand-500);box-shadow:0 0 0 3px rgb(63 120 170 / .18)}
+.repoort-app .eyebrow.archive{color:var(--amber-800);background:var(--amber-50);box-shadow:inset 0 0 0 1px rgb(217 119 6 / .22)}
+.repoort-app .eyebrow.archive::before{background:var(--amber-500);box-shadow:0 0 0 3px rgb(245 158 11 / .2)}
+.repoort-app .hero .lede{font-size:15.5px;line-height:1.85;max-width:860px;color:var(--slate-600);margin-bottom:20px}
+.repoort-app .hero-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;font-size:12px;color:var(--slate-500)}
+.repoort-app .hero-meta .meta-label{color:var(--slate-400);margin-right:6px}
+.repoort-app .source-chips{display:inline-flex;flex-wrap:wrap;gap:6px}
+.repoort-app .source-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--slate-700);background:var(--report-surface);border-radius:999px;padding:2px 10px 2px 8px;box-shadow:var(--shadow-sm);white-space:nowrap}
+.repoort-app .source-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--slate-300)}
+.repoort-app .source-chip.complete .dot,.repoort-app .source-chip.verified .dot{background:var(--emerald-500)}
+.repoort-app .source-chip.partial .dot,.repoort-app .source-chip.stale .dot,.repoort-app .source-chip.unknown .dot{background:var(--amber-500)}
+.repoort-app .source-chip.failed .dot,.repoort-app .source-chip.missing .dot{background:var(--rose-500)}
+.repoort-app .source-chip .chip-date{color:var(--slate-400);font-weight:400;font-variant-numeric:tabular-nums}
+.repoort-app .toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:22px;padding-top:18px;border-top:1px dashed var(--slate-200)}
+.repoort-app .toc a{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--slate-600);padding:4px 11px 4px 5px;border-radius:999px;background:rgb(255 255 255 / .6);box-shadow:inset 0 0 0 1px var(--slate-200);transition:all .15s}
+.repoort-app .toc a span{font-size:10.5px;font-weight:600;color:var(--brand-600);background:var(--brand-50);border-radius:999px;padding:0 6px;font-variant-numeric:tabular-nums}
+.repoort-app .toc a:hover{background:var(--report-surface);color:var(--slate-900);text-decoration:none;box-shadow:inset 0 0 0 1px var(--slate-300),var(--shadow-xs)}
+.repoort-app .toolbar{position:sticky;top:calc(var(--header-h) + 10px);z-index:30;display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 18px;padding:14px 16px;margin:0 0 34px;background:rgb(255 255 255 / .86);-webkit-backdrop-filter:saturate(180%) blur(12px);backdrop-filter:saturate(180%) blur(12px);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)}
+.repoort-app .toolbar.static{position:static}
+.repoort-app .field{display:flex;flex-direction:column;gap:5px;min-width:150px}
+.repoort-app .field-label,.repoort-app .field>span:first-child{font-size:11px;font-weight:600;color:var(--slate-500);letter-spacing:.02em}
+.repoort-app .field select,.repoort-app .field input{font-size:13px;min-height:34px;max-width:340px}
+.repoort-app .field.wide{min-width:230px;flex:1}
+.repoort-app .field.wide select{max-width:none;width:100%}
+.repoort-app .seg-field{min-width:0}
+.repoort-app .segmented{display:inline-flex;flex-wrap:nowrap;gap:2px;padding:3px;background:var(--slate-100);border-radius:9px;box-shadow:inset 0 0 0 1px rgb(15 23 42 / .05);overflow-x:auto;scrollbar-width:none;max-width:100%}
+.repoort-app .segmented::-webkit-scrollbar{display:none}
+.repoort-app .segmented button{background:transparent;box-shadow:none;border-radius:7px;padding:4px 11px;font-size:12.5px;font-weight:500;color:var(--slate-600);white-space:nowrap;min-height:28px}
+.repoort-app .segmented button:hover{color:var(--slate-900);background:rgb(255 255 255 / .6)}
+.repoort-app .segmented button[aria-pressed="true"]{background:var(--report-surface);color:var(--slate-900);box-shadow:0 1px 2px rgb(15 23 42 / .12),0 0 0 1px rgb(15 23 42 / .05)}
+.repoort-app .toolbar-hint{color:var(--slate-400);font-size:11.5px;align-self:center;margin-left:auto;max-width:240px;line-height:1.6}
+.repoort-app .section{margin:0 0 52px;scroll-margin-top:calc(var(--header-h) + 110px)}
+.repoort-app .section-head{display:flex;align-items:flex-end;gap:20px;justify-content:space-between;margin-bottom:18px}
+.repoort-app .section-heading{display:flex;gap:14px;align-items:flex-start;min-width:0}
+.repoort-app .section-number{flex:none;display:grid;place-items:center;width:30px;height:30px;margin-top:-1px;border-radius:9px;font-size:11.5px;font-weight:650;color:var(--brand-700);background:var(--report-surface);box-shadow:var(--shadow-sm);font-variant-numeric:tabular-nums}
+.repoort-app .section-head p{font-size:13px;color:var(--slate-500);line-height:1.75;margin:4px 0 0;max-width:820px}
+.repoort-app .section-actions{flex:none;font-size:13px;font-weight:500}
+.repoort-app .section-actions a{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:999px;background:var(--report-surface);box-shadow:var(--shadow-sm);color:var(--slate-700)}
+.repoort-app .section-actions a:hover{color:var(--brand-700);text-decoration:none;box-shadow:inset 0 0 0 1px var(--brand-200),var(--shadow-xs)}
+.repoort-app .section h3{margin:30px 0 4px;font-size:15px}
+.repoort-app .section .method{font-size:12px;line-height:1.85;color:var(--slate-500);margin:12px 2px 0}
+.repoort-app .metric-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--slate-200);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);margin:0 0 20px}
+.repoort-app .metric-strip.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.repoort-app .metric-strip.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.repoort-app .metric-strip.six{grid-template-columns:repeat(3,minmax(0,1fr))}
+.repoort-app .metric{background:var(--report-surface);padding:18px 20px 16px;min-width:0;display:flex;flex-direction:column}
+.repoort-app .metric-label{font-size:12.5px;font-weight:500;color:var(--slate-500)}
+.repoort-app .metric-value{font-size:28px;line-height:1.2;font-weight:650;letter-spacing:-.025em;color:var(--slate-900);margin:8px 0 6px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.repoort-app .metric-unit{font-size:13px;font-weight:500;letter-spacing:0;margin-left:4px;color:var(--slate-500)}
+.repoort-app .metric-context{font-size:11.5px;color:var(--slate-400);line-height:1.6;margin-top:auto}
+.repoort-app .metric.warning .metric-value{color:var(--amber-700)}
+.repoort-app .metric-delta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:11.5px;color:var(--slate-400);margin-bottom:6px}
+.repoort-app .delta{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;padding:1px 7px;border-radius:999px;font-variant-numeric:tabular-nums;background:var(--slate-100);color:var(--slate-600)}
+.repoort-app .delta.up{background:var(--emerald-50);color:var(--emerald-700);box-shadow:inset 0 0 0 1px rgb(5 150 105 / .15)}
+.repoort-app .delta.down{background:var(--rose-50);color:var(--rose-700);box-shadow:inset 0 0 0 1px rgb(225 29 72 / .15)}
+.repoort-app .metric-strip.hero-stats .metric{padding:20px 22px 18px}
+.repoort-app .metric-strip.hero-stats .metric-value{font-size:30px}
+.repoort-app .figure{position:relative;margin:0 0 18px;background:var(--report-surface);border-radius:var(--radius-lg);padding:20px 24px 16px;box-shadow:var(--shadow-sm);min-width:0}
+.repoort-app .figure-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:14px}
+.repoort-app .figure-heading{min-width:0}
+.repoort-app .figure-title{font-size:14.5px;font-weight:600;color:var(--slate-900);line-height:1.45}
+.repoort-app .figure-window{font-size:11.5px;color:var(--slate-400);margin-top:3px;line-height:1.6}
+.repoort-app .figure-latest{text-align:right;flex:none;line-height:1.25}
+.repoort-app .figure-latest b{display:block;font-size:20px;font-weight:650;color:var(--slate-900);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.repoort-app .figure-latest span{font-size:11px;color:var(--slate-400);font-variant-numeric:tabular-nums}
+.repoort-app .figure.compact{padding:16px 18px 12px;margin:0}
+.repoort-app .figure.compact .figure-title{font-size:13.5px}
+.repoort-app .figure.compact .figure-latest b{font-size:17px}
+.repoort-app .figure figcaption{font-size:11.5px;line-height:1.75;color:var(--slate-400);margin-top:10px;padding-top:10px;border-top:1px solid var(--slate-100)}
+.repoort-app .figure.compact figcaption{font-size:11px;line-height:1.65}
+.repoort-app .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11.5px;color:var(--slate-500);margin-top:8px}
+.repoort-app .lg{display:inline-flex;align-items:center;gap:6px}
+.repoort-app .lg::before{content:"";width:14px;height:0;border-top:2.5px solid var(--chart-line);border-radius:2px}
+.repoort-app .lg.raw::before{border-top:1.5px solid var(--chart-raw)}
+.repoort-app .lg.snap::before{border-top:2px dashed var(--chart-line)}
+.repoort-app .lg.partial::before{width:8px;height:8px;border:2px solid var(--amber-500);border-radius:50%;background:var(--report-surface)}
+.repoort-app .chart{position:relative;min-height:100px;touch-action:pan-y}
+.repoort-app .chart svg{overflow:visible}
+.repoort-app .chart .grid-line{stroke:var(--chart-grid);stroke-width:1}
+.repoort-app .chart .grid-line.base{stroke:var(--slate-200)}
+.repoort-app .chart .axis-text{fill:var(--slate-400);font-size:11px;font-family:var(--font-sans);font-variant-numeric:tabular-nums}
+.repoort-app .chart .line{fill:none;stroke:var(--chart-line);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.repoort-app .chart .line.raw{stroke:var(--chart-raw);stroke-width:1.1;opacity:.85}
+.repoort-app .chart .line.snap{stroke-dasharray:5 5;stroke-width:1.6}
+.repoort-app .chart .grad-top{stop-color:var(--chart-line);stop-opacity:.18}
+.repoort-app .chart .grad-bottom{stop-color:var(--chart-line);stop-opacity:0}
+.repoort-app .chart .point{fill:var(--chart-line);stroke:var(--report-surface);stroke-width:1.5}
+.repoort-app .chart .point.last{stroke-width:2.5}
+.repoort-app .chart .point.partial{fill:var(--report-surface);stroke:var(--amber-500);stroke-width:2}
+.repoort-app .chart .snap-label{fill:var(--slate-700);font-size:11.5px;font-weight:600;font-family:var(--font-sans);font-variant-numeric:tabular-nums}
+.repoort-app .chart .hover-line{stroke:var(--slate-400);stroke-width:1;stroke-dasharray:3 3;opacity:0;pointer-events:none}
+.repoort-app .chart .hover-dot{fill:var(--report-surface);stroke:var(--chart-line);stroke-width:2.5;opacity:0;pointer-events:none}
+.repoort-app .chart.hovering .hover-line,.repoort-app .chart.hovering .hover-dot{opacity:1}
+.repoort-app .chart-tip{position:absolute;top:0;left:0;z-index:5;pointer-events:none;min-width:136px;padding:8px 11px;background:rgb(15 23 42 / .92);color:#fff;border-radius:9px;font-size:12px;line-height:1.55;box-shadow:var(--shadow-lg);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font-variant-numeric:tabular-nums;white-space:nowrap}
+.repoort-app .chart-tip[hidden]{display:none}
+.repoort-app .tip-date{font-size:11px;color:var(--slate-300);margin-bottom:2px}
+.repoort-app .tip-row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.repoort-app .tip-row b{font-weight:600}
+.repoort-app .tip-row i{width:8px;height:8px;border-radius:2px;background:var(--brand-300);display:inline-block;margin-right:6px}
+.repoort-app .tip-row.ma i{background:var(--report-surface);height:2px;border-radius:1px}
+.repoort-app .tip-note{font-size:10.5px;color:var(--amber-200);margin-top:3px}
+.repoort-app .chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:0 0 18px}
+.repoort-app .chart-grid>.figure{margin:0}
+.repoort-app .bars{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.repoort-app .bars li{display:grid;grid-template-columns:22px minmax(110px,30%) minmax(0,1fr) auto;align-items:center;gap:12px;padding:5px 6px;border-radius:7px;font-size:12.5px}
+.repoort-app .bars li:hover{background:var(--slate-50)}
+.repoort-app .bar-rank{font-size:11px;font-weight:600;color:var(--slate-400);text-align:right;font-variant-numeric:tabular-nums}
+.repoort-app .bar-label{color:var(--slate-700);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.repoort-app .bar-track{height:10px;background:var(--slate-100);border-radius:999px;overflow:hidden}
+.repoort-app .bar-fill{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--brand-400),var(--brand-600))}
+.repoort-app .bars li:nth-child(n+4) .bar-fill{background:linear-gradient(90deg,var(--brand-300),var(--brand-500))}
+.repoort-app .bar-value{font-weight:600;color:var(--slate-800);font-variant-numeric:tabular-nums;text-align:right;min-width:92px}
+.repoort-app .bar-value small{font-weight:400;color:var(--slate-400);margin-left:6px;font-size:11px}
+.repoort-app .notice{position:relative;font-size:12.5px;line-height:1.8;padding:11px 16px 11px 40px;margin:14px 0;color:var(--brand-900);background:var(--brand-50);border-radius:var(--radius);box-shadow:inset 0 0 0 1px rgb(51 103 145 / .14)}
+.repoort-app .notice::before{content:"i";position:absolute;left:14px;top:13px;width:16px;height:16px;display:grid;place-items:center;border-radius:50%;font:700 10.5px/1 Georgia,serif;font-style:italic;color:#fff;background:var(--brand-500)}
+.repoort-app .notice.warning{color:var(--amber-800);background:var(--amber-50);box-shadow:inset 0 0 0 1px rgb(217 119 6 / .2)}
+.repoort-app .notice.warning::before{content:"!";font:700 10.5px/1 var(--font-sans);background:var(--amber-500)}
+.repoort-app .notice.error{color:var(--rose-700);background:var(--rose-50);box-shadow:inset 0 0 0 1px rgb(225 29 72 / .18)}
+.repoort-app .notice.error::before{content:"!";font:700 10.5px/1 var(--font-sans);background:var(--rose-500)}
+.repoort-app .empty{padding:34px 16px;color:var(--slate-400);font-size:13px;text-align:center;background:repeating-linear-gradient(-45deg,var(--slate-50),var(--slate-50) 8px,#fff 8px,#fff 16px);border-radius:var(--radius);box-shadow:inset 0 0 0 1px var(--slate-200)}
+.repoort-app .loading{padding:90px 0;color:var(--slate-400);text-align:center}
+.repoort-app .table-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:12px;color:var(--slate-500);margin:22px 0 10px}
+.repoort-app .table-bar input{width:240px;min-height:34px;font-size:12.5px;padding-left:32px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2394a3b8' stroke-width='1.8'%3E%3Ccircle cx='9' cy='9' r='5.5'/%3E%3Cpath d='m13.5 13.5 3 3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 10px center/15px}
+.repoort-app .table-buttons{display:flex;align-items:center;gap:10px;font-variant-numeric:tabular-nums}
+.repoort-app .download-link{display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:5px 12px;border-radius:var(--radius-sm);background:var(--report-surface);color:var(--slate-700);font-size:12px;font-weight:500;white-space:nowrap;box-shadow:var(--shadow-sm)}
+.repoort-app .download-link:hover{color:var(--brand-700);text-decoration:none;background:var(--slate-50)}
+.repoort-app .table-wrap{overflow-x:auto;background:var(--report-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);scrollbar-width:thin;scrollbar-color:var(--slate-300) transparent}
+.repoort-app .data-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;line-height:1.6;white-space:nowrap}
+.repoort-app .data-table th{position:sticky;top:0;font-size:11.5px;font-weight:600;text-align:left;color:var(--slate-500);padding:10px 14px;background:var(--slate-50);border-bottom:1px solid var(--slate-200)}
+.repoort-app .data-table th:first-child{border-top-left-radius:var(--radius-lg)}
+.repoort-app .data-table th:last-child{border-top-right-radius:var(--radius-lg)}
+.repoort-app .data-table td{padding:10px 14px;vertical-align:top;border-bottom:1px solid var(--slate-100);color:var(--slate-700)}
+.repoort-app .data-table tr:last-child td{border-bottom:0}
+.repoort-app .data-table tbody tr{transition:background-color .1s}
+.repoort-app .data-table tbody tr:hover{background:var(--brand-50)}
+.repoort-app .data-table .number{text-align:right;font-variant-numeric:tabular-nums}
+.repoort-app .data-table td.number{color:var(--slate-800)}
+.repoort-app .data-table .text-cell{white-space:normal;min-width:180px;max-width:460px}
+.repoort-app .data-table .name-cell{min-width:140px;max-width:300px;white-space:normal;overflow-wrap:anywhere;color:var(--slate-900);font-weight:500}
+.repoort-app .data-table .muted{font-size:11px;color:var(--slate-400)}
+.repoort-app .pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:var(--slate-500);padding:12px 2px 0}
+.repoort-app .pagination>div{display:flex;gap:8px;align-items:center;font-variant-numeric:tabular-nums}
+.repoort-app .pagination button{font-size:12px;min-height:30px}
+.repoort-app .badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;line-height:1.5;padding:1px 8px;border-radius:999px;white-space:nowrap;color:var(--brand-700);background:var(--brand-50);box-shadow:inset 0 0 0 1px rgb(51 103 145 / .18)}
+.repoort-app .badge::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.8}
+.repoort-app .badge.partial,.repoort-app .badge.stale,.repoort-app .badge.unknown,.repoort-app .badge.legacy,.repoort-app .badge.candidate{color:var(--amber-700);background:var(--amber-50);box-shadow:inset 0 0 0 1px rgb(217 119 6 / .22)}
+.repoort-app .badge.complete,.repoort-app .badge.verified{color:var(--emerald-700);background:var(--emerald-50);box-shadow:inset 0 0 0 1px rgb(5 150 105 / .2)}
+.repoort-app .badge.failed,.repoort-app .badge.missing{color:var(--rose-700);background:var(--rose-50);box-shadow:inset 0 0 0 1px rgb(225 29 72 / .2)}
+.repoort-app .source-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.repoort-app .source-row{background:var(--report-surface);border-radius:var(--radius-lg);padding:16px 18px;box-shadow:var(--shadow-sm);min-width:0;display:flex;flex-direction:column}
+.repoort-app .source-row-head{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.repoort-app .source-row-head h3{font-size:13.5px;margin:0}
+.repoort-app .source-row p{font-size:12px;color:var(--slate-500);margin:9px 0 0;line-height:1.8}
+.repoort-app .source-row .source-method{color:var(--slate-400);font-size:11.5px;padding-top:9px;border-top:1px solid var(--slate-100);margin-top:10px}
+.repoort-app .source-links{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;margin-top:auto;padding-top:10px}
+.repoort-app .source-links a{font-weight:500}
+.repoort-app .timeline{list-style:none;margin:6px 0 0;padding:4px 24px 4px 48px;background:var(--report-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);position:relative}
+.repoort-app .timeline::before{content:"";position:absolute;top:28px;bottom:28px;left:29px;width:1px;background:linear-gradient(var(--brand-200),var(--slate-200))}
+.repoort-app .timeline li{position:relative;display:grid;grid-template-columns:104px minmax(0,1fr);gap:18px;padding:18px 0;border-bottom:1px solid var(--slate-100)}
+.repoort-app .timeline li:last-child{border-bottom:0}
+.repoort-app .timeline li::before{content:"";position:absolute;left:-23px;top:24px;width:9px;height:9px;border-radius:50%;background:var(--report-surface);border:2px solid var(--brand-500);box-shadow:0 0 0 3px #fff}
+.repoort-app .timeline-date{font-size:12.5px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--slate-500);padding-top:2px}
+.repoort-app .timeline h3{font-size:15px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0}
+.repoort-app .event-type{font-size:11px;font-weight:600;color:var(--brand-700);background:var(--brand-50);padding:1px 8px;border-radius:999px}
+.repoort-app .scope-tag{font-size:11px;font-weight:500;color:var(--slate-500);background:var(--slate-100);padding:1px 8px;border-radius:999px}
+.repoort-app .timeline p{font-size:13px;margin:6px 0 6px;color:var(--slate-600);max-width:860px;line-height:1.75}
+.repoort-app .timeline .amount{display:inline-block;font-size:13px;font-weight:600;color:var(--slate-900);font-variant-numeric:tabular-nums;margin:2px 0 4px}
+.repoort-app .timeline .source-links{padding-top:4px}
+.repoort-app .evidence details{font-size:12px;white-space:normal;min-width:170px;max-width:380px}
+.repoort-app .evidence summary{cursor:pointer;color:var(--brand-700);font-weight:500}
+.repoort-app .evidence p{color:var(--slate-500);margin:7px 0;line-height:1.8}
+.repoort-app .evidence a{display:inline-block;margin-right:9px}
+.repoort-app .archive-meta{display:flex;gap:10px 28px;flex-wrap:wrap;font-size:12.5px;color:var(--slate-500);padding:14px 18px;background:var(--report-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);margin:0 0 26px}
+.repoort-app .archive-meta strong{color:var(--slate-900)}
+.repoort-app .provenance-list{list-style:none;padding:4px 18px;margin:0;background:var(--report-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)}
+.repoort-app .provenance-list li{padding:12px 0;border-bottom:1px solid var(--slate-100);font-size:12.5px;overflow-wrap:anywhere}
+.repoort-app .provenance-list li:last-child{border-bottom:0}
+.repoort-app .provenance-list .hash{display:block;font-size:11px;color:var(--slate-400);font-family:var(--font-mono);word-break:break-all;margin-top:4px}
+.repoort-app .appendix{margin-top:26px;background:var(--report-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)}
+.repoort-app .appendix>summary{list-style:none;cursor:pointer;padding:14px 18px;font-size:13.5px;font-weight:600;color:var(--slate-800);display:flex;align-items:center;gap:10px}
+.repoort-app .appendix>summary::-webkit-details-marker{display:none}
+.repoort-app .appendix>summary::before{content:"";width:7px;height:7px;border-right:1.6px solid var(--slate-400);border-bottom:1.6px solid var(--slate-400);transform:rotate(-45deg);transition:transform .15s}
+.repoort-app .appendix[open]>summary::before{transform:rotate(45deg)}
+.repoort-app .appendix>summary:hover{color:var(--brand-700)}
+.repoort-app .appendix>div{padding:0 18px 18px}
+.repoort-app .appendix .figure,.repoort-app .appendix .table-wrap{box-shadow:inset 0 0 0 1px var(--slate-200)}
+.repoort-app .inline-links{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;margin:16px 0}
+.repoort-app .inline-links a{display:inline-flex;padding:5px 12px;border-radius:999px;background:var(--report-surface);box-shadow:var(--shadow-sm);font-weight:500;color:var(--slate-700)}
+.repoort-app .inline-links a:hover{color:var(--brand-700);text-decoration:none}
+.repoort-app .publication-footer{max-width:1320px;display:flex;justify-content:space-between;gap:20px;color:var(--slate-400);font-size:12px;padding:22px 0 8px;margin-top:40px;border-top:1px solid var(--slate-200)}
+@media(min-width:1600px){.repoort-app .metric-value{font-size:30px}
+.repoort-app .metric-strip.hero-stats .metric-value{font-size:32px}}
+@media(max-width:1180px){.repoort-app .workspace{grid-template-columns:212px minmax(0,1fr);gap:28px;padding:0 22px}
+.repoort-app .masthead-inner{padding:0 22px;gap:16px}
+.repoort-app .edition{display:none}
+.repoort-app .metric{padding:16px 15px}
+.repoort-app .metric-value{font-size:24px}
+.repoort-app .metric-strip.six{grid-template-columns:repeat(2,minmax(0,1fr))}
+.repoort-app .metric-strip:not(.two):not(.three):not(.six){grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1023px){.repoort-app .workspace{display:block;padding:0 18px}
+.repoort-app .report-index{display:none}
+.repoort-app .reading-bar{display:flex}
+.repoort-app main{padding-top:20px}
+.repoort-app .toolbar{top:calc(var(--header-h) + 6px)}}
+@media(max-width:720px){.repoort-app{--header-h:auto}
+.repoort-app{font-size:14px}
+.repoort-app .masthead{position:static;height:auto}
+.repoort-app .masthead-inner{flex-wrap:wrap;padding:12px 16px;gap:10px}
+.repoort-app .brand{flex:1}
+.repoort-app .brand-text small{display:none}
+.repoort-app .data-link span{display:none}
+.repoort-app .data-link{padding:8px}
+.repoort-app .workspace{padding:0 14px}
+.repoort-app .toolbar{position:static;padding:12px;gap:12px}
+.repoort-app .field{min-width:0;flex:1 1 140px}
+.repoort-app .seg-field{flex-basis:100%}
+.repoort-app .toolbar-hint{display:none}
+.repoort-app .hero .lede{font-size:14.5px}
+.repoort-app .section{margin-bottom:40px}
+.repoort-app .section-head{flex-direction:column;align-items:flex-start;gap:10px}
+.repoort-app .section-head p{font-size:12.5px}
+.repoort-app .metric-strip,.repoort-app .metric-strip.three,.repoort-app .metric-strip.six{grid-template-columns:repeat(2,minmax(0,1fr))}
+.repoort-app .metric-strip.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.repoort-app .metric{padding:14px 13px}
+.repoort-app .metric-value,.repoort-app .metric-strip.hero-stats .metric-value{font-size:22px}
+.repoort-app .figure{padding:16px 16px 12px}
+.repoort-app .figure-latest b{font-size:17px}
+.repoort-app .chart-grid{grid-template-columns:1fr !important}
+.repoort-app .bars li{grid-template-columns:18px minmax(80px,38%) minmax(0,1fr) auto;gap:8px}
+.repoort-app .bar-value{min-width:0}
+.repoort-app .bar-value small{display:none}
+.repoort-app .timeline{padding:2px 16px 2px 36px}
+.repoort-app .timeline::before{left:19px}
+.repoort-app .timeline li{grid-template-columns:1fr;gap:4px;padding:16px 0}
+.repoort-app .timeline li::before{left:-21px;top:21px}
+.repoort-app .table-bar{flex-wrap:wrap;gap:9px}
+.repoort-app .table-bar input{width:100%}
+.repoort-app .table-buttons{margin-left:auto}
+.repoort-app .data-table td,.repoort-app .data-table th{padding:9px 11px}
+.repoort-app .publication-footer{flex-direction:column;gap:6px}
+.repoort-app .pagination{flex-wrap:wrap}
+
+}
+@media(prefers-reduced-motion:reduce){.repoort-app{scroll-behavior:auto}
+.repoort-app *,.repoort-app *::before,.repoort-app *::after{animation:none!important;transition:none!important}}
+@media print{.repoort-app{background:var(--report-surface)}
+.repoort-app .masthead{position:static;background:var(--report-surface);-webkit-backdrop-filter:none;backdrop-filter:none}
+.repoort-app .workspace{display:block;padding:0}
+.repoort-app .report-index,.repoort-app .toolbar,.repoort-app .reading-bar,.repoort-app .data-link,.repoort-app .table-buttons,.repoort-app .pagination,.repoort-app .skip-link,.repoort-app .toc,.repoort-app .chart-tip,.repoort-app .table-bar input{display:none}
+.repoort-app main{padding:16px 0}
+.repoort-app .figure,.repoort-app .metric-strip,.repoort-app .source-row,.repoort-app .timeline li{break-inside:avoid}
+.repoort-app .figure,.repoort-app .metric-strip,.repoort-app .table-wrap,.repoort-app .source-row,.repoort-app .timeline,.repoort-app .appendix{box-shadow:0 0 0 1px #e2e8f0}
+.repoort-app .table-wrap{overflow:visible}
+.repoort-app .data-table{white-space:normal}
+.repoort-app .chart-grid{grid-template-columns:1fr 1fr !important}
+.repoort-app a{color:var(--slate-800);text-decoration:none}
+
+}
+.repoort-app .data-appendix{margin-top:16px}
+.repoort-app .data-appendix>summary{font-size:13px;font-weight:600}
+.repoort-app .data-appendix .summary-meta{margin-left:auto;font-size:12px;font-weight:400;color:var(--slate-400)}
+.repoort-app .data-appendix .table-bar{margin-top:2px}
+.repoort-app .data-appendix .table-wrap{box-shadow:inset 0 0 0 1px var(--slate-200)}
+.repoort-app .bars.years li{grid-template-columns:52px minmax(0,1fr) auto}
+.repoort-app .bar-track.stack{display:flex}
+.repoort-app .bar-track.stack .bar-fill{border-radius:0;flex:none}
+.repoort-app .bar-track.stack .bar-fill.acq{background:var(--amber-500)}
+.repoort-app .bar-track.stack .bar-fill.other{background:var(--slate-300)}
+.repoort-app .bars.years .bar-value{min-width:150px}
+@media(max-width:720px){.repoort-app .bars.years li{grid-template-columns:40px minmax(0,1fr) auto}
+.repoort-app .bars.years .bar-value{min-width:0}}
+.repoort-app #report-content > .empty{margin-bottom:40px}
+.repoort-app .chart .stack-area{stroke:var(--report-surface);stroke-width:.6;stroke-linejoin:round;opacity:.92}
+.repoort-app .chart .line.stack-total{stroke:var(--slate-700);stroke-width:1.4}
+.repoort-app .chart .point.stack-snap{fill:var(--slate-900)}
+.repoort-app .lg.swatch::before{width:10px;height:10px;border:0;border-radius:3px;background:var(--c)}
+.repoort-app .tip-row.total{margin-top:4px;padding-top:4px;border-top:1px solid rgb(255 255 255 / .18)}

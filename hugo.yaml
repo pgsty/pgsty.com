@@ -215,6 +215,12 @@ languages:
           weight: 52
           pageRef: /impact
           params: { icon: fa-solid fa-chart-line }
+        - identifier: company-report
+          parent: company
+          name: Public Metrics
+          weight: 52
+          pageRef: /report
+          params: { icon: fa-solid fa-chart-column }
         - identifier: company-privacy
           parent: company
           name: Privacy notice
@@ -408,6 +414,12 @@ languages:
           weight: 52
           pageRef: /impact
           params: { icon: fa-solid fa-chart-line }
+        - identifier: company-report
+          parent: company
+          name: 公开指标报告
+          weight: 52
+          pageRef: /report
+          params: { icon: fa-solid fa-chart-column }
         - identifier: company-privacy
           parent: company
           name: 隐私声明

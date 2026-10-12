@@ -1,0 +1,35 @@
+{{- /* A fixed public release is fetched at build time; visitors use only same-origin assets. */ -}}
+{{- $publication := hugo.Data.report_publication -}}
+{{- $url := "report/manifest.json" | relURL -}}
+{{- if and (fileExists "static/report/manifest.json") (or (not $publication) (eq (os.Getenv "HUGO_REPOORT_USE_LOCAL") "1")) -}}
+  {{- $manifest := readFile "static/report/manifest.json" | transform.Unmarshal -}}
+  {{- range $manifest.files -}}
+    {{- $path := path.Join "static/report" .path -}}
+    {{- if ne (crypto.SHA256 (readFile $path)) .sha256 -}}
+      {{- errorf "Report data checksum mismatch: %s" .path -}}
+    {{- end -}}
+  {{- end -}}
+{{- else if $publication -}}
+  {{- $remote := resources.GetRemote $publication.manifest_url -}}
+  {{- if not $remote -}}{{- errorf "Published report manifest is unavailable" -}}{{- end -}}
+  {{- if ne (crypto.SHA256 $remote.Content) $publication.manifest_sha256 -}}
+    {{- errorf "Published report manifest checksum mismatch" -}}
+  {{- end -}}
+  {{- $manifest := $remote.Content | transform.Unmarshal -}}
+  {{- if ne $manifest.snapshot_id $publication.snapshot_id -}}
+    {{- errorf "Published report snapshot ID mismatch" -}}
+  {{- end -}}
+  {{- range $manifest.files -}}
+    {{- if not (findRE `^data/[a-f0-9]{64}\.json$` .path) -}}{{- errorf "Invalid report data path" -}}{{- end -}}
+    {{- $asset := resources.GetRemote (printf "%s/%s" $publication.release_url (path.Base .path)) -}}
+    {{- if not $asset -}}{{- errorf "Published report data is unavailable: %s" .path -}}{{- end -}}
+    {{- if ne (crypto.SHA256 $asset.Content) .sha256 -}}{{- errorf "Report data checksum mismatch: %s" .path -}}{{- end -}}
+    {{- $copy := resources.FromString (path.Join "report" .path) $asset.Content -}}
+    {{- $discard := $copy.RelPermalink -}}
+  {{- end -}}
+  {{- $copy := resources.FromString "report/manifest.json" $remote.Content -}}
+  {{- $url = $copy.RelPermalink -}}
+{{- else -}}
+  {{- errorf "No published report: run ./report export from repoort or add data/report_publication.json" -}}
+{{- end -}}
+{{- return $url -}}
