@@ -30,6 +30,7 @@
 .report-page .repoort-app .reading-bar{margin-top:0}
 .report-page .repoort-app main{padding-top:24px}
 .report-page .repoort-app .figure-title{line-height:1.45}
+.report-page .repoort-app .product-evidence{background:var(--report-surface)}
 .report-page .repoort-app .toc{flex-wrap:wrap}
 .report-page .repoort-app .source-chip{background:var(--report-surface)}
 .report-page .repoort-app input,.report-page .repoort-app select{border-color:var(--line)}

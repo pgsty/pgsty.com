@@ -14,6 +14,13 @@ GA 默认“全部”，相加全部公开站点 / Property 的同日 / 同月�
 同一截至日期窗口。发布前执行 `./report update ga-yearly` 刷新年度数据及独立采集日期。
 导航入口为“关于公司 → 数据报告”，英文为“Company → Data Reports”。
 
+增长摘要与来源数据同包发布。Silo 项目拉取合计 `pgsty/minio + pgsty/silo`，保留成员值，
+`mc` 单列；项目合计不能再次与成员仓库相加。首屏、项目筛选、镜像明细和 CSV 使用同一口径。
+固定站点组同比采用相同绑定与相同截止日期；季度分发只比较三个完整月。
+
+来源更新保留真实覆盖：Cloudflare 当前 UTC 日、CDN 尚未到齐的小时和 GA 当前月标记为
+partial；历史保留期缺口不补零。行业抓取失败与公告日期冲突单独保留，不因页面发布清除。
+
 完整更新、归档、部署、验收与回退步骤保存在
 [Repoort 官网发布 SOP](/Users/vonng/pgsty/repoort/docs/PUBLISH_PGSTY.md)。
 

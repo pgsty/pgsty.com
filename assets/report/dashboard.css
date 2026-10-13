@@ -135,6 +135,26 @@
 .repoort-app .delta.down{background:var(--rose-50);color:var(--rose-700);box-shadow:inset 0 0 0 1px rgb(225 29 72 / .15)}
 .repoort-app .metric-strip.hero-stats .metric{padding:20px 22px 18px}
 .repoort-app .metric-strip.hero-stats .metric-value{font-size:30px}
+.repoort-app .product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.repoort-app .is-overview .hero{padding-bottom:18px}
+.repoort-app .is-overview .hero h1{margin-top:0}
+.repoort-app .is-overview .hero .lede{margin-bottom:12px}
+.repoort-app .is-overview .toolbar{padding:10px 14px;margin-bottom:24px;position:static}
+.repoort-app .is-overview .toolbar .field{flex-direction:row;align-items:center;gap:12px;flex:1;min-width:0}
+.repoort-app .is-overview .toolbar select{max-width:360px;flex:1;min-width:0}
+.repoort-app .is-overview .toolbar .field-label{white-space:nowrap}
+.repoort-app .product-evidence{min-width:0;background:var(--slate-25);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm)}
+.repoort-app .product-evidence header{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding-bottom:14px;border-bottom:1px solid var(--slate-200)}
+.repoort-app .product-evidence header h3{font-size:21px}
+.repoort-app .product-evidence header p{margin:0;color:var(--slate-500);font-size:12px}
+.repoort-app .product-evidence dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:20px 0}
+.repoort-app .product-evidence dt{font-size:12px;color:var(--slate-500)}
+.repoort-app .product-evidence dd{margin:7px 0;font-size:32px;font-weight:650;line-height:1.15;letter-spacing:-.025em;font-variant-numeric:tabular-nums;color:var(--slate-900)}
+.repoort-app .product-evidence small{display:block;color:var(--slate-500);font-size:11px}
+.repoort-app .product-evidence .method{margin-bottom:0}
+.repoort-app .project-members{list-style:none;margin:0;padding:0;border-top:1px solid var(--slate-200)}
+.repoort-app .project-members li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--slate-200);font-size:12px}
+.repoort-app .project-members strong{font-variant-numeric:tabular-nums}
 .repoort-app .figure{position:relative;margin:0 0 18px;background:var(--report-surface);border-radius:var(--radius-lg);padding:20px 24px 16px;box-shadow:var(--shadow-sm);min-width:0}
 .repoort-app .figure-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:14px}
 .repoort-app .figure-heading{min-width:0}
@@ -303,6 +323,10 @@
 .repoort-app .metric-strip.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .repoort-app .metric{padding:14px 13px}
 .repoort-app .metric-value,.repoort-app .metric-strip.hero-stats .metric-value{font-size:22px}
+.repoort-app .product-grid{grid-template-columns:1fr}
+.repoort-app .product-evidence{padding:18px}
+.repoort-app .product-evidence header{flex-wrap:wrap;gap:6px}
+.repoort-app .product-evidence dd{font-size:27px}
 .repoort-app .figure{padding:16px 16px 12px}
 .repoort-app .figure-latest b{font-size:17px}
 .repoort-app .chart-grid{grid-template-columns:1fr !important}

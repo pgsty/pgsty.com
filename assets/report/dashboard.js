@@ -13,6 +13,8 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   const $ = (id) => document.getElementById(id);
   const list = (value) => Array.isArray(value) ? value : [];
   const payload = (source) => DS[source] || {};
+  const GROWTH = DATA.growth || {};
+  const siloProject = () => list(GROWTH.docker_projects).find(p=>p.id==="silo") || {};
   const number = (value) => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)) ? Number(value) : null;
   const esc = (value) => t(value).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const count = (value) => number(value) === null ? "—" : new Intl.NumberFormat(locale, {maximumFractionDigits: 1}).format(Number(value));
@@ -21,6 +23,12 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   const money = (value) => { const n = number(value); if (n === null) return t("未确认 / 未披露"); if (english) return "$" + short(n); return n >= 1e8 ? count(n / 1e8) + " 亿美元" : n >= 1e4 ? count(n / 1e4) + " 万美元" : count(n) + " 美元"; };
   const percent = (value) => number(value) === null ? "—" : count(Number(value) * 100) + "%";
   const date = (value) => value ? String(value).slice(0, 10) : "未注明";
+  const publicationDay = () => {
+    const value=new Date(DATA.meta?.generated_at||NaN);
+    if(!Number.isFinite(value.getTime()))return date(DATA.meta?.generated_at);
+    const parts=new Intl.DateTimeFormat("en",{timeZone:DATA.meta?.default_timezone||"Asia/Shanghai",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(value);
+    return ["year","month","day"].map(type=>parts.find(part=>part.type===type).value).join("-");
+  };
   const stamp = (value) => { if (!value) return "未注明"; const d = new Date(value); return Number.isNaN(d.getTime()) ? esc(value) : new Intl.DateTimeFormat(locale, {timeZone: "Asia/Shanghai", year: "numeric", month: english ? "short" : "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false}).format(d) + " UTC+8"; };
   const safeURL = (value) => { try { const u = new URL(value); return ["http:", "https:"].includes(u.protocol) ? u.href : ""; } catch (_) { return ""; } };
   const link = (label, url) => safeURL(url) ? `<a href="${esc(safeURL(url))}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : esc(label);
@@ -64,7 +72,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   const state = {
     report: initialReport,
     period: "90d", gaSite: String(GA_DEFAULT.site_id ?? ""), nginxSite: NGINX_DEFAULT,
-    gaMetric: "pv", cfMetric: "page_views", cdnMetric: "package_downloads", grain: "auto", region: "all",
+    gaMetric: "uv", cfMetric: "page_views", cdnMetric: "package_downloads", grain: "auto", region: "all",
     scale: "linear", compareGroup: "china", githubMetric: "stars", githubRepo: "all", dockerRepo: "all",
     industryStatus: "verified", industryScope: "all", industryType: "all", industryCompany: "all",
     packageMap: "mapped", packageRepository: "all", packageFamily: "all", packageGroup: "logical_pkg",
@@ -98,7 +106,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   /* Snapshot increments only for the same repository / image, and only against an earlier day. */
   const snapDelta = (value, baseline, asOf, scope, fmt = count) => number(value) !== null && baseline && date(baseline) < date(asOf) ? {text: `${Number(value) >= 0 ? "+" : ""}${fmt(value)}`, ref: `${scope} · 较 ${date(baseline)}`, dir: Number(value) > 0 ? "up" : Number(value) < 0 ? "down" : ""} : null;
   const deltaHTML = (d) => d ? `<div class="metric-delta"><span class="delta ${esc(d.dir || "")}">${esc(d.text)}</span>${d.ref ? `<span>${esc(d.ref)}</span>` : ""}</div>` : "";
-  const metricStrip = (items, extra = "") => `<div class="metric-strip ${items.length === 2 ? "two" : items.length === 3 ? "three" : items.length === 6 ? "six" : ""} ${extra}">${items.map((x) => `<div class="metric ${x.warning ? "warning" : ""}"><div class="metric-label">${esc(x.label)}</div><div class="metric-value">${esc(x.formatted ?? count(x.value))}${x.unit ? `<span class="metric-unit">${esc(x.unit)}</span>` : ""}</div>${deltaHTML(x.delta)}<div class="metric-context">${esc(x.context || "")}</div></div>`).join("")}</div>`;
+  const metricStrip = (items, extra = "") => `<div class="metric-strip ${items.length === 2 ? "two" : items.length === 3 ? "three" : items.length === 6 ? "six" : ""} ${extra}">${items.map((x) => `<div class="metric ${x.warning ? "warning" : ""}"><div class="metric-label">${esc(x.label)}</div><div class="metric-value">${esc(x.formatted ?? count(x.value))}${x.unit ? `<span class="metric-unit">${esc(x.unit)}</span>` : ""}</div>${deltaHTML(x.delta)}${deltaHTML(x.secondary)}<div class="metric-context">${esc(x.context || "")}</div></div>`).join("")}</div>`;
   const selectedSite = () => list(payload("ga").sites).find((s) => String(s.site_id) === state.gaSite) || GA_DEFAULT;
   const allGASites = () => selectedSite().site_id === "all";
   const gaName = (site = selectedSite()) => site.hostname || site.site_name || "站点";
@@ -151,7 +159,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     if (def.kind === "archive") return "";
     let fields = [];
     const trafficIds = ["operations", "pigsty-growth", "ga", "cloudflare", "cloudflare-daily", "cloudflare-ytd", "cdn-traffic", "nginx-sites", "distribution", "traffic-observation", "repo-monthly-uv", "extension-monthly", "extension-downloads"];
-    if (trafficIds.includes(id)) fields.push(periodField());
+    if (trafficIds.includes(id)&&!OVERVIEW_REPORTS.includes(id)) fields.push(periodField());
     if (["ga", "cdn-traffic", "nginx-sites"].includes(id)) fields.push(segmented("grain", "时间粒度", [["auto", "自动"], ["daily", "每日"], ["monthly", "整月"]]));
     if (["operations", "pigsty-growth", "ga", "traffic-observation"].includes(id)) {
       fields.push(field("gaSite", "GA 站点 / Property", [["all", "全部"], ...list(payload("ga").sites).map((s) => [String(s.site_id), `${s.hostname || s.site_name} · ${s.property_id}${s.has_observed_metrics ? "" : "（暂无数据）"}`])], true));
@@ -164,7 +172,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     }
     if (["nginx-sites", "traffic-observation"].includes(id)) fields.push(field("nginxSite", "Nginx 日志流", [...new Set(list(payload("nginx").daily).map((r) => r.site))].sort().map((x) => [x, x]), true));
     if (id === "github") fields.push(field("githubMetric", "快照指标", [["stars", "组织 Stars"], ["forks", "组织 Forks"], ["downloads_non_auxiliary", "非辅助资产下载"], ["downloads_total", "全部资产下载"]]), field("githubRepo", "仓库", [["all", "全部公开仓库"], ...list(payload("github").repositories).map((r) => [String(r.id || r.full_name), r.full_name || r.name])], true));
-    if (id === "dockerhub") fields.push(field("dockerRepo", "镜像", [["all", "全部公开镜像"], ...list(payload("dockerhub").repositories).map((r) => [r.name, r.name])]));
+    if (id === "dockerhub") fields.push(field("dockerRepo", "项目 / 镜像", [["all", "全部公开镜像"], ...list(GROWTH.docker_projects).filter(p=>p.repositories.length>1).map(p=>[`project:${p.id}`,`${p.name}（项目合计）`]), ...list(payload("dockerhub").repositories).map((r) => [r.name, `pgsty/${r.name}`])]));
     if (id === "open-source") fields.push(segmented("compareGroup", "公开样本组", [["china", "中国相关项目"], ["linux", "Linux 原生代表"], ["track", "全球发行 / 管理代表"]]));
     if (id === "industry") {
       const statuses = [["verified", "已核实"], ["legacy", "历史研究"], ["candidate", "待核实线索"], ["all", "全部"]];
@@ -483,11 +491,19 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   }
   function dockerSection(full = false) {
     const d = payload("dockerhub"), t = d.totals || {}, delta = d.delta || {};
-    const repos = list(d.repositories).filter((r)=>!full||state.dockerRepo==="all"||r.name===state.dockerRepo);
-    let body = metricStrip([{label:"公开镜像累计拉取",value:t.pulls,context:`${count(t.repositories)} 个镜像 · ${date(d.as_of)}`,delta:snapDelta(delta.same_repository_pulls,delta.baseline_captured_at,d.as_of,"同镜像",short)},{label:"公开标签",value:t.tags,context:"标签数不等于发行版本或安装量"}]) + lineFigure("Docker Hub 累计拉取 · 实际快照",list(d.history),"pulls",{snapshots:true,height:240,seriesLabel:"累计拉取",window:seriesMeta("dockerhub",list(d.history)),caption:"累计 pull_count 包含重复请求、CI 与多架构拉取；各点是独立采集快照，不推算逐日新增。"});
-    if (delta.baseline_captured_at) body += notice(`与 ${date(delta.baseline_captured_at)} 比较，同一镜像拉取计数变化 ${count(delta.same_repository_pulls)}；新增镜像带入历史计数 ${count(delta.added_repository_pulls)}。`);
+    const selectedProject=list(GROWTH.docker_projects).find(p=>`project:${p.id}`===state.dockerRepo);
+    const names=selectedProject?.repositories||(state.dockerRepo==="all"||!full?null:[state.dockerRepo]);
+    const repos = list(d.repositories).filter(r=>!names||names.includes(r.name));
+    const history=names?list(d.history).map(r=>({...r,pulls:names.every(n=>number(r.repository_pulls?.[n])!==null)?names.reduce((v,n)=>v+Number(r.repository_pulls[n]),0):null})):list(d.history);
+    const scope=selectedProject?.name||(names?`pgsty/${state.dockerRepo}`:"全部公开镜像");
+    const pulls=selectedProject?selectedProject.pulls:total(repos,"pulls");
+    const silo=siloProject();
+    const projectMetric=selectedProject?.id==="silo"?{label:"项目镜像仓库",value:silo.repositories.length,context:"pgsty/minio + pgsty/silo"}:{label:"Silo 项目累计拉取",value:silo.pulls,context:"pgsty/minio + pgsty/silo · 两个仓库计数之和",delta:projectDelta(silo)};
+    let body = metricStrip([{label:names?"所选镜像累计拉取":"公开镜像累计拉取",value:pulls,context:`${scope} · ${count(repos.length)} 个镜像 · ${date(d.as_of)}`,delta:!names?snapDelta(delta.same_repository_pulls,delta.baseline_captured_at,d.as_of,"同镜像",short):selectedProject?projectDelta(selectedProject):null},projectMetric,{label:"公开标签",value:total(repos,"tag_count"),context:`${scope} · 标签数不等于安装量`}]) + lineFigure(`${scope} · 累计拉取实际快照`,history,"pulls",{snapshots:true,height:260,seriesLabel:"累计拉取",window:seriesMeta("dockerhub",history),caption:"累计 pull_count 包含重复请求、CI 与多架构拉取；各点是独立采集快照，不推算逐日新增。没有仓库拆分的历史点保持为空。"});
+    if (!names&&delta.baseline_captured_at) body += notice(`与 ${date(delta.baseline_captured_at)} 比较，同一镜像拉取计数变化 ${count(delta.same_repository_pulls)}；新增镜像带入历史计数 ${count(delta.added_repository_pulls)}。`);
+    body += table("docker-projects",list(GROWTH.docker_projects),[col("name","项目","name",r=>link(r.name,r.url)),col("repositories","归属镜像","name",r=>esc(r.repositories.map(n=>`pgsty/${n}`).join(" + "))),col("pulls","项目累计 Pulls","number"),col("status","覆盖","text",r=>badge(r.status)),col("as_of","采集日期")],{title:"项目镜像归属",note:"Silo 合计 pgsty/minio 与 pgsty/silo；mc 独立列示。项目合计不再与成员仓库相加，拉取计数不代表独立安装。"});
     body += table("docker-repos",[...repos].sort((a,b)=>b.pulls-a.pulls),[col("name","公开镜像","name",r=>link(`${r.namespace||"pgsty"}/${r.name}`,r.url)),col("pulls","累计 Pulls","number"),col("stars","Stars","number"),col("tag_count","标签","number"),dateColumn("last_updated","最近更新")],{title:"Docker Hub 镜像"});
-    if(full)body+=`<h3>公开镜像标签</h3>`+table("docker-tags",list(d.tags).filter(r=>state.dockerRepo==="all"||r.repository===state.dockerRepo),[col("repository","镜像","name"),col("tag","标签","name",r=>link(r.tag,r.url)),col("architectures","架构","name"),col("size_bytes","大小","bytes"),dateColumn("last_updated","更新日期")],{title:"公开镜像标签",note:"Docker Hub 未提供标签级 pull_count，因此不估算各标签下载量。"});
+    if(full)body+=`<h3>公开镜像标签</h3>`+table("docker-tags",list(d.tags).filter(r=>!names||names.includes(r.repository)),[col("repository","镜像","name"),col("tag","标签","name",r=>link(r.tag,r.url)),col("architectures","架构","name"),col("size_bytes","大小","bytes"),dateColumn("last_updated","更新日期")],{title:"公开镜像标签",note:"Docker Hub 未提供标签级 pull_count，因此不估算各标签下载量。"});
     return section("镜像分发",`${SOURCE_NAMES.dockerhub} · 截至 ${date(d.as_of)}；镜像自己的累计计数。`,body,full?"":reportLink("dockerhub","镜像与标签明细"));
   }
   function comparisonSection() {
@@ -520,12 +536,25 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     return {row, month, prev, prevMonth, change: prev && number(prev[metric]) ? Number(row[metric]) / Number(prev[metric]) - 1 : null};
   }
   const yoyDelta = (info) => !info.row ? null : info.change === null ? {text: "同比 —", ref: `${info.prevMonth} 无完整月`, dir: ""} : {text: `${info.change >= 0 ? "↑" : "↓"} ${count(Math.abs(info.change) * 100)}%`, ref: `同比 ${info.prevMonth}`, dir: info.change >= 0 ? "up" : "down"};
+  const changeDelta = (change, ref) => number(change)===null?null:{text:`${change>=0?"↑":"↓"} ${count(Math.abs(change)*100)}%`,ref,dir:change>0?"up":change<0?"down":""};
+  const annualDelta = row => changeDelta(row?.yoy_uv, `同比 ${row?.comparison_year||""}${row?.comparison_kind==="matched_ytd"?" 同期":" 全年"}`);
+  function momDelta(rows, metric) {
+    const current=latestComplete(rows,metric).row;
+    if(!current)return null;
+    const month=new Date(dayTime(current.month));month.setUTCMonth(month.getUTCMonth()-1);
+    const prior=rows.find(r=>r.month===month.toISOString().slice(0,10)&&!r.is_partial_month);
+    return prior&&number(prior[metric])>0?changeDelta(current[metric]/prior[metric]-1,`环比 ${prior.month.slice(0,7)}`):null;
+  }
+  const projectDelta = project => {
+    const rows=list(project.history).filter(r=>number(r.pulls)!==null);
+    const current=rows.at(-1), previous=rows.at(-2);
+    return current&&previous?snapDelta(current.pulls-previous.pulls,previous.captured_at,project.as_of,"同项目",short):null;
+  };
   function gaAnnualSection() {
     const d=payload("ga"), meta=d.yearly_meta||{}, s=selectedSite();
     const rows=sorted(allGASites()?list(d.aggregate?.yearly):list(d.yearly).filter(r=>String(r.site_id)===String(s.site_id)),"year");
     const complete=[...rows].reverse().find(r=>!r.is_partial_year&&!r.has_coverage_gap&&number(r.uv)!==null);
     const current=rows.find(r=>String(r.year).slice(0,4)===String(meta.as_of||"").slice(0,4));
-    const annualDelta=row=>number(row?.yoy_uv)===null?null:{text:`${row.yoy_uv>=0?"↑":"↓"} ${count(Math.abs(row.yoy_uv)*100)}%`,ref:`同比 ${row.comparison_year}${row.comparison_kind==="matched_ytd"?" 同期":" 全年"}`,dir:row.yoy_uv>=0?"up":"down"};
     const scope=allGASites()?"各站点年活相加，跨站未去重。":"单站 / Property 内按年去重。";
     let body=metricStrip([{label:"最近完整年活跃用户",value:complete?.uv,context:complete?`${String(complete.year).slice(0,4)} · 完整年 · ${gaName(s)}`:"暂无完整年记录",delta:annualDelta(complete)},{label:"本年累计活跃用户",value:current?.uv,context:current?`${date(current.window_start)} — ${date(current.window_end)} · ${current.is_partial_year?"年内累计":"完整年"}`:"暂无本年记录",delta:current?.is_partial_year?annualDelta(current):null},{label:"去年同期活跃用户",value:current?.is_partial_year?current?.comparison_uv:null,context:current?.is_partial_year?`${current.comparison_year}-01-01 — ${current.comparison_year}${String(current.window_end||"").slice(4)} · 同期直接查询`:"同期比较仅用于未结束年份"}]);
     body+=lineFigure(`${gaName(s)} · 年度活跃用户`,rows,"uv",{key:"year",seriesLabel:"年度活跃用户",window:`${observedRange(rows,"year")} · 年度采集 ${stamp(meta.captured_at)} · ${s.timezone||"原时区"}`,caption:`按自然年直接查询 GA 活跃用户，不累加月活或日活。${scope}空心点为年内累计，未结束年份只与去年同一日期范围比较；不与去年全年比较。`});
@@ -540,12 +569,24 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     const labels={pv:"页面浏览 PV",uv:"活跃用户 UV",sessions:"会话",new_users:"新用户"};
     const yoy = latestComplete(gaRows("monthly"), "uv");
     const scope = allGASites() ? "按全部公开站点 / Property 绑定相加，跨站未去重。" : `精确 hostname=${s.hostname||"未注明"}，Property=${s.property_id||"未注明"}。`;
-    let body=metricStrip([{label:gaMonthlyLabel("活跃用户"),value:monthly?.uv,context:monthly?`${String(monthly.month).slice(0,7)} · ${monthly.is_partial_month?"不完整月":"完整月"} · ${gaScope()}`:"所选范围尚无完整月记录",delta:!/^\d{4}-\d{2}$/.test(state.period)?yoyDelta(yoy):null},{label:gaMonthlyLabel("页面浏览"),value:monthly?.pv,context:allGASites()?gaScope():`${gaName(s)} · Property ${s.property_id||"—"}`},{label:"所选窗口页面浏览",value:total(rows,"pv"),context:`${observedRange(rows,key)} · ${grain==="monthly"?"源月表":"源日表"}`},{label:"所选窗口会话",value:total(rows,"sessions"),context:"不将日 UV 或月 UV 累加为期间独立用户"}]);
+    const rate=number(monthly?.engaged_sessions)!==null&&number(monthly?.sessions)>0?monthly.engaged_sessions/monthly.sessions:null;
+    let body=metricStrip([{label:gaMonthlyLabel("活跃用户"),value:monthly?.uv,context:monthly?`${String(monthly.month).slice(0,7)} · ${monthly.is_partial_month?"不完整月":"完整月"} · ${gaScope()}`:"所选范围尚无完整月记录",delta:!/^\d{4}-\d{2}$/.test(state.period)?yoyDelta(yoy):null,secondary:!/^\d{4}-\d{2}$/.test(state.period)?momDelta(gaRows("monthly"),"uv"):null},{label:gaMonthlyLabel("页面浏览"),value:monthly?.pv,context:allGASites()?gaScope():`${gaName(s)} · Property ${s.property_id||"—"}`},{label:"整月会话参与率",formatted:percent(rate),context:"参与会话 / 全部会话 · 衡量访问质量"},{label:"所选窗口会话",value:total(rows,"sessions"),context:`${observedRange(rows,key)} · 不代表期间独立用户`}]);
     body+=lineFigure(`${gaName(s)} · ${grain==="monthly"?"整月":"每日"}${labels[metric]}`,rows,metric,{key,seriesLabel:labels[metric],window:`${observedRange(rows,key)} · ${s.timezone||"原时区"} · 绑定最近观测 ${date(s.last_day)} · 绑定采集 ${stamp(s.captured_at)}`,caption:`${scope}${grain==="monthly"?"与所选日期区间重叠的整月使用直接查询值，不裁切月独立用户；当前月按截至日期显示部分值。":"日活在每天独立去重，不相加为月活；均线仅作平滑阅读。"} GA 只能观察到执行标签的访问。`});
     if(!s.has_observed_metrics)body+=notice("该站点绑定暂无观测指标。没有将未采集记录解释为零。","warning");
     body+=table("ga-series",rows,[dateColumn(key,grain==="monthly"?"月份":"日期"),col("pv","PV","number"),col("uv","活跃用户","number"),col("total_users","总用户","number"),col("new_users","新用户","number"),col("sessions","会话","number"),col("engaged_sessions","参与会话","number"),col("event_count","事件","number"),col("key_events","关键事件","number"),col("engagement_seconds","参与时长（秒）","number"),col("avg_session_seconds","平均会话时长（秒）","number"),...(allGASites()?[col("observed_bindings","有记录绑定","number",r=>count(r.coverage?.observed_bindings),r=>r.coverage?.observed_bindings),col("checked_no_rows","已查询无记录","number",r=>count(r.coverage?.checked_no_rows),r=>r.coverage?.checked_no_rows),col("missing_bindings","缺口绑定","number",r=>count(r.coverage?.missing_bindings),r=>r.coverage?.missing_bindings)]:[]),...(grain==="monthly"?[partialColumn("is_partial_month")]:[])],{title:allGASites()?"全部站点 GA 指标":"所选站点 GA 指标",note:`数据从 ${date(s.first_day)} 至 ${date(s.last_day)}，站点时区 ${s.timezone||"未注明"}。${allGASites()?"各站点同日 / 同月指标相加；平均会话时长按会话数加权。历史绑定范围会变化，缺口保持为空。":"单站指标可独立查看。"}跨站受众未去重，不代表去重总人数。`});
     if(full)body+=`<h3>公开 GA 绑定</h3>`+table("ga-sites",list(d.sites),[col("hostname","精确 hostname","name"),col("site_name","绑定名称","name"),col("property_id","Property"),col("timezone","原时区"),dateColumn("first_day","最早观测"),dateColumn("last_day","最近观测"),col("captured_at","绑定入库时间","text",r=>stamp(r.captured_at)),col("completed_start","最近成功窗口起","text",r=>esc(date(r.completed_window?.start)),r=>r.completed_window?.start||""),col("completed_end","最近成功窗口止","text",r=>esc(date(r.completed_window?.end)),r=>r.completed_window?.end||""),col("has_observed_metrics","观测状态","text",r=>r.has_observed_metrics?"有观测记录":r.completed_window?.end?"已查询 · 无观测":"尚无观测",r=>r.has_observed_metrics?"observed":r.completed_window?.end?"checked_no_observations":"missing")],{title:"公开 GA 绑定",note:"默认合计全部公开绑定，也可单独选择 hostname / Property。成功查询窗口与实际有访问的最后一天分别保存；无观测的绑定仍保留成功窗口。"});
-    return section("网站受众",`Google Analytics · ${gaName(s)} · ${allGASites()?`${count(s.public_bindings)} 个站点绑定 · ${count(s.public_properties)} 个 Property`:`Property ${s.property_id||"—"}`} · ${s.timezone||"原 Property 时区"}。`,body,full?"":reportLink("ga","受众与站点明细"))+gaAnnualSection();
+    return section("网站受众",`Google Analytics · ${gaName(s)} · ${allGASites()?`${count(s.public_bindings)} 个站点绑定 · ${count(s.public_properties)} 个 Property`:`Property ${s.property_id||"—"}`} · ${s.timezone||"原 Property 时区"}。`,body,full?"":reportLink("ga","受众与站点明细"))+gaAnnualSection()+(full?gaGrowthSection(true):"");
+  }
+  function gaGrowthSection(full = false) {
+    if(!allGASites())return "";
+    const d=GROWTH.ga||{}, cohort=d.comparable||{}, current=cohort.current, prior=cohort.previous;
+    const groups=list(d.groups).map(g=>({name:g.name,uv:g.current?.uv,bindings:g.bindings,window_end:g.current?.window_end,hostnames:g.hostnames.join(" · ")}));
+    let body=metricStrip([{label:"固定站点年内活跃访客",value:current?.uv,delta:annualDelta(current),context:`${count(list(cohort.bindings).length)} 个既有绑定 · ${date(current?.window_start)} — ${date(current?.window_end)}`},{label:"同范围去年同期",value:prior?.uv,context:`${date(prior?.window_start)} — ${date(prior?.window_end)} · 相同绑定范围`}]);
+    body+=chartGrid([lineFigure("固定站点 · 整月活跃用户",list(cohort.monthly),"uv",{key:"month",compact:true,cols:2,seriesLabel:"整月活跃用户",window:list(cohort.hostnames).join(" + "),caption:"仅纳入去年开始前已有观测的绑定；按同一绑定集合比较，跨站未去重。年内活跃访客直接查询，不累加月活。"}),barFigure("年内受众来源",groups,"name","uv",`截至 ${date(d.current?.window_end)} · 产品、文档与内容站点分组；各站点 / Property 相加，跨站未去重。`)],2);
+    if(cohort.status!=="complete")body+=notice("固定站点同期数据不完整，增长率保持为空。","warning");
+    body+=table("ga-audience-groups",groups,[col("name","受众来源","name"),col("uv","年内活跃访客合计","number"),col("bindings","站点绑定","number"),dateColumn("window_end","截至日期"),col("hostnames","包含站点","name")],{title:"受众来源拆分",note:"全站合计保留全部公开绑定；来源分组互不重叠。产品站访问不等于产品活跃安装，内容站访问不等于产品用户。"});
+    if(full)body+=table("ga-comparable",list(cohort.monthly),[dateColumn("month","月份"),col("uv","活跃用户","number"),col("pv","PV","number"),col("sessions","会话","number"),partialColumn("is_partial_month")],{title:"固定站点月度受众",note:"绑定集合按基期之前已有观测选择，并保留同期缺口；首次观测不是站点或产品上线日期。"});
+    return section("受众增长的来源",`全部站点体现传播规模，固定站点组帮助阅读可比增长。统计范围：${list(cohort.hostnames).join(" + ")||"暂无可比站点"}。`,body,full?"":reportLink("ga","受众与站点明细"));
   }
   function cfSection(full = false) {
     const d=payload("cloudflare"), rows=filterPeriod(list(d.daily)), complete=rows.filter(r=>r.is_partial_day===false), metric=full?state.cfMetric:"requests", overview=metric.includes("recent"), labels={page_views:"core · HTML 页面浏览",requests:"core · 边缘请求",bytes:"core · 传输字节",uniques:"core · 日独立 IP",visits_recent:"overview · Visits",status_4xx_ratio_recent:"overview · 4xx 响应比例"};
@@ -698,37 +739,48 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   /* ---------- Overview chapters ---------- */
   function summarySection() {
     const gh=payload("github"),docker=payload("dockerhub"),cdn=payload("cdn"),s=selectedSite();
-    const ga=latestComplete(gaRows("monthly"),"uv"), ip=latestComplete(cdnRows("monthly"),"unique_ips"), pkg=latestComplete(cdnRows("monthly"),"package_downloads");
-    const mapped=list(cdn.dimensions).filter(r=>r.dimension==="package"&&r.mapping_status==="mapped");
+    const ga=latestComplete(gaRows("monthly"),"uv"), pkg=latestComplete(cdnRows("monthly"),"package_downloads");
+    const year=String(payload("ga").yearly_meta?.as_of||"").slice(0,4);
+    const annual=(allGASites()?list(payload("ga").aggregate?.yearly):list(payload("ga").yearly).filter(r=>String(r.site_id)===String(s.site_id))).find(r=>r.year.slice(0,4)===year);
+    const silo=siloProject(), quarter=GROWTH.distribution?.latest_quarter;
     const items=[
-      {label:gaMonthlyLabel("活跃用户"),value:ga.row?.uv,delta:yoyDelta(ga),context:`GA · ${ga.month||"暂无完整月"} · ${gaScope()}`},
-      {label:"软件仓库整月独立 IP",value:ip.row?.unique_ips,delta:yoyDelta(ip),context:`CDN 两区域 · ${ip.month||"暂无完整月"} · 原日志整月去重`},
-      {label:"整月软件包成功 GET",value:pkg.row?.package_downloads,delta:yoyDelta(pkg),context:`CDN · ${pkg.month||"暂无完整月"} · RPM / DEB · 200/206`},
+      {label:gaMonthlyLabel("活跃用户"),value:ga.row?.uv,delta:yoyDelta(ga),secondary:momDelta(gaRows("monthly"),"uv"),context:`GA · ${ga.month||"暂无完整月"} · ${gaScope()}`},
+      {label:"Silo 项目累计拉取",value:silo.pulls,formatted:short(silo.pulls),delta:projectDelta(silo),context:`pgsty/minio + pgsty/silo · ${date(docker.as_of)}`},
+      {label:allGASites()?"年内活跃访客合计":"单站年内活跃访客",value:annual?.uv,delta:annualDelta(annual),context:`${date(annual?.window_start)} — ${date(annual?.window_end)} · ${allGASites()?"跨站未去重 · 统计覆盖会变化":"单站直接年度查询"}`},
       {label:"公开组织 Stars",value:gh.totals?.stars,delta:snapDelta(gh.delta?.same_repository_stars,gh.delta?.baseline_captured_at,gh.as_of,"同仓库"),context:`GitHub · ${date(gh.as_of)} · ${count(gh.totals?.repositories)} 个公开仓库`},
-      {label:"镜像累计拉取",value:docker.totals?.pulls,formatted:short(docker.totals?.pulls),delta:snapDelta(docker.delta?.same_repository_pulls,docker.delta?.baseline_captured_at,docker.as_of,"同镜像",short),context:`Docker Hub · ${date(docker.as_of)} · ${count(docker.totals?.repositories)} 个公开镜像`},
-      {label:"近期扩展映射包 GET",value:total(mapped,"successful_gets"),context:`CDN · ${date(cdn.coverage?.dimension_start)} — ${date(cdn.coverage?.dimension_end)} · ${count(mapped.length)} 个发行文件`}
+      {label:"整月软件包获取请求",value:pkg.row?.package_downloads,delta:yoyDelta(pkg),secondary:momDelta(cdnRows("monthly"),"package_downloads"),context:`${pkg.month||"暂无完整月"} · RPM / DEB · 成功获取请求`},
+      {label:"最近完整季度软件包获取",value:quarter?.package_downloads,formatted:short(quarter?.package_downloads),delta:changeDelta(quarter?.yoy,"同比去年同季度"),context:quarter?`${quarter.quarter} · ${quarter.window_start} — ${quarter.window_end}`:"暂无完整季度记录"}
     ];
-    return section("核心摘要","六项指标分别来自独立来源，单位不同、不相加。同比只比较同一来源、同一口径的两个完整月；快照增量只计同一仓库 / 镜像。",metricStrip(items,"hero-stats"));
+    return section("规模与增长","受众、社区关注与软件获取，按各自的时间范围观察增长。",metricStrip(items,"hero-stats")+`<p class="method">${esc("全站受众相加且统计覆盖会变化；固定站点同比见下方。拉取与获取请求含重复访问，分别保留原单位。")}</p>`);
+  }
+  function productSection() {
+    const gh=payload("github"), pigsty=list(gh.repositories).find(r=>r.full_name==="pgsty/pigsty")||{}, silo=siloProject(), anchor=GROWTH.ga?.pigsty_cc?.current;
+    const pigstyBody=`<article class="product-evidence" data-product="pigsty"><header><h3>${link("Pigsty",pigsty.url||"https://github.com/pgsty/pigsty")}</h3><p>${esc("PostgreSQL 数据库基础设施")}</p></header><dl><div><dt>${esc("主仓库 Stars")}</dt><dd>${count(pigsty.stars)}</dd><small>GitHub · ${date(gh.as_of)}</small></div><div><dt>${esc("中文站年内活跃访客")}</dt><dd>${short(anchor?.uv)}</dd>${deltaHTML(annualDelta(anchor))}<small>pigsty.cc · ${date(anchor?.window_end)}</small></div></dl><p class="method">${esc("同一站点、同一年度截止日期直接查询；网站访问体现文档与产品传播。")}</p></article>`;
+    const siloBody=`<article class="product-evidence" data-product="silo"><header><h3>${link("Silo",silo.url||"https://silo.pgsty.com/")}</h3><p>${esc("两个镜像仓库，同一个项目")}</p></header><dl><div><dt>${esc("项目累计镜像拉取")}</dt><dd>${short(silo.pulls)}</dd><small>Docker Hub · ${date(silo.as_of)}</small></div><div><dt>${esc("主仓库 Stars")}</dt><dd>${count(silo.stars)}</dd><small>GitHub · ${date(gh.as_of)}</small></div></dl><ul class="project-members">${list(silo.members).map(r=>`<li>${link(`pgsty/${r.name}`,r.url)}<strong>${count(r.pulls)}</strong></li>`).join("")}</ul><p class="method">${esc("Silo 合计两个仓库的累计计数；mc 独立列示，项目合计不重复加到组织总量。")}</p></article>`;
+    return section("产品增长","把生态规模落实到具体项目；每项证据保留自己的来源与单位。",`<div class="product-grid">${pigstyBody}${siloBody}</div>`);
   }
   function longRunSection() {
-    const cols=gridCols(3), s=selectedSite(), gaM=gaRows("monthly"), cdnM=cdnRows("monthly"), cf=list(payload("cloudflare").daily);
-    const ext=extensionMonthlyRows(list(payload("cdn").extension_monthly));
+    const cols=gridCols(2), s=selectedSite(), gaM=gaRows("monthly"), cdnM=cdnRows("monthly"), silo=siloProject();
     const base={key:"month",compact:true,cols};
     const figs=[
       lineFigure(`${gaName(s)} · 整月活跃用户`,gaM,"uv",{...base,seriesLabel:"整月活跃用户",window:`GA · ${observedRange(gaM,"month")}`,caption:allGASites()?"各站点整月活跃用户相加，跨站未去重；不由日活累加。历史站点范围随观测覆盖变化。":"每月直接查询整月活跃用户，不由日活累加；单站口径。"}),
-      lineFigure("软件仓库 · 整月独立 IP",cdnM,"unique_ips",{...base,seriesLabel:"整月独立 IP",window:`CDN · ${observedRange(cdnM,"month")}`,caption:"两区域原日志整月去重；IP 不等于用户或企业。"}),
       lineFigure("软件包 · 整月成功 GET",cdnM,"package_downloads",{...base,seriesLabel:"软件包成功 GET",window:`CDN · ${observedRange(cdnM,"month")}`,caption:"RPM / DEB 成功 GET，含重试与重复分发，非安装量。"}),
-      ext.rows.length?lineFigure("扩展映射包 · 整月成功 GET",ext.rows,ext.countKey,{...base,seriesLabel:"扩展映射包 GET",window:`CDN · ${observedRange(ext.rows,"month")}`,caption:"仅统计明确映射到扩展的包；小时覆盖未确认的月份标为部分。"}):"",
       starStackFigure({compact:true,cols,title:"全部仓库 · 现存 Stars 堆叠",caption:"GitHub 现存 Stars 历史按月累计后堆叠；当前月截至采集日，不含已取消的 Stars。"})||retainedStarFigure({compact:true,cols}),
-      lineFigure("Cloudflare · 每日边缘请求",cf,"requests",{compact:true,cols,seriesLabel:"边缘请求",window:`Cloudflare · ${observedRange(cf)} · UTC`,caption:"账号级 core 日请求，含自动化与静态资源；均线剔除部分日。"})
+      lineFigure("Silo · 累计镜像拉取",list(silo.history),"pulls",{compact:true,cols,snapshots:true,height:420,seriesLabel:"累计拉取",window:`Docker Hub · ${observedRange(list(silo.history))}`,caption:"pgsty/minio + pgsty/silo；仅使用有仓库明细的真实快照，不插值为逐日新增，历史缺口保持为空。"})
     ];
     return section("长期趋势 · 完整历史","不受观察窗口影响，始终展示各来源的全部可得历史；月度图使用源月表，部分月以空心点标出。悬停查看具体数值。",chartGrid(figs,cols));
   }
+  function ecosystemSummary() {
+    const ext=GROWTH.distribution?.extensions||{}, quarter=GROWTH.distribution?.latest_quarter;
+    let body=metricStrip([{label:"有获取记录的扩展包",value:ext.active_logical_packages,context:`${String(ext.month||"—").slice(0,7)} · 逻辑包去重 · ${ext.status==="complete"?"完整月":"暂无完整月"}`},{label:"整月扩展包获取请求",value:ext.successful_gets,formatted:short(ext.successful_gets),context:"仅统计已明确映射到扩展的成功请求"}]);
+    body+=`<p class="method">${esc("扩展包数量按逻辑包去重；获取次数包含重试与重复获取，不代表安装数。")}</p><div class="inline-links">${["extension-downloads","extension-monthly","extension-package-rankings","distribution"].map(id=>reportLink(id)).join("")}</div>`;
+    const quarters=list(GROWTH.distribution?.quarters).filter(r=>r.month.slice(0,4)>=String(Number(quarter?.month?.slice(0,4)||0)-1));
+    body+=table("distribution-quarters",quarters,[col("quarter","季度"),col("package_downloads","完整季度成功获取请求","number"),col("observed_package_downloads","已观测获取请求","number"),col("status","覆盖","text",r=>badge(r.status)),col("yoy","同比","percent")],{title:"季度软件分发",note:"完整季度需要三个完整月份；有日志缺口的季度只保留已观测请求，完整季度值与同比保持为空。"});
+    return section("软件与扩展需求","用完整季度看分发规模，用整月逻辑包看生态覆盖。",body);
+  }
   function overview() {
-    let body=summarySection()+longRunSection();
-    body+=gaSection(false)+githubSection(false)+cdnSection(false)+dockerSection(false)+cfSection(false);
-    if(state.report!=="pigsty-growth")body+=industrySection(false);
-    return body;
+    const details=["ga","github","dockerhub","cdn-traffic","repo-monthly-uv","cloudflare-daily","nginx-sites",...(state.report!=="pigsty-growth"?["industry"]:[])];
+    return summarySection()+productSection()+gaGrowthSection()+longRunSection()+ecosystemSummary()+section("进一步查看","完整表格、技术访问统计与行业研究保留在各自报告中。",`<div class="inline-links">${details.map(id=>reportLink(id)).join("")}</div>`);
   }
   function content() {
     const id=state.report,def=reportDef();let html="";
@@ -755,10 +807,10 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   function intro() {
     const def=reportDef(), id=state.report;
     const descriptions={
-      operations:"Pigsty 的开源社区、网站受众、软件分发与行业资本公开指标。每项数据标明来源、口径与日期；图表与完整表格同源，可筛选、追溯、下载。",
+      operations:"Pigsty 与 Silo 的公开进展：受众、社区和软件分发，按产品与同一站点范围观察增长。",
       industry:"沿着公司、时间与公开原文梳理 PostgreSQL 产业的融资、收购和团队整合。原历史研究保留为附录，自动发现的候选单独等待核实。",
       github:"公开仓库、关注、复用与版本资产的可追溯快照。累计计数与同一仓库 / 资产的变化分别呈现，保留范围扩大与仓库迁移的影响。",
-      dockerhub:"公开镜像与标签的分发计数。累计拉取与历史快照并列，按镜像阅读具体产品的分发范围。",
+      dockerhub:"按项目与镜像阅读分发规模。Silo 合计 pgsty/minio 和 pgsty/silo，两项原始计数与实际历史快照保留，可核对、可导出。",
       "open-source":"在明确的公开项目样本中观察 Pigsty 的开源关注。同行仓库按原样本与当前 canonical 名称对应，镜像分发单列。",
       ga:"默认合计全部 GA 站点，也可切换单站 / Property。整月活跃用户相加各站整月查询值，跨站未去重；不累加日活。",
       "cloudflare-ytd":"观察账号在年内的边缘请求、HTML 浏览与日独立 IP。完整日与部分日分开，原始峰值及 overview 缺口保留。",
@@ -770,16 +822,17 @@ Promise.resolve(window.REPOORT_READY).then(() => {
       "pigsty-growth":"从社区关注、网站传播与软件分发观察产品增长。快照变化与访问时间窗口分别呈现，各来源保留原单位。"
     };
     const lede=descriptions[id]|| (def.kind==="archive"?"从原始报告与 CSV 重建这一专题的历史证据。原观察窗口、估算标签与制品哈希保留，方便后续复核和独立更新。":id.startsWith("extension-")?"观察扩展映射的软件包分发、排名与维度。未映射包另列，映射到一个软件包不等于一个独立使用者。":id.startsWith("cloudflare")?"连续观察账号级边缘请求与页面响应，保留 core / overview 的独立覆盖、部分日和异常峰值。":"保留来源、时间窗口与数据口径的公开聚合观察。趋势与完整表格使用同一份数据。");
-    const title=def.title, sources=def.sources||[];
+    const isOverview=OVERVIEW_REPORTS.includes(id);
+    const title=def.title, sources=(def.sources||[]).filter(s=>!isOverview||["ga","github","dockerhub","cdn"].includes(s));
     const chips=sources.map(s=>{const st=list(DATA.sources).find(x=>x.id===s)||{},d=payload(s);return `<span class="source-chip ${esc(st.status||"unknown")}" title="${esc(`${SOURCE_NAMES[s]||s} · ${STATUS_NAMES[st.status]||"待确认"} · 源记录截至 ${date(d.as_of)}`)}"><span class="dot" aria-hidden="true"></span>${esc(SOURCE_SHORT[s]||s)}<span class="chip-date">${esc(d.as_of?date(d.as_of).slice(5):"—")}</span><span class="sr-only">${esc(STATUS_NAMES[st.status]||"待确认")}</span></span>`;}).join("");
     const eyebrow=def.kind==="archive"?"历史研究档案":"公开指标";
-    return `<header class="hero"><span class="eyebrow${def.kind==="archive"?" archive":""}">${esc(eyebrow)}</span><h1>${esc(title)}</h1><p class="lede">${esc(lede)}</p><div class="hero-meta"><span class="source-chips" aria-label="数据来源与新鲜度">${chips}</span><span><span class="meta-label">页面生成</span>${stamp(DATA.meta?.generated_at)}</span><span><span class="meta-label">口径</span>图表与 CSV 使用同一份公开数据</span></div>${toc.length>=3?`<nav class="toc" aria-label="本页章节">${toc.map(t=>`<a href="#${t.id}" data-jump="${t.id}"><span>${t.n}</span>${esc(t.title)}</a>`).join("")}</nav>`:""}</header>`;
+    return `<header class="hero">${isOverview?"":`<span class="eyebrow${def.kind==="archive"?" archive":""}">${esc(eyebrow)}</span>`}<h1>${esc(title)}</h1><p class="lede">${esc(lede)}</p><div class="hero-meta"><span class="source-chips" aria-label="数据来源与新鲜度">${chips}</span><span><span class="meta-label">页面生成</span>${stamp(DATA.meta?.generated_at)}</span>${isOverview?"":'<span><span class="meta-label">口径</span>图表与 CSV 使用同一份公开数据</span>'}</div>${!isOverview&&toc.length>=3?`<nav class="toc" aria-label="本页章节">${toc.map(t=>`<a href="#${t.id}" data-jump="${t.id}"><span>${t.n}</span>${esc(t.title)}</a>`).join("")}</nav>`:""}</header>`;
   }
   function navigation() {
     $("report-count").textContent=GROUPS.reduce((n,[,ids])=>n+ids.filter(id=>CATALOG.some(r=>r.id===id)).length,0);
     $("report-nav").innerHTML=GROUPS.map(([name,ids])=>`<div class="nav-group"><h3>${esc(name)}</h3>${ids.map(id=>{const r=CATALOG.find(x=>x.id===id);return r?`<a href="${esc(reportHref(id))}" data-report-link="${esc(id)}"${id===state.report?' aria-current="page"':""}>${esc(r.title)}${r.kind==="archive"?'<span class="nav-kind">历史</span>':""}</a>`:"";}).join("")}</div>`).join("");
     $("report-select").innerHTML=GROUPS.map(([name,ids])=>`<optgroup label="${esc(name)}">${ids.map(id=>CATALOG.find(r=>r.id===id)).filter(Boolean).map(r=>option(r.id,r.title,state.report)).join("")}</optgroup>`).join("");
-    $("edition").textContent=t(`数据刊物 · ${date(DATA.meta?.generated_at)}`);
+    $("edition").textContent=t(`数据刊物 · ${publicationDay()}`);
     I18N?.localize($("report-nav"));
     I18N?.localize($("report-select"));
     syncLanguageLinks();
@@ -791,6 +844,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     downloadURLs.clear();
     tables.clear();charts.clear();toc.length=0;sectionNumber=0;chartSeq=0;
     const main=content();
+    $("report-content").classList.toggle("is-overview",OVERVIEW_REPORTS.includes(state.report));
     $("report-content").innerHTML=intro()+toolbar()+main;
     $("report-content").setAttribute("aria-busy","false");
     I18N?.localize($("report-content"));
