@@ -1,6 +1,6 @@
 {{- $zh := eq .Site.Language.Lang "zh" -}}
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Locale | default .Site.Language.Lang }}" class="no-js">
+<html{{ partial "shell/document-attrs.html" (dict "page" . "theme_init" false) }} data-bs-theme="light" data-theme="light" class="no-js">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

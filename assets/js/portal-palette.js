@@ -1,8 +1,7 @@
 /**
  * Bridge OINK's chrome controls to the bespoke PGSTY portal theme.
  *
- * The navbar renders OINK 0.6's theme control — a click target that flips
- * light/dark plus a hover popover offering light / dark / system — but the
+ * The navbar renders OINK's Appearance menu with style and light controls. The
  * portal owns the colour state, in `pgsty-landing-theme`. Everything below
  * routes through `PGSTYPortalTheme` so there is never a second store: the
  * theme's own dark-mode.js is deliberately not loaded.
@@ -30,7 +29,8 @@
     var preference = storedPreference();
     document.querySelectorAll('[data-bs-theme-value]').forEach(function (option) {
       var active = option.getAttribute('data-bs-theme-value') === preference;
-      option.setAttribute('aria-pressed', active ? 'true' : 'false');
+      if (option.tagName === 'INPUT') option.checked = active;
+      else option.setAttribute('aria-pressed', active ? 'true' : 'false');
       option.classList.toggle('td-is-active', active);
     });
   }
@@ -55,13 +55,20 @@
     });
 
     document.querySelectorAll('[data-bs-theme-value]').forEach(function (option) {
-      option.addEventListener('click', function () {
+      option.addEventListener(option.tagName === 'INPUT' ? 'change' : 'click', function () {
+        if (option.tagName === 'INPUT' && !option.checked) return;
         applyPreference(option.getAttribute('data-bs-theme-value'));
       });
     });
 
     syncOptions();
     global.addEventListener('pgsty-theme-change', syncOptions);
+    global.addEventListener('storage', function (event) {
+      if (event.key === THEME_KEY || event.key === null) {
+        theme.applyPreference(storedPreference());
+        syncOptions();
+      }
+    });
   }
 
   function registerThemeAction() {

@@ -23,7 +23,7 @@ module:
   proxy: direct
   hugoVersion:
     extended: true
-    min: "0.160.1"
+    min: "0.166.0"
   imports:
     - path: github.com/pgsty/oink
       disable: false
@@ -505,6 +505,8 @@ params:
   highlight_classes: true
 
   ui:
+    preset: paper
+    preset_menu: [paper, slate, ink, terminal]
     breadcrumb: true
     sidebar_menu_compact: true
     sidebar_menu_foldable: true

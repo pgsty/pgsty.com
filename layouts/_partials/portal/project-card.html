@@ -22,7 +22,7 @@
   {{ $cmd := cond $zh $p.installZh $p.install }}
   {{ with $cmd }}
   <div class="corp-product-cmd">
-    <code>{{ . }}</code>
+    <code tabindex="0" role="region" aria-label="{{ if $zh }}安装命令{{ else }}Installation command{{ end }}">{{ . }}</code>
     <button type="button" class="corp-cmd-copy" data-copy-text="{{ . }}" aria-label="{{ if $zh }}复制命令{{ else }}Copy command{{ end }}" title="{{ if $zh }}复制命令{{ else }}Copy command{{ end }}">
       <i class="fa-regular fa-copy" aria-hidden="true"></i>
     </button>

@@ -138,6 +138,79 @@ html[data-bs-theme='dark'] {
   --corp-border: #1e293b;
 }
 
+/* The published OINK palette owns visual identity; the corporate components
+   retain their existing structure and read it through these local aliases. */
+html[data-td-preset] {
+  --font-sans: var(--td-body-font-family);
+  --font-body: var(--td-body-font-family);
+  --font-head: var(--td-heading-font-family);
+  --font-display: var(--td-display-font-family);
+  --font-mono: var(--td-code-font-family);
+}
+html[data-td-preset][data-bs-theme] {
+  --bg: var(--bs-body-bg);
+  --bg-page: var(--bs-body-bg);
+  --bg-soft: var(--bs-secondary-bg);
+  --bg-elev: var(--td-brand-elev);
+  --bg-elev-2: var(--bs-tertiary-bg);
+  --bg-elev-3: var(--bs-secondary-bg);
+  --ink: var(--bs-body-color);
+  --ink-heading: var(--bs-emphasis-color);
+  --ink-soft: var(--bs-secondary-color);
+  --ink-mute: var(--bs-tertiary-color);
+  --ink-faint: var(--bs-tertiary-color);
+  --pg: var(--bs-link-color);
+  --pg-strong: var(--bs-link-hover-color);
+  --pg-soft: color-mix(in srgb, var(--bs-link-color) 8%, var(--bs-body-bg));
+  --pg-border: color-mix(in srgb, var(--bs-link-color) 30%, transparent);
+  --pg-glow: color-mix(in srgb, var(--bs-link-color) 14%, transparent);
+  --line: var(--bs-border-color);
+  --line-strong: var(--td-brand-line-strong);
+  --line-light: var(--bs-border-color);
+  --header-bg: var(--td-brand-header-bg);
+  --header-border: var(--bs-border-color);
+  --card-bg: var(--td-brand-elev);
+  --card-border: var(--bs-border-color);
+  --card-border-hover: var(--bs-link-color);
+  --btn-primary-bg: var(--bs-link-color);
+  --btn-primary-bg-hover: var(--bs-link-hover-color);
+  --btn-primary-text: var(--td-on-link, #fff);
+  --corp-blue: var(--bs-link-color);
+  --corp-navy: var(--bs-emphasis-color);
+  --corp-soft: var(--bs-secondary-bg);
+  --corp-border: var(--bs-border-color);
+}
+html[data-td-preset='paper'],
+html[data-td-preset='ink'],
+html[data-td-preset='terminal'] {
+  --grid-pattern: none;
+  --ambient-glow: none;
+}
+html[data-td-preset='ink'],
+html[data-td-preset='terminal'] {
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-hover: none;
+  --btn-primary-shadow: none;
+}
+html[data-td-preset='terminal'] {
+  --radius-xs: 2px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+}
+
 /* --------------------------------------------------------------------------
    2. Typography & Core Resets
    -------------------------------------------------------------------------- */
@@ -614,6 +687,10 @@ body.landing-page::before {
   white-space: nowrap;
 }
 
+html[data-td-preset='terminal']:lang(en) .corp-hero-centered h1 {
+  font-size: clamp(2.3rem, 5.2vw, 3.7rem);
+}
+
 @media (max-width: 540px) {
   .corp-hero-centered .corp-hero-line {
     white-space: normal;
@@ -625,15 +702,7 @@ body.landing-page::before {
 }
 
 .corp-hero-centered .corp-hero-line:last-child {
-  background: linear-gradient(135deg, var(--pg) 0%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-html[data-theme='dark'] .corp-hero-centered .corp-hero-line:last-child {
-  background: linear-gradient(135deg, #60a5fa 0%, #a5b4fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--pg);
 }
 
 :lang(zh) .corp-hero-centered h1 {

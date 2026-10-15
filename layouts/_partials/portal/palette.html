@@ -8,7 +8,7 @@
 </div>
 {{- $manifest := partial "actions/manifest.html" . -}}
 {{- /* Corporate visitors need navigation and preferences, not documentation editing actions. */ -}}
-{{- $manifest = merge $manifest (dict "actions" (where $manifest.actions "id" "in" (slice "copy_link" "switch_language" "switch_theme"))) -}}
+{{- $manifest = merge $manifest (dict "actions" (where $manifest.actions "id" "in" (slice "copy_link" "switch_language" "switch_theme" "switch_preset"))) -}}
 <script type="application/json" id="td-action-manifest">{{ $manifest | jsonify | safeJS }}</script>
 {{- $paletteJS := slice
   (resources.Get "js/third_party/lunr.min.js")
@@ -20,6 +20,7 @@
   (resources.Get "js/navbar-menu.js")
   (resources.Get "js/base.js")
   (resources.Get "js/landing.js")
+  (resources.Get "js/appearance.js")
   (resources.Get "js/portal-palette.js")
 -}}
 {{- $bundle := $paletteJS | resources.Concat "js/portal-palette.js" -}}

@@ -1,4 +1,6 @@
 {{- /* 门户页面公共资产：首帧主题引导 + 自托管字体 + 图标 + 样式（内容指纹缓存） */ -}}
+{{- $preset := partialCached "preset-config.html" "preset-global" -}}
+{{- $canvases := partialCached "_funcs/preset-canvases.html" "preset-canvases" -}}
 <script>
   (function () {
     var theme = null;
@@ -11,6 +13,23 @@
     }
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.setAttribute('data-bs-theme', theme);
+    var root = document.documentElement;
+    var allowed = {{ $preset.offered | jsonify | safeJS }};
+    var canvases = {{ $canvases | jsonify | safeJS }};
+    var preset = root.getAttribute('data-td-site-preset');
+    try {
+      var stored = window.localStorage.getItem('td-preset');
+      if (allowed.indexOf(stored) >= 0) preset = stored;
+      else if (stored !== null) window.localStorage.removeItem('td-preset');
+    } catch (error) {}
+    root.setAttribute('data-td-preset', preset);
+    var canvas = canvases[preset];
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta && canvas) {
+      meta.setAttribute('data-td-canvas-light', canvas.light);
+      meta.setAttribute('data-td-canvas-dark', canvas.dark);
+      meta.setAttribute('content', theme === 'dark' ? canvas.dark : canvas.light);
+    }
     document.documentElement.classList.remove('no-js');
     document.documentElement.classList.add('js');
   })();

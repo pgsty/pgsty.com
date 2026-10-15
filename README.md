@@ -2,10 +2,10 @@
 
 [![Website](https://img.shields.io/badge/web-pgsty.com-0D9488?logo=cloudflare&logoColor=white)](https://pgsty.com)
 [![GitHub Pages](https://github.com/pgsty/pgsty.com/actions/workflows/pages.yml/badge.svg)](https://github.com/pgsty/pgsty.com/actions/workflows/pages.yml)
-[![Hugo](https://img.shields.io/badge/Hugo-extended%200.164.0-FF4088?logo=hugo)](https://gohugo.io/)
+[![Hugo](https://img.shields.io/badge/Hugo-extended%200.166.0-FF4088?logo=hugo)](https://gohugo.io/)
 
 The bilingual PGSTY corporate portal pins
-[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v1.1.0` as its Hugo
+[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v1.3.0` as its Hugo
 theme. The English and Chinese sites both present PGSTY PTE. LTD., Singapore.
 The corporate pages cover the company, software projects, professional services,
 pricing, solutions, contact, privacy, and service terms. OINK supplies navigation,
@@ -84,12 +84,12 @@ To update the pinned theme intentionally, run `make update-theme`, review
 ## Deploy
 
 The checked-in [GitHub Pages workflow](.github/workflows/pages.yml) builds and
-deploys on pushes to `main` or manual dispatch. It installs Hugo Extended 0.164.0
-and Go 1.26.6; `go.mod` currently declares Go 1.27.0. Check the actual toolchain
+deploys on pushes to `main` or manual dispatch. It installs Hugo Extended 0.166.0
+and Go 1.27.0; `go.mod` currently declares Go 1.27.0. Check the actual toolchain
 and workflow result when validating a release.
 
 The recorded Cloudflare Pages setup also builds `main` and serves `pgsty.com`
-using Hugo Extended 0.164.0. Those platform settings are not stored in this
+using Hugo Extended 0.164.0 when recorded. Those platform settings are not stored in this
 repository and need live verification for deployment work. A local build,
 commit, push, deployment, and public-site check are separate results.
 

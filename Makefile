@@ -13,7 +13,7 @@ d: debug
 s: serve
 
 dev:
-	HUGO_MODULE_REPLACEMENTS='github.com/pgsty/oink -> $(abspath $(THEME_DIR))' \
+	GOWORK=off HUGO_MODULE_WORKSPACE=off HUGO_MODULE_REPLACEMENTS='github.com/pgsty/oink -> $(abspath $(THEME_DIR))' \
 		$(HUGO) server --renderToMemory --bind "$(BIND)" $(if $(strip $(PORT)),--port "$(PORT)")
 
 debug: dev
@@ -31,6 +31,7 @@ check:
 	$(HUGO) build --minify --cleanDestinationDir --printPathWarnings --printI18nWarnings --panicOnWarning
 	python3 bin/check_brand_claims.py
 	python3 bin/check_internal_links.py public
+	python3 bin/check_appearance.py public
 
 update-theme:
 	go get -u github.com/pgsty/oink
