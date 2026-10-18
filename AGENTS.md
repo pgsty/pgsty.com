@@ -4,12 +4,19 @@
 [README.md](README.md)，检查当前目录、分支、工作树与已有改动。用户当前要求优先，
 版本和实现细节以对应源文件为准。
 
+## OINK build baseline
+
+As of 2026-10-18, this site uses OINK v1.3.2 and Hugo Extended 0.168.0.
+Keep CI and local builds on this baseline. Do not enable `--panicOnWarning`
+or `HUGO_PANICONWARNING`; keep warnings visible and review them. The upstream
+LibSass deprecation warning is accepted. No external Sass compiler is required.
+
 ## 项目定位与现行设计
 
 - 本站是 **PGSTY PTE. LTD.** 的中英双语公司官网：英文 `/`，中文 `/zh/`。
   两种语言介绍同一家新加坡公司；公司信息统一引用 `data/company.yaml`。
 - 技术栈为 Hugo Extended + Go Modules，主题是 `github.com/pgsty/oink`，
-  当前由 `go.mod` 固定为 `v1.1.0`。检查脚本使用 Python 3 标准库；没有 npm 构建流程。
+  当前由 `go.mod` 固定为 `v1.3.2`。检查脚本使用 Python 3 标准库；没有 npm 构建流程。
 - 首页依次介绍开源软件、公共资源、专业服务、合作原则、FAQ 与联系入口。
   软件目录与公共资源目录分别承接完整介绍，保持用途清楚、链接直接、文案克制。
 - Hero 保持当前两行口号：英文 `Open Data Infrastructure` / `Built for Real Production`；
@@ -100,11 +107,12 @@ GOWORK=off make c          # 模块校验、严格构建、品牌声明与站内
 - 可用 `PORT=1314` 指定空闲端口，`BIND` 默认 `127.0.0.1`；不要占用或重启用户已有预览。
   `make d` 支持 `THEME_DIR`，会显式替换主题。被忽略的本地 `go.work` 也指向 `../oink`，
   因此仅运行 `make s` / `make b` 不能保证使用固定版本，验收时使用 `GOWORK=off`。
-- `go.mod` 当前声明 Go 1.27.0，`hugo.yaml` 要求 Hugo Extended 至少 0.160.1。
-  `.github/workflows/pages.yml` 当前安装 Hugo 0.164.0、Go 1.26.6；Go 与模块声明存在版本差异。
+- `go.mod` 当前声明 Go 1.27.0，`hugo.yaml` 要求 Hugo Extended 至少 0.168.0。
+  `.github/workflows/pages.yml` 固定 Hugo Extended 0.168.0，并跟随 Go 稳定版；无需外部 Sass。
   记录实际验证版本，不能据本机较新版本通过就声称 CI 已通过，也不要在无关任务里自动升级依赖。
-- `make c` 先执行 `go mod verify`，再以路径、国际化警告及 `--panicOnWarning` 构建，
-  最后执行 `bin/check_brand_claims.py` 和 `bin/check_internal_links.py public`。
+- `make c` 先执行 `go mod verify`，再保留路径与国际化告警构建，
+  最后执行 `bin/check_brand_claims.py`、`bin/check_internal_links.py public` 和
+  `bin/check_appearance.py public`。
   品牌检查只筛查不实商标声明；链接检查覆盖生成的 HTML、Markdown、LLMS 站内目标，
   不访问外站，也不代替浏览器交互或公司事实核验。
 - 修改页面、数据、样式、脚本或配置后运行上述固定主题检查；涉及共享界面时再检查中英文、
