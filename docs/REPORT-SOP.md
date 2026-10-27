@@ -83,3 +83,17 @@ HUGO_REPOORT_USE_LOCAL=1 GOWORK=off make s PORT=1317
 本机若使用现有 HTTPS_PROXY，远程归档构建需加 `HUGO_SECURITY_HTTP_PROXYFROMENVIRONMENT=true`，
 例如 `HUGO_SECURITY_HTTP_PROXYFROMENVIRONMENT=true GOWORK=off make c`。这是本机出网设置，
 不加入官网生产配置；Cloudflare/GitHub 构建直接访问固定公开附件。
+
+## 2026-10-27 数据更新
+
+本次快照为 `20261027T130149Z-0fa1d5a5`，生成于 2026-10-27 21:03 UTC+8。
+七类来源已重新获取、入库，并重新直接查询年度 GA 和去年同期；未新增定时任务。
+GitHub 11,887 Stars、300,574 次资产下载；Docker Hub 6,011,812 次拉取，
+其中 Silo=minio 2,774,772+silo 2,251,095，共 5,025,867，mc 单列。
+GA 年内活跃用户合计 473,193、去年同期 54,544，均截至 10 月 26 日，跨站未去重。
+GA/Cloudflare 完整日截至 10 月 26 日；CDN 完整至 25 日，26 日两区域各 21 个小时对象，
+保持部分覆盖；Cloudflare/Nginx 的 27 日与当前月也保持 partial。58 个历史 overview 缺口、
+行业 HTTP 403 和公告日期冲突继续保留。
+数据归档：<https://github.com/pgsty/pgsty.com/releases/tag/report-20261027T130149Z-0fa1d5a5>。
+来源与数据库 137 项对账、103 项 Python 测试、前端完整性测试和 38 个双语构建视图已通过。
+更新、归档、部署和公网验收收据位于 `~/.local/share/repoort/verification/refresh-20261027/`。
