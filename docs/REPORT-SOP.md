@@ -97,3 +97,17 @@ GA/Cloudflare 完整日截至 10 月 26 日；CDN 完整至 25 日，26 日两�
 数据归档：<https://github.com/pgsty/pgsty.com/releases/tag/report-20261027T130149Z-0fa1d5a5>。
 来源与数据库 137 项对账、103 项 Python 测试、前端完整性测试和 38 个双语构建视图已通过。
 更新、归档、部署和公网验收收据位于 `~/.local/share/repoort/verification/refresh-20261027/`。
+
+## 2026-10-28 数据更新
+
+本次快照为 `20261028T044440Z-2915e70f`，生成于 2026-10-28 12:45 UTC+8。
+七类来源已重新获取并入库，年度 GA 重新直接查询到 10 月 27 日；未新增定时任务。
+GitHub 11,912 Stars、307,040 次资产下载；Docker Hub 6,156,883 次拉取，
+其中 Silo=minio 2,840,892+silo 2,307,263，共 5,148,155，mc 单列 932,376。
+GA 年内活跃用户合计 480,369、去年同期 54,957，均截至 10 月 27 日，跨站未去重。
+Cloudflare 完整日截至 10 月 27 日，28 日为 partial；CDN 完整至 26 日，27 日两区域各 13 个小时对象，
+保持部分覆盖；Nginx 更新至 28 日 partial，解析错误为 0。58 个历史 overview 缺口、行业 HTTP 403
+和公告日期冲突继续保留。
+数据归档：<https://github.com/pgsty/pgsty.com/releases/tag/report-20261028T044440Z-2915e70f>。
+来源与数据库 170 项对账、103 项 Python 测试和 38 个双语构建视图已通过。
+更新、归档、部署和公网验收收据位于 `~/.local/share/repoort/verification/refresh-20261028/`。
