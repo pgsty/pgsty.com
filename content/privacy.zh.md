@@ -1,6 +1,7 @@
 ---
 title: "隐私说明"
 description: "PGSTY PTE. LTD. 如何处理本网站访问与商务咨询涉及的信息。"
+type: docs
 layout: "corporate"
 translationKey: "privacy"
 eyebrow: "公司政策"

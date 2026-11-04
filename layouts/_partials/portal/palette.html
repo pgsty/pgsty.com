@@ -7,8 +7,8 @@
   {{ partial "shell/search-dialog.html" .Site.Home }}
 </div>
 {{- $manifest := partial "actions/manifest.html" . -}}
-{{- /* Corporate visitors need navigation and preferences, not documentation editing actions. */ -}}
-{{- $manifest = merge $manifest (dict "actions" (where $manifest.actions "id" "in" (slice "copy_link" "switch_language" "switch_theme"))) -}}
+{{- /* Keep the portal actions, plus the bilingual view on eligible text pages. */ -}}
+{{- $manifest = merge $manifest (dict "actions" (where $manifest.actions "id" "in" (slice "copy_link" "switch_language" "switch_theme" "compare_translations"))) -}}
 <script type="application/json" id="td-action-manifest">{{ $manifest | jsonify | safeJS }}</script>
 {{- $paletteJS := slice
   (resources.Get "js/third_party/lunr.min.js")

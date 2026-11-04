@@ -1,6 +1,7 @@
 ---
 title: "Website and service terms"
 description: "Information about using this website, purchasing services, delivery, cancellation, and refunds from PGSTY PTE. LTD."
+type: docs
 layout: "corporate"
 translationKey: "terms"
 eyebrow: "COMPANY POLICIES"

@@ -1,6 +1,7 @@
 ---
 title: "联系 PGSTY"
 description: "与新加坡 PGSTY PTE. LTD. 讨论 PostgreSQL 咨询、实施、技术支持及开源基础设施项目。"
+type: docs
 layout: "corporate"
 translationKey: "contact"
 eyebrow: "商务联系"

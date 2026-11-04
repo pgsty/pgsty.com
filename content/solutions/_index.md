@@ -35,3 +35,4 @@ Compare control, operational responsibility, and total cost. The right choice de
 | Observability | Configure metrics and logs, with access to host-level diagnostics. | Use provider diagnostic interfaces; check access and retention. |
 | Control and portability | Control deployment, access, and backup policies; own security and operations. | Work within the shared responsibility model; assess export and migration paths. |
 | Upgrades | Rehearse upgrades, extension compatibility, downtime, and rollback. | Review maintenance options, version lifecycle, and upgrade policy. |
+{.wide .expand}

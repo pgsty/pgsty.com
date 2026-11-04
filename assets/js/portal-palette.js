@@ -9,6 +9,7 @@
  */
 (function (global) {
   'use strict';
+  if (global.OinkComparePane) return;
 
   var THEME_KEY = 'pgsty-landing-theme';
 

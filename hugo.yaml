@@ -493,6 +493,7 @@ params:
   highlight_classes: true
 
   ui:
+    compare: true
     breadcrumb: true
     sidebar_menu_compact: true
     sidebar_menu_foldable: true

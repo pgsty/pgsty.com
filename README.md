@@ -5,7 +5,7 @@
 [![Hugo](https://img.shields.io/badge/Hugo-extended%200.168.0-FF4088?logo=hugo)](https://gohugo.io/)
 
 The bilingual PGSTY corporate portal pins
-[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v1.3.2` as its Hugo
+[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v1.5.0` as its Hugo
 theme. The English and Chinese sites both present PGSTY PTE. LTD., Singapore.
 The corporate pages cover the company, software projects, professional services,
 pricing, solutions, contact, privacy, and service terms. OINK supplies navigation,
@@ -85,7 +85,7 @@ To update the pinned theme intentionally, run `make update-theme`, review
 
 The checked-in [GitHub Pages workflow](.github/workflows/pages.yml) builds and
 deploys on pushes to `main` or manual dispatch. It pins Hugo Extended 0.168.0
-and follows stable Go releases; `go.mod` declares Go 1.27.0 as the minimum. Check the actual toolchain
+and follows stable Go releases; `go.mod` declares Go 1.27.3 as the minimum. Check the actual toolchain
 and workflow result when validating a release.
 
 The recorded Cloudflare Pages setup also builds `main` and serves `pgsty.com`

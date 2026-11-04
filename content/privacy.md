@@ -1,6 +1,7 @@
 ---
 title: "Privacy notice"
 description: "How PGSTY PTE. LTD. handles information on this website and in business enquiries."
+type: docs
 layout: "corporate"
 translationKey: "privacy"
 eyebrow: "COMPANY POLICIES"

@@ -5,6 +5,7 @@
 
 (function () {
   'use strict';
+  if (window.OinkComparePane) return;
 
   var DARK_THEME_COLOR = '#0b1119';
   var LIGHT_THEME_COLOR = '#f1f4f8';

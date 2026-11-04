@@ -1,6 +1,7 @@
 ---
 title: "Contact PGSTY"
 description: "Discuss PostgreSQL consulting, implementation, technical support, and open-source infrastructure with PGSTY PTE. LTD."
+type: docs
 layout: "corporate"
 translationKey: "contact"
 eyebrow: "BUSINESS ENQUIRIES"

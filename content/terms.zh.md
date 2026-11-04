@@ -1,6 +1,7 @@
 ---
 title: "网站与服务条款"
 description: "了解 PGSTY PTE. LTD. 网站使用、服务采购、交付、取消与退款的处理方式。"
+type: docs
 layout: "corporate"
 translationKey: "terms"
 eyebrow: "公司政策"
