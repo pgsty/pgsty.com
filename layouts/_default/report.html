@@ -1,0 +1,45 @@
+{{- $zh := eq .Site.Language.Lang "zh" -}}
+{{- $manifest := partialCached "report/manifest.html" . "report-manifest" -}}
+{{- $css := slice (resources.Get "report/dashboard.css") (resources.Get "report/site.css") | resources.Concat "report/app.css" | minify | fingerprint "sha384" -}}
+{{- $js := slice (resources.Get "report/data-loader.js") (resources.Get "report/i18n.js") (resources.Get "report/dashboard.js") | resources.Concat "report/app.js" | minify | fingerprint "sha384" -}}
+<!DOCTYPE html>
+<html{{ partial "shell/document-attrs.html" (dict "page" . "theme_init" false) }} data-bs-theme="light" data-theme="light" class="no-js">
+<head>
+  {{ partial "portal/head-meta.html" . }}
+  {{ partial "portal/head-assets.html" . }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
+</head>
+<body class="landing-page portal-page corporate-page report-page" data-report="operations" data-lang="{{ .Site.Language.Lang }}" data-report-root="{{ .RelPermalink }}" data-manifest="{{ $manifest }}">
+  <a class="skip-link" href="#main-content">{{ cond $zh "跳到报告正文" "Skip to the report" }}</a>
+  {{ partial "portal/nav.html" (dict "page" .) }}
+  <div class="repoort-app">
+    <div class="workspace">
+      <aside class="report-index" aria-label="{{ cond $zh "报告目录" "Report directory" }}">
+        <div class="index-heading"><span>{{ cond $zh "报告索引" "Reports" }}</span><span id="report-count" class="count-pill">19</span></div>
+        <nav id="report-nav" aria-label="{{ cond $zh "选择报告" "Choose a report" }}"></nav>
+        <div class="index-note">{{ cond $zh "同一份公开数据，统一口径。" "One public snapshot, consistent definitions." }}<br>{{ cond $zh "每份报告标明来源、时间窗口与日期。" "Every report states its sources, coverage and dates." }}</div>
+      </aside>
+      <main id="main-content" tabindex="-1">
+        <div class="report-edition-bar">
+          <span id="edition" class="edition"></span>
+          <a id="public-data-download" class="data-link" href="{{ $manifest }}" aria-label="{{ cond $zh "下载公开数据" "Download public data" }}" download><span>{{ cond $zh "下载公开数据" "Download public data" }}</span></a>
+        </div>
+        <div class="reading-bar">
+          <label class="report-select-label" for="report-select">{{ cond $zh "报告" "Report" }}</label>
+          <select id="report-select" aria-label="{{ cond $zh "选择一份报告" "Choose a report" }}"></select>
+        </div>
+        <div id="report-content" aria-busy="true"><p class="loading">{{ cond $zh "正在整理公开报告…" "Loading the public report…" }}</p></div>
+        <noscript><p class="notice">{{ cond $zh "启用 JavaScript 可查看交互图表和筛选表格。上方链接可下载带校验值的公开数据清单。" "Enable JavaScript for interactive charts and filtered tables. The link above downloads the public data manifest with checksums." }}</p></noscript>
+        <footer class="publication-footer">
+          <span>{{ cond $zh "Pigsty · 公开指标与行业观察" "Pigsty · Public metrics and industry research" }}</span>
+          <span>{{ cond $zh "指标来自独立来源，保留各自范围与口径；不同来源不相加为用户或客户总数。" "Each source retains its scope and definitions. Metrics from different sources are not added into a user or customer total." }}</span>
+        </footer>
+      </main>
+    </div>
+    <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+  </div>
+  {{ partial "portal/footer.html" . }}
+  {{ partial "portal/foot-scripts.html" . }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" crossorigin="anonymous" defer></script>
+</body>
+</html>
