@@ -5,7 +5,7 @@
 [![Hugo](https://img.shields.io/badge/Hugo-extended%200.168.0-FF4088?logo=hugo)](https://gohugo.io/)
 
 The bilingual PGSTY corporate portal pins
-[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v1.5.0` as its Hugo
+[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v1.5.1` as its Hugo
 theme. The English and Chinese sites both present PGSTY PTE. LTD., Singapore.
 The corporate pages cover the company, software projects, professional services,
 pricing, solutions, contact, privacy, and service terms. OINK supplies navigation,
@@ -57,7 +57,11 @@ Every portal page also reuses OINK's same-origin, language-separated search
 index and Command Palette. `Cmd/Ctrl-K` and `/` open page discovery and shared
 page actions; `\` opens localized portal commands. The bridge lives in
 `layouts/_partials/portal/palette.html`, while the registry, index, ranking,
-dialog, and action behavior remain owned by the pinned theme. Colour state stays
+dialog, and action behavior remain owned by the pinned theme. The Appearance
+menu defaults to Paper and offers Paper, Slate, Ink, and Terminal on desktop
+and in the phone drawer. OINK owns the style palettes, fonts, menu, and
+`td-preset` reader preference; the corporate components map those tokens onto
+their existing layout. Colour state stays
 in the portal's own `pgsty-landing-theme` key — the theme's `dark-mode.js` is
 deliberately not loaded, so there is never a second store.
 
@@ -73,7 +77,7 @@ GOWORK=off make c  # Run the complete site check with the pinned theme
 `make d` applies a one-command replacement for the sibling OINK checkout without
 pinning the preview port; set `PORT` to select an available one. The long targets
 are `debug`, `serve`, `build`, and `check`. `make c` validates rendered
-HTML, Markdown, and `llms.txt` links, and
+HTML, Markdown, and `llms.txt` links, the four-style appearance controls, and
 rejects any false PGSTY/PIGSTY registered-trademark claim in source or output.
 The ignored local `go.work` points to the sibling OINK checkout. Set
 `GOWORK=off` when testing the pinned module. The build needs Hugo Extended, Go
@@ -85,10 +89,15 @@ To update the pinned theme intentionally, run `make update-theme`, review
 
 The checked-in [GitHub Pages workflow](.github/workflows/pages.yml) builds and
 deploys on pushes to `main` or manual dispatch. It pins Hugo Extended 0.168.0
-and follows stable Go releases; `go.mod` declares Go 1.27.3 as the minimum. Check the actual toolchain
+and pins Go 1.27.3; `go.mod` declares Go 1.27.3 as the minimum. Check the actual toolchain
 and workflow result when validating a release.
 
 The recorded Cloudflare Pages setup also builds `main` and serves `pgsty.com`
-using Hugo Extended 0.164.0. Those platform settings are not stored in this
+using Hugo Extended 0.164.0 when recorded. Those platform settings are not stored in this
 repository and need live verification for deployment work. A local build,
 commit, push, deployment, and public-site check are separate results.
+
+## Public metrics report
+
+English: `/report/`; 中文：`/zh/report/`。同一份公开静态数据，语言切换保留报告与筛选。
+维护与发布见 [REPORT-SOP](docs/REPORT-SOP.md)，采集和图表源码在 `~/pgsty/repoort`。
