@@ -2,7 +2,7 @@
 {{- $d := hugo.Data.impact.data -}}
 {{- $publicData := resources.FromString "impact/data.yaml" (readFile "data/impact/data.yaml") -}}
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Locale | default .Site.Language.Lang }}" class="no-js">
+<html{{ partial "shell/document-attrs.html" (dict "page" . "theme_init" false) }} data-bs-theme="light" data-theme="light" class="no-js">
 <head>
   {{ partial "portal/head-meta.html" . }}
   {{ partial "portal/head-assets.html" . }}

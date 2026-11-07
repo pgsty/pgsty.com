@@ -60,7 +60,7 @@
   )
 -}}
 <!DOCTYPE html>
-<html lang="{{ $locale }}" class="no-js">
+<html{{ partial "shell/document-attrs.html" (dict "page" . "theme_init" false) }} data-bs-theme="light" data-theme="light" class="no-js">
 <head>
   {{ partial "portal/head-meta.html" . }}
   <script type="application/ld+json">

@@ -1,7 +1,7 @@
 {{- $zh := eq .Site.Language.Lang "zh" -}}
 {{- $locale := default .Site.Language.Lang .Site.Language.Locale -}}
 <!DOCTYPE html>
-<html lang="{{ $locale }}" class="no-js">
+<html{{ partial "shell/document-attrs.html" (dict "page" . "theme_init" false) }} data-bs-theme="light" data-theme="light" class="no-js">
 <head>
   {{ partial "portal/head-meta.html" . }}
   {{ partial "portal/head-assets.html" . }}

@@ -65,25 +65,7 @@
           </a>
           {{- end }}
 
-          {{- /* 点击直切亮/暗，悬停展开三档选择；两者都走 PGSTYPortalTheme。 */ -}}
-          <div class="td-nav-hover-menu td-nav-theme-menu" data-td-nav-hover>
-            <button type="button" class="td-nav-util" data-td-nav-hover-trigger data-td-theme-toggle
-              title="{{ T "ui_theme_toggle" }}" aria-label="{{ T "ui_theme_toggle" }}" aria-expanded="false">
-              {{- partialCached "shell/icon.html" "moon" "moon" -}}
-              {{- partialCached "shell/icon.html" "sun" "sun" -}}
-            </button>
-            <div class="td-nav-hover-menu__pop" role="group" aria-label="{{ T "ui_theme_toggle" }}">
-              <button type="button" class="td-nav-hover-menu__option" data-bs-theme-value="light" aria-pressed="false">
-                {{- partialCached "shell/icon.html" "sun" "navbar-theme-light" -}}<span>{{ T "ui_theme_light" }}</span>
-              </button>
-              <button type="button" class="td-nav-hover-menu__option" data-bs-theme-value="dark" aria-pressed="false">
-                {{- partialCached "shell/icon.html" "moon" "navbar-theme-dark" -}}<span>{{ T "ui_theme_dark" }}</span>
-              </button>
-              <button type="button" class="td-nav-hover-menu__option" data-bs-theme-value="auto" aria-pressed="false">
-                {{- partialCached "shell/icon.html" "contrast" "navbar-theme-auto" -}}<span>{{ T "ui_theme_auto" }}</span>
-              </button>
-            </div>
-          </div>
+          {{- partial "shell/appearance-menu.html" (dict "page" $page "context" "navbar" "trigger" "td-nav-util") -}}
         </div>
 
         {{- /* 手机档的抽屉入口：OINK 只给 Home/Landing，门户的每个页面都要。 */ -}}
@@ -116,10 +98,6 @@
     <a class="td-site-nav__menu-link" href="{{ .url }}" lang="{{ .code }}" hreflang="{{ .code }}">{{ partialCached "shell/icon.html" "languages" "languages" }}<span>{{ .label }}</span></a>
     {{- end }}
     {{- end }}
-    <button type="button" class="td-site-nav__menu-link td-site-nav__menu-link--button" data-td-theme-toggle>
-      {{- partialCached "shell/icon.html" "moon" "moon" -}}
-      {{- partialCached "shell/icon.html" "sun" "sun" -}}
-      <span>{{ T "ui_theme_toggle" }}</span>
-    </button>
+    {{- partial "shell/appearance-menu.html" (dict "page" $page "context" "drawer" "trigger" "td-site-nav__menu-link td-site-nav__menu-link--button" "label" (T "ui_appearance")) -}}
   </nav>
 </div>
