@@ -137,3 +137,22 @@ Cloudflare 完整日截至 10 月 27 日，28 日为 partial；CDN 完整至 26 
 
 公开数据归档：<https://github.com/pgsty/pgsty.com/releases/tag/report-20261107T123740Z-fb622cfc>。
 更新、归档、部署和公网验收分别存于 `~/.local/share/repoort/verification/refresh-20261107/`。
+
+## 2026-11-13 数据更新
+
+本次公开快照为 `20261113T141439Z-2fb879ed`，生成于 2026-11-13 22:15 UTC+8；19 份当前报告共用同一公开包。
+GitHub、Docker Hub 与行业来源按 11 月 13 日重新采集；GA、Cloudflare、CDN 与 Nginx 使用截至当天已成功写入的最新来源数据，未新增定时任务。
+
+- GitHub：76 个公开仓库、12,374 Stars、941 Forks、382,126 次版本资产下载。
+- Docker Hub：7 个公开镜像累计 9,968,333 次拉取；Silo=`minio+silo`，共 8,338,854，`mc` 单列。
+- GA：26 个公开绑定；10 月整月活跃用户 202,741，11 月截至 11 月 12 日的当前值为 149,530，但仍是未完成月；2026 年累计 648,119、去年同期 60,137，年度缓存截至 11 月 6 日。
+- Cloudflare：完整 UTC 日到 11 月 12 日，13 日为 partial；只保留账号日 core/overview，历史 overview 缺口继续保留。
+- CDN：两区域完整到 11 月 11 日；12 日仍是每区域 21 个小时对象，11 月月度记录保留 `observed_end` 和 partial。
+- Nginx：完整到 11 月 12 日，13 日为 partial，原采集器解析错误为 0。
+- 行业：63 公司、14 已核实事件、164 历史事件、108 候选；原有官方站点获取失败与公告日期冲突继续显示。
+
+年度 GA 直接查询在本轮遇到 Analytics Data API 读取超时，旧年度缓存安全保留并在页面带有独立的 `as_of` / `captured_at`，没有把旧年度值伪装成 11 月 13 日新数据。月度 GA 仍按直接整月查询值相加，跨站不去重。
+
+未完成月份的图表现在对涉及 partial 行的连线使用橙色虚线，并使用空心点；完整区间的面积填充不延伸进 partial 区间。图例、悬停提示、表格标记和 `observed_end` 同时说明覆盖状态；摘要指标优先显示最近完整月，避免把 11 月尚未结束的活跃用户误读为整月下跌。11 月及其他未完整月份不参与完整月同比/环比比较。
+
+66 项来源/数据库核对、112 项 Python 测试、前端完整性测试和生产基线构建通过后再执行公网验收。数据归档为 <https://github.com/pgsty/pgsty.com/releases/tag/report-20261113T141439Z-2fb879ed>；更新、归档、部署和验收证据位于 `~/.local/share/repoort/verification/refresh-20261113/`。

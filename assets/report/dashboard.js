@@ -216,7 +216,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     });
   }
   /* Line chart: full-resolution raw values, an optional trailing moving average for long daily windows,
-     hollow amber points for partial windows, gaps kept as gaps, and a hover read-out. */
+     hollow amber points and dashed edges for partial windows, gaps kept as gaps, and a hover read-out. */
   function lineFigure(title, rows, metric, opts = {}) {
     const key = opts.key || "date", monthly = key === "month", yearly = key === "year", data = sorted(rows, key), compact = !!opts.compact;
     const valid = data.filter((r) => number(r[metric]) !== null && Number.isFinite(dayTime(r[key])));
@@ -278,11 +278,37 @@ Promise.resolve(window.REPOORT_READY).then(() => {
       }
     }
     const maxGap = opts.snapshots || opts.continuous ? Infinity : yearly ? 370 * DAY : monthly ? 45 * DAY : 36 * 3600000;
-    const rawSegs = segmentsOf(data, (r) => number(r[metric]), maxGap);
-    const mainSegs = maN ? segmentsOf(data.filter((r) => ma.has(r)), (r) => ma.get(r), maN * DAY) : rawSegs;
-    if (!opts.snapshots) for (const seg of mainSegs) if (seg.length > 1) svg += `<path d="${pathOf(seg)}L${seg[seg.length-1][0].toFixed(1)},${top+ph}L${seg[0][0].toFixed(1)},${top+ph}Z" fill="url(#${id}g)"/>`;
-    if (maN) for (const seg of rawSegs) svg += `<path class="line raw" d="${pathOf(seg)}"/>`;
-    for (const seg of mainSegs) svg += `<path class="line${opts.snapshots ? " snap" : ""}" d="${pathOf(seg)}"/>`;
+    const hasPartial = valid.some(isPartial);
+    /* Keep the edge that touches a partial row visually separate. A partial month must
+       never look like a solid month-to-month continuation into a complete month. */
+    const edgeSegments = (items, value, gap) => {
+      const out = [], flush = (points, style) => { if (points.length > 1) out.push({points, style}); };
+      let points = [], style = null, previous = null, previousPoint = null;
+      for (const row of items) {
+        const time = dayTime(row[key]), valueAt = value(row);
+        if (valueAt === null || !Number.isFinite(time)) {
+          flush(points, style); points = []; style = null; previous = null; previousPoint = null; continue;
+        }
+        const point = [X(time), Y(valueAt)];
+        if (previousPoint === null) { previous = row; previousPoint = point; continue; }
+        if (time - dayTime(previous[key]) > gap) {
+          flush(points, style); points = []; style = null; previous = row; previousPoint = point; continue;
+        }
+        const edgeStyle = isPartial(previous) || isPartial(row) ? "partial" : "complete";
+        if (style !== edgeStyle) {
+          flush(points, style); points = [previousPoint]; style = edgeStyle;
+        }
+        points.push(point); previous = row; previousPoint = point;
+      }
+      flush(points, style); return out;
+    };
+    const rawSegs = hasPartial ? edgeSegments(data, (r) => number(r[metric]), maxGap) : segmentsOf(data, (r) => number(r[metric]), maxGap).map(points => ({points, style: "complete"}));
+    const mainSegs = maN ? segmentsOf(data.filter((r) => ma.has(r)), (r) => ma.get(r), maN * DAY).map(points => ({points, style: "complete"})) : rawSegs;
+    const pointsOf = (segment) => segment.points || segment;
+    const styleOf = (segment) => segment.style || "complete";
+    if (!opts.snapshots) for (const seg of mainSegs) { const points = pointsOf(seg); if (points.length > 1 && styleOf(seg) === "complete") svg += `<path d="${pathOf(points)}L${points[points.length-1][0].toFixed(1)},${top+ph}L${points[0][0].toFixed(1)},${top+ph}Z" fill="url(#${id}g)"/>`; }
+    if (maN) for (const seg of rawSegs) svg += `<path class="line raw${styleOf(seg) === "partial" ? " partial" : ""}" d="${pathOf(pointsOf(seg))}"/>`;
+    for (const seg of mainSegs) svg += `<path class="line${opts.snapshots ? " snap" : ""}${styleOf(seg) === "partial" ? " partial" : ""}" d="${pathOf(pointsOf(seg))}"/>`;
     const showPoints = opts.snapshots || (!opts.continuous && (monthly || valid.length <= 60));
     valid.forEach((r, i) => {
       const partial = isPartial(r), last = i === valid.length - 1, px = X(dayTime(r[key])), py = Y(Number(r[metric]));
@@ -296,8 +322,8 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     charts.set(id, {w, h, label, maLabel: maN ? `${maN} 日均线` : "", pts: valid.map((r) => ({x: X(dayTime(r[key])), y: Y(Number(r[metric])), d: yearly ? String(r[key]).slice(0, 4) : monthly ? String(r[key]).slice(0, 7) : date(r[key]), v: fmt(r[metric]), m: ma.has(r) ? fmt(ma.get(r)) : "", p: isPartial(r)}))});
     const lastComplete = [...valid].reverse().find((r) => !isPartial(r)) || valid[valid.length - 1];
     const latest = opts.hideLatest ? "" : `<div class="figure-latest"><b>${esc(fmt(lastComplete[metric]))}</b><span>${esc(yearly ? String(lastComplete[key]).slice(0, 4) : monthly ? String(lastComplete[key]).slice(0, 7) : date(lastComplete[key]))}${isPartial(lastComplete) ? " · 部分" : ""}</span></div>`;
-    const legendItems = [maN ? `<span class="lg raw">日值</span><span class="lg">${maN} 日均线（剔除部分日）</span>` : "", opts.snapshots ? `<span class="lg snap">真实快照之间的连线</span>` : "", valid.some(isPartial) ? `<span class="lg partial">部分窗口</span>` : ""].join("");
-    const aria = `${title}。${observedRange(rows, key)}。${useLog ? "对数纵轴。" : ""}${maN ? `含 ${maN} 日均线。` : ""}数值见后续可下载表格。`;
+    const legendItems = [maN ? `<span class="lg raw">日值</span><span class="lg">${maN} 日均线（剔除部分日）</span>` : "", opts.snapshots ? `<span class="lg snap">真实快照之间的连线</span>` : "", hasPartial ? `<span class="lg partial">部分窗口：虚线 + 空心点</span>` : ""].join("");
+    const aria = `${title}。${observedRange(rows, key)}。${useLog ? "对数纵轴。" : ""}${maN ? `含 ${maN} 日均线。` : ""}${hasPartial ? t("部分窗口使用虚线和空心点标记。") : ""}数值见后续可下载表格。`;
     return `<figure class="${cls}"><div class="figure-head"><div class="figure-heading"><div class="figure-title">${esc(title)}</div><div class="figure-window">${windowText}</div></div>${latest}</div><div class="chart" data-chart="${id}"><svg viewBox="0 0 ${w} ${h}" data-x-start="${new Date(tickMin).toISOString().slice(0,10)}" data-x-end="${new Date(tickMax).toISOString().slice(0,10)}" role="img" aria-label="${esc(aria)}">${svg}</svg><div class="chart-tip" hidden></div></div>${legendItems ? `<div class="legend">${legendItems}</div>` : ""}${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`;
   }
   /* Stacked area: month-end retained Stars per repository (largest at the bottom), with later real

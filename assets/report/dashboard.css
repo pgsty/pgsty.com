@@ -173,7 +173,9 @@
 .repoort-app .lg::before{content:"";width:14px;height:0;border-top:2.5px solid var(--chart-line);border-radius:2px}
 .repoort-app .lg.raw::before{border-top:1.5px solid var(--chart-raw)}
 .repoort-app .lg.snap::before{border-top:2px dashed var(--chart-line)}
-.repoort-app .lg.partial::before{width:8px;height:8px;border:2px solid var(--amber-500);border-radius:50%;background:var(--report-surface)}
+.repoort-app .lg.partial{color:var(--amber-700)}
+.repoort-app .lg.partial::before{width:14px;height:0;border-top:2px dashed var(--amber-500);border-radius:2px}
+.repoort-app .lg.partial::after{content:"";width:7px;height:7px;border:2px solid var(--amber-500);border-radius:50%;background:var(--report-surface);margin-left:-11px}
 .repoort-app .chart{position:relative;min-height:100px;touch-action:pan-y}
 .repoort-app .chart svg{overflow:visible}
 .repoort-app .chart .grid-line{stroke:var(--chart-grid);stroke-width:1}
@@ -182,6 +184,8 @@
 .repoort-app .chart .line{fill:none;stroke:var(--chart-line);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
 .repoort-app .chart .line.raw{stroke:var(--chart-raw);stroke-width:1.1;opacity:.85}
 .repoort-app .chart .line.snap{stroke-dasharray:5 5;stroke-width:1.6}
+.repoort-app .chart .line.partial{stroke:var(--amber-500);stroke-dasharray:6 5;stroke-width:2.3}
+.repoort-app .chart .line.raw.partial{stroke:var(--amber-500);stroke-width:1.5;opacity:.9}
 .repoort-app .chart .grad-top{stop-color:var(--chart-line);stop-opacity:.18}
 .repoort-app .chart .grad-bottom{stop-color:var(--chart-line);stop-opacity:0}
 .repoort-app .chart .point{fill:var(--chart-line);stroke:var(--report-surface);stroke-width:1.5}

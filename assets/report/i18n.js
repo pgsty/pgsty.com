@@ -393,6 +393,8 @@
   "所有区域每日24小时已确认": "24 hours confirmed each day in all regions",
   "小时覆盖": "Hourly coverage",
   "部分窗口": "Partial window",
+  "部分窗口：虚线 + 空心点": "Partial window: dashed edge + hollow point",
+  "部分窗口使用虚线和空心点标记。": "Partial windows use dashed edges and hollow points.",
   "部分窗口 · 尚未完整": "Partial window · Incomplete",
   "完整月": "Complete month",
   "当前不完整月": "Current incomplete month",
