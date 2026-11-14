@@ -53,6 +53,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   const GROUPS = [
     ["总览", ["operations", "pigsty-growth", "industry"]],
     ["开源社区", ["github", "dockerhub", "open-source"]],
+    ["个人 GitHub", ["github-vonng"]],
     ["网站受众", ["ga", "traffic-observation", "nginx-sites"]],
     ["边缘访问", ["cloudflare", "cloudflare-daily", "cloudflare-ytd"]],
     ["软件分发", ["cdn-traffic", "distribution", "repo-monthly-uv", "repo-system-distribution"]],
@@ -515,6 +516,35 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     } else body += table("github-repos",[...repos].sort((a,b)=>b.stars-a.stars),repoColumns,{title:"公开仓库指标"});
     return section("开源社区与发行资产",`${SOURCE_NAMES.github} · 截至 ${date(d.as_of)}；组织范围公开仓库，累计计数。`,body,full?"":reportLink("github","完整社区报告"));
   }
+  function githubVonngSection() {
+    const d = payload("github").personal_vonng || {}, t = d.totals || {}, repos = list(d.repositories), history = list(d.history), delta = d.delta || {};
+    if (!d.owner) return section("Vonng 个人 GitHub Stars", "当前公开数据包没有个人仓库快照。", empty("暂时没有可展示的 Vonng 公开仓库数据。"));
+    const retained = d.retained_star_series || {}, monthly = retained.monthly_by_repository || {}, months = list(monthly.months), repositorySeries = monthly.repositories || {};
+    const monthlyRows = months.map((month, i) => ({month, stars:Object.values(repositorySeries).reduce((sum, values) => sum + (Number(list(values)[i]) || 0), 0), is_partial_month: i === months.length - 1 && monthly.last_month_partial}));
+    const starRepos = repos.filter((r) => number(r.stars) !== null && Number(r.stars) > 0).length;
+    const currentMonth = months.length ? months[months.length - 1] : "";
+    const chart = monthlyRows.length ? lineFigure("Vonng 名下公开仓库 · 现存 Stars 累计", monthlyRows, "stars", {
+      key:"month", continuous:true, smooth:false, seriesLabel:"Vonng 现存 Stars", window:`GitHub · ${months[0]} — ${date(monthly.as_of || d.as_of)} · ${count(monthly.events)} 个保留 Star`,
+      caption:"按 GitHub 无身份日历聚合按月累计当前仍保留的 Stars；不跨仓库去重，不代表历史日期的实时净计数。当前月截至采集日，部分月使用虚线和空心点。"
+    }) : empty("当前快照没有可绘制的 Star 历史。现有仓库表仍可查看当前计数。");
+    const body = metricStrip([
+      {label:"Vonng 名下公开仓库 Stars", value:t.stars, context:`${count(t.repositories)} 个公开仓库 · ${date(d.as_of)}`},
+      {label:"公开仓库数量", value:t.repositories, context:`其中 ${count(starRepos)} 个仓库当前有 Star`},
+      {label:"公开仓库 Forks", value:t.forks, context:"仓库 Fork 计数之和，不去重上游项目"},
+      {label:"最近快照", value:history.length ? history[history.length - 1].stars : t.stars, context:currentMonth ? `${currentMonth}${monthly.last_month_partial ? " · 当前月部分" : ""}` : date(d.as_of)}
+    ]) + notice(`范围：GitHub 用户 ${d.owner} 名下的公开仓库，包含 fork 并在表格中标记。Stars 是仓库关注计数之和，不是个人关注者数量。${monthly.last_month_partial ? `当前月份截至 ${date(monthly.as_of || d.as_of)}，尚未结束。` : ""}`) + chart;
+    let content = body;
+    if (delta.baseline_captured_at) content += notice(`与 ${date(delta.baseline_captured_at)} 快照相比：同一仓库 Stars 净变化 ${count(delta.same_repository_stars)}；新增仓库带入 ${count(delta.added_repository_stars)}，移出仓库原有 ${count(delta.removed_repository_stars)}。`);
+    content += `<h3>Vonng 名下公开仓库</h3>` + table("github-vonng-repos", [...repos].sort((a,b) => b.stars - a.stars || a.name.localeCompare(b.name)), [
+      col("full_name", "公开仓库", "name", r => link(r.full_name || r.name, r.url)),
+      col("stars", "Stars", "number"), col("forks", "Forks", "number"),
+      col("fork", "类型", "text", r => r.fork ? "Fork" : "独立仓库", r => r.fork ? "fork" : "owned"),
+      col("archived", "状态", "text", r => r.archived ? "已归档" : "活跃", r => r.archived ? "archived" : "active"),
+      dateColumn("pushed_at", "最近推送")
+    ], {title:"Vonng 公开仓库指标", note:"只保留公开仓库的当前 Star / Fork 与公开生命周期字段；fork 不从总量中排除。"});
+    if (history.length) content += `<h3>个人仓库 Stars 历史快照</h3>` + table("github-vonng-history", history, [dateColumn(), col("repositories", "公开仓库数", "number"), col("stars", "Stars", "number"), col("forks", "Forks", "number")], {title:"Vonng GitHub 历史快照", note:"每个点是一次公开 API 快照；仓库范围变化和 Star 计数变化分开阅读。"});
+    return section("Vonng 个人 GitHub Stars", `GitHub 用户 ${d.owner} · 公开仓库 · 截至 ${date(d.as_of)}。`, content);
+  }
   function dockerSection(full = false) {
     const d = payload("dockerhub"), t = d.totals || {}, delta = d.delta || {};
     const selectedProject=list(GROWTH.docker_projects).find(p=>`project:${p.id}`===state.dockerRepo);
@@ -814,6 +844,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     if(OVERVIEW_REPORTS.includes(id))html=overview();
     else if(id==="industry")html=industrySection(true);
     else if(id==="github")html=githubSection(true);
+    else if(id==="github-vonng")html=githubVonngSection();
     else if(id==="dockerhub")html=dockerSection(true);
     else if(id==="open-source")html=comparisonSection()+githubSection(false)+dockerSection(false);
     else if(id==="ga")html=gaSection(true);

@@ -156,3 +156,21 @@ GitHub、Docker Hub 与行业来源按 11 月 13 日重新采集；GA、Cloudfla
 未完成月份的图表现在对涉及 partial 行的连线使用橙色虚线，并使用空心点；完整区间的面积填充不延伸进 partial 区间。图例、悬停提示、表格标记和 `observed_end` 同时说明覆盖状态；摘要指标优先显示最近完整月，避免把 11 月尚未结束的活跃用户误读为整月下跌。11 月及其他未完整月份不参与完整月同比/环比比较。
 
 66 项来源/数据库核对、112 项 Python 测试、前端完整性测试和生产基线构建通过后再执行公网验收。数据归档为 <https://github.com/pgsty/pgsty.com/releases/tag/report-20261113T141439Z-2fb879ed>；更新、归档、部署和验收证据位于 `~/.local/share/repoort/verification/refresh-20261113/`。
+
+## 2026-11-14：增加 Vonng 个人 GitHub Stars 报告
+
+本轮在同一份公开数据包中增加独立报告 `github-vonng`，入口为
+`/report/#report=github-vonng` 和 `/zh/report/#report=github-vonng`。数据来自 GitHub
+公开 API，范围是用户 Vonng 名下的 119 个公开仓库，包含 fork 并在仓库表中标记；不发布
+Star 用户身份、权限、私有仓库或个人资料字段。采集快照截至 2026-11-14：26,838 Stars、
+5,222 Forks，其中 49 个仓库当前有 Star；保留的 Star 月度历史从 2015-05 到 2026-11。
+
+2026-11 月尚未结束，个人报告中的当前月使用橙色虚线和空心点，并在图例、说明和当前月
+标记中明确为 partial；月度总量是当前仍保留仓库的 Star 累计，不跨仓库去重，也不解释为
+历史日期的实时净计数。报告共 20 份、32 个数据分片，固定公开归档为
+<https://github.com/pgsty/pgsty.com/releases/tag/report-20261114T012654Z-ba45a6df>，manifest
+SHA-256 为 `23fce6a9462fa058ccc276575dc60d6d066ea5ed0432c7d3360e7fa2cd356ef4`。
+
+本地 `./report check`、113 项 Python 测试、前端完整性测试以及 OINK 1.5.1 / Hugo Extended
+0.168.0 / Go 1.27.3 生产基线构建通过。官网提交、部署和公网验收在本次推送完成后补录；证据
+目录为 `~/.local/share/repoort/verification/refresh-github-vonng-20261114/`。
