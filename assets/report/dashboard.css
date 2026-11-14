@@ -184,6 +184,12 @@
 .repoort-app .chart .line{fill:none;stroke:var(--chart-line);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
 .repoort-app .chart .line.raw{stroke:var(--chart-raw);stroke-width:1.1;opacity:.85}
 .repoort-app .chart .line.snap{stroke-dasharray:5 5;stroke-width:1.6}
+.repoort-app .chart .line.series-personal{stroke:#2bb3a3;stroke-width:2}
+.repoort-app .chart .line.series-organization{stroke:#336791;stroke-width:2}
+.repoort-app .chart .line.series-total{stroke:#0f172a;stroke-width:3}
+.repoort-app .chart .point.series-personal{fill:#2bb3a3}
+.repoort-app .chart .point.series-organization{fill:#336791}
+.repoort-app .chart .point.series-total{fill:#0f172a}
 .repoort-app .chart .line.partial{stroke:var(--amber-500);stroke-dasharray:6 5;stroke-width:2.3}
 .repoort-app .chart .line.raw.partial{stroke:var(--amber-500);stroke-width:1.5;opacity:.9}
 .repoort-app .chart .grad-top{stop-color:var(--chart-line);stop-opacity:.18}

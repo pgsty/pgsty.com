@@ -177,3 +177,16 @@ run `43542494391` 的 build/deploy 与 Cloudflare Pages check-run `35b4d61f-d6c6
 均为 success。普通 HTTPS 已核对中英文页面、manifest、32 个分片、SRI 和数据重建；实际生产
 客户端 40 个双语视图通过，个人报告的当前数值、partial 图例、虚线和空心点均已检查。证据目录
 为 `~/.local/share/repoort/verification/refresh-github-vonng-20261114/`。
+
+## 2026-11-14：将个人 Stars 合并到 GitHub Star 总览
+
+上一版单独的 Vonng 个人报告不符合页面组织方式，本次以新快照替换为 GitHub 页面内的
+`GitHub Star 总览`。左侧只保留“开源社区 → GitHub 仓库与 Stars”；该页面向下展示个人仓库、
+PGSTY 组织和两者合计三条月度走势，并在图例和当前值中分别标明三者。
+
+公开数据目录恢复为 19 份当前报告，固定归档为
+<https://github.com/pgsty/pgsty.com/releases/tag/report-20261114T032639Z-45dceb15>；32 个分片
+共 33,331,884 bytes，manifest SHA-256 为
+`8b491fa738b0c7d60ae999832272aaa6dce27a18baedefb21745b928db20eb75`。三条线从两边都有历史的
+2018-01 开始，2026-11 当前值分别为 26,838、12,378 和 39,216；当前月仍为 partial，三条
+连线均使用橙色虚线和空心点。图表不把组织早期没有观测的月份补成 0。

@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "snapshot_id": "20261114T012654Z-ba45a6df",
-  "generated_at": "2026-11-14T01:32:42+00:00",
-  "release_url": "https://github.com/pgsty/pgsty.com/releases/download/report-20261114T012654Z-ba45a6df",
-  "manifest_url": "https://github.com/pgsty/pgsty.com/releases/download/report-20261114T012654Z-ba45a6df/manifest.json",
-  "manifest_sha256": "23fce6a9462fa058ccc276575dc60d6d066ea5ed0432c7d3360e7fa2cd356ef4"
+  "snapshot_id": "20261114T032639Z-45dceb15",
+  "generated_at": "2026-11-14T03:26:40+00:00",
+  "release_url": "https://github.com/pgsty/pgsty.com/releases/download/report-20261114T032639Z-45dceb15",
+  "manifest_url": "https://github.com/pgsty/pgsty.com/releases/download/report-20261114T032639Z-45dceb15/manifest.json",
+  "manifest_sha256": "8b491fa738b0c7d60ae999832272aaa6dce27a18baedefb21745b928db20eb75"
 }

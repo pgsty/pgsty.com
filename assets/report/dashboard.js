@@ -53,7 +53,6 @@ Promise.resolve(window.REPOORT_READY).then(() => {
   const GROUPS = [
     ["总览", ["operations", "pigsty-growth", "industry"]],
     ["开源社区", ["github", "dockerhub", "open-source"]],
-    ["个人 GitHub", ["github-vonng"]],
     ["网站受众", ["ga", "traffic-observation", "nginx-sites"]],
     ["边缘访问", ["cloudflare", "cloudflare-daily", "cloudflare-ytd"]],
     ["软件分发", ["cdn-traffic", "distribution", "repo-monthly-uv", "repo-system-distribution"]],
@@ -485,6 +484,76 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     const rows = m.months.map((month, i) => ({date:i === m.months.length-1 ? m.as_of : new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5,7)),0)).toISOString().slice(0,10), stars:Object.values(m.repositories||{}).reduce((sum,values)=>sum+(Number(values[i])||0),0)}));
     return lineFigure("组织 · 现存 Stars 累计",rows,"stars",{continuous:true,smooth:false,...starAxis(),seriesLabel:"组织现存 Stars",window:`${starAxis().xDomain.join(" — ")} · ${Object.keys(m.repositories||{}).length} 个有 Star 的公开仓库`,caption:"将所有公开仓库的历史累计值按日期相加；不跨仓库去重用户，不含已取消的 Stars。独立采集的组织快照仍保存在下方历史快照表中。",...opts});
   }
+  const STAR_OVERVIEW_COLORS = {personal:"#2bb3a3", organization:"#336791", total:"#0f172a"};
+  function monthlyStarTotals(retained) {
+    const m = retained?.monthly_by_repository;
+    if (!m?.months?.length) return null;
+    const months = list(m.months);
+    const totals = months.map((month, i) => ({month, stars:Object.values(m.repositories || {}).reduce((sum, values) => sum + (Number(list(values)[i]) || 0), 0)}));
+    return {months, totals, asOf:m.as_of || retained.as_of || retained.captured_at, partial:!!m.last_month_partial};
+  }
+  function githubStarOverviewFigure() {
+    const gh = payload("github"), personal = monthlyStarTotals(gh.personal_vonng?.retained_star_series), organization = monthlyStarTotals(gh.retained_star_series);
+    if (!personal || !organization) return "";
+    const personalValues = new Map(personal.totals.map(row => [row.month, row.stars]));
+    const organizationValues = new Map(organization.totals.map(row => [row.month, row.stars]));
+    const start = [personal.months[0], organization.months[0]].sort().at(-1);
+    const months = organization.months.filter(month => month >= start && personalValues.has(month) && organizationValues.has(month));
+    if (!months.length) return "";
+    const last = months.length - 1, asOf = [personal.asOf, organization.asOf].filter(Boolean).sort().at(-1) || gh.as_of;
+    const partial = i => i === last && (personal.partial || organization.partial);
+    const dates = months.map((month, i) => i === last && asOf ? date(asOf) : new Date(Date.UTC(Number(month.slice(0,4)), Number(month.slice(5,7)), 0)).toISOString().slice(0,10));
+    const series = [
+      {id:"personal", label:"个人仓库 Stars", color:STAR_OVERVIEW_COLORS.personal, values:months.map(month => personalValues.get(month))},
+      {id:"organization", label:"PGSTY 组织 Stars", color:STAR_OVERVIEW_COLORS.organization, values:months.map(month => organizationValues.get(month))},
+      {id:"total", label:"个人 + 组织合计 Stars", color:STAR_OVERVIEW_COLORS.total, values:months.map(month => personalValues.get(month) + organizationValues.get(month))}
+    ];
+    const totalValues = series[2].values, w = chartWidth(1, false), h = w < 560 ? 290 : 330, top = 14, bottom = 28, right = 14;
+    const {max:ymax, ticks} = niceTicks(Math.max(...totalValues), 4), yLabels = ticks.map(value => short(value));
+    const left = Math.ceil(Math.max(28, ...yLabels.map(value => textWidth(value))) + 12), pw = w - left - right, ph = h - top - bottom;
+    const xmin = dayTime(dates[0]), xmax = dayTime(dates[last]), X = t => xmin === xmax ? left + pw / 2 : left + (t - xmin) / (xmax - xmin) * pw, Y = value => top + ph - value / ymax * ph, id = `c${++chartSeq}`;
+    let svg = "";
+    ticks.forEach((value, i) => { const yy = Y(value).toFixed(1); svg += `<line class="grid-line${i === 0 ? " base" : ""}" x1="${left}" y1="${yy}" x2="${w - right}" y2="${yy}"/><text class="axis-text" x="${left - 8}" y="${Number(yy) + 3.5}" text-anchor="end">${esc(yLabels[i])}</text>`; });
+    let lastX = -Infinity;
+    for (const tick of timeTicks(xmin, xmax, true, pw)) {
+      const xx = X(tick.t), tw = textWidth(tick.label);
+      if (xx < left - 2 || xx > w - right + 2 || xx - lastX < tw + 14) continue;
+      svg += `<text class="axis-text" x="${xx.toFixed(1)}" y="${h - 6}" text-anchor="middle">${esc(tick.label)}</text>`; lastX = xx;
+    }
+    const point = (values, i) => [X(dayTime(dates[i])), Y(Number(values[i]))];
+    for (const current of series) {
+      let points = [], style = null, previous = null;
+      const flush = () => { if (points.length > 1) svg += `<path class="line series-${current.id}${style === "partial" ? " partial" : ""}" d="${points.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join("")}"/>`; };
+      for (let i = 0; i < current.values.length; i++) {
+        const next = point(current.values, i);
+        if (previous === null) { previous = next; continue; }
+        const edge = partial(i - 1) || partial(i) ? "partial" : "complete";
+        if (style !== edge) { flush(); points = [previous, next]; style = edge; }
+        else points.push(next);
+        previous = next;
+      }
+      flush();
+      current.values.forEach((value, i) => {
+        if (partial(i) || i === last) {
+          const [x, y] = point(current.values, i);
+          svg += `<circle class="point series-${current.id}${partial(i) ? " partial" : " last"}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${partial(i) ? 3.5 : 4}"/>`;
+        }
+      });
+    }
+    svg += `<line class="hover-line" x1="0" y1="${top}" x2="0" y2="${top + ph}"/><circle class="hover-dot" r="4.5" cx="0" cy="0"/>`;
+    const points = months.map((month, i) => ({x:X(dayTime(dates[i])), y:Y(totalValues[i]), d:partial(i) ? `${month}（截至 ${date(asOf)}）` : month, v:count(totalValues[i]), m:"", p:partial(i), rows:series.map(current => [current.label, count(current.values[i]), current.color])}));
+    charts.set(id, {w, h, label:"个人 + 组织合计 Stars", maLabel:"", pts:points});
+    const overviewMetrics = metricStrip([
+      {label:"个人仓库 Stars", value:series[0].values[last], context:english ? `Through ${date(asOf)}` : `截至 ${date(asOf)}`},
+      {label:"PGSTY 组织 Stars", value:series[1].values[last], context:english ? `Through ${date(asOf)}` : `截至 ${date(asOf)}`},
+      {label:"个人 + 组织合计 Stars", value:totalValues[last], context:english ? `Through ${date(asOf)} · shared history` : `截至 ${date(asOf)} · 两边共同历史范围`}
+    ]);
+    const latest = `<div class="figure-latest"><b>${esc(count(totalValues[last]))}</b><span>${esc(date(asOf))}</span></div>`;
+    const legend = series.map(current => `<span class="lg swatch" style="--c:${current.color}">${esc(current.label)}</span>`).join("") + (partial(last) ? `<span class="lg partial">部分窗口：虚线 + 空心点</span>` : "");
+    const title = "GitHub Star 总览", windowText = english ? `GitHub · ${months[0]} — ${date(asOf)} · Shared history` : `GitHub · ${months[0]} — ${date(asOf)} · 两边共同历史范围`;
+    const caption = english ? "Personal repositories, PGSTY organization repositories and their sum use the same month-end retained-Star basis. The chart starts at the first month with both histories; the current month is partial and uses a dashed edge with hollow points." : "个人仓库、PGSTY 组织仓库及两者合计使用同一套月末现存 Stars 口径。图表从两边都有历史的首月开始；当前月尚未结束，使用虚线和空心点。";
+    return overviewMetrics + `<figure class="figure"><div class="figure-head"><div class="figure-heading"><div class="figure-title">${esc(title)}</div><div class="figure-window">${esc(windowText)}</div></div>${latest}</div><div class="chart" data-chart="${id}"><svg viewBox="0 0 ${w} ${h}" data-x-start="${new Date(xmin).toISOString().slice(0,10)}" data-x-end="${new Date(xmax).toISOString().slice(0,10)}" role="img" aria-label="${esc(`${title}。${windowText}。`) }">${svg}</svg><div class="chart-tip" hidden></div></div><div class="legend">${legend}</div><figcaption>${esc(caption)}</figcaption></figure>`;
+  }
   function githubSection(full = false) {
     const d = payload("github"), t = d.totals || {}, delta = d.delta || {}, history = list(d.history);
     let repos = list(d.repositories); if (full && state.githubRepo !== "all") repos = repos.filter((r) => String(r.id || r.full_name) === state.githubRepo);
@@ -497,7 +566,7 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     const m = full ? state.githubMetric : "stars", title = {stars:"组织 Stars · 实际快照",forks:"组织 Forks · 实际快照",downloads_non_auxiliary:"非辅助资产累计下载 · 实际快照",downloads_total:"全部资产累计下载 · 实际快照"}[m];
     const cols = gridCols(2);
     const snapshot = lineFigure(title, history, m, {snapshots:true, cols, height: 250, seriesLabel: title.split(" · ")[0], window:seriesMeta("github",history), caption:"每个点是一份真实快照，虚线仅连接观察点；仓库范围可能变化。关注、下载都不是独立用户或安装数。"});
-    let body = strips + (m === "stars" ? starStackFigure() + chartGrid([retainedStarFigure({cols, height: 280}), organizationStarFigure({cols,height:280}) || snapshot], cols) : snapshot);
+    let body = strips + (m === "stars" ? starStackFigure() + chartGrid([retainedStarFigure({cols, height: 280}), organizationStarFigure({cols,height:280}) || snapshot], cols) + githubStarOverviewFigure() : snapshot);
     if (delta.baseline_captured_at) body += notice(`与 ${date(delta.baseline_captured_at)} 快照比较：同一仓库 Stars 净变化 ${count(delta.same_repository_stars)}；新增仓库带入的历史 Stars ${count(delta.added_repository_stars)}。同一资产下载计数变化 ${count(delta.same_asset_downloads)}，新资产累计计数 ${count(delta.added_assets_downloads)}。`);
     const repoColumns = [col("full_name","公开仓库","name",r=>link(r.full_name||r.name,r.url)),col("stars","Stars","number"),col("forks","Forks","number"),col("releases","版本","number"),col("downloads_non_auxiliary","非辅助下载","number"),col("downloads_auxiliary","辅助下载","number"),dateColumn("pushed_at","最近推送")];
     if (full) {
@@ -515,35 +584,6 @@ Promise.resolve(window.REPOORT_READY).then(() => {
       if (retainedRows.length) body += `<details class="appendix"><summary>历史保留 Stars 重建明细 · 样本截至 ${esc(date(retained.as_of||retained.captured_at))}</summary><div>${table("github-retained",retainedRows,[dateColumn(),col("stars","样本保留 Stars 累计","number")],{title:"历史保留 Stars 分布",note:"该旧样本与本轮组织采集日期分开保留。"})}</div></details>`;
     } else body += table("github-repos",[...repos].sort((a,b)=>b.stars-a.stars),repoColumns,{title:"公开仓库指标"});
     return section("开源社区与发行资产",`${SOURCE_NAMES.github} · 截至 ${date(d.as_of)}；组织范围公开仓库，累计计数。`,body,full?"":reportLink("github","完整社区报告"));
-  }
-  function githubVonngSection() {
-    const d = payload("github").personal_vonng || {}, t = d.totals || {}, repos = list(d.repositories), history = list(d.history), delta = d.delta || {};
-    if (!d.owner) return section("Vonng 个人 GitHub Stars", "当前公开数据包没有个人仓库快照。", empty("暂时没有可展示的 Vonng 公开仓库数据。"));
-    const retained = d.retained_star_series || {}, monthly = retained.monthly_by_repository || {}, months = list(monthly.months), repositorySeries = monthly.repositories || {};
-    const monthlyRows = months.map((month, i) => ({month, stars:Object.values(repositorySeries).reduce((sum, values) => sum + (Number(list(values)[i]) || 0), 0), is_partial_month: i === months.length - 1 && monthly.last_month_partial}));
-    const starRepos = repos.filter((r) => number(r.stars) !== null && Number(r.stars) > 0).length;
-    const currentMonth = months.length ? months[months.length - 1] : "";
-    const chart = monthlyRows.length ? lineFigure("Vonng 名下公开仓库 · 现存 Stars 累计", monthlyRows, "stars", {
-      key:"month", continuous:true, smooth:false, seriesLabel:"Vonng 现存 Stars", window:`GitHub · ${months[0]} — ${date(monthly.as_of || d.as_of)} · ${count(monthly.events)} 个保留 Star`,
-      caption:"按 GitHub 无身份日历聚合按月累计当前仍保留的 Stars；不跨仓库去重，不代表历史日期的实时净计数。当前月截至采集日，部分月使用虚线和空心点。"
-    }) : empty("当前快照没有可绘制的 Star 历史。现有仓库表仍可查看当前计数。");
-    const body = metricStrip([
-      {label:"Vonng 名下公开仓库 Stars", value:t.stars, context:`${count(t.repositories)} 个公开仓库 · ${date(d.as_of)}`},
-      {label:"公开仓库数量", value:t.repositories, context:`其中 ${count(starRepos)} 个仓库当前有 Star`},
-      {label:"公开仓库 Forks", value:t.forks, context:"仓库 Fork 计数之和，不去重上游项目"},
-      {label:"最近快照", value:history.length ? history[history.length - 1].stars : t.stars, context:currentMonth ? `${currentMonth}${monthly.last_month_partial ? " · 当前月部分" : ""}` : date(d.as_of)}
-    ]) + notice(`范围：GitHub 用户 ${d.owner} 名下的公开仓库，包含 fork 并在表格中标记。Stars 是仓库关注计数之和，不是个人关注者数量。${monthly.last_month_partial ? `当前月份截至 ${date(monthly.as_of || d.as_of)}，尚未结束。` : ""}`) + chart;
-    let content = body;
-    if (delta.baseline_captured_at) content += notice(`与 ${date(delta.baseline_captured_at)} 快照相比：同一仓库 Stars 净变化 ${count(delta.same_repository_stars)}；新增仓库带入 ${count(delta.added_repository_stars)}，移出仓库原有 ${count(delta.removed_repository_stars)}。`);
-    content += `<h3>Vonng 名下公开仓库</h3>` + table("github-vonng-repos", [...repos].sort((a,b) => b.stars - a.stars || a.name.localeCompare(b.name)), [
-      col("full_name", "公开仓库", "name", r => link(r.full_name || r.name, r.url)),
-      col("stars", "Stars", "number"), col("forks", "Forks", "number"),
-      col("fork", "类型", "text", r => r.fork ? "Fork" : "独立仓库", r => r.fork ? "fork" : "owned"),
-      col("archived", "状态", "text", r => r.archived ? "已归档" : "活跃", r => r.archived ? "archived" : "active"),
-      dateColumn("pushed_at", "最近推送")
-    ], {title:"Vonng 公开仓库指标", note:"只保留公开仓库的当前 Star / Fork 与公开生命周期字段；fork 不从总量中排除。"});
-    if (history.length) content += `<h3>个人仓库 Stars 历史快照</h3>` + table("github-vonng-history", history, [dateColumn(), col("repositories", "公开仓库数", "number"), col("stars", "Stars", "number"), col("forks", "Forks", "number")], {title:"Vonng GitHub 历史快照", note:"每个点是一次公开 API 快照；仓库范围变化和 Star 计数变化分开阅读。"});
-    return section("Vonng 个人 GitHub Stars", `GitHub 用户 ${d.owner} · 公开仓库 · 截至 ${date(d.as_of)}。`, content);
   }
   function dockerSection(full = false) {
     const d = payload("dockerhub"), t = d.totals || {}, delta = d.delta || {};
@@ -844,7 +884,6 @@ Promise.resolve(window.REPOORT_READY).then(() => {
     if(OVERVIEW_REPORTS.includes(id))html=overview();
     else if(id==="industry")html=industrySection(true);
     else if(id==="github")html=githubSection(true);
-    else if(id==="github-vonng")html=githubVonngSection();
     else if(id==="dockerhub")html=dockerSection(true);
     else if(id==="open-source")html=comparisonSection()+githubSection(false)+dockerSection(false);
     else if(id==="ga")html=gaSection(true);
