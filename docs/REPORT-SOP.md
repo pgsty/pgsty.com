@@ -172,5 +172,8 @@ Star 用户身份、权限、私有仓库或个人资料字段。采集快照截
 SHA-256 为 `23fce6a9462fa058ccc276575dc60d6d066ea5ed0432c7d3360e7fa2cd356ef4`。
 
 本地 `./report check`、113 项 Python 测试、前端完整性测试以及 OINK 1.5.1 / Hugo Extended
-0.168.0 / Go 1.27.3 生产基线构建通过。官网提交、部署和公网验收在本次推送完成后补录；证据
-目录为 `~/.local/share/repoort/verification/refresh-github-vonng-20261114/`。
+0.168.0 / Go 1.27.3 生产基线构建通过。官网提交 `c67387b` 已推送 `main`；GitHub Actions
+run `43542494391` 的 build/deploy 与 Cloudflare Pages check-run `35b4d61f-d6c6-4cff-8fcd-58a8169d0ef5`
+均为 success。普通 HTTPS 已核对中英文页面、manifest、32 个分片、SRI 和数据重建；实际生产
+客户端 40 个双语视图通过，个人报告的当前数值、partial 图例、虚线和空心点均已检查。证据目录
+为 `~/.local/share/repoort/verification/refresh-github-vonng-20261114/`。
