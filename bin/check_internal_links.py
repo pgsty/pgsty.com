@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import collections
 import html.parser
+import json
 import pathlib
 import re
 import sys
@@ -40,7 +41,7 @@ class DocumentParser(html.parser.HTMLParser):
                 continue
             if key == "id" or (tag == "a" and key == "name"):
                 self.ids.add(value)
-            if key in LINK_ATTRIBUTES:
+            if key in LINK_ATTRIBUTES or key == "data-td-index-src":
                 self.links.append(value.strip())
 
 
@@ -121,7 +122,7 @@ def main() -> int:
         checked += 1
         route, fragment = target
         candidates = target_candidates(public, route)
-        existing = next((candidate.resolve() for candidate in candidates if candidate.exists()), None)
+        existing = next((candidate.resolve() for candidate in candidates if candidate.is_file()), None)
         if existing is None:
             failures[f"missing target {route}"].append(source_route)
             return
@@ -148,6 +149,19 @@ def main() -> int:
         for raw_url in parse_markdown_links(source_path):
             check_link(source_route, raw_url)
 
+    search_sections = 0
+    indexes = sorted(public.glob("offline-search-index.*.json"))
+    if not indexes:
+        failures["missing offline search index"].append("/")
+    for source_path in indexes:
+        source_route = route_for_file(public, source_path)
+        for entry in json.loads(source_path.read_text(encoding="utf-8")):
+            check_link(source_route, entry["ref"])
+            for section in entry.get("sections", []):
+                fragment = urllib.parse.quote(section["id"], safe="")
+                check_link(source_route, f"{entry['ref']}#{fragment}")
+                search_sections += 1
+
     if failures:
         print(f"internal link check failed: {len(failures)} distinct target errors", file=sys.stderr)
         for problem, sources in sorted(failures.items()):
@@ -161,7 +175,8 @@ def main() -> int:
 
     print(
         f"internal link check passed: {checked} rendered internal references across "
-        f"{len(html_files)} HTML and {len(text_files)} Markdown/LLMS files"
+        f"{len(html_files)} HTML and {len(text_files)} Markdown/LLMS files, "
+        f"including {search_sections} search section links from {len(indexes)} indexes"
     )
     return 0
 

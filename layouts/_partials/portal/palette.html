@@ -11,7 +11,6 @@
 {{- $manifest = merge $manifest (dict "actions" (where $manifest.actions "id" "in" (slice "copy_link" "switch_language" "switch_theme" "switch_preset" "compare_translations"))) -}}
 <script type="application/json" id="td-action-manifest">{{ $manifest | jsonify | safeJS }}</script>
 {{- $paletteJS := slice
-  (resources.Get "js/third_party/lunr.min.js")
   (resources.Get "js/surface-coordinator.js")
   (resources.Get "js/action-registry.js")
   (resources.Get "js/search-engine.js")

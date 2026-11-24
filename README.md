@@ -2,10 +2,10 @@
 
 [![Website](https://img.shields.io/badge/web-pgsty.com-0D9488?logo=cloudflare&logoColor=white)](https://pgsty.com)
 [![GitHub Pages](https://github.com/pgsty/pgsty.com/actions/workflows/pages.yml/badge.svg)](https://github.com/pgsty/pgsty.com/actions/workflows/pages.yml)
-[![Hugo](https://img.shields.io/badge/Hugo-extended%200.168.0-FF4088?logo=hugo)](https://gohugo.io/)
+[![Hugo](https://img.shields.io/badge/Hugo-FF4088?logo=hugo)](https://gohugo.io/)
 
 The bilingual PGSTY corporate portal pins
-[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v1.5.1` as its Hugo
+[`github.com/pgsty/oink`](https://github.com/pgsty/oink) `v1.6.0` as its Hugo
 theme. The English and Chinese sites both present PGSTY PTE. LTD., Singapore.
 The corporate pages cover the company, software projects, professional services,
 pricing, solutions, contact, privacy, and service terms. OINK supplies navigation,
@@ -49,8 +49,8 @@ language — and `layouts/_partials/portal/nav.html` only bridges them to the
 theme's `navbar-item` / `navbar-entry-link` / `navbar-group-items` partials.
 The portal carries no GitHub badge in its chrome. The language link shows the
 target language's own short label; theme controls move into the drawer on narrow
-screens. The chrome stylesheet is compiled from the
-pinned module in `assets/scss/portal-oink.scss`; `static/css/portal-v1.css` maps
+screens. The chrome stylesheet is the pinned module's `chrome` and
+`landing` stylesheets, loaded by `portal/head-assets.html`; `static/css/portal-v1.css` maps
 the Landing v3 palette onto the `--bs-*` / `--td-*` tokens it reads.
 
 Every portal page also reuses OINK's same-origin, language-separated search
@@ -77,20 +77,23 @@ GOWORK=off make c  # Run the complete site check with the pinned theme
 `make d` applies a one-command replacement for the sibling OINK checkout without
 pinning the preview port; set `PORT` to select an available one. The long targets
 are `debug`, `serve`, `build`, and `check`. `make c` validates rendered
-HTML, Markdown, and `llms.txt` links, the four-style appearance controls, and
+HTML, Markdown, `llms.txt` links, and both search indexes against the rendered
+pages and section IDs. It checks the four-style appearance controls and
 rejects any false PGSTY/PIGSTY registered-trademark claim in source or output.
 The ignored local `go.work` points to the sibling OINK checkout. Set
-`GOWORK=off` when testing the pinned module. The build needs Hugo Extended, Go
-(see `go.mod`), and Python 3 for the check scripts; there is no npm build step.
+`GOWORK=off` when testing the pinned module. The portal templates in this
+checkout need the OINK 1.6 CSS bundles and native search. Use `make d` until
+the production pin is upgraded. The build uses Hugo and the Go version in
+`go.mod`. The site checks use Python 3.
 To update the pinned theme intentionally, run `make update-theme`, review
 `go.mod` and `go.sum`, then rerun the checks.
 
 ## Deploy
 
 The checked-in [GitHub Pages workflow](.github/workflows/pages.yml) builds and
-deploys on pushes to `main` or manual dispatch. It pins Hugo Extended 0.168.0
-and pins Go 1.27.3; `go.mod` declares Go 1.27.3 as the minimum. Check the actual toolchain
-and workflow result when validating a release.
+deploys on pushes to `main` or manual dispatch. It installs Hugo and reads the
+Go version from `go.mod`. Check the actual toolchain and workflow result when
+validating a release.
 
 The recorded Cloudflare Pages setup also builds `main` and serves `pgsty.com`
 using Hugo Extended 0.164.0 when recorded. Those platform settings are not stored in this

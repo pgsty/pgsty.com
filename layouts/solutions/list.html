@@ -20,7 +20,7 @@
     </section>
 
     <!-- ============ 交付路径 ============ -->
-    <section class="corp-section">
+    <section class="corp-section" id="{{ cond $zh "部署与迁移" "deployment-and-migration" }}">
       <div class="landing-container corp-grid-2">
         <article class="corp-card">
           <p class="corp-eyebrow">{{ if $zh }}下云与数据库迁移{{ else }}Cloud exit & database migration{{ end }}</p>
@@ -45,7 +45,7 @@
         <div class="corp-section-heading">
           <div>
             <p class="corp-eyebrow">{{ if $zh }}业务负载场景{{ else }}WORKLOAD SCENARIOS{{ end }}</p>
-            <h2>{{ if $zh }}围绕负载选择组件{{ else }}Match the stack to your workload{{ end }}</h2>
+            <h2 id="{{ cond $zh "业务负载场景" "workload-scenarios" }}">{{ if $zh }}围绕负载选择组件{{ else }}Match the stack to your workload{{ end }}</h2>
           </div>
           <p>{{ if $zh }}以下场景作为架构讨论的起点。结合实际负载评估扩展兼容性、容量与恢复目标，再通过测试确定配置。{{ else }}Use these scenarios as a starting point. Evaluate extension compatibility, capacity, and recovery objectives against your workload, then validate the design.{{ end }}</p>
         </div>
@@ -120,7 +120,7 @@
         <div class="corp-section-heading">
           <div>
             <p class="corp-eyebrow">{{ if $zh }}选型决策对照{{ else }}DECISION MATRIX{{ end }}</p>
-            <h2>{{ if $zh }}自建与托管，如何选择？{{ else }}Self-hosted or managed?{{ end }}</h2>
+            <h2 id="{{ cond $zh "自建与托管如何选择" "self-hosted-or-managed" }}">{{ if $zh }}自建与托管，如何选择？{{ else }}Self-hosted or managed?{{ end }}</h2>
           </div>
           <p>{{ if $zh }}比较可控范围、运维责任与完整成本。两种方式都需要结合具体产品、团队能力和业务目标评估。{{ else }}Compare control, operational responsibility, and total cost. The right choice depends on the service, your team, and your business requirements.{{ end }}</p>
         </div>

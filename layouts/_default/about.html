@@ -26,7 +26,7 @@
       <div class="landing-container corp-grid-2">
         <article class="corp-card">
           <p class="corp-eyebrow">{{ if $zh }}公司信息{{ else }}COMPANY INFORMATION{{ end }}</p>
-          <h2>{{ if $zh }}服务企业，建设开源{{ else }}Open-source engineering. Commercial expertise.{{ end }}</h2>
+          <h2 id="{{ cond $zh "公司介绍" "the-company" }}">{{ if $zh }}服务企业，建设开源{{ else }}Open-source engineering. Commercial expertise.{{ end }}</h2>
           <p>{{ if $zh }}PGSTY PTE. LTD. 是本网站介绍的业务主体。我们的工作围绕开源数据库、相关软件工具及企业数据基础设施展开，为客户提供订阅支持与按项目交付的专业服务。{{ else }}PGSTY PTE. LTD. is the business presented on this website. Our work covers open-source databases, supporting software, and enterprise data infrastructure, with subscription support and project-based professional services.{{ end }}</p>
           <dl class="corp-facts">
             <dt>{{ if $zh }}法定名称{{ else }}Legal name{{ end }}</dt><dd>{{ $name }}</dd>
@@ -41,7 +41,7 @@
         </article>
         <article class="corp-card">
           <p class="corp-eyebrow">{{ if $zh }}创始人{{ else }}FOUNDER{{ end }}</p>
-          <h2>{{ if $zh }}冯若航{{ else }}Ruohang Feng{{ end }} <span class="corp-founder-handle">(Vonng)</span></h2>
+          <h2 id="{{ cond $zh "创始人" "founder" }}">{{ if $zh }}冯若航{{ else }}Ruohang Feng{{ end }} <span class="corp-founder-handle">(Vonng)</span></h2>
           <p>{{ if $zh }}Pigsty 作者、PostgreSQL 工程师与技术译者，负责公司的产品方向、开源项目开发与客户技术工作。{{ else }}Author of Pigsty, PostgreSQL engineer, and technical translator, responsible for product direction, open-source development, and customer engineering.{{ end }}</p>
           <ul>
             <li>{{ if $zh }}PostgreSQL 中文文档翻译者{{ else }}Translator of the Chinese PostgreSQL documentation{{ end }} · <a href="https://pgsql.cc/">PGSQL.CC</a></li>
@@ -56,7 +56,7 @@
     <section class="corp-section" id="small">
       <div class="landing-container">
         <p class="corp-eyebrow">{{ if $zh }}合作方式{{ else }}HOW WE WORK{{ end }}</p>
-        <h2 class="corp-title">{{ if $zh }}直接的技术沟通，明确的交付范围{{ else }}Direct engineering engagement, defined deliverables{{ end }}</h2>
+        <h2 class="corp-title" id="{{ cond $zh "合作方式" "working-with-pgsty" }}">{{ if $zh }}直接的技术沟通，明确的交付范围{{ else }}Direct engineering engagement, defined deliverables{{ end }}</h2>
         <p class="corp-lead">{{ if $zh }}PGSTY 由创始人主导技术工作。我们从具体环境与业务需求出发，在开始实施之前确认范围、责任与验收方式。{{ else }}PGSTY is a founder-led engineering business. Engagements start with your environment and requirements, with scope, responsibilities, and acceptance criteria agreed before implementation.{{ end }}</p>
         <div class="corp-grid-3">
           <article class="corp-card"><h3>{{ if $zh }}数据库工程{{ else }}Database engineering{{ end }}</h3><p>{{ if $zh }}PostgreSQL 架构评估、部署实施、迁移规划、性能诊断与可观测性建设，围绕客户实际运行环境开展。{{ else }}PostgreSQL architecture reviews, deployment, migration planning, performance diagnosis, and observability for customer environments.{{ end }}</p></article>
@@ -70,7 +70,7 @@
     <section class="corp-section" id="timeline">
       <div class="landing-container">
         <p class="corp-eyebrow">{{ if $zh }}开源工作{{ else }}OUR OPEN-SOURCE WORK{{ end }}</p>
-        <h2 class="corp-title">{{ if $zh }}源于工程实践，成果公开可查{{ else }}Built through practice, available to inspect{{ end }}</h2>
+        <h2 class="corp-title" id="{{ cond $zh "开源工作" "open-source-work" }}">{{ if $zh }}源于工程实践，成果公开可查{{ else }}Built through practice, available to inspect{{ end }}</h2>
         <p class="corp-lead">{{ if $zh }}公司的技术工作建立在长期维护的开源项目上。代码、文档与发布记录为客户了解我们的工程能力提供了直接依据。{{ else }}Our engineering work is grounded in maintained open-source projects. Public source code, documentation, and release histories let customers evaluate the work directly.{{ end }}</p>
         <div class="corp-grid-3">
           <article class="corp-card"><p class="corp-eyebrow">{{ $m.since_year }}</p><h3>{{ if $zh }}Pigsty 工具箱起步{{ else }}The Pigsty toolbox{{ end }}</h3><p>{{ if $zh }}Pigsty 起源于一套用于 PostgreSQL 运维的私人工具与自动化脚本，逐步积累了后续发行版的技术基础。{{ else }}Pigsty began as a personal collection of PostgreSQL operations tools and automation scripts, building the foundation for the distribution.{{ end }}</p></article>
@@ -84,7 +84,7 @@
     <section class="corp-section" id="missing-i">
       <div class="landing-container corp-prose">
         <p class="corp-eyebrow">{{ if $zh }}关于品牌{{ else }}ABOUT THE NAME{{ end }}</p>
-        <h2>PostgreSQL In Great STYle</h2>
+        <h2 id="{{ cond $zh "品牌名称" "the-name" }}">PostgreSQL In Great STYle</h2>
         <p>{{ if $zh }}Pigsty 的名称来自 PostgreSQL In Great STYle；PGSTY 是公司使用的品牌。品牌名中省去的 i，呼应了项目对公共基础设施的投入。开源软件按各项目的许可证提供，商业服务则按双方确认的范围与协议交付。{{ else }}Pigsty takes its name from PostgreSQL In Great STYle; PGSTY is the company's brand. The omitted i is a nod to the project's investment in shared infrastructure. Open-source software is provided under each project's license, while commercial services are delivered under an agreed scope and contract.{{ end }}</p>
         <p><a class="corp-link" href="{{ "contact/" | relLangURL }}">{{ if $zh }}与我们讨论您的项目{{ else }}Discuss your project with us{{ end }} <span aria-hidden="true">→</span></a></p>
       </div>

@@ -91,7 +91,7 @@
         <div class="corp-prose">
           <p>{{ if $zh }}合适的部署方式取决于实际负载、采购条件和团队能力。自建 PostgreSQL 可以提供更直接的配置与基础设施控制，也需要承担容量、升级、备份验证和故障处理的责任。PGSTY 可以协助评估这些要求，并规划分阶段迁移。{{ else }}The right deployment model depends on workload, purchasing terms and team capabilities. Self-managed PostgreSQL offers direct control over configuration and infrastructure, while requiring ownership of capacity, upgrades, backup validation and incident handling. PGSTY can help assess these requirements and plan a staged migration.{{ end }}</p>
           <div class="corp-card" role="note">
-            <h2>{{ if $zh }}历史数据，仅作示例估算{{ else }}Historical data — illustrative estimates{{ end }}</h2>
+            <h2 id="{{ cond $zh "历史示例估算与适用边界" "historical-estimates-with-explicit-limits" }}">{{ if $zh }}历史数据，仅作示例估算{{ else }}Historical data — illustrative estimates{{ end }}</h2>
             <p>{{ if $zh }}本页数据库与算力价格采集于 {{ $cc.meta.captured }}，云盘参考价格采集于 {{ $cc.meta.captured_disk }}；其他数据日期见来源。计算器使用固定假设，不代表实时价格、PGSTY 报价或节约保证。人员、迁移、网络、额外备份、税费和风险成本未被完整计入，不能把结果直接视为总拥有成本。{{ else }}Database and compute pricing was captured in {{ $cc.meta.captured }}; disk price references were captured in {{ $cc.meta.captured_disk }}. Other dates are listed in the sources. The calculator uses fixed assumptions and is not live pricing, a PGSTY quotation or a savings guarantee. Staffing, migration, networking, additional backups, taxes and risk costs are not fully included, so the results are not a complete total cost of ownership.{{ end }}</p>
             <a class="corp-link" href="#exit-sources">{{ if $zh }}查看假设与来源{{ else }}Review assumptions and sources{{ end }} →</a>
           </div>
@@ -420,7 +420,7 @@
       <div class="landing-container">
         <div class="section-head" data-reveal>
           <p class="section-eyebrow"><span class="silkscreen">{{ if $zh }}THE ROAD · 迁移路径{{ else }}THE ROAD{{ end }}</span><span class="eyebrow-trace" aria-hidden="true"></span></p>
-          <h2 class="section-title">{{ if $zh }}分阶段评估与实施{{ else }}A staged assessment and implementation{{ end }}</h2>
+          <h2 class="section-title" id="{{ cond $zh "分阶段实施" "a-staged-approach" }}">{{ if $zh }}分阶段评估与实施{{ else }}A staged assessment and implementation{{ end }}</h2>
           <p class="section-subtitle">{{ if $zh }}先确认目标与约束，再通过试点与演练验证方案。各阶段可分别约定服务范围；以下价格仅为相关服务的起点。{{ else }}Establish requirements, validate the design in a pilot and rehearse the migration. Scope can be agreed for each stage; related prices below are starting points.{{ end }}</p>
         </div>
 

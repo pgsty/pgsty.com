@@ -10,7 +10,9 @@
   {{ partial "portal/head-meta.html" . }}
   {{ partial "compare/bootstrap.html" . }}
   {{ partial "portal/head-assets.html" . }}
-  {{- $compareCSS := resources.Get "scss/portal-compare.scss" | toCSS | minify | fingerprint -}}
+  {{- /* OINK 的对照阅读样式（compare）加上企业页版式的窗格调整。 */ -}}
+  {{- $compareCSS := slice (partial "css/bundle.html" "compare") (resources.Get "css/portal-compare.css")
+        | resources.Concat "css/portal-compare-view.css" | minify | fingerprint -}}
   <link rel="stylesheet" href="{{ $compareCSS.RelPermalink }}" integrity="{{ $compareCSS.Data.Integrity }}" crossorigin="anonymous">
 </head>
 <body class="landing-page portal-page corporate-page">
