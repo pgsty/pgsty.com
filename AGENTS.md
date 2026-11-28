@@ -6,7 +6,7 @@
 
 ## OINK build baseline
 
-`go.mod` owns the Go toolchain minimum and the published OINK `v1.6.0` pin.
+`go.mod` owns the Go toolchain minimum and the published OINK `v1.7.0` pin.
 Use the installed Hugo and review build warnings. Keep `--panicOnWarning` and
 `HUGO_PANICONWARNING` disabled. Portal stylesheets are plain CSS under
 `assets/css/`; `portal/head-assets.html` and `corporate.html` request the
@@ -18,7 +18,7 @@ theme's `chrome`, `landing`, `search`, and `compare` stylesheets via
 - 本站是 **PGSTY PTE. LTD.** 的中英双语公司官网：英文 `/`，中文 `/zh/`。
   两种语言介绍同一家新加坡公司；公司信息统一引用 `data/company.yaml`。
 - 技术栈为 Hugo 与 Go Modules，主题是 `github.com/pgsty/oink`，
-  当前由 `go.mod` 固定为 `v1.6.0`。检查脚本使用 Python 3 标准库；没有 npm 构建流程。
+  当前由 `go.mod` 固定为 `v1.7.0`。检查脚本使用 Python 3 标准库；没有 npm 构建流程。
 - 首页依次介绍开源软件、公共资源、专业服务、合作原则、FAQ 与联系入口。
   软件目录与公共资源目录分别承接完整介绍，保持用途清楚、链接直接、文案克制。
 - Hero 保持当前两行口号：英文 `Open Data Infrastructure` / `Built for Real Production`；
